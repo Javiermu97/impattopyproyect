@@ -3,8 +3,31 @@
 import { useState, useEffect, MouseEvent, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { allProducts, Product, ProductVariant, ProductFeature } from '@/lib/data';
+import { allProducts, Product, ProductVariant } from '@/lib/data'; // Se elimina 'ProductFeature' que no se usa
 import CheckoutForm from '@/app/components/CheckoutForm';
+
+// Se crea un tipo para los datos de la orden para eliminar el 'any'
+interface OrderData {
+  orderId: number;
+  orderDate: string;
+  formData: {
+    email: string;
+    name: string;
+    address: string;
+    city: string;
+  };
+  department: string;
+  formVariant: ProductVariant;
+  product: Product;
+  selectedQuantity: number;
+  totalPrice: number;
+}
+
+// Se define el tipo para los props del componente OrderConfirmation
+interface OrderConfirmationProps {
+  orderData: OrderData;
+  onGoBack: () => void;
+}
 
 // Definimos un tipo para los items del acordeón
 type AccordionItemData = {
@@ -14,7 +37,7 @@ type AccordionItemData = {
 };
 
 // --- Componente de Confirmación de Pedido (Modal) ---
-const OrderConfirmation = ({ orderData, onGoBack }: { orderData: any; onGoBack: () => void; }) => (
+const OrderConfirmation = ({ orderData, onGoBack }: OrderConfirmationProps) => ( // Se usa el tipo OrderConfirmationProps
     <div className="checkout-modal-overlay">
       <div className="checkout-modal-content confirmation-container">
         <div className="confirmation-header">
@@ -228,7 +251,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   const [zoomActive, setZoomActive] = useState(false);
   const [imgPos, setImgPos] = useState({ x: '50%', y: '50%' });
   const [isCheckoutVisible, setCheckoutVisible] = useState(false);
-  const [orderData, setOrderData] = useState<any>(null);
+  const [orderData, setOrderData] = useState<OrderData | null>(null); // Se usa el tipo OrderData
 
   useEffect(() => {
     const currentId = 1; 
@@ -256,7 +279,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     setImgPos({ x: `${x}%`, y: `${y}%` });
   };
   
-  const handleOrderConfirmation = async (data: any) => {
+  const handleOrderConfirmation = async (data: OrderData) => { // Se usa el tipo OrderData
     try {
       const response = await fetch('/api/send-order-email', {
         method: 'POST',

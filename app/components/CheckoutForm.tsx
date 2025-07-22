@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Product, ProductVariant } from '@/lib/data';
 
+// CORRECCIÓN: Se mantiene la interfaz que ya tenías para evitar el error 'any' en las props
 interface CheckoutFormProps {
   product: Product;
   selectedVariant: ProductVariant;
@@ -104,7 +105,6 @@ export default function CheckoutForm({ product, selectedVariant, onClose, onConf
     onConfirm(orderDetails);
   };
 
-  // SE RESTAURA TU FUNCIÓN 'renderForm' TAL CUAL LA TENÍAS
   const renderForm = () => (
     <form onSubmit={handleSubmit}>
       <div className="checkout-product-options">
@@ -202,7 +202,6 @@ export default function CheckoutForm({ product, selectedVariant, onClose, onConf
     </form>
   );
 
-  // SE RESTAURA TU 'return' ORIGINAL
   return (
     <div className="checkout-modal-overlay">
       <div className="checkout-modal-content">
