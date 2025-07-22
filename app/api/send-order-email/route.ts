@@ -1,51 +1,77 @@
 import { NextResponse } from 'next/server';
-import mysql from 'mysql2/promise';
+import nodemailer from 'nodemailer';
 
-// Configuración de la conexión usando las variables de tu archivo .env.local
-const dbConfig = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-};
-
-function isValidEmail(email: string): boolean {
-  const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-  return regex.test(email);
+interface OrderBody {
+  formData: {
+    name: string;
+    phone: string;
+    email: string;
+    address: string;
+    city: string;
+  };
+  orderId: number;
+  product: { name: string };
+  selectedQuantity: number;
+  formVariant: { color: string };
+  totalPrice: number;
+  department: string;
 }
 
-// CORRECCIÓN: Se añadió el tipo 'Request' al parámetro
 export async function POST(request: Request) {
-  const { email } = await request.json();
+  const {
+    formData,
+    orderId,
+    product,
+    selectedQuantity,
+    formVariant,
+    totalPrice,
+    department,
+  } = (await request.json()) as OrderBody;
 
-  if (!email || !isValidEmail(email)) {
-    return NextResponse.json({ message: 'Por favor, ingresa un correo válido.' }, { status: 400 });
-  }
+  const transporter = nodemailer.createTransport({
+    host: 'mail.impatto.com.py',
+    port: 465,
+    secure: true,
+    auth: { user: 'info@impatto.com.py', pass: 'Impatto2025' },
+  });
 
-  let connection;
+  const businessEmailHtml = `
+    <h3>¡Nuevo Pedido! - Orden #${orderId}</h3>
+    <ul>
+      <li><strong>Producto:</strong> ${selectedQuantity} x ${product.name} (${formVariant.color})</li>
+      <li><strong>Monto Total:</strong> Gs. ${totalPrice.toLocaleString('es-PY')}</li>
+      <li><strong>Dirección:</strong> ${formData.address}, ${formData.city}, ${department}</li>
+    </ul>`;
+
+  const customerEmailHtml = `
+    <h3>¡Gracias por tu compra, ${formData.name}!</h3>
+    <p>Hemos recibido tu pedido #${orderId}.</p>
+    <ul>
+      <li><strong>Producto:</strong> ${selectedQuantity} x ${product.name} (${formVariant.color})</li>
+      <li><strong>Total a Pagar:</strong> Gs. ${totalPrice.toLocaleString('es-PY')}</li>
+    </ul>`;
+
   try {
-    // Conecta a la base de datos
-    connection = await mysql.createConnection(dbConfig);
+    await transporter.sendMail({
+      from: '"Impatto Py" <info@impatto.com.py>',
+      to: 'info@impatto.com.py, impattopy@gmail.com',
+      subject: `¡Nuevo Pedido! - Orden #${orderId}`,
+      html: businessEmailHtml,
+    });
 
-    // Inserta el correo en la tabla 'subscribers' de forma segura
-    await connection.execute('INSERT INTO subscribers (email) VALUES (?)', [email]);
+    await transporter.sendMail({
+      from: '"Impatto Py" <info@impatto.com.py>',
+      to: formData.email,
+      subject: `Confirmación de tu pedido #${orderId}`,
+      html: customerEmailHtml,
+    });
 
-    return NextResponse.json({ message: 'Suscripción exitosa' }, { status: 201 });
-
-  } catch (error: any) {
-    // Si el correo ya existe
-    if (error.code === 'ER_DUP_ENTRY') {
-      return NextResponse.json({ message: 'Este correo ya está suscrito.' }, { status: 409 });
-    }
-
-    // Para cualquier otro error
-    console.error(error);
-    return NextResponse.json({ message: 'Error interno del servidor.' }, { status: 500 });
-
-  } finally {
-    // Cierra la conexión siempre
-    if (connection) {
-      await connection.end();
-    }
+    return NextResponse.json({ message: 'Emails enviados' }, { status: 200 });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      { message: 'Error al enviar los correos' },
+      { status: 500 }
+    );
   }
 }
