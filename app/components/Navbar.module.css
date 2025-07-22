@@ -1,0 +1,77 @@
+/* app/components/Navbar.module.css */
+.navbar {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eaeaea;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0.95rem 40px;
+  box-sizing: border-box;
+}
+
+.logo {
+  flex-shrink: 0;
+}
+
+.logo a {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000;
+  text-decoration: none;
+  display: block;
+}
+
+.navLinks {
+  display: flex;
+  gap: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Estilo base para todos los enlaces del menú */
+.navLink {
+  color: #333;
+  font-weight: bold;
+  text-decoration: none; 
+  font-size: 0.9em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  position: relative;
+  padding-bottom: 8px;
+  /* CAMBIO: Se añade 'opacity' a la transición para un desvanecimiento suave */
+  transition: color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* El pseudoelemento que crea la línea de subrayado */
+.navLink::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  background-color: #666;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: width 0.3s ease-in-out;
+}
+
+/* Al pasar el cursor, la línea crece, el texto cambia a gris y se desvanece */
+.navLink:hover::after {
+  width: 100%;
+}
+.navLink:hover {
+  text-decoration: none;
+  color: #666; 
+  opacity: 0.75; /* CAMBIO: Se añade el efecto de desvanecimiento/transparencia */
+}
+
+/* Cuando el enlace está ACTIVO, el texto se mantiene gris y desvanecido */
+.active.navLink {
+  color: #555; 
+  opacity: 0.75; /* CAMBIO: Se añade el efecto de desvanecimiento/transparencia */
+}
+/* Y la línea se muestra permanentemente */
+.active.navLink::after {
+  width: 100%;
+}

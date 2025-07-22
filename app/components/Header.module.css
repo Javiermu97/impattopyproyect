@@ -1,0 +1,54 @@
+/* app/components/Header.module.css */
+.headerBar {
+  background-color: #0d3140;
+  color: #fff;
+  font-size: 0.9rem;
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1; /* Ocupa 1/3 del espacio */
+  justify-content: flex-start; /* Se alinea a la izquierda */
+}
+
+.headerLeft a {
+  color: #fff;
+}
+
+.headerLeft a:hover {
+  opacity: 0.8;
+}
+
+.headerLeft svg {
+  width: 18px;
+  height: 18px;
+}
+
+.headerCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra el contenido */
+  gap: 1.5rem; /* Espacio entre "Envíos" y "Ver ofertas" */
+  flex: 1; /* Ocupa 1/3 del espacio */
+}
+
+.offersLink a {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: underline; /* Añade el subrayado */
+  text-decoration-color: white; /* Asegura que el subrayado sea blanco */
+}
+
+.offersLink a:hover {
+  opacity: 0.8;
+}
+
+.headerRightPlaceholder {
+  flex: 1; /* Ocupa el 1/3 derecho para balancear */
+}
