@@ -241,7 +241,7 @@ const StarRating = () => (
 // --- FIN DE DEFINICIONES DE COMPONENTES AUXILIARES ---
 
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
+export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [mainImage, setMainImage] = useState('');
