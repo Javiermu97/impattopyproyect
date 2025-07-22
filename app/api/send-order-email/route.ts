@@ -1,80 +1,51 @@
-// Contenido para el archivo: app/api/send-order-email/route.ts
-
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import mysql from 'mysql2/promise';
 
-export async function POST(req: Request) {
-  // 1. Obtiene los datos del pedido que envió el cliente
-  const data = await req.json();
-  const { formData, orderId, product, selectedQuantity, formVariant, totalPrice } = data;
+// Configuración de la conexión usando las variables de tu archivo .env.local
+const dbConfig = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+};
 
-  // 2. Configura el "transportador" de correo con tus datos de SiteGround
-  // (Encuéntralos en Site Tools > Email > Cuentas > Configuración de email > Manual)
-  const transporter = nodemailer.createTransport({
-    host: 'mail.impatto.com.py', // Probablemente sea este, si no, reemplázalo
-    port: 465,
-    secure: true, // true para puerto 465
-    auth: {
-      user: 'info@impatto.com.py', // Tu correo empresarial
-      pass: 'Impatto2025', // ¡IMPORTANTE! Reemplaza con la contraseña de tu correo
-    },
-  });
+function isValidEmail(email: string): boolean {
+  const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  return regex.test(email);
+}
 
-  // 3. Define el contenido de los dos correos
-  const businessEmailHtml = `
-    <h3>¡Nuevo Pedido! - Orden #${orderId}</h3>
-    <p>Has recibido un nuevo pedido en tu tienda.</p>
-    <hr>
-    <h4>Detalles del Pedido:</h4>
-    <ul>
-        <li><strong>Producto:</strong> ${selectedQuantity} x ${product.name} (${formVariant.color})</li>
-        <li><strong>Monto Total:</strong> Gs. ${totalPrice.toLocaleString('es-PY')}</li>
-    </ul>
-    <hr>
-    <h4>Datos del Cliente:</h4>
-    <ul>
-        <li><strong>Nombre:</strong> ${formData.name}</li>
-        <li><strong>Teléfono / WhatsApp:</strong> ${formData.phone}</li>
-        <li><strong>Email:</strong> ${formData.email}</li>
-        <li><strong>Dirección:</strong> ${formData.address}, ${data.formData.city}, ${data.department}</li>
-    </ul>
-  `;
+// CORRECCIÓN: Se añadió el tipo 'Request' al parámetro
+export async function POST(request: Request) {
+  const { email } = await request.json();
 
-  const customerEmailHtml = `
-    <h3>¡Gracias por tu compra, ${formData.name}!</h3>
-    <p>Hemos recibido tu pedido #${orderId} y ya lo estamos preparando.</p>
-    <p>En breve nos pondremos en contacto contigo vía WhatsApp para coordinar la entrega y el pago.</p>
-    <hr>
-    <h4>Resumen de tu Pedido:</h4>
-    <ul>
-        <li><strong>Producto:</strong> ${selectedQuantity} x ${product.name} (${formVariant.color})</li>
-        <li><strong>Monto Total a Pagar:</strong> Gs. ${totalPrice.toLocaleString('es-PY')}</li>
-        <li><strong>Dirección de Envío:</strong> ${formData.address}, ${data.formData.city}, ${data.department}</li>
-    </ul>
-    <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
-    <p>Atentamente,<br>El equipo de Impatto Py</p>
-  `;
+  if (!email || !isValidEmail(email)) {
+    return NextResponse.json({ message: 'Por favor, ingresa un correo válido.' }, { status: 400 });
+  }
 
+  let connection;
   try {
-    // 4. Envía los dos correos
-    await transporter.sendMail({
-      from: '"Impatto Py" <info@impatto.com.py>',
-      to: 'info@impatto.com.py, impattopy@gmail.com',// El correo para ti
-      subject: `¡Nuevo Pedido! - Orden #${orderId}`,
-      html: businessEmailHtml,
-    });
+    // Conecta a la base de datos
+    connection = await mysql.createConnection(dbConfig);
 
-    await transporter.sendMail({
-      from: '"Impatto Py" <info@impatto.com.py>',
-      to: formData.email, // El correo para el cliente
-      subject: `Confirmación de tu pedido #${orderId} en Impatto Py`,
-      html: customerEmailHtml,
-    });
+    // Inserta el correo en la tabla 'subscribers' de forma segura
+    await connection.execute('INSERT INTO subscribers (email) VALUES (?)', [email]);
 
-    // 5. Responde que todo salió bien
-    return NextResponse.json({ message: 'Emails enviados correctamente' }, { status: 200 });
-  } catch (error) {
+    return NextResponse.json({ message: 'Suscripción exitosa' }, { status: 201 });
+
+  } catch (error: any) {
+    // Si el correo ya existe
+    if (error.code === 'ER_DUP_ENTRY') {
+      return NextResponse.json({ message: 'Este correo ya está suscrito.' }, { status: 409 });
+    }
+
+    // Para cualquier otro error
     console.error(error);
-    return NextResponse.json({ message: 'Error al enviar los correos' }, { status: 500 });
+    return NextResponse.json({ message: 'Error interno del servidor.' }, { status: 500 });
+
+  } finally {
+    // Cierra la conexión siempre
+    if (connection) {
+      await connection.end();
+    }
   }
 }
