@@ -8,7 +8,10 @@ import SubscribeForm from '@/app/components/SubscribeForm'; // <-- PASO 1: IMPOR
 
 export const metadata = {
   title: 'Impatto|Sentí la diferencia',
-  description: 'Tienda Online - Arcashop PY',
+  description: 'Tienda Online - Impatto py',
+  icons: {
+    icon: '/logo.png', // Asegúrate que el nombre coincida con tu archivo en la carpeta public
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

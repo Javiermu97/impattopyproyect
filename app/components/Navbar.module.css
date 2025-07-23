@@ -7,7 +7,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   max-width: 100%;
   margin: 0 auto;
-  padding: 0.5rem 50px;
+  padding: 0.5rem 25px;
   box-sizing: border-box;
 }
 
@@ -17,7 +17,7 @@
 
 .logoImg {
   height: 90px;
-  width: 150px;
+  width: 100px;
   object-fit: contain;
   display: block;
 }
@@ -145,8 +145,8 @@
 
   /* Estilos para cada línea del ícono */
   .menuBtn div {
-    width: 2rem; /* Ancho completo del botón */
-    height: 0.25rem; /* Grosor de la línea (puedes ajustarlo) */
+    width: 1.8rem; /* Ancho completo del botón */
+    height: 0.20rem; /* Grosor de la línea (puedes ajustarlo) */
     background: white; /* Color de la línea */
     border-radius: 10px;
     transition: all 0.3s linear;

@@ -1197,21 +1197,50 @@ body {
 
 
 
-/* globals.css */
-
-/* ... (tu código existente va aquí arriba) ... */
-
 /* ============================================= */
 /* ===== MEDIA QUERIES GLOBALES PARA RESPONSIVIDAD ===== */
 /* ============================================= */
 
 /* --- Para Tablets y dispositivos medianos (hasta 992px) --- */
 @media (max-width: 992px) {
-  /* Hacemos las grillas de productos más fluidas */
-  .product-grid-shop.columns-4,
-  .product-grid-shop.columns-3 {
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
-  }
+  /* ... (tus otros estilos van aquí) ... */
+
+  /* --- INICIO DEL NUEVO CÓDIGO PARA LA SECCIÓN FILOSOFÍA --- */
+
+/* Contenedor principal de las imágenes */
+.philosophy-image-container {
+  position: relative; /* Mantiene la posición relativa para que los hijos absolutos se basen en él */
+  min-height: 350px;  /* Le damos una altura fija para contener el collage */
+  margin-bottom: 2rem; /* Añadimos un margen inferior para separar del texto */
+}
+
+/* Estilo general para ambas imágenes en móvil */
+.philosophy-img {
+  position: absolute; /* Usamos posición absoluta para el efecto collage */
+  height: 85%;      /* Hacemos que la altura sea un porcentaje del contenedor */
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagen de la chica (delante, a la izquierda) */
+.philosophy-img-bg {
+  width: 70%;
+  top: 15%; /* La bajamos un poco */
+  left: 0;
+  z-index: 2; /* La ponemos al frente */
+}
+
+/* Imagen del grupo (detrás, a la derecha) */
+.philosophy-img-fg {
+  width: 70%;
+  top: 0;
+  right: 0;
+  z-index: 1; /* La ponemos detrás */
+}
+
+/* --- FIN DEL NUEVO CÓDIGO --- */
+
 
   /* Ajustamos la sección de filosofía */
   .philosophy-container {
