@@ -57,10 +57,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; {new Date().getFullYear()}, Arca Shop PY. Todos los derechos reservados | Desarrollado por Blueprint Digital</p>
+            <p>&copy; {new Date().getFullYear()}, IMPATTO PY. Todos los derechos reservados | Desarrollado por IMPATTO  PY</p>
           </div>
         </footer>
-      </body>
+      </body> 
     </html>
   );
 }

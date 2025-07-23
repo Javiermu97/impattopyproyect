@@ -1,13 +1,12 @@
 'use client'; // Necesario para usar el hook usePathname
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // 1. Importa el hook para leer la URL
+import { usePathname } from 'next/navigation';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
-  const currentPath = usePathname(); // 2. Obtiene la ruta actual, ej: "/mas-vendidos"
+  const currentPath = usePathname();
 
-  // Lista de enlaces para gestionarlos más fácilmente
   const navLinks = [
     { href: '/', label: 'INICIO' },
     { href: '/mas-vendidos', label: 'MÁS VENDIDOS' },
@@ -21,18 +20,17 @@ const Navbar = () => {
     <div className={styles.navbar}>
       <div className={styles.logo}>
         <Link href="/">
-          <img src="/logo.png" alt="Arcashop PY Logo" style={{ height: '40px', display: 'block' }} />
+          <img src="/logo.png" alt="IMPATTO PY Logo" className={styles.logoImg} />
         </Link>
       </div>
+
       <nav className={styles.navLinks}>
-        {/* 3. Mapea los enlaces y aplica la clase 'active' si la ruta coincide */}
         {navLinks.map(link => {
           const isActive = currentPath === link.href;
           return (
-            <Link 
-              key={link.href} 
+            <Link
+              key={link.href}
               href={link.href}
-              // Aplica la clase base 'navLink' siempre, y la clase 'active' solo si el enlace está activo
               className={`${styles.navLink} ${isActive ? styles.active : ''}`}
             >
               {link.label}
@@ -40,10 +38,11 @@ const Navbar = () => {
           );
         })}
       </nav>
+
       <div className={styles.navIcons}>
-        <button className={styles.iconBtn}>🔍</button>
-        <button className={styles.iconBtn}>👤</button>
-        <button className={styles.iconBtn}>🛒</button>
+        <button className={styles.iconBtn} aria-label="Buscar">🔍</button>
+        <button className={styles.iconBtn} aria-label="Perfil">👤</button>
+        <button className={styles.iconBtn} aria-label="Carrito">🛒</button>
       </div>
     </div>
   );

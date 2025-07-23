@@ -1,9 +1,9 @@
 /* app/components/Header.module.css */
 .headerBar {
-  background-color: #0d3140;
-  color: #fff;
+  background-color: #f1f5f7;
+  color: #160d4d;
   font-size: 0.9rem;
-  padding: 0.5rem 1.5rem;
+  padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,7 +18,7 @@
 }
 
 .headerLeft a {
-  color: #fff;
+  color: #0b1f4b;
 }
 
 .headerLeft a:hover {
@@ -39,10 +39,10 @@
 }
 
 .offersLink a {
-  color: #fff;
+  color: #0b1f4b;
   font-weight: bold;
   text-decoration: underline; /* Añade el subrayado */
-  text-decoration-color: white; /* Asegura que el subrayado sea blanco */
+  text-decoration-color:#0b1f4b; /* Asegura que el subrayado sea blanco */
 }
 
 .offersLink a:hover {

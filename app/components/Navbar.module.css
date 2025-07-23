@@ -1,24 +1,24 @@
 /* app/components/Navbar.module.css */
 .navbar {
-  background-color: #fff;
+  background-color: hsl(203, 98%, 10%);
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* casi imperceptible */
+
   max-width: 100%;
   margin: 0 auto;
-  padding: 0.95rem 40px;
+  padding: 0.95rem 50px;
   box-sizing: border-box;
 }
 
 .logo {
-  flex-shrink: 0;
+  flex: 0 0 auto;           /* que no se achique */
 }
 
-.logo a {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #000;
-  text-decoration: none;
+.logoImg {
+  height: 150px;             /* más alto */
+  width: 200px;              /* un poco más ancho */
+  object-fit: contain;       /* que no se deforme */
   display: block;
 }
 
@@ -31,7 +31,7 @@
 
 /* Estilo base para todos los enlaces del menú */
 .navLink {
-  color: #333;
+  color: #e0e5e9;
   font-weight: bold;
   text-decoration: none; 
   font-size: 0.9em;
@@ -39,11 +39,10 @@
   white-space: nowrap;
   position: relative;
   padding-bottom: 8px;
-  /* CAMBIO: Se añade 'opacity' a la transición para un desvanecimiento suave */
   transition: color 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-/* El pseudoelemento que crea la línea de subrayado */
+/* Subrayado animado */
 .navLink::after {
   content: '';
   position: absolute;
@@ -56,22 +55,41 @@
   transition: width 0.3s ease-in-out;
 }
 
-/* Al pasar el cursor, la línea crece, el texto cambia a gris y se desvanece */
-.navLink:hover::after {
-  width: 100%;
-}
+.navLink:hover::after { width: 100%; }
 .navLink:hover {
   text-decoration: none;
   color: #666; 
-  opacity: 0.75; /* CAMBIO: Se añade el efecto de desvanecimiento/transparencia */
+  opacity: 0.75;
 }
 
-/* Cuando el enlace está ACTIVO, el texto se mantiene gris y desvanecido */
+/* Activo */
 .active.navLink {
   color: #555; 
-  opacity: 0.75; /* CAMBIO: Se añade el efecto de desvanecimiento/transparencia */
+  opacity: 0.75;
 }
-/* Y la línea se muestra permanentemente */
-.active.navLink::after {
-  width: 100%;
+.active.navLink::after { width: 100%; }
+
+/* --------- ICONOS --------- */
+.navIcons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.iconBtn {
+  background: transparent !important; /* quita fondo gris */
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconBtn:hover,
+.iconBtn:focus,
+.iconBtn:active {
+  background: transparent !important;
+  opacity: 0.7;
 }
