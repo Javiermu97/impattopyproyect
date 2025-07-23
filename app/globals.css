@@ -1203,53 +1203,10 @@ body {
 
 /* --- Para Tablets y dispositivos medianos (hasta 992px) --- */
 @media (max-width: 992px) {
-  /* ... (tus otros estilos van aquí) ... */
-
-  /* --- INICIO DEL NUEVO CÓDIGO PARA LA SECCIÓN FILOSOFÍA --- */
-
-/* Contenedor principal de las imágenes */
-.philosophy-image-container {
-  position: relative; /* Mantiene la posición relativa para que los hijos absolutos se basen en él */
-  min-height: 350px;  /* Le damos una altura fija para contener el collage */
-  margin-bottom: 2rem; /* Añadimos un margen inferior para separar del texto */
-}
-
-/* Estilo general para ambas imágenes en móvil */
-.philosophy-img {
-  position: absolute; /* Usamos posición absoluta para el efecto collage */
-  height: 85%;      /* Hacemos que la altura sea un porcentaje del contenedor */
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* Imagen de la chica (delante, a la izquierda) */
-.philosophy-img-bg {
-  width: 70%;
-  top: 15%; /* La bajamos un poco */
-  left: 0;
-  z-index: 2; /* La ponemos al frente */
-}
-
-/* Imagen del grupo (detrás, a la derecha) */
-.philosophy-img-fg {
-  width: 70%;
-  top: 0;
-  right: 0;
-  z-index: 1; /* La ponemos detrás */
-}
-
-/* --- FIN DEL NUEVO CÓDIGO --- */
-
-
-  /* Ajustamos la sección de filosofía */
-  .philosophy-container {
-    flex-direction: column; /* Apilamos imagen y texto */
-    gap: 2rem;
-    text-align: center;
-  }
-  .philosophy-content {
-    padding-left: 0;
+  /* Hacemos las grillas de productos más fluidas */
+  .product-grid-shop.columns-4,
+  .product-grid-shop.columns-3 {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
   }
   
   /* Ajustamos la franja informativa azul */
@@ -1257,7 +1214,57 @@ body {
     grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
     gap: 2rem;
   }
+
+  /* --- INICIO DEL CÓDIGO CORRECTO PARA FILOSOFÍA --- */
+  
+  .philosophy-container {
+    flex-direction: column; 
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .philosophy-content {
+    padding-left: 0;
+  }
+
+  .philosophy-image-container {
+    position: relative; 
+    width: 100%; /* Aseguramos que el contenedor ocupe todo el ancho */
+    max-width: 400px; /* Limitamos el ancho máximo en tablets */
+    height: 350px;
+    margin: 0 auto 2rem auto; /* Centramos el contenedor y le damos margen inferior */
+  }
+
+  .philosophy-img {
+    position: absolute; 
+    height: 85%;      
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .philosophy-img-bg { /* Imagen de la mujer */
+    width: 70%;
+    top: 15%; 
+    left: 0;
+    z-index: 2; 
+  }
+
+  .philosophy-img-fg { /* Imagen del grupo */
+    width: 70%;
+    top: 0;
+    right: 0;
+    z-index: 1; 
+  }
+  /* --- FIN DEL CÓDIGO CORRECTO PARA FILOSOFÍA --- */
 }
+  
+  /* Ajustamos la franja informativa azul */
+  .info-banner-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
+    gap: 2rem;
+  }
+
 
 
 /* --- Para Móviles (hasta 768px) --- */
