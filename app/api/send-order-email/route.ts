@@ -114,12 +114,18 @@ export async function POST(request: Request) {
     ]);
 
    return NextResponse.json({ message: 'Emails enviados' }, { status: 200 });
-  } catch // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // 
-  (err: any) {
 
-    console.error('Error sendMail:', err?.message || err);
-    return NextResponse.json({ message: 'Error al enviar los correos' }, { status: 500 });
+  } catch (err) { // --- CORRECCIÓN AQUÍ ---
+    // 1. Eliminamos ': any'. Ahora 'err' es de tipo 'unknown'.
+    // 2. Comprobamos si 'err' es un objeto de Error para acceder a 'message' de forma segura.
+    if (err instanceof Error) {
+      console.error('Error al enviar email:', err.message);
+      return NextResponse.json({ message: `Error: ${err.message}` }, { status: 500 });
+    }
+    
+    // 3. Si no es un objeto de Error, lo manejamos como un caso inesperado.
+    console.error('Error inesperado:', err);
+    return NextResponse.json({ message: 'Ocurrió un error inesperado.' }, { status: 500 });
   }
 }
 
