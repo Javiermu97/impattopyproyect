@@ -1194,3 +1194,113 @@ body {
   margin-top: 0.5rem;
   border-top: 1px solid #ddd;
 }
+
+
+
+/* globals.css */
+
+/* ... (tu código existente va aquí arriba) ... */
+
+/* ============================================= */
+/* ===== MEDIA QUERIES GLOBALES PARA RESPONSIVIDAD ===== */
+/* ============================================= */
+
+/* --- Para Tablets y dispositivos medianos (hasta 992px) --- */
+@media (max-width: 992px) {
+  /* Hacemos las grillas de productos más fluidas */
+  .product-grid-shop.columns-4,
+  .product-grid-shop.columns-3 {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
+  }
+
+  /* Ajustamos la sección de filosofía */
+  .philosophy-container {
+    flex-direction: column; /* Apilamos imagen y texto */
+    gap: 2rem;
+    text-align: center;
+  }
+  .philosophy-content {
+    padding-left: 0;
+  }
+  
+  /* Ajustamos la franja informativa azul */
+  .info-banner-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
+    gap: 2rem;
+  }
+}
+
+
+/* --- Para Móviles (hasta 768px) --- */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2em; /* Título del hero más pequeño */
+  }
+
+  /* Ajustamos el shop layout para apilar filtros y productos */
+  .shop-layout {
+    grid-template-columns: 1fr; /* Una sola columna */
+  }
+  .filters-sidebar {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 1.5rem;
+  }
+  
+  /* Hacemos la grilla de productos de 2 columnas en móvil */
+  .product-grid-shop.columns-4,
+  .product-grid-shop.columns-3,
+  .product-grid-shop.columns-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  /* Reducimos el padding de las secciones */
+  .products-section, .philosophy-section, .info-banner-section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .footer-content {
+    flex-direction: column; /* Apilamos las columnas del footer */
+    gap: 2rem;
+    text-align: center;
+  }
+
+  /* Modal de checkout más adaptable */
+  .checkout-modal-content {
+    padding: 1.5rem;
+    max-height: 95vh;
+  }
+  
+   .confirmation-main {
+    grid-template-columns: 1fr; /* Apilar detalles y resumen en confirmación */
+  }
+  .info-columns {
+    grid-template-columns: 1fr; /* Apilar columnas de información */
+  }
+}
+
+/* --- Para Móviles muy pequeños (hasta 480px) --- */
+@media (max-width: 480px) {
+  /* Grilla de productos con una sola columna */
+  .product-grid-shop.columns-4,
+  .product-grid-shop.columns-3,
+  .product-grid-shop.columns-2 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Apilamos la franja azul informativa a una columna */
+  .info-banner-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .pdp-container {
+    padding: 1rem; /* Menos padding en la página de producto */
+  }
+  
+  .add-to-cart-btn, .buy-now-btn {
+    padding: 1rem 2rem; /* Botones de compra más pequeños */
+  }
+}

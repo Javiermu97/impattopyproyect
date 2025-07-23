@@ -93,3 +93,82 @@
   background: transparent !important;
   opacity: 0.7;
 }
+
+/* --- Estilos para el Menú de Hamburguesa y Responsividad --- */
+.hamburgerBtn {
+  display: none; /* Oculto en escritorio */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.hamburgerBtn:focus {
+  outline: none;
+}
+
+.hamburgerBtn div {
+  width: 2rem;
+  height: 0.25rem;
+  background: #e0e5e9;
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+
+@media (max-width: 1024px) { /* Un punto de quiebre más grande para el menú */
+  .navbar {
+    padding: 0.5rem 1rem; /* Menos padding en tablets y móviles */
+    justify-content: space-between; /* Espacio entre logo y los iconos/hamburguesa */
+  }
+
+  .logoImg {
+    height: 90px; /* Ajustamos el logo para que no sea tan grande */
+    width: 120px;
+  }
+
+  .navLinks {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Empieza fuera de la pantalla */
+    width: 70%;
+    max-width: 300px;
+    height: 100vh;
+    flex-direction: column;
+    background-color: hsl(203, 98%, 10%);
+    margin: 0;
+    padding-top: 5rem;
+    align-items: center;
+    transition: left 0.3s ease-in-out;
+  }
+
+  .navLinks.open {
+    left: 0; /* Aparece desde la izquierda cuando está activo */
+  }
+  
+  .navLink {
+    font-size: 1.1em;
+  }
+
+  .navIcons {
+    margin-left: 1rem; /* Pequeño margen para separar de la hamburguesa */
+  }
+
+  .hamburgerBtn {
+    display: flex; /* Mostramos el botón en pantallas pequeñas */
+    order: -1; /* Lo ponemos antes que los iconos de la derecha */
+  }
+}
+
+@media (max-width: 480px) {
+  .navIcons {
+     display: none; /* Opcional: Ocultar iconos de buscar/perfil/carrito en móviles muy pequeños */
+  }
+}
