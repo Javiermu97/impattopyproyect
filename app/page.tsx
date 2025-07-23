@@ -138,7 +138,7 @@ export default function HomePage() {
             <Image src="/filosofia-2.jpg" alt="Personas revisando un catálogo" width={450} height={300} className="philosophy-img philosophy-img-fg" />
           </div>
           <div className="philosophy-content">
-            <p className="philosophy-pre-title">ARCASHOP PY</p>
+            <p className="philosophy-pre-title">IMPATTO PY</p>
             <h2>Nuestra Filosofía</h2>
             <p>Es brindar la mejor experiencia a nuestra comunidad, y hacerle llegar productos de calidad y con garantía, por eso nuestro compromiso es 100% nuestros clientes.</p>
             <p><strong>Más de 20mil clientes Paraguayos confiaron en nosotros por eso seguimos dando lo mejor para ellos. Muchas Gracias</strong></p>
