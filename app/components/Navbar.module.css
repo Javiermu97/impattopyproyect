@@ -3,37 +3,35 @@
   background-color: hsl(203, 98%, 10%);
   display: flex;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* casi imperceptible */
-
+  justify-content: space-between; /* Clave para el espaciado */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   max-width: 100%;
   margin: 0 auto;
-  padding: 0.95rem 50px;
+  padding: 0.5rem 50px; /* Padding ajustado */
   box-sizing: border-box;
 }
 
 .logo {
-  flex: 0 0 auto;           /* que no se achique */
+  flex-shrink: 0; /* Evita que el logo se encoja */
 }
 
 .logoImg {
-  height: 150px;             /* más alto */
-  width: 200px;              /* un poco más ancho */
-  object-fit: contain;       /* que no se deforme */
+  height: 90px;
+  width: 150px;
+  object-fit: contain;
   display: block;
 }
 
 .navLinks {
   display: flex;
   gap: 1.5rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto; /* Centra los links entre el logo y los iconos */
 }
 
-/* Estilo base para todos los enlaces del menú */
 .navLink {
   color: #e0e5e9;
   font-weight: bold;
-  text-decoration: none; 
+  text-decoration: none;
   font-size: 0.9em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -42,7 +40,6 @@
   transition: color 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-/* Subrayado animado */
 .navLink::after {
   content: '';
   position: absolute;
@@ -55,36 +52,30 @@
   transition: width 0.3s ease-in-out;
 }
 
-.navLink:hover::after { width: 100%; }
-.navLink:hover {
-  text-decoration: none;
-  color: #666; 
-  opacity: 0.75;
+.navLink:hover::after,
+.active.navLink::after {
+  width: 100%;
 }
 
-/* Activo */
+.navLink:hover,
 .active.navLink {
-  color: #555; 
-  opacity: 0.75;
+  color: #666;
+  opacity: 0.85;
+  text-decoration: none;
 }
-.active.navLink::after { width: 100%; }
 
-/* --------- ICONOS --------- */
 .navIcons {
   display: flex;
   gap: 0.75rem;
 }
 
 .iconBtn {
-  background: transparent !important; /* quita fondo gris */
+  background: transparent !important;
   border: none;
   box-shadow: none;
   padding: 0;
   cursor: pointer;
   line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .iconBtn:hover,
@@ -94,81 +85,68 @@
   opacity: 0.7;
 }
 
-/* --- Estilos para el Menú de Hamburguesa y Responsividad --- */
-.hamburgerBtn {
-  display: none; /* Oculto en escritorio */
-  flex-direction: column;
-  justify-content: space-around;
-  width: 2rem;
-  height: 2rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 10;
+/* --- Estilos para el Menú Profesional y Responsividad --- */
+
+/* 1. Ocultamos el botón de menú en pantallas grandes */
+.menuBtn {
+  display: none;
 }
 
-.hamburgerBtn:focus {
-  outline: none;
-}
-
-.hamburgerBtn div {
-  width: 2rem;
-  height: 0.25rem;
-  background: #e0e5e9;
-  border-radius: 10px;
-  transition: all 0.3s linear;
-  position: relative;
-  transform-origin: 1px;
-}
-
-
-@media (max-width: 1024px) { /* Un punto de quiebre más grande para el menú */
+/* 2. Media Query para tablets y móviles (a partir de 1024px hacia abajo) */
+@media (max-width: 1024px) {
   .navbar {
-    padding: 0.5rem 1rem; /* Menos padding en tablets y móviles */
-    justify-content: space-between; /* Espacio entre logo y los iconos/hamburguesa */
+    padding: 0.5rem 1.5rem; /* Menos padding lateral */
   }
 
-  .logoImg {
-    height: 90px; /* Ajustamos el logo para que no sea tan grande */
-    width: 120px;
-  }
-
+  /* Ocultamos los links de navegación del header */
   .navLinks {
+    display: none; /* Los ocultamos por defecto */
     position: fixed;
     top: 0;
-    left: -100%; /* Empieza fuera de la pantalla */
+    left: -100%; /* Los sacamos de la pantalla */
     width: 70%;
     max-width: 300px;
     height: 100vh;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: hsl(203, 98%, 10%);
     margin: 0;
-    padding-top: 5rem;
-    align-items: center;
+    padding: 0;
     transition: left 0.3s ease-in-out;
+    z-index: 99; /* Asegura que esté por encima de otro contenido */
   }
 
+  /* Cuando el menú está abierto, lo mostramos */
   .navLinks.open {
-    left: 0; /* Aparece desde la izquierda cuando está activo */
+    display: flex; /* Lo hacemos visible */
+    left: 0; /* Lo traemos a la pantalla */
   }
-  
+
   .navLink {
     font-size: 1.1em;
   }
 
-  .navIcons {
-    margin-left: 1rem; /* Pequeño margen para separar de la hamburguesa */
-  }
-
-  .hamburgerBtn {
-    display: flex; /* Mostramos el botón en pantallas pequeñas */
-    order: -1; /* Lo ponemos antes que los iconos de la derecha */
+  /* Mostramos y estilizamos el botón de menú */
+  .menuBtn {
+    display: flex; /* Hacemos visible el botón */
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 100; /* Por encima del menú deslizable */
+    color: white; /* ¡AQUÍ ASEGURAMOS EL COLOR BLANCO DEL ÍCONO! */
   }
 }
 
+/* Opcional: para móviles muy pequeños, puedes ocultar los iconos de la derecha si molestan */
 @media (max-width: 480px) {
   .navIcons {
-     display: none; /* Opcional: Ocultar iconos de buscar/perfil/carrito en móviles muy pequeños */
+    display: none;
+  }
+  .navbar {
+    padding: 0.5rem 1rem;
   }
 }
