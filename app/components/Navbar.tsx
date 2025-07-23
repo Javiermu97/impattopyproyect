@@ -50,28 +50,16 @@ const Navbar = () => {
         <button className={styles.iconBtn} aria-label="Carrito">🛒</button>
       </div>
       
-      {/* Botón de Menú Profesional (Puntos Verticales) */}
+      {/* Botón de Menú Profesional (Líneas Horizontales) */}
       <button
         className={styles.menuBtn}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label="Abrir menú"
       >
-        {/* Ícono SVG para asegurar que sea siempre visible y blanco */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="1"></circle>
-          <circle cx="12" cy="5" r="1"></circle>
-          <circle cx="12" cy="19" r="1"></circle>
-        </svg>
+        {/* Estas 3 líneas serán nuestro ícono */}
+        <div></div>
+        <div></div>
+        <div></div>
       </button>
     </div>
   );

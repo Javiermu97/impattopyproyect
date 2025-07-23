@@ -3,16 +3,16 @@
   background-color: hsl(203, 98%, 10%);
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Clave para el espaciado */
+  justify-content: space-between;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   max-width: 100%;
   margin: 0 auto;
-  padding: 0.5rem 50px; /* Padding ajustado */
+  padding: 0.5rem 50px;
   box-sizing: border-box;
 }
 
 .logo {
-  flex-shrink: 0; /* Evita que el logo se encoja */
+  flex-shrink: 0;
 }
 
 .logoImg {
@@ -25,7 +25,7 @@
 .navLinks {
   display: flex;
   gap: 1.5rem;
-  margin: 0 auto; /* Centra los links entre el logo y los iconos */
+  margin: 0 auto;
 }
 
 .navLink {
@@ -87,23 +87,22 @@
 
 /* --- Estilos para el Menú Profesional y Responsividad --- */
 
-/* 1. Ocultamos el botón de menú en pantallas grandes */
+/* Ocultamos el botón de menú en pantallas grandes */
 .menuBtn {
   display: none;
 }
 
-/* 2. Media Query para tablets y móviles (a partir de 1024px hacia abajo) */
+/* Media Query para tablets y móviles (a partir de 1024px hacia abajo) */
 @media (max-width: 1024px) {
   .navbar {
-    padding: 0.5rem 1.5rem; /* Menos padding lateral */
+    padding: 0.5rem 1.5rem;
   }
 
-  /* Ocultamos los links de navegación del header */
   .navLinks {
-    display: none; /* Los ocultamos por defecto */
+    display: none;
     position: fixed;
     top: 0;
-    left: -100%; /* Los sacamos de la pantalla */
+    left: -100%;
     width: 70%;
     max-width: 300px;
     height: 100vh;
@@ -114,34 +113,48 @@
     margin: 0;
     padding: 0;
     transition: left 0.3s ease-in-out;
-    z-index: 99; /* Asegura que esté por encima de otro contenido */
+    z-index: 99;
   }
 
-  /* Cuando el menú está abierto, lo mostramos */
   .navLinks.open {
-    display: flex; /* Lo hacemos visible */
-    left: 0; /* Lo traemos a la pantalla */
+    display: flex;
+    left: 0;
   }
 
   .navLink {
     font-size: 1.1em;
   }
 
-  /* Mostramos y estilizamos el botón de menú */
+  /* Estilos para el botón contenedor del ícono */
   .menuBtn {
-    display: flex; /* Hacemos visible el botón */
-    align-items: center;
-    justify-content: center;
+    display: flex;
+    flex-direction: column; /* Apila las líneas verticalmente */
+    justify-content: space-around; /* Crea espacio entre las líneas */
+    width: 2rem;  /* Ancho del botón */
+    height: 2rem; /* Alto del botón */
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 8px;
-    z-index: 100; /* Por encima del menú deslizable */
-    color: white; /* ¡AQUÍ ASEGURAMOS EL COLOR BLANCO DEL ÍCONO! */
+    padding: 0;
+    z-index: 100;
+  }
+
+  .menuBtn:focus {
+    outline: none;
+  }
+
+  /* Estilos para cada línea del ícono */
+  .menuBtn div {
+    width: 2rem; /* Ancho completo del botón */
+    height: 0.25rem; /* Grosor de la línea (puedes ajustarlo) */
+    background: white; /* Color de la línea */
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    position: relative;
+    transform-origin: 1px;
   }
 }
 
-/* Opcional: para móviles muy pequeños, puedes ocultar los iconos de la derecha si molestan */
 @media (max-width: 480px) {
   .navIcons {
     display: none;
