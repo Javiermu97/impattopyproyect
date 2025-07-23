@@ -114,7 +114,8 @@ export async function POST(request: Request) {
     ]);
 
     return NextResponse.json({ message: 'Emails enviados' }, { status: 200 });
-  } catch (err: any) {
+  } catch (err: any) {// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     console.error('Error sendMail:', err?.message || err);
     return NextResponse.json({ message: 'Error al enviar los correos' }, { status: 500 });
   }
