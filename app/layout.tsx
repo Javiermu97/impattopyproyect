@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import SubscribeForm from '@/app/components/SubscribeForm'; // <-- PASO 1: IMPORTA EL COMPONENTE AQUÍ
 
 export const metadata = {
-  title: 'IMPATTO PY',
+  title: 'Impatto|Sentí la diferencia',
   description: 'Tienda Online - Arcashop PY',
 };
 
