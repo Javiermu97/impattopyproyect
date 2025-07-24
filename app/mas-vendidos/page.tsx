@@ -1,17 +1,18 @@
 // app/mas-vendidos/page.tsx
-import { allProducts } from '@/lib/data';
+import { allProducts, Product } from '@/lib/data';
+// CORRECCIÓN: La ruta ahora debe incluir 'app/'.
 import ProductCard from '@/app/components/ProductCard';
 
 export const metadata = {
-  title: 'Más Vendidos - Arcashop PY',
+  title: 'Más Vendidos - Impatto Py',
   description: 'Descubre nuestros productos más populares y en tendencia.',
 };
 
 export default function MasVendidosPage() {
-  // Obtenemos todos los productos en stock y los ordenamos por fecha de añadido
   const bestSellers = allProducts
-    .filter(p => p.inStock)
-    .sort((a, b) => b.dateAdded.getTime() - a.dateAdded.getTime());
+    .filter((p: Product) => p.inStock)
+    // CORRECCIÓN: Añadimos tipos a 'a' y 'b' para el sort.
+    .sort((a: Product, b: Product) => b.dateAdded.getTime() - a.dateAdded.getTime());
 
   return (
     <div className="shop-container">
@@ -23,16 +24,14 @@ export default function MasVendidosPage() {
       </header>
 
       <main className="shop-layout">
-        {/* Aquí podrías añadir filtros en el futuro si quisieras */}
         <aside className="filters-sidebar">
-           <h3 className="filter-title-main">Filtros</h3>
-           <p>Próximamente...</p>
+            <h3 className="filter-title-main">Filtros</h3>
+            <p>Próximamente...</p>
         </aside>
 
         <div className="product-grid-area">
-          {/* Usamos la clase 'columns-3' para la grilla principal */}
           <div className="product-grid-shop columns-3">
-            {bestSellers.map(product => (
+            {bestSellers.map((product: Product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

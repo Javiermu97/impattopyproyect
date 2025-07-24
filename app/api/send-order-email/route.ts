@@ -1,3 +1,4 @@
+// app/api/send-order-email/route.ts
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
@@ -17,7 +18,7 @@ interface OrderBody {
   department: string;
 }
 
-export const dynamic = 'force-dynamic'; // evita cache de rutas en Vercel
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   let body: OrderBody;
@@ -49,9 +50,8 @@ export async function POST(request: Request) {
     secure: true,
     auth: {
       user: 'info@impatto.com.py',
-      pass: process.env.MAIL_PASSWORD || 'Impatto2025', // temporal mientras pruebas
+      pass: process.env.MAIL_PASSWORD || 'Impatto2025',
     },
-    // tls: { rejectUnauthorized: false }, // descomenta si tu server usa certificado self-signed
   });
 
   try {
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
         to: 'info@impatto.com.py, impattopy@gmail.com',
         subject: `¡Nuevo Pedido! - Orden #${orderId}`,
         html: businessEmailHtml,
-        text: '', // evita autogenerar texto plano largo
+        text: '',
       }),
       transporter.sendMail({
         from: '"Tienda Impatto" <info@impatto.com.py>',
@@ -115,15 +115,13 @@ export async function POST(request: Request) {
 
    return NextResponse.json({ message: 'Emails enviados' }, { status: 200 });
 
-  } catch (err) { // --- CORRECCIÓN AQUÍ ---
-    // 1. Eliminamos ': any'. Ahora 'err' es de tipo 'unknown'.
-    // 2. Comprobamos si 'err' es un objeto de Error para acceder a 'message' de forma segura.
+  } catch (err) {
+    // Tu manejo de errores aquí ya era perfecto, ¡excelente!
     if (err instanceof Error) {
       console.error('Error al enviar email:', err.message);
       return NextResponse.json({ message: `Error: ${err.message}` }, { status: 500 });
     }
     
-    // 3. Si no es un objeto de Error, lo manejamos como un caso inesperado.
     console.error('Error inesperado:', err);
     return NextResponse.json({ message: 'Ocurrió un error inesperado.' }, { status: 500 });
   }

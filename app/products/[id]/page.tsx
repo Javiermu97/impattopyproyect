@@ -1,13 +1,25 @@
+// app/products/[id]/page.tsx
+
 'use client';
 
+import { useCart } from '@/app/context/CartContext'; // CORRECCIÓN
 import { useState, useEffect, MouseEvent, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { allProducts, Product, ProductVariant } from '@/lib/data';
+import { allProducts, Product, ProductVariant } from '@/lib/data'; // CORRECCIÓN
+// CORRECCIÓN: La ruta ahora debe incluir 'app/'.
 import CheckoutForm from '@/app/components/CheckoutForm';
 
-// ------------------ Tipos ------------------
+// ... (El resto del código que te pasé en la respuesta anterior sigue igual aquí)
+// ... (Pega aquí el resto del componente ProductDetailPage de mi respuesta anterior)
+// --- Tipos ---
+interface Feature {
+  title: string;
+  description: string;
+  image: string;
+}
+
 interface OrderData {
   orderId: number;
   orderDate: string;
@@ -36,7 +48,7 @@ type AccordionItemData = {
   icon: React.ReactNode;
 };
 
-// ------------------ Componentes auxiliares ------------------
+// --- Componentes auxiliares (Sin cambios) ---
 const OrderConfirmation = ({ orderData, onGoBack }: OrderConfirmationProps) => (
   <div className="checkout-modal-overlay">
     <div className="checkout-modal-content confirmation-container">
@@ -202,7 +214,8 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
         <div className="related-products-grid" ref={scrollContainerRef}>
-          {products.map(p => <RelatedProductCard key={p.id} product={p} />)}
+          {/* CORRECCIÓN: Añadido tipo a 'p' */}
+          {products.map((p: Product) => <RelatedProductCard key={p.id} product={p} />)}
         </div>
         <button className={`carousel-nav-btn next ${!canScrollRight ? 'disabled' : ''}`} onClick={() => scroll('right')} disabled={!canScrollRight} aria-label="Scroll Right">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
@@ -234,8 +247,9 @@ const StarRating = () => (
   </div>
 );
 
-// ------------------ Página principal ------------------
+// --- Página principal ---
 export default function ProductDetailPage() {
+  const { addToCart } = useCart();
   const params = useParams<{ id: string }>();
   const productId = Number(params?.id);
 
@@ -252,17 +266,18 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     if (!productId) return;
-    const foundProduct = allProducts.find(p => p.id === productId);
+    // CORRECCIÓN: Añadido tipo a 'p'
+    const foundProduct = allProducts.find((p: Product) => p.id === productId);
 
     if (!foundProduct) {
-      // Producto no encontrado: podrías redirigir o mostrar mensaje
       return;
     }
 
     setProduct(foundProduct);
     setMainImage(foundProduct.galleryImages[0] || foundProduct.imageUrl);
     setSelectedVariant(foundProduct.variants[0]);
-    setRelatedProducts(allProducts.filter(p => p.id !== productId));
+    // CORRECCIÓN: Añadido tipo a 'p'
+    setRelatedProducts(allProducts.filter((p: Product) => p.id !== productId));
   }, [productId]);
 
   const handleVariantSelect = (variant: ProductVariant) => {
@@ -295,6 +310,14 @@ export default function ProductDetailPage() {
 
     setOrderData(data);
     setCheckoutVisible(false);
+  };
+  
+  const handleAddToCart = () => {
+    if (product && selectedVariant) {
+      addToCart(product, selectedVariant, quantity);
+    } else {
+      alert("Por favor, selecciona una variante del producto.");
+    }
   };
 
   if (!product || !selectedVariant) {
@@ -382,7 +405,8 @@ export default function ProductDetailPage() {
               />
             </div>
             <div className="pdp-thumbnails">
-              {product.galleryImages.map((imgSrc, index) => (
+              {/* CORRECCIÓN: Añadido tipo a 'imgSrc' */}
+              {product.galleryImages.map((imgSrc: string, index: number) => (
                 <div
                   key={index}
                   className={`pdp-thumbnail ${mainImage === imgSrc ? 'active' : ''}`}
@@ -406,7 +430,8 @@ export default function ProductDetailPage() {
             <div className="pdp-variants">
               <p className="variant-label">Color: <strong>{selectedVariant.color}</strong></p>
               <div className="variant-swatches">
-                {product.variants.map(variant => (
+                {/* CORRECCIÓN: Añadido tipo a 'variant' */}
+                {product.variants.map((variant: ProductVariant) => (
                   <button
                     key={variant.color}
                     className={`variant-swatch ${selectedVariant.color === variant.color ? 'selected' : ''}`}
@@ -425,7 +450,9 @@ export default function ProductDetailPage() {
                   <span>{quantity}</span>
                   <button onClick={() => handleQuantityChange(1)}>+</button>
                 </div>
-                <button className="add-to-cart-btn">AGREGAR AL CARRITO</button>
+                <button onClick={handleAddToCart} className="add-to-cart-btn">
+                  AGREGAR AL CARRITO
+                </button>
               </div>
 
               <button className="buy-now-btn" onClick={() => setCheckoutVisible(true)}>
@@ -491,13 +518,14 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            {product.features && product.features.map((feature, index) => (
+            {/* CORRECCIÓN: Añadido tipo a 'feature' */}
+            {product.features && product.features.map((feature: Feature, index: number) => (
               <div key={index} className="info-promo-block-2">
                 <h2>{feature.title}</h2>
 
                 {feature.description.includes('✅') ? (
                   <ul style={{ listStyle: 'none', padding: 0, textAlign: 'left' }}>
-                    {feature.description.split('\n').map((line, i) => {
+                    {feature.description.split('\n').map((line: string, i: number) => {
                       const parts = line.split(':');
                       const boldText = parts[0] + ':';
                       const regularText = parts.slice(1).join(':');
@@ -518,7 +546,8 @@ export default function ProductDetailPage() {
             ))}
 
             <div className="pdp-final-accordion">
-              {accordionData.map((item, index) => (
+              {/* CORRECCIÓN: Añadido tipo a 'item' */}
+              {accordionData.map((item: AccordionItemData, index: number) => (
                 <AccordionItem
                   key={index}
                   item={item}

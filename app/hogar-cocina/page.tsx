@@ -1,17 +1,17 @@
 // app/hogar-cocina/page.tsx
-import { allProducts } from '@/lib/data';
+import { allProducts, Product } from '@/lib/data';
+// CORRECCIÓN: Se añade 'app/' a la ruta del componente.
 import ProductCard from '@/app/components/ProductCard';
 
 export const metadata = {
-  title: 'Hogar & Cocina - Arcashop PY',
+  title: 'Hogar & Cocina - Impatto Py',
   description: 'Encuentra todo lo que necesitas para tu hogar y cocina.',
 };
 
 export default function HogarCocinaPage() {
-  // Filtramos los productos por palabras clave, como hicimos en la página de inicio
   const keywords = ['Organizador', 'Licuadora', 'Alfombra', 'Cinta', 'Lint'];
   const hogarCocinaProducts = allProducts
-    .filter(p => keywords.some(key => p.name.includes(key)));
+    .filter((p: Product) => keywords.some(key => p.name.includes(key)));
 
   return (
     <div className="shop-container">
@@ -30,7 +30,7 @@ export default function HogarCocinaPage() {
 
         <div className="product-grid-area">
           <div className="product-grid-shop columns-3">
-            {hogarCocinaProducts.map(product => (
+            {hogarCocinaProducts.map((product: Product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
