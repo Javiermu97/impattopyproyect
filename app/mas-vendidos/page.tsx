@@ -1,7 +1,7 @@
-// app/mas-vendidos/page.tsx
+// app/(mas-vendidos)/page.tsx
 import { allProducts, Product } from '@/lib/data';
-// CORRECCIÓN: La ruta ahora debe incluir 'app/'.
 import ProductCard from '@/app/components/ProductCard';
+import FiltersSidebar from '@/app/components/FiltersSidebar';
 
 export const metadata = {
   title: 'Más Vendidos - Impatto Py',
@@ -9,9 +9,9 @@ export const metadata = {
 };
 
 export default function MasVendidosPage() {
+  // Obtenemos todos los productos en stock y los ordenamos por fecha de añadido
   const bestSellers = allProducts
     .filter((p: Product) => p.inStock)
-    // CORRECCIÓN: Añadimos tipos a 'a' y 'b' para el sort.
     .sort((a: Product, b: Product) => b.dateAdded.getTime() - a.dateAdded.getTime());
 
   return (
@@ -24,10 +24,8 @@ export default function MasVendidosPage() {
       </header>
 
       <main className="shop-layout">
-        <aside className="filters-sidebar">
-            <h3 className="filter-title-main">Filtros</h3>
-            <p>Próximamente...</p>
-        </aside>
+        {/* Usamos el componente de filtros reutilizable */}
+        <FiltersSidebar />
 
         <div className="product-grid-area">
           <div className="product-grid-shop columns-3">

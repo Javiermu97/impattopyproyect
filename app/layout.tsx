@@ -1,14 +1,16 @@
+// app/layout.tsx
 import './globals.css';
 import React, { Suspense } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 
-// Componentes
+// --- Componentes Requeridos ---
 import Header from '@/app/components/Header';
 import Navbar from '@/app/components/Navbar';
 import SubscribeForm from '@/app/components/SubscribeForm';
-import PageWrapper from '@/app/components/PageWrapper'; // <-- Importamos el nuevo componente
+import PageWrapper from '@/app/components/PageWrapper';
+import InfoBanner from '@/app/components/InfoBanner';
 
-// Contexto
+// --- Contexto del Carrito ---
 import { CartProvider } from '@/app/context/CartContext';
 
 export const metadata = {
@@ -32,18 +34,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </header>
 
           <main>
-            {/* Usamos PageWrapper para envolver a los hijos */}
             <PageWrapper>{children}</PageWrapper>
           </main>
           
+          {/* Componente de la franja informativa restaurado */}
+          <InfoBanner />
+
           <footer className="footer">
              <div className="footer-content">
                 <div className="footer-col">
+                  {/* Formulario de suscripción restaurado */}
                   <SubscribeForm />
                 </div>
+                {/* Puedes añadir más columnas para tu footer aquí si lo necesitas */}
              </div>
              <div className="footer-bottom">
-                <p>&copy; {new Date().getFullYear()} Impatto Py. Todos los derechos reservados.</p>
+                <p>© {new Date().getFullYear()}, Impatto Py. Todos los derechos reservados | Desarrollado por Blueprint Digital</p>
              </div>
           </footer>
 

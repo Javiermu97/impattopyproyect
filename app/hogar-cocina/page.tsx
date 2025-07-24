@@ -1,7 +1,7 @@
 // app/hogar-cocina/page.tsx
 import { allProducts, Product } from '@/lib/data';
-// CORRECCIÓN: Se añade 'app/' a la ruta del componente.
 import ProductCard from '@/app/components/ProductCard';
+import FiltersSidebar from '@/app/components/FiltersSidebar';
 
 export const metadata = {
   title: 'Hogar & Cocina - Impatto Py',
@@ -9,6 +9,7 @@ export const metadata = {
 };
 
 export default function HogarCocinaPage() {
+  // Filtramos los productos por palabras clave
   const keywords = ['Organizador', 'Licuadora', 'Alfombra', 'Cinta', 'Lint'];
   const hogarCocinaProducts = allProducts
     .filter((p: Product) => keywords.some(key => p.name.includes(key)));
@@ -23,10 +24,8 @@ export default function HogarCocinaPage() {
       </header>
       
       <main className="shop-layout">
-        <aside className="filters-sidebar">
-           <h3 className="filter-title-main">Filtros</h3>
-           <p>Próximamente...</p>
-        </aside>
+        {/* Usamos el componente de filtros reutilizable */}
+        <FiltersSidebar />
 
         <div className="product-grid-area">
           <div className="product-grid-shop columns-3">
