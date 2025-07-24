@@ -101,16 +101,34 @@ export default function HomePage() {
         <h2 className="section-title">LANZAMIENTOS</h2>
         <h3 className="section-subtitle">Diseñados Para Tu Hogar <span role="img" aria-label="house">🏠</span></h3>
         <div className="product-grid-shop columns-4">
-          {newArrivals.map(product => (
-            <Link key={product.id} href={`/products/${product.id}?category=hogar-cocina`} className="shop-product-card-link">
+          {[
+            { id: 5, name: 'Sink Organizer', price: 'Gs. 139.000', oldPrice: 'Gs. 269.000', imageUrl: '/product5.png', imageUrl2: '/product6.png', offer: true },
+            { id: 6, name: 'Blender', price: 'Gs. 199.000', oldPrice: 'Gs. 385.000', imageUrl: '/product6.png', imageUrl2: '/product5.png', offer: true },
+            { id: 7, name: 'Bath Mat', price: 'Gs. 129.000', oldPrice: 'Gs. 199.000', imageUrl: '/product7.png', imageUrl2: '/product8.png', offer: true },
+            { id: 8, name: 'Storage Solution', price: 'Gs. 150.000', oldPrice: 'Gs. 300.000', imageUrl: '/product8.png', imageUrl2: '/product7.png', offer: true },
+            { id: 1, name: 'Door Draft Excluder', price: 'Gs. 150.000', oldPrice: 'Gs. 299.000', imageUrl: '/product1.png', imageUrl2: '/product2.png', offer: true },
+            { id: 2, name: 'Handy Heater', price: 'Gs. 149.000', oldPrice: 'Gs. 299.000', imageUrl: '/product2.png', imageUrl2: '/product1.png', offer: true },
+            { id: 3, name: 'Mini Masajeador', price: 'Gs. 149.000', oldPrice: 'Gs. 299.000', imageUrl: '/product3.png', imageUrl2: '/product4.png', offer: true },
+            { id: 4, name: 'Solar Charger', price: 'Gs. 199.000', oldPrice: 'Gs. 399.000', imageUrl: '/product4.png', imageUrl2: '/product3.png', offer: true },
+          ].map(product => (
+            <Link key={product.id} href="/hogar-cocina" className="shop-product-card-link">
               <div className="shop-product-card">
-                 {/* ... estructura del producto ... */}
+                <div className="image-container">
+                  {product.offer && <span className="shop-offer-badge">Oferta</span>}
+                  <Image src={product.imageUrl} alt={product.name} width={250} height={250} className="shop-product-image-primary" />
+                  {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} width={250} height={250} className="shop-product-image-secondary" />}
+                </div>
+                <h4>{product.name}</h4>
+                <div className="price-section">
+                  <span className="shop-product-price">{product.price}</span>
+                  {product.oldPrice && <span className="shop-product-old-price">{product.oldPrice}</span>}
+                </div>
               </div>
             </Link>
           ))}
         </div>
         <Link href="/hogar-cocina">
-          <button className="btn-secondary">VER TODOS</button>
+            <button className="btn-secondary">VER TODOS</button>
         </Link>
       </section>
 

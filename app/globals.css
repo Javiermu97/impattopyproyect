@@ -1513,3 +1513,28 @@ body {
   padding: 2rem;
   color: #888;
 }
+
+/* --- CORRECCIÓN DEFINITIVA PARA FRANJA AZUL --- */
+
+.info-banner-section {
+  padding-top: 2rem;      /* Reduce la altura (espacio arriba) */
+  padding-bottom: 2rem;   /* Reduce la altura (espacio abajo) */
+}
+
+.info-banner-container {
+  display: flex;              /* Activa el modelo de caja flexible */
+  flex-direction: row;        /* Fuerza a que los elementos se pongan en una fila */
+  justify-content: space-around; /* Distribuye el espacio entre ellos */
+  align-items: flex-start;    /* Alinea los items en la parte superior */
+  flex-wrap: nowrap;          /* Evita que los items salten a la siguiente línea en pantallas grandes */
+  gap: 1rem;                  /* Espacio entre los items */
+}
+
+/* En pantallas pequeñas, volvemos a apilarlos verticalmente para que se lean bien */
+@media (max-width: 768px) {
+  .info-banner-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+}
