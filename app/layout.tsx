@@ -1,4 +1,3 @@
-// app/layout.tsx
 import './globals.css';
 import React, { Suspense } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -6,7 +5,7 @@ import Header from '@/app/components/Header';
 import Navbar from '@/app/components/Navbar';
 import SubscribeForm from '@/app/components/SubscribeForm';
 import PageWrapper from '@/app/components/PageWrapper';
-import InfoBanner from '@/app/components/InfoBanner';
+// import InfoBanner from '@/app/components/InfoBanner'; // <-- LÍNEA ELIMINADA
 import { CartProvider } from '@/app/context/CartContext';
 
 export const metadata = {
@@ -33,31 +32,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PageWrapper>{children}</PageWrapper>
           </main>
           
-          {/* Aquí se asegura que la franja aparezca en TODAS las páginas */}
-          <InfoBanner />
+          {/* <InfoBanner />  <-- COMPONENTE ELIMINADO DE AQUÍ */}
 
           <footer className="footer">
             <div className="footer-content">
               <div className="footer-col">
                 <h3>Sobre Nosotros</h3>
-                <p>Bienvenido a nuestra tienda, tu destino para encontrar una amplia gama de productos que se adaptan a tu estilo de vida. Nos enorgullecemos de ofrecer una cuidadosa selección de artículos para satisfacer tus necesidades diarias.</p>
+                <p>Bienvenido a nuestra tienda...</p>
               </div>
               <div className="footer-col">
                 <h3>Enlaces de Interés</h3>
                 <ul>
                   <li><a href="#">Buscar en la tienda</a></li>
-                  <li><a href="#">Contacto</a></li>
-                  <li><a href="#">Sobre nosotros</a></li>
-                  <li><a href="#">Preguntas frecuentes</a></li>
-                  <li><a href="#">Trabaja con nosotros</a></li>
+                  {/* ... otros enlaces ... */}
                 </ul>
               </div>
               <div className="footer-col">
                 <h3>Menú Legal</h3>
                 <ul>
                   <li><a href="#">Términos de servicio</a></li>
-                  <li><a href="#">Política de privacidad</a></li>
-                  <li><a href="#">Garantía & Devoluciones</a></li>
+                   {/* ... otros enlaces ... */}
                 </ul>
               </div>
               <div className="footer-col">
