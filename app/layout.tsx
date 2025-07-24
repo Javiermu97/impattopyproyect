@@ -1,16 +1,16 @@
 // app/layout.tsx
 import './globals.css';
-import React from 'react';
+import React, { Suspense } from 'react'; // CAMBIO 1: Importamos Suspense
 import Link from 'next/link';
 import Header from './components/Header';
 import Navbar from './components/Navbar';
-import SubscribeForm from '@/app/components/SubscribeForm'; // <-- PASO 1: IMPORTA EL COMPONENTE AQUÍ
+import SubscribeForm from '@/app/components/SubscribeForm';
 
 export const metadata = {
-  title: 'Impatto|Sentí la diferencia',
-  description: 'Tienda Online - Impatto py',
+  title: 'Arcashop PY',
+  description: 'Tienda Online - Arcashop PY',
   icons: {
-    icon: '/logo.png', // Asegúrate que el nombre coincida con tu archivo en la carpeta public
+    icon: '/logo.png',
   },
 };
 
@@ -20,14 +20,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <header className="main-header">
           <Header />
-          <Navbar />
+          {/* CAMBIO 2: Envolvemos Navbar en Suspense */}
+          <Suspense fallback={null}>
+            <Navbar />
+          </Suspense>
         </header>
 
         <main>
           {children}
         </main>
         
-        {/* --- CÓDIGO DEL FOOTER --- */}
         <footer className="footer">
           <div className="footer-content">
             <div className="footer-col">
@@ -53,14 +55,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
             <div className="footer-col">
               <h3>Suscribite y Ahorrá</h3>
-              
-              {/* PASO 2: REEMPLAZA EL FORMULARIO ANTIGUO CON EL COMPONENTE */}
               <SubscribeForm />
-
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; {new Date().getFullYear()}, IMPATTO PY. Todos los derechos reservados | Desarrollado por IMPATTO  PY</p>
+            <p>&copy; {new Date().getFullYear()}, IMPATTO PY. Todos los derechos reservados | Desarrollado por IMPATTO PY</p>
           </div>
         </footer>
       </body> 
