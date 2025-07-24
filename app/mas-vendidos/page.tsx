@@ -1,7 +1,5 @@
-// app/(mas-vendidos)/page.tsx
-import { allProducts, Product } from '@/lib/data';
-import ProductCard from '@/app/components/ProductCard';
-import FiltersSidebar from '@/app/components/FiltersSidebar';
+import { allProducts, Product } from '@/lib/data'; // Asumiendo que tus productos vienen de aquí
+import ShopPageClient from '../components/ShopPageClient'; // Importamos el nuevo componente maestro
 
 export const metadata = {
   title: 'Más Vendidos - Impatto Py',
@@ -9,32 +7,21 @@ export const metadata = {
 };
 
 export default function MasVendidosPage() {
-  // Obtenemos todos los productos en stock y los ordenamos por fecha de añadido
+  // 1. Pre-filtramos los productos para esta categoría en el servidor
   const bestSellers = allProducts
     .filter((p: Product) => p.inStock)
     .sort((a: Product, b: Product) => b.dateAdded.getTime() - a.dateAdded.getTime());
 
+  // 2. Pasamos solo esa lista de productos al componente de cliente
   return (
     <div className="shop-container">
-      <header className="shop-header">
-        <h1>Más Vendidos</h1>
-        <p style={{ textAlign: 'center', color: '#666' }}>
-          Aquí encontrarás los productos favoritos de nuestra comunidad.
-        </p>
-      </header>
-
-      <main className="shop-layout">
-        {/* Usamos el componente de filtros reutilizable */}
-        <FiltersSidebar />
-
-        <div className="product-grid-area">
-          <div className="product-grid-shop columns-3">
-            {bestSellers.map((product: Product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </main>
+        <header className="shop-header">
+            <h1>Más Vendidos</h1>
+            <p style={{ textAlign: 'center', color: '#666' }}>
+                Aquí encontrarás los productos favoritos de nuestra comunidad.
+            </p>
+        </header>
+        <ShopPageClient products={bestSellers} />
     </div>
   );
 }
