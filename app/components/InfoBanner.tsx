@@ -1,8 +1,41 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
 
 const InfoBanner = () => {
+  const bannerRef = useRef<HTMLElement>(null);
+  const [isBannerVisible, setIsBannerVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsBannerVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        threshold: 0.1, // La animación empieza cuando el 10% del elemento es visible
+      }
+    );
+
+    const currentRef = bannerRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
+
   return (
-    <section className="info-banner-section">
+    <section 
+      ref={bannerRef} 
+      className={`info-banner-section ${isBannerVisible ? 'visible' : ''}`}
+    >
       <div className="info-banner-container">
         <div className="info-banner-item">
           <div className="info-icon">🚚</div>
