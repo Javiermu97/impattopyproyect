@@ -1,26 +1,31 @@
+// app/components/Navbar.tsx
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation'; // CAMBIO 1: Importamos useSearchParams
 import { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
   const currentPath = usePathname();
+  const searchParams = useSearchParams(); // CAMBIO 2: Usamos el hook
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Efecto para cerrar el menú si se cambia de página
+  // Obtenemos la categoría de la URL. Ej: 'mas-vendidos'
+  const activeCategory = searchParams.get('category');
+
   useEffect(() => {
     setIsMenuOpen(false);
-  }, [currentPath]);
+  }, [currentPath, searchParams]); // Se cierra también si cambian los parámetros
 
+  // CAMBIO 3: Añadimos un identificador de categoría a cada enlace
   const navLinks = [
-    { href: '/', label: 'INICIO' },
-    { href: '/mas-vendidos', label: 'MÁS VENDIDOS' },
-    { href: '/hogar-cocina', label: 'HOGAR & COCINA' },
-    { href: '/salud-bienestar', label: 'SALUD & BIENESTAR' },
-    { href: '/limpieza', label: 'LIMPIEZA' },
-    { href: '/vehiculo', label: 'VEHÍCULO' },
+    { href: '/', label: 'INICIO', category: 'inicio' },
+    { href: '/mas-vendidos', label: 'MÁS VENDIDOS', category: 'mas-vendidos' },
+    { href: '/hogar-cocina', label: 'HOGAR & COCINA', category: 'hogar-cocina' },
+    { href: '/salud-bienestar', label: 'SALUD & BIENESTAR', category: 'salud-bienestar' },
+    { href: '/limpieza', label: 'LIMPIEZA', category: 'limpieza' },
+    { href: '/vehiculo', label: 'VEHÍCULO', category: 'vehiculo' },
   ];
 
   return (
@@ -31,17 +36,23 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Navegación que se adaptará */}
       <nav className={`${styles.navLinks} ${isMenuOpen ? styles.open : ''}`}>
-        {navLinks.map(link => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={`${styles.navLink} ${currentPath === link.href ? styles.active : ''}`}
-          >
-            {link.label}
-          </Link>
-        ))}
+        {navLinks.map(link => {
+          // CAMBIO 4: Nueva lógica para determinar si el enlace está activo
+          const isDirectMatch = currentPath === link.href;
+          const isCategoryMatch = currentPath.startsWith('/products/') && activeCategory === link.category;
+          const isActive = isDirectMatch || isCategoryMatch;
+
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`${styles.navLink} ${isActive ? styles.active : ''}`}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
       </nav>
 
       <div className={styles.navIcons}>
@@ -50,13 +61,11 @@ const Navbar = () => {
         <button className={styles.iconBtn} aria-label="Carrito">🛒</button>
       </div>
       
-      {/* Botón de Menú Profesional (Líneas Horizontales) */}
       <button
         className={styles.menuBtn}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label="Abrir menú"
       >
-        {/* Estas 3 líneas serán nuestro ícono */}
         <div></div>
         <div></div>
         <div></div>

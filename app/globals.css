@@ -1340,3 +1340,68 @@ body {
     padding: 1rem 2rem; /* Botones de compra más pequeños */
   }
 }
+
+
+/* ========================================================= */
+/* ===== ESTILOS RESPONSIVOS PARA PÁGINA DE PRODUCTO (PDP) ===== */
+/* ========================================================= */
+
+/* --- Para Tablets y dispositivos medianos (hasta 992px) --- */
+@media (max-width: 992px) {
+  .pdp-main-layout {
+    grid-template-columns: 1fr; /* Cambia a una sola columna */
+    gap: 2rem;
+  }
+
+  .pdp-gallery {
+    position: static; /* El carrusel deja de ser fijo */
+    width: 100%;
+    margin: 0 auto;
+    max-width: 500px; /* Limita el tamaño de la galería en tablets */
+  }
+
+  .pdp-info {
+    max-width: 600px; /* Limita el ancho del texto */
+    margin: 0 auto; /* Centra el bloque de información */
+  }
+}
+
+/* --- Para Móviles (hasta 768px) --- */
+@media (max-width: 768px) {
+  .pdp-container {
+    padding: 1rem; /* Reduce el padding general */
+  }
+
+  .pdp-header-row {
+    grid-template-columns: 1fr; /* Apila el breadcrumb y el título */
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .breadcrumb {
+    justify-content: center;
+  }
+
+  .pdp-title {
+    font-size: 1.25rem; /* Título un poco más pequeño */
+  }
+
+  .add-to-cart-row {
+    flex-direction: column; /* Apila el selector de cantidad y el botón */
+    gap: 0.75rem;
+  }
+  
+  .add-to-cart-btn {
+    width: 100%; /* El botón ocupa todo el ancho */
+  }
+  
+  .buy-now-btn {
+    width: 100%; /* El botón ocupa todo el ancho */
+    padding: 1rem;
+  }
+
+  .pdp-trust-badges-wrapper {
+    flex-wrap: wrap; /* Permite que los badges se reorganicen */
+    gap: 1.5rem;
+  }
+}

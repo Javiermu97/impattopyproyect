@@ -40,7 +40,6 @@ export default function HomePage() {
   const trendingProducts = [
     { id: 1, name: 'Door Draft Excluder', price: 'Gs. 150.000', oldPrice: 'Gs. 299.000', imageUrl: '/product1.png', imageUrl2: '/product2.png', offer: true },
     { id: 2, name: 'Handy Heater', price: 'Gs. 149.000', oldPrice: 'Gs. 299.000', imageUrl: '/product2.png', imageUrl2: '/product1.png', offer: true },
-    // ***** CAMBIO AQUÍ *****
     { id: 3, name: 'Mini Masajeador', price: 'Gs. 149.000', oldPrice: 'Gs. 299.000', imageUrl: '/product3.png', imageUrl2: '/product4.png', offer: true },
     { id: 4, name: 'Solar Charger', price: 'Gs. 199.000', oldPrice: 'Gs. 399.000', imageUrl: '/product4.png', imageUrl2: '/product3.png', offer: true },
     { id: 5, name: 'Sink Organizer', price: 'Gs. 139.000', oldPrice: 'Gs. 269.000', imageUrl: '/product5.png', imageUrl2: '/product6.png', offer: true },
@@ -82,7 +81,8 @@ export default function HomePage() {
         <h2 className="section-title">🔥Promociones Únicas <span role="img" aria-label="fire">🔥</span></h2>
         <div className="product-grid-shop columns-4">
           {trendingProducts.map(product => (
-            <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
+            // ***** CAMBIO 1 AQUÍ *****
+            <Link key={product.id} href={`/products/${product.id}?category=mas-vendidos`} className="shop-product-card-link">
               <div className="shop-product-card">
                 <div className="image-container">
                   {product.offer && <span className="shop-offer-badge">Oferta</span>}
@@ -109,7 +109,8 @@ export default function HomePage() {
         <h3 className="section-subtitle">Diseñados Para Tu Hogar <span role="img" aria-label="house">🏠</span></h3>
         <div className="product-grid-shop columns-4">
           {newArrivals.map(product => (
-            <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
+            // ***** CAMBIO 2 AQUÍ *****
+            <Link key={product.id} href={`/products/${product.id}?category=hogar-cocina`} className="shop-product-card-link">
               <div className="shop-product-card">
                 <div className="image-container">
                   {product.offer && <span className="shop-offer-badge">Oferta</span>}
