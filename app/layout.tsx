@@ -4,7 +4,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 import Header from '@/app/components/Header';
 import Navbar from '@/app/components/Navbar';
 import PageWrapper from '@/app/components/PageWrapper';
-import Footer from '@/app/components/Footer'; // <-- Importa el Footer interactivo
+import Footer from '@/app/components/Footer'; // <-- Importa el Footer desde su archivo
 import { CartProvider } from '@/app/context/CartContext';
 
 export const metadata = {
@@ -21,16 +21,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <CartProvider>
           <header className="main-header">
-            {/* ... (Header y Navbar) ... */}
+            <Header />
+            <Suspense fallback={null}>
+              <Navbar />
+            </Suspense>
           </header>
 
           <main>
             <PageWrapper>{children}</PageWrapper>
           </main>
           
-          <Footer /> {/* <-- Usa el componente Footer aquí */}
+          {/* Aquí se inserta todo el contenido del footer desde su componente */}
+          <Footer />
 
-          <a href="..." className="whatsapp-button">
+          <a href="https://wa.me/595983491155" target="_blank" rel="noopener noreferrer" className="whatsapp-button">
             <FaWhatsapp size={22} />
             Contáctanos
           </a>

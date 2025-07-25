@@ -1519,21 +1519,20 @@ body {
 
 
 
-  /* --- ESTILOS FINALES Y CORREGIDOS PARA FOOTER (CON ÍCONO +/-) --- */
+/* --- ESTILOS FINALES Y DEFINITIVOS PARA FOOTER --- */
 
 /* --- Estilos para Escritorio (Default) --- */
 .footer-accordion-toggle {
   display: none;
 }
 .footer-accordion-title {
-  display: block;
   cursor: default;
 }
 .footer-accordion-title h3 {
   margin-top: 0;
 }
 .accordion-icon {
-  display: none; /* Oculta el contenedor del ícono en escritorio */
+  display: none; /* OCULTA el ícono en escritorio */
 }
 .footer-accordion-content {
   max-height: none;
@@ -1558,37 +1557,37 @@ body {
     border-bottom: 1px solid #333;
   }
 
-  /* --- Nuevo Estilo para el Ícono +/- --- */
+  /* --- Estilo para el Ícono +/- --- */
   .accordion-icon {
     display: inline-block;
-    position: relative; /* Contenedor para las barras */
-    width: 14px;      /* Ancho del ícono */
-    height: 14px;     /* Alto del ícono */
+    position: relative;
+    width: 14px;
+    height: 14px;
   }
 
-  /* Barras del ícono creadas con CSS */
+  /* Las 2 barras del ícono se crean con CSS */
   .accordion-icon::before,
   .accordion-icon::after {
     content: '';
     position: absolute;
     background-color: white; /* Color de las barras */
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease-out;
   }
 
-  /* Barra vertical del '+' */
+  /* Barra horizontal (siempre visible, es el '-') */
   .accordion-icon::before {
-    left: 6px; /* (14px - 2px) / 2 */
+    left: 0;
+    top: 6px; /* Centrado vertical */
+    width: 100%;
+    height: 2px;
+  }
+
+  /* Barra vertical (que girará para desaparecer) */
+  .accordion-icon::after {
+    left: 6px; /* Centrado horizontal */
     top: 0;
     width: 2px;
     height: 100%;
-  }
-
-  /* Barra horizontal del '+' */
-  .accordion-icon::after {
-    left: 0;
-    top: 6px; /* (14px - 2px) / 2 */
-    width: 100%;
-    height: 2px;
   }
   
   .footer-accordion-content {
@@ -1599,16 +1598,16 @@ body {
     padding-left: 1rem;
   }
 
-  /* Cuando se hace clic, se muestra el contenido */
+  /* Al hacer clic, se muestra el contenido */
   .footer-accordion-toggle:checked + .footer-accordion-title + .footer-accordion-content {
     max-height: 500px;
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
 
-  /* Cuando está abierto, la BARRA VERTICAL desaparece, dejando solo la HORIZONTAL (-) */
-  .footer-accordion-toggle:checked + .footer-accordion-title .accordion-icon::before {
-    transform: scaleY(0);
+  /* Al abrirse, la barra VERTICAL se gira 90 grados, creando el '-' */
+  .footer-accordion-toggle:checked + .footer-accordion-title .accordion-icon::after {
+    transform: rotate(90deg);
   }
 }
 
