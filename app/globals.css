@@ -1397,19 +1397,22 @@ body {
     flex-wrap: wrap; /* Permite que los badges se reorganicen */
     gap: 1.5rem;
   }
-  /* --- CÓDIGO AÑADIDO PARA "NUESTRA FILOSOFÍA" EN MÓVILES --- */
+  /* --- CÓDIGO FINAL PARA "NUESTRA FILOSOFÍA" EN MÓVILES --- */
+  
   .philosophy-container {
     flex-direction: column;
     text-align: center;
     gap: 2rem;
   }
+  
   .philosophy-image-container {
     position: relative;
     width: 90%;
     max-width: 400px;
-    height: 280px; /* Tamaño reducido para móviles */
+    height: 250px; /* <-- ALTURA REDUCIDA, como pediste */
     margin: 0 auto 2rem auto;
   }
+  
   .philosophy-img {
     position: absolute;
     height: auto;
@@ -1417,17 +1420,24 @@ body {
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   }
+  
   .philosophy-img-bg { /* Imagen frontal */
     width: 60%;
     top: 25%;
     left: 0;
     z-index: 2;
   }
+  
   .philosophy-img-fg { /* Imagen de atrás */
     width: 60%;
     top: 0;
     right: 0;
     z-index: 1;
+  }
+  .pdp-guarantee-banner {
+    flex-direction: column; /* Apila el icono y el texto */
+    text-align: center;   /* Centra el texto */
+    gap: 0.5rem;          /* Reduce el espacio entre el icono y el texto */
   }
 }
 
