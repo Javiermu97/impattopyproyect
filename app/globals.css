@@ -1279,13 +1279,9 @@ body {
 }
 
 /* --- Para Móviles muy pequeños (hasta 480px) --- */
-@media (max-width: 480px) {
-  /* Grilla de productos con una sola columna */
-  .product-grid-shop.columns-4,
-  .product-grid-shop.columns-3,
-  .product-grid-shop.columns-2 {
-    grid-template-columns: 1fr;
-  }
+
+
+
 
   /* Apilamos la franja azul informativa a una columna */
   .info-banner-container {
@@ -1299,7 +1295,7 @@ body {
   .add-to-cart-btn, .buy-now-btn {
     padding: 1rem 2rem; /* Botones de compra más pequeños */
   }
-}
+
 
 
 /* ========================================================= */
