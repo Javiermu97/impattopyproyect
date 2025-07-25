@@ -1420,18 +1420,16 @@ body {
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   }
-  
-  .philosophy-img-bg { /* Imagen frontal (izquierda) */
-    width: 60%;
-    top: 25%;
+  .philosophy-img-bg {
+    width: 65%;
+    top: 15%;
     left: 0;
     z-index: 2;
   }
-  
-  .philosophy-img-fg { /* Imagen de atrás (derecha) */
-    width: 60%;
+  .philosophy-img-fg {
+    width: 65%;
     top: 0;
-    right: 0; /* Más separada del borde */
+    right: 10%;
     z-index: 1;
   }
   .pdp-guarantee-banner {
