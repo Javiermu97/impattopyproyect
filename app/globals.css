@@ -1215,47 +1215,7 @@ body {
     gap: 2rem;
   }
 
-  /* --- INICIO DEL CÓDIGO CORRECTO PARA FILOSOFÍA --- */
-  
-  .philosophy-container {
-    flex-direction: column; 
-    gap: 2rem;
-    text-align: center;
-  }
 
-  .philosophy-content {
-    padding-left: 0;
-  }
-
-  .philosophy-image-container {
-    position: relative; 
-    width: 100%; /* Aseguramos que el contenedor ocupe todo el ancho */
-    max-width: 400px; /* Limitamos el ancho máximo en tablets */
-    height: 350px;
-    margin: 0 auto 2rem auto; /* Centramos el contenedor y le damos margen inferior */
-  }
-
-  .philosophy-img {
-    position: absolute; 
-    height: 85%;      
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  }
-
-  .philosophy-img-bg { /* Imagen de la mujer */
-    width: 70%;
-    top: 15%; 
-    left: 0;
-    z-index: 2; 
-  }
-
-  .philosophy-img-fg { /* Imagen del grupo */
-    width: 70%;
-    top: 0;
-    right: 0;
-    z-index: 1; 
-  }
   /* --- FIN DEL CÓDIGO CORRECTO PARA FILOSOFÍA --- */
 }
   
@@ -1527,7 +1487,7 @@ body {
   justify-content: space-around; /* Distribuye el espacio entre ellos */
   align-items: flex-start;    /* Alinea los items en la parte superior */
   flex-wrap: nowrap;          /* Evita que los items salten a la siguiente línea en pantallas grandes */
-  gap: 1.5rem;                  /* Espacio entre los items */
+  gap: 2rem;                  /* Espacio entre los items */
 }
 
 /* En pantallas pequeñas, volvemos a apilarlos verticalmente para que se lean bien */
@@ -1539,34 +1499,57 @@ body {
   }
 }
 
-/* --- ESTILOS PARA FOOTER ACORDEÓN EN MÓVILES Y TABLETS --- */
+/* --- ESTILOS FINALES PARA MÓVIL Y TABLET (HASTA 992px) --- */
 
-/* Por defecto en escritorio, el ícono del acordeón no se muestra */
-.footer-col-accordion .accordion-icon {
-  display: none;
-}
+@media (max-width: 992px) {
 
-/* Estilos que se aplican solo en pantallas de hasta 768px (tablets y móviles) */
-@media (max-width: 768px) {
+  /* 1. ESTILOS PARA LA FRANJA AZUL (GRILLA 2X2) */
+  .info-banner-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Crea una grilla de 2 columnas */
+    gap: 2rem 1rem; /* 2rem de espacio vertical, 1rem horizontal */
+    padding: 1rem;
+  }
+
+  .info-banner-item {
+    text-align: center; /* Centra el contenido de cada celda */
+  }
+
+
+  /* 2. ESTILOS PARA EL FOOTER (EFECTO ACORDEÓN) */
+  .footer-content {
+    flex-direction: column; /* Apila las columnas del footer */
+    gap: 0;
+  }
+
+  .footer-col {
+    border-bottom: 1px solid #333; /* Línea separadora */
+    padding: 1rem 0;
+  }
+
+  .footer-col:last-child {
+    border-bottom: none;
+  }
+
   .footer-col-accordion h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+    cursor: pointer;
+    margin: 0;
   }
 
   .footer-col-accordion .accordion-icon {
-    display: inline-block; /* Muestra el ícono '+' */
-    font-size: 1.5rem;
+    display: inline-block;
+    font-size: 1.8rem;
     font-weight: 300;
     transition: transform 0.3s ease;
   }
 
   .footer-col-accordion .accordion-icon.open {
-    transform: rotate(45deg); /* Gira el '+' para formar una 'x' */
+    transform: rotate(45deg);
   }
   
-  /* Por defecto, las listas de enlaces están ocultas */
   .footer-col-accordion .footer-links {
     max-height: 0;
     overflow: hidden;
@@ -1574,9 +1557,58 @@ body {
     padding-top: 0;
   }
 
-  /* Cuando está abierto, la lista se expande */
   .footer-col-accordion .footer-links.open {
-    max-height: 250px; /* Un valor lo suficientemente grande para que quepan todos los enlaces */
-    padding-top: 15px; /* Añade un espacio al abrirse */
+    max-height: 300px; /* Suficiente espacio para expandirse */
+    padding-top: 1rem;
+  }
+}
+
+/* --- ESTILOS PARA "NUESTRA FILOSOFÍA" EN MÓVILES --- */
+
+@media (max-width: 768px) {
+  /* Apila el contenedor de imagen y el de texto verticalmente */
+  .philosophy-container {
+    flex-direction: column; 
+    text-align: center; /* Centra el bloque de texto */
+    gap: 2rem;
+  }
+
+  /* Define el espacio para las imágenes superpuestas */
+  .philosophy-image-container {
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    height: 300px; /* Altura fija para controlar el solapamiento */
+    margin: 0 auto; /* Centra el bloque de imágenes */
+  }
+
+  /* Reglas generales para las dos imágenes en móvil */
+  .philosophy-img {
+    position: absolute; /* Permite posicionar una sobre otra */
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    object-fit: cover;
+  }
+
+  /* Imagen de la mujer con tablet (al frente) */
+  .philosophy-img-bg {
+    width: 75%;
+    height: 80%;
+    top: 10%;
+    left: 0;
+    z-index: 2;
+  }
+
+  /* Imagen del grupo de personas (detrás) */
+  .philosophy-img-fg {
+    width: 65%;
+    height: 70%;
+    top: 0;
+    right: 0;
+    z-index: 1;
+  }
+  
+  .philosophy-content {
+     padding-left: 0; /* Resetea el padding del modo escritorio */
   }
 }

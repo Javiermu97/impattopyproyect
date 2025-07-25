@@ -5,7 +5,7 @@ import Link from 'next/link';
 import SubscribeForm from './SubscribeForm';
 
 // Sub-componente para las columnas que serán desplegables en móvil
-const FooterAccordionCol = ({ title, links }: { title: string; links: { href: string; label: string }[] }) => {
+const FooterAccordionCol = ({ title, children }: { title: string; children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -14,51 +14,49 @@ const FooterAccordionCol = ({ title, links }: { title: string; links: { href: st
         {title}
         <span className={`accordion-icon ${isOpen ? 'open' : ''}`}>+</span>
       </h3>
-      <ul className={`footer-links ${isOpen ? 'open' : ''}`}>
-        {links.map(link => (
-          <li key={link.href}><Link href={link.href}>{link.label}</Link></li>
-        ))}
-      </ul>
+      <div className={`footer-links ${isOpen ? 'open' : ''}`}>
+        {children}
+      </div>
     </div>
   );
 };
 
 // Componente principal del Footer
 const Footer = () => {
-  const enlacesDeInteres = [
-    { href: "/tienda", label: "Buscar en la tienda" },
-    { href: "/contacto", label: "Contacto" },
-    { href: "/sobre-nosotros", label: "Sobre nosotros" },
-    { href: "/preguntas-frecuentes", label: "Preguntas frecuentes" },
-    { href: "/trabaja-con-nosotros", label: "Trabaja con nosotros" },
-  ];
-
-  const menuLegal = [
-    { href: "/terminos", label: "Términos de servicio" },
-    { href: "/privacidad", label: "Política de privacidad" },
-    { href: "/garantia", label: "Garantía & Devoluciones" },
-  ];
-
   return (
     <footer className="footer">
       <div className="footer-content">
-        {/* Columna "Sobre Nosotros" - No necesita ser acordeón */}
-        <div className="footer-col">
-          <h3>Sobre Nosotros</h3>
+        
+        {/* Usamos el componente de acordeón para cada sección */}
+        <FooterAccordionCol title="Sobre Nosotros">
           <p>Bienvenido a nuestra tienda, tu destino para encontrar una amplia gama de productos que se adaptan a tu estilo de vida. Nos enorgullecemos de ofrecer una cuidadosa selección de artículos para satisfacer tus necesidades diarias.</p>
-        </div>
-
-        {/* Columnas con Acordeón */}
-        <FooterAccordionCol title="Enlaces de Interés" links={enlacesDeInteres} />
-        <FooterAccordionCol title="Menú Legal" links={menuLegal} />
-
-        {/* Columna de Suscripción */}
-        <div className="footer-col">
+        </FooterAccordionCol>
+        
+        <FooterAccordionCol title="Enlaces de Interés">
+          <ul>
+            <li><Link href="/tienda">Buscar en la tienda</Link></li>
+            <li><Link href="/contacto">Contacto</Link></li>
+            <li><Link href="/sobre-nosotros">Sobre nosotros</Link></li>
+            <li><Link href="/preguntas-frecuentes">Preguntas frecuentes</Link></li>
+            <li><Link href="/trabaja-con-nosotros">Trabaja con nosotros</Link></li>
+          </ul>
+        </FooterAccordionCol>
+        
+        <FooterAccordionCol title="Menú Legal">
+          <ul>
+            <li><Link href="/terminos">Términos de servicio</Link></li>
+            <li><Link href="/privacidad">Política de privacidad</Link></li>
+            <li><Link href="/garantia">Garantía & Devoluciones</Link></li>
+          </ul>
+        </FooterAccordionCol>
+        
+        <FooterAccordionCol title="Suscríbete y Ahorra">
           <SubscribeForm />
-        </div>
+        </FooterAccordionCol>
+        
       </div>
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()}, Arca Shop PY. Todos los derechos reservados | Desarrollado por Blueprint Digital</p>
+        <p>© {new Date().getFullYear()}, Impatto PY. Todos los derechos reservados | Desarrollado por Impatto Devs</p>
       </div>
     </footer>
   );
