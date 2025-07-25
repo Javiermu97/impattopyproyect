@@ -1409,7 +1409,7 @@ body {
     position: relative;
     width: 90%;
     max-width: 400px;
-    height: 220px; /* Altura MUCHO MÁS REDUCIDA para celular */
+    height: 180px; /* Altura MUCHO MÁS REDUCIDA para celular */
     margin: 0 auto 2rem auto;
   }
   
@@ -1422,16 +1422,16 @@ body {
   }
   
   .philosophy-img-bg { /* Imagen frontal (izquierda) */
-    width: 65%;
-    top: 15%;
+    width: 60%;
+    top: 25%;
     left: 0;
     z-index: 2;
   }
   
   .philosophy-img-fg { /* Imagen de atrás (derecha) */
-    width: 65%;
+    width: 60%;
     top: 0;
-    right: 10%; /* Más separada del borde */
+    right: 0; /* Más separada del borde */
     z-index: 1;
   }
   .pdp-guarantee-banner {
