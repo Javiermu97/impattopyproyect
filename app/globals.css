@@ -1527,7 +1527,7 @@ body {
   justify-content: space-around; /* Distribuye el espacio entre ellos */
   align-items: flex-start;    /* Alinea los items en la parte superior */
   flex-wrap: nowrap;          /* Evita que los items salten a la siguiente línea en pantallas grandes */
-  gap: 1rem;                  /* Espacio entre los items */
+  gap: 1.5rem;                  /* Espacio entre los items */
 }
 
 /* En pantallas pequeñas, volvemos a apilarlos verticalmente para que se lean bien */
