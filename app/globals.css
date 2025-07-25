@@ -1409,7 +1409,7 @@ body {
     position: relative;
     width: 90%;
     max-width: 400px;
-    height: 250px; /* <-- ALTURA REDUCIDA, como pediste */
+    height: 220px; /* Altura MUCHO MÁS REDUCIDA para celular */
     margin: 0 auto 2rem auto;
   }
   
@@ -1421,17 +1421,17 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   }
   
-  .philosophy-img-bg { /* Imagen frontal */
-    width: 60%;
-    top: 25%;
+  .philosophy-img-bg { /* Imagen frontal (izquierda) */
+    width: 65%;
+    top: 15%;
     left: 0;
     z-index: 2;
   }
   
-  .philosophy-img-fg { /* Imagen de atrás */
-    width: 60%;
+  .philosophy-img-fg { /* Imagen de atrás (derecha) */
+    width: 65%;
     top: 0;
-    right: 0;
+    right: 10%; /* Más separada del borde */
     z-index: 1;
   }
   .pdp-guarantee-banner {
