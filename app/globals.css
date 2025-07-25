@@ -1345,16 +1345,16 @@ body {
   }
 
   .philosophy-img-bg {
-    width: 65%;
-    top: 20%;
-    left: 5%;
+    width: 60%;
+    top: 25%;
+    left: 0;
     z-index: 2;
   }
 
   .philosophy-img-fg {
-    width: 65%;
-    top: 5%;
-    right: 5%;
+    width: 60%;
+    top: 0;
+    right: 0;
     z-index: 1;
   }
 }
