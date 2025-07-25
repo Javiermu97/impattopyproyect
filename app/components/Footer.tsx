@@ -4,17 +4,18 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import SubscribeForm from './SubscribeForm';
 
-// Sub-componente para las columnas que serán desplegables en móvil
+// Sub-componente para cada columna que se puede desplegar
 const FooterAccordionCol = ({ title, children }: { title: string; children: React.ReactNode }) => {
+  // Este 'useState' controla si la sección está abierta o cerrada
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="footer-col footer-col-accordion">
-      <h3 onClick={() => setIsOpen(!isOpen)}>
-        {title}
-        <span className={`accordion-icon ${isOpen ? 'open' : ''}`}>+</span>
-      </h3>
-      <div className={`footer-links ${isOpen ? 'open' : ''}`}>
+    <div className="footer-col">
+      <div className="footer-accordion-title" onClick={() => setIsOpen(!isOpen)}>
+        <h3>{title}</h3>
+        <span className={`accordion-icon ${isOpen ? 'open' : ''}`}></span>
+      </div>
+      <div className={`footer-accordion-content ${isOpen ? 'open' : ''}`}>
         {children}
       </div>
     </div>
@@ -27,7 +28,6 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         
-        {/* Usamos el componente de acordeón para cada sección */}
         <FooterAccordionCol title="Sobre Nosotros">
           <p>Bienvenido a nuestra tienda, tu destino para encontrar una amplia gama de productos que se adaptan a tu estilo de vida. Nos enorgullecemos de ofrecer una cuidadosa selección de artículos para satisfacer tus necesidades diarias.</p>
         </FooterAccordionCol>

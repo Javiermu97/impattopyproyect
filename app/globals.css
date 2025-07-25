@@ -1519,24 +1519,14 @@ body {
 
 
 
-/* --- ESTILOS FINALES Y DEFINITIVOS PARA FOOTER --- */
+/* --- ESTILOS DEFINITIVOS PARA FOOTER RESPONSIVE --- */
 
 /* --- Estilos para Escritorio (Default) --- */
-.footer-accordion-toggle {
-  display: none;
-}
 .footer-accordion-title {
-  cursor: default;
-}
-.footer-accordion-title h3 {
-  margin-top: 0;
+  cursor: default; /* Cursor normal en escritorio */
 }
 .accordion-icon {
   display: none; /* OCULTA el ícono en escritorio */
-}
-.footer-accordion-content {
-  max-height: none;
-  text-align: left;
 }
 
 
@@ -1547,6 +1537,13 @@ body {
     gap: 0;
   }
   
+  .footer-col {
+    border-bottom: 1px solid #333;
+  }
+  .footer-col:last-child {
+    border-bottom: none;
+  }
+
   .footer-accordion-title {
     display: flex;
     justify-content: space-between;
@@ -1554,59 +1551,49 @@ body {
     cursor: pointer;
     padding: 1rem 0;
     margin: 0;
-    border-bottom: 1px solid #333;
+  }
+  .footer-accordion-title h3 {
+    margin: 0;
+    font-size: 1em;
   }
 
-  /* --- Estilo para el Ícono +/- --- */
+  /* Estilo para el ícono +/- creado con CSS */
   .accordion-icon {
     display: inline-block;
     position: relative;
     width: 14px;
     height: 14px;
   }
-
-  /* Las 2 barras del ícono se crean con CSS */
   .accordion-icon::before,
   .accordion-icon::after {
     content: '';
     position: absolute;
-    background-color: white; /* Color de las barras */
+    background-color: white;
     transition: transform 0.3s ease-out;
   }
-
-  /* Barra horizontal (siempre visible, es el '-') */
-  .accordion-icon::before {
-    left: 0;
-    top: 6px; /* Centrado vertical */
-    width: 100%;
-    height: 2px;
+  .accordion-icon::before { /* Barra horizontal (-) */
+    left: 0; top: 6px; width: 100%; height: 2px;
+  }
+  .accordion-icon::after { /* Barra vertical */
+    left: 6px; top: 0; width: 2px; height: 100%;
   }
 
-  /* Barra vertical (que girará para desaparecer) */
-  .accordion-icon::after {
-    left: 6px; /* Centrado horizontal */
-    top: 0;
-    width: 2px;
-    height: 100%;
-  }
-  
+  /* Contenido del acordeón oculto por defecto */
   .footer-accordion-content {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease-out;
-    text-align: left;
-    padding-left: 1rem;
+    text-align: left; /* ALINEA EL CONTENIDO A LA IZQUIERDA */
   }
-
-  /* Al hacer clic, se muestra el contenido */
-  .footer-accordion-toggle:checked + .footer-accordion-title + .footer-accordion-content {
+  
+  /* Cuando está abierto, el contenido se muestra */
+  .footer-accordion-content.open {
     max-height: 500px;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding: 0.5rem 0 1.5rem 0; /* Espaciado interior al abrir */
   }
 
-  /* Al abrirse, la barra VERTICAL se gira 90 grados, creando el '-' */
-  .footer-accordion-toggle:checked + .footer-accordion-title .accordion-icon::after {
+  /* Cuando está abierto, la barra vertical gira para desaparecer */
+  .accordion-icon.open::after {
     transform: rotate(90deg);
   }
 }
