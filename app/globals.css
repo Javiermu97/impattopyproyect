@@ -1321,42 +1321,42 @@ body {
     margin: 0 auto; /* Centra el bloque de información */
   }
 
-  /* --- CÓDIGO A AÑADIR PARA "NUESTRA FILOSOFÍA" --- */
-      .philosophy-container {
-        flex-direction: column;
-        gap: 2rem;
-        text-align: center;
-      }
+  /* --- CÓDIGO AÑADIDO PARA CORREGIR "NUESTRA FILOSOFÍA" --- */
+  .philosophy-container {
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+  }
 
-      .philosophy-image-container {
-        position: relative;
-        width: 100%;
-        max-width: 400px;
-        height: 350px;
-        margin: 0 auto 2rem auto;
-      }
-      
-      .philosophy-img {
-        position: absolute;
-        height: 85%;
-        object-fit: cover;
-        border-radius: 8px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      }
+  .philosophy-image-container {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    height: 350px;
+    margin: 0 auto 2rem auto;
+  }
+  
+  .philosophy-img {
+    position: absolute;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
 
-      .philosophy-img-bg { /* Imagen frontal */
-        width: 70%;
-        top: 15%;
-        left: 0;
-        z-index: 2;
-      }
+  .philosophy-img-bg {
+    width: 65%;
+    top: 20%;
+    left: 5%;
+    z-index: 2;
+  }
 
-      .philosophy-img-fg { /* Imagen de atrás */
-        width: 70%;
-        top: 0;
-        right: 15%; /* <-- La corrección clave está aquí */
-        z-index: 1;
-      }
+  .philosophy-img-fg {
+    width: 65%;
+    top: 5%;
+    right: 5%;
+    z-index: 1;
+  }
 }
 
 /* --- Para Móviles (hasta 768px) --- */
