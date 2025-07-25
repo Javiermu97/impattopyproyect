@@ -1538,3 +1538,45 @@ body {
     gap: 2rem;
   }
 }
+
+/* --- ESTILOS PARA FOOTER ACORDEÓN EN MÓVILES Y TABLETS --- */
+
+/* Por defecto en escritorio, el ícono del acordeón no se muestra */
+.footer-col-accordion .accordion-icon {
+  display: none;
+}
+
+/* Estilos que se aplican solo en pantallas de hasta 768px (tablets y móviles) */
+@media (max-width: 768px) {
+  .footer-col-accordion h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+  }
+
+  .footer-col-accordion .accordion-icon {
+    display: inline-block; /* Muestra el ícono '+' */
+    font-size: 1.5rem;
+    font-weight: 300;
+    transition: transform 0.3s ease;
+  }
+
+  .footer-col-accordion .accordion-icon.open {
+    transform: rotate(45deg); /* Gira el '+' para formar una 'x' */
+  }
+  
+  /* Por defecto, las listas de enlaces están ocultas */
+  .footer-col-accordion .footer-links {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+    padding-top: 0;
+  }
+
+  /* Cuando está abierto, la lista se expande */
+  .footer-col-accordion .footer-links.open {
+    max-height: 250px; /* Un valor lo suficientemente grande para que quepan todos los enlaces */
+    padding-top: 15px; /* Añade un espacio al abrirse */
+  }
+}

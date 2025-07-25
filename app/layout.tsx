@@ -3,9 +3,8 @@ import React, { Suspense } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 import Header from '@/app/components/Header';
 import Navbar from '@/app/components/Navbar';
-import SubscribeForm from '@/app/components/SubscribeForm';
 import PageWrapper from '@/app/components/PageWrapper';
-// import InfoBanner from '@/app/components/InfoBanner'; // <-- LÍNEA ELIMINADA
+import Footer from '@/app/components/Footer'; // <-- Importamos el nuevo Footer
 import { CartProvider } from '@/app/context/CartContext';
 
 export const metadata = {
@@ -32,36 +31,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PageWrapper>{children}</PageWrapper>
           </main>
           
-          {/* <InfoBanner />  <-- COMPONENTE ELIMINADO DE AQUÍ */}
-
-          <footer className="footer">
-            <div className="footer-content">
-              <div className="footer-col">
-                <h3>Sobre Nosotros</h3>
-                <p>Bienvenido a nuestra tienda...</p>
-              </div>
-              <div className="footer-col">
-                <h3>Enlaces de Interés</h3>
-                <ul>
-                  <li><a href="#">Buscar en la tienda</a></li>
-                  {/* ... otros enlaces ... */}
-                </ul>
-              </div>
-              <div className="footer-col">
-                <h3>Menú Legal</h3>
-                <ul>
-                  <li><a href="#">Términos de servicio</a></li>
-                   {/* ... otros enlaces ... */}
-                </ul>
-              </div>
-              <div className="footer-col">
-                <SubscribeForm />
-              </div>
-            </div>
-            <div className="footer-bottom">
-              <p>© {new Date().getFullYear()}, Arca Shop PY. Todos los derechos reservados | Desarrollado por Blueprint Digital</p>
-            </div>
-          </footer>
+          {/* Usamos nuestro nuevo y completo componente de Footer */}
+          <Footer />
 
           <a href="https://wa.me/595983491155" target="_blank" rel="noopener noreferrer" className="whatsapp-button">
             <FaWhatsapp size={22} />
