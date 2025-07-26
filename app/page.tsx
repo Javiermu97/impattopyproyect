@@ -57,8 +57,12 @@ export default function HomePage() {
     <>
       {/* Carrusel Inferior */}
       <CarruselInferior />
-      {/* Hero Section */}
+      {/* Hero Section con Video de Fondo */}
       <section className="hero-section">
+        <video autoPlay loop muted playsInline className="hero-video">
+          <source src="/quita-pelusas.mp4" type="video/mp4" />
+          Tu navegador no soporta el tag de video.
+        </video>
         <div className="hero-content">
           <h2>CONOCE NUESTROS PRODUCTOS</h2>
           <h1>Tendencias y regalos originales</h1>
