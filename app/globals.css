@@ -349,10 +349,11 @@ body {
 }
 
 .pdp-container {
-  max-width: 1200px; /* Define un ancho máximo para el contenido */
-  margin-left: auto;   /* Centra el contenedor en la página */
-  margin-right: auto;  /* Centra el contenedor en la página */
-  padding: 1.5rem 2rem 0 2rem; /* Padding lateral más consistente y seguro */
+  width: 100%; /* Asegura que el contenedor ocupe todo el ancho posible */
+  max-width: 1400px; /* Un límite generoso para pantallas muy grandes */
+  margin: 0 auto; /* Centra el contenedor */
+  padding: 2rem 4rem; /* Espacio interior (arriba/abajo y a los lados) */
+  box-sizing: border-box; /* Asegura que el padding no cause desbordamiento */
   background-color: #ffffff;
 }
 
