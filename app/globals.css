@@ -474,8 +474,9 @@ body {
   text-decoration: line-through;
   color: #999;
 }
+/* --- Cambiar color del botón "Oferta" en la página de producto --- */
 .pdp-offer-badge {
-  background-color: #87CEEB; /* Color celeste */
+  background-color: black; /* Color celeste */
   color: white;
   padding: 5px 12px;
   border-radius: 5px;
@@ -639,8 +640,8 @@ body {
   gap: 0.75rem;
   padding: 0.6rem 1.25rem;
   border-radius: 8px;
-  background-color: #87CEEB;
-  border: 1px solid #87CEEB;
+  background-color: black;
+  border: 1px solid black;
 }
 
 .pdp-guarantee-banner svg {
@@ -683,8 +684,8 @@ body {
   gap: 0.75rem;
   padding: 0.6rem 1.25rem;
   border-radius: 8px;
-  background-color: #87CEEB;
-  border: 1px solid #87CEEB;
+  background-color: black;
+  border: 1px solid black;
 }
 
 .pdp-guarantee-banner svg {
