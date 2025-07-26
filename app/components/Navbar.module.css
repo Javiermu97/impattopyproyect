@@ -9,7 +9,7 @@
   background-color: #ffffff;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #e5e5e5;
-  color: #111; /* Color principal de íconos y texto */
+  color: #111;
 }
 
 .left, .right {
@@ -31,13 +31,17 @@
 
 .logo a {
   font-family: "Times New Roman", Times, serif;
-  font-size: 1.4rem; /* MÁS GRANDE */
-  font-weight: 700; /* EN NEGRITA */
+  font-size: 1.4rem;
+  font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #111;
-  text-decoration: none;
+  text-decoration: none; /* CORRECCIÓN 1: Sin subrayado */
   line-height: 1.1;
+}
+
+.logo a:hover {
+  text-decoration: none; /* CORRECCIÓN 1: Asegura que no haya subrayado en hover */
 }
 
 .iconBtn {
@@ -87,29 +91,20 @@
     color: #333;
     font-weight: 400;
     text-decoration: none;
-    font-size: 0.8em; /* MÁS CHICO */
-    text-transform: none; /* SIN MAYÚSCULAS */
+    font-size: 0.8em;
+    text-transform: none;
     white-space: nowrap;
     position: relative;
-    padding-bottom: 5px;
+    padding-bottom: 0; /* Ya no se necesita espacio para la línea */
     transition: color 0.3s ease;
   }
   .navLink:hover, .navLink.active {
     color: #000;
   }
+  
+  /* CORRECCIÓN 2: Elimina por completo el subrayado */
   .navLink::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 1px;
-    background-color: #ccc;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    /* transition: width 0.3s ease-in-out; */ /* ANIMACIÓN ELIMINADA */
-  }
-  .navLink:hover::after, .navLink.active::after {
-    width: 100%;
+    display: none; 
   }
 
   .mobileNavLinks {
@@ -129,6 +124,7 @@
     justify-content: space-around;
     width: 24px;
     height: 24px;
+    color: #111;
     background: transparent;
     border: none;
     cursor: pointer;

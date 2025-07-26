@@ -23,21 +23,20 @@ const Navbar = () => {
   }, [currentPath]);
 
   const navLinks = [
-    { href: '/', label: 'INICIO' },
-    { href: '/mas-vendidos', label: 'MÁS VENDIDOS' },
-    { href: '/hogar-cocina', label: 'HOGAR & COCINA' },
-    { href: '/salud-bienestar', label: 'SALUD & BIENESTAR' },
-    { href: '/limpieza', label: 'LIMPIEZA' },
-    { href: '/vehiculo', label: 'VEHÍCULO' },
+    { href: '/', label: 'Inicio' },
+    { href: '/mas-vendidos', label: 'Más Vendidos' },
+    { href: '/hogar-cocina', label: 'Hogar' },
+    { href: '/salud-bienestar', label: 'Salud' },
+    { href: '/limpieza', label: 'Limpieza' },
+    { href: '/vehiculo', label: 'Vehículo' },
   ];
 
   return (
     <>
       <div className={styles.navbar}>
-        {/* Lado Izquierdo: Contiene los enlaces en Desktop y el menú en Móvil */}
         <div className={styles.left}>
           <button className={styles.menuBtn} onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Abrir menú">
-            <IoMenuOutline size={28} />
+            <IoMenuOutline size={32} /> {/* <-- Tamaño aumentado */}
           </button>
           <nav className={styles.navLinks}>
             {navLinks.map(link => (
