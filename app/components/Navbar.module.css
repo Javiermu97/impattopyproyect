@@ -28,7 +28,12 @@
   font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: black;
+  color: #111;
+  text-decoration: none; /* Sin subrayado */
+}
+
+/* CORRECCIÓN: Se añade esta regla para asegurar que no haya subrayado en hover */
+.logo a:hover {
   text-decoration: none;
 }
 .iconBtn { background: transparent; border: none; padding: 0; cursor: pointer; color: inherit; }
