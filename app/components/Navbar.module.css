@@ -1,171 +1,144 @@
-/* app/components/Navbar.module.css */
+/* --- Estilos base de la barra de navegación --- */
 .navbar {
-  background-color: hsl(203, 98%, 10%);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0.5rem 25px;
-  box-sizing: border-box;
+  background-color: #ffffff;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e5e5;
+  color: #111; /* Color principal de íconos y texto */
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
+/* --- Contenedores para la estructura de 3 partes --- */
+.left, .right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1; /* Ocupan 1/3 del espacio */
+}
+
+.right {
+  justify-content: flex-end; /* Alinea los íconos a la derecha */
+}
+
+/* --- Estilo para el nuevo logo de texto --- */
 .logo {
-  flex-shrink: 0;
+  flex: 2; /* Le da más espacio al logo para que no se comprima */
+  text-align: center;
 }
 
-.logoImg {
-  height: 90px;
-  width: 100px;
-  object-fit: contain;
-  display: block;
-}
-
-.navLinks {
-  display: flex;
-  gap: 1.5rem;
-  margin: 0 auto;
-}
-
-.navLink {
-  color: #e0e5e9;
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 0.9em;
+.logo a {
+  font-family: "Times New Roman", Times, serif; /* Fuente serif elegante y común */
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em; /* Espacio entre letras */
   text-transform: uppercase;
-  white-space: nowrap;
-  position: relative;
-  padding-bottom: 8px;
-  transition: color 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
-
-.navLink::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 1px;
-  background-color: #666;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  transition: width 0.3s ease-in-out;
-}
-
-.navLink:hover::after,
-.active.navLink::after {
-  width: 100%;
-}
-
-.navLink:hover,
-.active.navLink {
-  color: #666;
-  opacity: 0.85;
+  color: #111;
   text-decoration: none;
 }
 
-.navIcons {
-  display: flex;
-  gap: 0.75rem;
-}
-
+/* --- Estilos para los botones de íconos --- */
 .iconBtn {
-  background: transparent !important;
+  background: transparent;
   border: none;
-  box-shadow: none;
   padding: 0;
   cursor: pointer;
-  line-height: 1;
+  color: inherit;
 }
 
-.iconBtn:hover,
-.iconBtn:focus,
-.iconBtn:active {
-  background: transparent !important;
+.iconBtn:hover {
   opacity: 0.7;
 }
 
-/* --- Estilos para el Menú Profesional y Responsividad --- */
-
-/* Ocultamos el botón de menú en pantallas grandes */
-.menuBtn {
-  display: none;
-}
-
-/* Media Query para tablets y móviles (a partir de 1024px hacia abajo) */
-@media (max-width: 1024px) {
-  .navbar {
-    padding: 0.5rem 1.5rem;
-  }
-
-  .navLinks {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 70%;
-    max-width: 300px;
-    height: 100vh;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: hsl(203, 98%, 10%);
-    margin: 0;
-    padding: 0;
-    transition: left 0.3s ease-in-out;
-    z-index: 99;
-  }
-
-  .navLinks.open {
-    display: flex;
-    left: 0;
-  }
-
-  .navLink {
-    font-size: 1.1em;
-  }
-
-  /* Estilos para el botón contenedor del ícono */
-  .menuBtn {
-    display: flex;
-    flex-direction: column; /* Apila las líneas verticalmente */
-    justify-content: space-around; /* Crea espacio entre las líneas */
-    width: 2rem;  /* Ancho del botón */
-    height: 2rem; /* Alto del botón */
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 100;
-  }
-
-  .menuBtn:focus {
-    outline: none;
-  }
-
-  /* Estilos para cada línea del ícono */
-  .menuBtn div {
-    width: 1.8rem; /* Ancho completo del botón */
-    height: 0.20rem; /* Grosor de la línea (puedes ajustarlo) */
-    background: white; /* Color de la línea */
-    border-radius: 10px;
-    transition: all 0.3s linear;
-    position: relative;
-    transform-origin: 1px;
-  }
+/* Contenedor del ícono del carrito para posicionar el número */
+.cartIconContainer {
+  position: relative;
 }
 
 .cartBadge {
   position: absolute;
   top: -5px;
-  right: -10px;
-  background-color: red;
+  right: -8px;
+  background-color: #111;
   color: white;
   border-radius: 50%;
-  padding: 2px 6px;
+  padding: 2px 5px;
   font-size: 0.7rem;
+  line-height: 1;
   font-weight: bold;
 }
-.navIcons {
-  position: relative; /* Necesario para posicionar el badge */
+
+/* --- Estilos para el botón del menú hamburguesa --- */
+.menuBtn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
 }
+
+.menuBtn div {
+  width: 24px;
+  height: 2px;
+  background: #111; /* Color de las líneas */
+  border-radius: 10px;
+}
+
+/* --- Menú Desplegable (Slide-out) --- */
+.navLinks {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: -100%; /* Oculto por defecto fuera de la pantalla */
+  width: 80%;
+  max-width: 320px;
+  height: 100vh;
+  flex-direction: column;
+  align-items: flex-start; /* Alinea texto a la izquierda */
+  justify-content: center;
+  background-color: white;
+  color: #111;
+  margin: 0;
+  padding: 2rem;
+  transition: left 0.3s ease-in-out;
+  z-index: 999;
+  border-right: 1px solid #e5e5e5;
+  gap: 1.5rem;
+  box-sizing: border-box;
+}
+
+/* Clase que se añade con JavaScript para mostrar el menú */
+.navLinks.open {
+  left: 0;
+}
+
+.navLink {
+  color: #111;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.navLink:hover {
+  opacity: 0.7;
+  text-decoration: none;
+}
+
+/* Oculta los enlaces de texto en la barra principal en escritorio */
+/* Si quisieras mostrarlos en escritorio, tendrías que ajustar esta parte */
+@media (min-width: 1025px) {
+  .menuBtn {
+    display: none; /* Oculta el botón de hamburguesa en escritorio */
+  }
+  /* La regla .navLinks vacía ha sido eliminada */
+}
+    
