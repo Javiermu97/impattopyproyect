@@ -121,7 +121,7 @@
   }
   .logo {
     position: absolute; /* Saca el logo del flujo normal */
-    left: 50%; /* Lo posiciona en el centro exacto */
+    left: 40%; /* Lo posiciona en el centro exacto */
     transform: translateX(-50%); /* Ajusta para centrarlo perfectamente */
   }
   .left {
