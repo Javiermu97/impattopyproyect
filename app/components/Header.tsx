@@ -21,7 +21,7 @@ const Header = () => {
 
       {/* Agrupamos los elementos centrales en un nuevo div */}
       <div className={styles.headerCenter}>
-        <span className={styles.shippingInfo}>Envíos gratis a todo el Paraguay 🚛 📦</span>
+        <span className={styles.shippingInfo}>Envíos gratis en todos tus pedidos 🚛 📦</span>
         <div className={styles.offersLink}>
           <Link href="/ofertas">Ver ofertas</Link>
         </div>

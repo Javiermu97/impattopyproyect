@@ -114,30 +114,38 @@
 
 /* --- Para MÓVIL Y TABLET (hasta 1024px) --- */
 @media (max-width: 1024px) {
+  /* --- CORRECCIÓN PARA CENTRAR EL LOGO EN MÓVIL --- */
+  .navbar {
+    position: relative; /* Activa el contexto para el posicionamiento */
+    justify-content: space-between;
+  }
+  .logo {
+    position: absolute; /* Saca el logo del flujo normal */
+    left: 50%; /* Lo posiciona en el centro exacto */
+    transform: translateX(-50%); /* Ajusta para centrarlo perfectamente */
+  }
+  .left {
+    justify-content: flex-start; /* Asegura que el menú quede a la izquierda */
+  }
+  .right {
+    justify-content: flex-end; /* Asegura que los íconos queden a la derecha */
+  }
+  /* --- FIN DE LA CORRECCIÓN --- */
+
   .navLinks {
     display: none;
   }
 
   .menuBtn {
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 24px;
-    height: 24px;
     color: #111;
     background: transparent;
     border: none;
-    cursor: pointer;
     padding: 0;
-    z-index: 1000;
+    cursor: pointer;
   }
-  .menuBtn div {
-    width: 24px;
-    height: 2px;
-    background: #111;
-    border-radius: 10px;
-  }
-  
+
+  /* Estilos para el Menú Desplegable (Slide-out) */
   .mobileNavLinks {
     display: flex;
     position: fixed;
@@ -158,11 +166,9 @@
     gap: 1.5rem;
     box-sizing: border-box;
   }
-
   .mobileNavLinks.open {
     left: 0;
   }
-
   .mobileNavLink {
     color: #111;
     font-size: 1.2rem;
