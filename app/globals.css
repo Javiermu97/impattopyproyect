@@ -30,7 +30,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .hero-content p { font-size: 1.1em; line-height: 1.5; }
 
 /* Carrusel Inferior con Animación CSS */
-.franja-descuento { background-color: #b0a82f; color: white; padding: 15px 0; overflow: hidden; white-space: nowrap; position: relative; }
+.franja-descuento { background-color: #edece6ec; color: black; padding: 15px 0; overflow: hidden; white-space: nowrap; position: relative; }
 .cinta { display: flex; width: fit-content; animation: scroll-left 30s linear infinite; }
 .scroll-text { display: flex; align-items: center; gap: 40px; padding-right: 40px; }
 .scroll-text span { font-size: 0.9em; text-transform: uppercase; min-width: fit-content; }

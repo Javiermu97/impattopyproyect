@@ -1,7 +1,4 @@
-/* ========================================================= */
-/* ===== ESTILOS BASE (COMÚN A MÓVIL Y ESCRITORIO) ===== */
-/* ========================================================= */
-
+/* Estilo base de la barra de navegación */
 .navbar {
   display: flex;
   align-items: center;
@@ -15,49 +12,28 @@
 .left, .right {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem; /* Espacio reducido para que quepan más íconos */
   flex: 1;
 }
-
 .right {
   justify-content: flex-end;
 }
-
 .logo {
-  flex-shrink: 0;
-  padding: 0 2rem;
   text-align: center;
+  line-height: 1.1;
 }
-
 .logo a {
   font-family: "Times New Roman", Times, serif;
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #111;
-  text-decoration: none; /* CORRECCIÓN 1: Sin subrayado */
-  line-height: 1.1;
+  text-decoration: none;
 }
-
-.logo a:hover {
-  text-decoration: none; /* CORRECCIÓN 1: Asegura que no haya subrayado en hover */
-}
-
-.iconBtn {
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  color: inherit;
-}
-.iconBtn:hover {
-  opacity: 0.7;
-}
-
-.cartIconContainer {
-  position: relative;
-}
+.iconBtn { background: transparent; border: none; padding: 0; cursor: pointer; color: inherit; }
+.iconBtn:hover { opacity: 0.7; }
+.cartIconContainer { position: relative; }
 .cartBadge {
   position: absolute;
   top: -5px;
@@ -67,7 +43,6 @@
   border-radius: 50%;
   padding: 2px 5px;
   font-size: 0.7rem;
-  line-height: 1;
   font-weight: bold;
 }
 
@@ -75,105 +50,98 @@
 /* ===== LÓGICA RESPONSIVE (MÓVIL vs ESCRITORIO) ===== */
 /* ========================================================= */
 
+/* --- Para MÓVIL Y TABLET (hasta 1024px) --- */
+@media (max-width: 1024px) {
+  .navbar {
+    position: relative;
+  }
+  .logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .left {
+    justify-content: flex-start;
+  }
+  .right {
+    justify-content: flex-end;
+  }
+
+  .navLinks { display: none; }
+  .menuBtn { display: flex; color: #111; background: transparent; border: none; padding: 0; cursor: pointer; }
+  
+  /* LÓGICA PARA MOSTRAR/OCULTAR ÍCONO DE BÚSQUEDA */
+  .searchIconDesktop { display: none; }
+  .searchIconMobile { display: flex; }
+}
+
 /* --- Para ESCRITORIO (más de 1024px) --- */
 @media (min-width: 1025px) {
-  .menuBtn {
-    display: none;
-  }
-
-  .navLinks {
-    display: flex;
-    gap: 1.8rem;
-  }
-
+  .menuBtn { display: none; }
+  .navLinks { display: flex; gap: 1.5rem; }
   .navLink {
     font-family: Arial, Helvetica, sans-serif;
     color: #333;
     font-weight: 400;
     text-decoration: none;
-    font-size: 0.8em;
+    font-size: 0.9em;
     text-transform: none;
     white-space: nowrap;
     position: relative;
-    padding-bottom: 0; /* Ya no se necesita espacio para la línea */
+    padding-bottom: 5px;
     transition: color 0.3s ease;
   }
   .navLink:hover, .navLink.active {
     color: #000;
   }
-  
-  /* CORRECCIÓN 2: Elimina por completo el subrayado */
   .navLink::after {
-    display: none; 
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    background-color: #ccc;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: width 0.3s ease-in-out;
+  }
+  .navLink:hover::after, .navLink.active::after {
+    width: 100%;
   }
 
-  .mobileNavLinks {
-    display: none;
-  }
+  /* LÓGICA PARA MOSTRAR/OCULTAR ÍCONO DE BÚSQUEDA */
+  .searchIconDesktop { display: flex; }
+  .searchIconMobile { display: none; }
 }
 
-/* --- Para MÓVIL Y TABLET (hasta 1024px) --- */
-@media (max-width: 1024px) {
-  /* --- CORRECCIÓN PARA CENTRAR EL LOGO EN MÓVIL --- */
-  .navbar {
-    position: relative; /* Activa el contexto para el posicionamiento */
-    justify-content: space-between;
-  }
-  .logo {
-    position: absolute; /* Saca el logo del flujo normal */
-    left: 40%; /* Lo posiciona en el centro exacto */
-    transform: translateX(-50%); /* Ajusta para centrarlo perfectamente */
-  }
-  .left {
-    justify-content: flex-start; /* Asegura que el menú quede a la izquierda */
-  }
-  .right {
-    justify-content: flex-end; /* Asegura que los íconos queden a la derecha */
-  }
-  /* --- FIN DE LA CORRECCIÓN --- */
-
-  .navLinks {
-    display: none;
-  }
-
-  .menuBtn {
-    display: flex;
-    color: #111;
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
-
-  /* Estilos para el Menú Desplegable (Slide-out) */
-  .mobileNavLinks {
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 80%;
-    max-width: 320px;
-    height: 100vh;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    background-color: white;
-    color: #111;
-    padding: 2rem;
-    transition: left 0.3s ease-in-out;
-    z-index: 999;
-    border-right: 1px solid #e5e5e5;
-    gap: 1.5rem;
-    box-sizing: border-box;
-  }
-  .mobileNavLinks.open {
-    left: 0;
-  }
-  .mobileNavLink {
-    color: #111;
-    font-size: 1.2rem;
-    font-weight: 500;
-    text-decoration: none;
-    text-transform: uppercase;
-  }
+/* --- Estilos para el MENÚ DESPLEGABLE (que se abre en móvil) --- */
+.mobileNavLinks {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  max-width: 320px;
+  height: 100vh;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: white;
+  color: #111;
+  padding: 2rem;
+  transition: left 0.3s ease-in-out;
+  z-index: 999;
+  border-right: 1px solid #e5e5e5;
+  gap: 1.5rem;
+  box-sizing: border-box;
+}
+.mobileNavLinks.open {
+  left: 0;
+}
+.mobileNavLink {
+  color: #111;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-decoration: none;
+  text-transform: uppercase;
 }

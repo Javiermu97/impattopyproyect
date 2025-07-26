@@ -55,6 +55,8 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Carrusel Inferior */}
+      <CarruselInferior />
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
@@ -67,12 +69,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Carrusel Inferior */}
-      <CarruselInferior />
+      
 
       {/* Promociones Únicas Section */}
       <section className="products-section products-section-gray">
-        <h2 className="section-title">🔥Promociones Únicas <span role="img" aria-label="fire">🔥</span></h2>
+        <h2 className="section-title">🔥Especial de la Semana <span role="img" aria-label="fire">🔥</span></h2>
         <div className="product-grid-shop columns-4">
           {trendingProducts.map(product => (
             <Link key={product.id} href={`/products/${product.id}?category=mas-vendidos`} className="shop-product-card-link">
@@ -98,8 +99,8 @@ export default function HomePage() {
 
       {/* Lanzamientos Section */}
       <section className="products-section">
-        <h2 className="section-title">LANZAMIENTOS</h2>
-        <h3 className="section-subtitle">Diseñados Para Tu Hogar <span role="img" aria-label="house">🏠</span></h3>
+        <h2 className="section-title">Confort y Diseño</h2>
+        <h3 className="section-subtitle"> Hechos para tu hogar <span role="img" aria-label="house">🏠</span></h3>
         <div className="product-grid-shop columns-4">
           {[
             { id: 5, name: 'Sink Organizer', price: 'Gs. 139.000', oldPrice: 'Gs. 269.000', imageUrl: '/product5.png', imageUrl2: '/product6.png', offer: true },
@@ -157,23 +158,23 @@ export default function HomePage() {
         <div className="info-banner-container">
           <div className="info-banner-item">
             <div className="info-icon">🚚</div>
-            <h3>Envíos gratis</h3>
-            <p>Envíos en 24/48hrs disponible a todo el País</p>
+            <h3>Envío Exprés Gratis</h3>
+            <p>A todo el país en 24/48 hs</p>
           </div>
           <div className="info-banner-item">
             <div className="info-icon">🌿</div>
-            <h3>Empresa sustentable</h3>
-            <p>Priorizamos la sustentabilidad con el medio ambiente</p>
+            <h3>Sustentable & Responsable</h3>
+            <p>Comprá cuidando el planeta</p>
           </div>
           <div className="info-banner-item">
             <div className="info-icon">💵</div>
-            <h3>Pagá al recibir</h3>
+            <h3>Pagá Fácil</h3>
             <p>Ofrecemos el pago contra entrega</p>
           </div>
           <div className="info-banner-item">
             <div className="info-icon">💬</div>
-            <h3>Atención al cliente</h3>
-            <p>Disponible 8:30 a 18:00hs vía WhatsApp</p>
+            <h3>Soporte Directo</h3>
+            <p>WhatsApp 8:30 a 18:00 hsWhatsApp 8:30 a 18:00 hs</p>
           </div>
         </div>
       </section>
