@@ -1,7 +1,7 @@
 /* app/components/Header.module.css */
 .headerBar {
-  background-color: #f1f5f7;
-  color: #160d4d;
+  background-color: #041015b4;
+  color: #f1f1f7;
   font-size: 0.9rem;
   padding: 1rem 1.5rem;
   display: flex;
