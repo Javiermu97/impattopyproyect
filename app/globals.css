@@ -133,6 +133,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   color: #bbb; 
   font-size: 0.9em;
 }
+/* Boton de oferta que está sobre cada imagen */
 .offer-badge { position: absolute; top: 10px; left: 10px; background-color: #ff4500; color: white; padding: 5px 10px; border-radius: 3px; font-size: 0.8em; font-weight: bold; }
 
 /* Nuestra Filosofía Section */
@@ -295,8 +296,8 @@ body {
 .shop-product-card .shop-product-image-secondary { opacity: 0; }
 .shop-product-card:hover .shop-product-image-primary { opacity: 0; }
 .shop-product-card:hover .shop-product-image-secondary { opacity: 1; }
-
-.shop-offer-badge { position: absolute; top: 10px; left: 10px; background-color: #87CEEB; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.8rem; font-weight: bold; z-index: 2; }
+/* boton de oferta sobre las imágenes */
+.shop-offer-badge { position: absolute; top: 10px; left: 10px; background-color: #A78D5A; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.8rem; font-weight: bold; z-index: 2; }
 .shop-product-card h4 { font-size: 1rem; margin-bottom: 0.5rem; color: #333; word-wrap: break-word; font-weight: 500; }
 .shop-product-price { font-size: 1.1rem; font-weight: 600; color: #0066cc; }
 .shop-product-old-price {
@@ -597,8 +598,8 @@ body {
   gap: 0.75rem;
   padding: 0.6rem 1.25rem;
   border-radius: 8px;
-  background-color: #87CEEB;
-  border: 1px solid #87CEEB;
+  background-color: white;
+  border: 1px solid white;
 }
 
 .pdp-guarantee-banner svg {
@@ -609,7 +610,7 @@ body {
 
 .pdp-guarantee-banner span { 
   font-size: 0.8rem;
-  color: white;
+  color: black;
   font-weight: 500;
   line-height: 1.4;
   white-space: nowrap; /* Mantiene el texto en una línea en escritorio */
@@ -722,7 +723,7 @@ body {
 }
 .info-promo-block .promo-title { 
   font-size: 1.8rem; /* Un poco más grande para destacar */
-  color: #87CEEB; /* Color celeste */
+  color: black; /* Color celeste */
   margin-bottom: 0.5rem; 
   font-family: 'Arial Black', Gadget, sans-serif; /* Fuente más llamativa */
 }
@@ -730,7 +731,7 @@ body {
 .info-promo-block .promo-subtitle,
 .info-promo-block-2 h2 {
   font-size: 1.2rem;
-  color: #FFA500;
+  color: black;
   margin-bottom: 1rem;
   font-family: 'Arial Black', Gadget, sans-serif;
   font-weight: bold;
@@ -1460,9 +1461,13 @@ body {
     padding: 1rem; /* Menos padding en la página de producto */
   }
   
-  .add-to-cart-btn, .buy-now-btn {
-    padding: 1rem 2rem; /* Botones de compra más pequeños */
-  }
+  /* --- Ajuste de color para botones de compra --- */
+
+.add-to-cart-btn,
+.buy-now-btn {
+  background-color: #000000; /* Color de fondo cambiado a negro */
+  color: #ffffff; /* Asegura que el texto sea blanco */
+}
 
 
 /* ========================================================= */
