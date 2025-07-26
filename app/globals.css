@@ -348,8 +348,9 @@ body {
   20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
+/* Tamaño de la pantalla al dar click a una imagen */
 .pdp-container {
-  width: 95%; /* Ocupará el 95% del ancho de la pantalla */
+  width: 100%; /* Ocupará el 95% del ancho de la pantalla */
   max-width: 1600px; /* Un límite muy generoso para pantallas extra grandes */
   margin: 0 auto; /* Esto centra el contenedor */
   padding: 2rem 0; /* Solo relleno vertical, NADA de relleno horizontal */
@@ -581,8 +582,10 @@ body {
 .pdp-guarantee-banner {
   display: flex;
   align-items: center;
-  gap: 0.75rem; /* <-- Espacio reducido */
-  padding: 0.6rem 1rem; /* <-- Relleno reducido para hacer la franja más delgada */
+  width: fit-content; /* <-- HACE LA FRANJA MÁS CORTA (MENOS ANCHA) */
+  margin: 0 auto;    /* <-- LA CENTRA EN LA COLUMNA */
+  gap: 0.75rem;
+  padding: 0.6rem 1.25rem; /* Relleno lateral para que no se vea apretado */
   border-radius: 8px;
   background-color: #87CEEB;
   border: 1px solid #87CEEB;
@@ -590,15 +593,16 @@ body {
 
 .pdp-guarantee-banner svg {
   flex-shrink: 0;
-  width: 36px; /* <-- Ícono más pequeño */
-  height: 36px; /* <-- Ícono más pequeño */
+  width: 36px;
+  height: 36px;
 }
 
 .pdp-guarantee-banner span { 
-  font-size: 0.8rem; /* <-- Texto más pequeño */
+  font-size: 0.8rem;
   color: white;
   font-weight: 500;
   line-height: 1.4;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
 }
 
 /* REQUERIMIENTOS 4 y 5: Textos de Súper Promo */
