@@ -350,7 +350,7 @@ body {
 
 /* Tamaño de la pantalla al dar click a una imagen */
 .pdp-container {
-  width: 100%; /* Ocupará el 95% del ancho de la pantalla */
+  width: 95%; /* Ocupará el 95% del ancho de la pantalla */
   max-width: 1600px; /* Un límite muy generoso para pantallas extra grandes */
   margin: 0 auto; /* Esto centra el contenedor */
   padding: 2rem 0; /* Solo relleno vertical, NADA de relleno horizontal */
