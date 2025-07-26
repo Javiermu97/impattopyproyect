@@ -467,7 +467,7 @@ body {
 .pdp-price {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #244c8d;
+  color: black;
 }
 .pdp-old-price {
   font-size: 1.1rem;
@@ -476,7 +476,7 @@ body {
 }
 /* --- Cambiar color del botón "Oferta" en la página de producto --- */
 .pdp-offer-badge {
-  background-color: black; /* Color celeste */
+  background-color: #A78D5A; /* Color celeste */
   color: white;
   padding: 5px 12px;
   border-radius: 5px;
@@ -531,7 +531,7 @@ body {
   border-radius: 8px;
   font-weight: bold;
   font-size: 1rem;
-  background-color: #244c8d; /* Color celeste oscuro */
+  background-color:#A78D5A; /* Color celeste oscuro */
   color: white; /* Letra blanca */
   border: none;
 }
@@ -640,7 +640,7 @@ body {
   gap: 0.75rem;
   padding: 0.6rem 1.25rem;
   border-radius: 8px;
-  background-color: black;
+  background-color:#A78D5A;
   border: 1px solid black;
 }
 
@@ -684,7 +684,7 @@ body {
   gap: 0.75rem;
   padding: 0.6rem 1.25rem;
   border-radius: 8px;
-  background-color: black;
+  background-color:#A78D5A;
   border: 1px solid black;
 }
 
@@ -724,7 +724,7 @@ body {
 }
 .info-promo-block .promo-title { 
   font-size: 1.8rem; /* Un poco más grande para destacar */
-  color: black; /* Color celeste */
+  color:#A78D5A; /* Color celeste */
   margin-bottom: 0.5rem; 
   font-family: 'Arial Black', Gadget, sans-serif; /* Fuente más llamativa */
 }
@@ -1466,7 +1466,7 @@ body {
 
 .add-to-cart-btn,
 .buy-now-btn {
-  background-color: #000000; /* Color de fondo cambiado a negro */
+  background-color:#A78D5A; /* Color de fondo cambiado a negro */
   color: #ffffff; /* Asegura que el texto sea blanco */
 }
 
