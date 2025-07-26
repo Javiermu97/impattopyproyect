@@ -9,7 +9,7 @@
   background-color: #ffffff;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #e5e5e5;
-  color: #111;
+  color: #111; /* Color principal de íconos y texto */
 }
 
 .left, .right {
@@ -31,8 +31,8 @@
 
 .logo a {
   font-family: "Times New Roman", Times, serif;
-  font-size: 1.4rem; /* <<< MÁS GRANDE */
-  font-weight: 700; /* <<< EN NEGRITA */
+  font-size: 1.4rem; /* MÁS GRANDE */
+  font-weight: 700; /* EN NEGRITA */
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #111;
@@ -87,8 +87,8 @@
     color: #333;
     font-weight: 400;
     text-decoration: none;
-    font-size: 0.8em; /* <<< MÁS CHICO */
-    text-transform: none;
+    font-size: 0.8em; /* MÁS CHICO */
+    text-transform: none; /* SIN MAYÚSCULAS */
     white-space: nowrap;
     position: relative;
     padding-bottom: 5px;
@@ -106,7 +106,7 @@
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    /* transition: width 0.3s ease-in-out; */ /* <<< ANIMACIÓN ELIMINADA */
+    /* transition: width 0.3s ease-in-out; */ /* ANIMACIÓN ELIMINADA */
   }
   .navLink:hover::after, .navLink.active::after {
     width: 100%;
