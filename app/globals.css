@@ -1197,80 +1197,44 @@ body {
 
 
 
-/* ========================================================= */
-/* ===== SECCIÓN ÚNICA Y ORDENADA PARA RESPONSIVIDAD ===== */
-/* ========================================================= */
+/* ============================================= */
+/* ===== MEDIA QUERIES GLOBALES PARA RESPONSIVIDAD ===== */
+/* ============================================= */
 
-/* --- Para Tablets (hasta 992px) --- */
+/* --- Para Tablets y dispositivos medianos (hasta 992px) --- */
 @media (max-width: 992px) {
+  /* Hacemos las grillas de productos más fluidas */
   .product-grid-shop.columns-4,
   .product-grid-shop.columns-3 {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
   }
   
+  /* Ajustamos la franja informativa azul */
   .info-banner-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 1rem;
-    padding: 1rem;
-  }
-
-  .pdp-main-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
     gap: 2rem;
   }
-  .pdp-gallery {
-    position: static;
-    width: 100%;
-    margin: 0 auto;
-    max-width: 500px;
-  }
-  .pdp-info {
-    max-width: 600px;
-    margin: 0 auto;
-  }
 
-  .philosophy-container {
-    flex-direction: column;
-    gap: 2rem;
-    text-align: center;
-  }
-  .philosophy-image-container {
-    position: relative;
-    width: 100%;
-    max-width: 450px;
-    height: 300px;
-    margin: 0 auto 2rem auto;
-  }
-  .philosophy-img {
-    position: absolute;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  }
-  .philosophy-img-bg {
-    width: 65%;
-    top: 15%;
-    left: 0;
-    z-index: 2;
-  }
-  .philosophy-img-fg {
-    width: 65%;
-    top: 0;
-    right: 10%;
-    z-index: 1;
-  }
+
 }
+  
+  /* Ajustamos la franja informativa azul */
+  .info-banner-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
+    gap: 2rem;
+  }
+
+
 
 /* --- Para Móviles (hasta 768px) --- */
 @media (max-width: 768px) {
   .hero-content h1 {
-    font-size: 2em;
+    font-size: 2em; /* Título del hero más pequeño */
   }
 
+  /* Ajustamos el shop layout para apilar filtros y productos */
   .shop-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Una sola columna */
   }
   .filters-sidebar {
     border-right: none;
@@ -1279,6 +1243,7 @@ body {
     padding-bottom: 1.5rem;
   }
   
+  /* Hacemos la grilla de productos de 2 columnas en móvil */
   .product-grid-shop.columns-4,
   .product-grid-shop.columns-3,
   .product-grid-shop.columns-2 {
@@ -1286,82 +1251,49 @@ body {
     gap: 1rem;
   }
 
+  /* Reducimos el padding de las secciones */
   .products-section, .philosophy-section, .info-banner-section {
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  
-  .philosophy-image-container {
-    height: 220px;
-  }
 
   .footer-content {
-    flex-direction: column;
+    flex-direction: column; /* Apilamos las columnas del footer */
     gap: 2rem;
     text-align: center;
   }
 
+  /* Modal de checkout más adaptable */
   .checkout-modal-content {
     padding: 1.5rem;
     max-height: 95vh;
   }
   
-  .confirmation-main {
-    grid-template-columns: 1fr;
+   .confirmation-main {
+    grid-template-columns: 1fr; /* Apilar detalles y resumen en confirmación */
   }
   .info-columns {
-    grid-template-columns: 1fr;
-  }
-
-  .pdp-container {
-    padding: 1rem;
-  }
-  .pdp-header-row {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 1rem;
-  }
-  .breadcrumb {
-    justify-content: center;
-  }
-  .pdp-title {
-    font-size: 1.25rem;
-  }
-  .add-to-cart-row {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  .add-to-cart-btn, .buy-now-btn {
-    width: 100%;
-    padding: 1rem;
-  }
-  .pdp-trust-badges-wrapper {
-    flex-wrap: wrap;
-    gap: 1.5rem;
-  }
-  .pdp-guarantee-banner {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.5rem;
+    grid-template-columns: 1fr; /* Apilar columnas de información */
   }
 }
 
 /* --- Para Móviles muy pequeños (hasta 480px) --- */
-@media (max-width: 480px) {
-  .product-grid-shop.columns-4,
-  .product-grid-shop.columns-3,
-  .product-grid-shop.columns-2 {
-    grid-template-columns: 1fr;
-  }
 
+
+
+
+  /* Apilamos la franja azul informativa a una columna */
   .info-banner-container {
     grid-template-columns: 1fr;
   }
   
-  .add-to-cart-btn, .buy-now-btn {
-    padding: 1rem 2rem;
+  .pdp-container {
+    padding: 1rem; /* Menos padding en la página de producto */
   }
-}
+  
+  .add-to-cart-btn, .buy-now-btn {
+    padding: 1rem 2rem; /* Botones de compra más pequeños */
+  }
 
 
 /* ========================================================= */
