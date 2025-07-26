@@ -349,7 +349,10 @@ body {
 }
 
 .pdp-container {
-  padding: 1.5rem 6rem 0 7rem; /* <-- Padding lateral aumentado */
+  max-width: 1200px; /* Define un ancho máximo para el contenido */
+  margin-left: auto;   /* Centra el contenedor en la página */
+  margin-right: auto;  /* Centra el contenedor en la página */
+  padding: 1.5rem 2rem 0 2rem; /* Padding lateral más consistente y seguro */
   background-color: #ffffff;
 }
 

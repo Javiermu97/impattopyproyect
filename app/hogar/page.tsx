@@ -2,11 +2,11 @@ import { allProducts, Product } from '@/lib/data'; // Asumiendo que tus producto
 import ShopPageClient from '../components/ShopPageClient'; // Importamos el nuevo componente maestro
 
 export const metadata = {
-  title: 'Hogar & Cocina - Impatto Py',
+  title: 'Hogar - Impatto Py',
   description: 'Encuentra todo lo que necesitas para tu hogar y cocina.',
 };
 
-export default function HogarCocinaPage() {
+export default function HogarPage() {
   // 1. Pre-filtramos los productos para esta categoría en el servidor
   const keywords = ['Organizador', 'Licuadora', 'Alfombra', 'Cinta', 'Lint'];
   const hogarCocinaProducts = allProducts

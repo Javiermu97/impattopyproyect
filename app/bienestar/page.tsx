@@ -6,7 +6,7 @@ export const metadata = {
   description: 'Productos para tu salud y bienestar.',
 };
 
-export default function SaludBienestarPage() {
+export default function BienestarPage() {
   // Filtramos productos que contengan 'Masajeador'
   const bienestarProducts = allProducts.filter((p: Product) => 
     p.name.includes('Masajeador')
