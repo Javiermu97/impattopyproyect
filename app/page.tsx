@@ -64,11 +64,11 @@ export default function HomePage() {
           Tu navegador no soporta el tag de video.
         </video>
         <div className="hero-content">
-          <h2>CONOCE NUESTROS PRODUCTOS</h2>
-          <h1>Tendencias y regalos originales</h1>
-          <p>Encuentra una amplia gama de productos que se adaptan a tu estilo de vida</p>
+          <h2>DESCUBRÍ LO QUE TE ENCANTA</h2>
+          <h1>Miles de productos seleccionados para vos</h1>
+          <p>Elegí entre productos modernos, prácticos y funcionales</p>
           <Link href="/tienda">
-            <button className="btn-primary">EMPEZAR VIAJE</button>
+            <button className="btn-primary">EXPLORAR</button>
           </Link>
         </div>
       </section>
