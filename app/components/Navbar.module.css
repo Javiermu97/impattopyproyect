@@ -1,4 +1,7 @@
-/* Estilo base de la barra de navegación */
+/* ========================================================= */
+/* ===== ESTILOS BASE (COMÚN A MÓVIL Y ESCRITORIO) ===== */
+/* ========================================================= */
+
 .navbar {
   display: flex;
   align-items: center;
@@ -9,36 +12,48 @@
   color: #111;
 }
 
-/* Contenedores para la estructura de 3 partes */
 .left, .right {
   display: flex;
   align-items: center;
   gap: 1.5rem;
   flex: 1;
 }
+
 .right {
   justify-content: flex-end;
 }
 
-/* Estilo para el logo de texto en dos líneas */
 .logo {
+  flex-shrink: 0;
+  padding: 0 2rem;
   text-align: center;
-  line-height: 1.1; /* Reduce el espacio entre las dos líneas */
 }
+
 .logo a {
   font-family: "Times New Roman", Times, serif;
-  font-size: 1.2rem;
-  font-weight: 400;
+  font-size: 1.4rem; /* <<< MÁS GRANDE */
+  font-weight: 700; /* <<< EN NEGRITA */
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #111;
   text-decoration: none;
+  line-height: 1.1;
 }
 
-/* Estilos para los íconos */
-.iconBtn { background: transparent; border: none; padding: 0; cursor: pointer; color: inherit; }
-.iconBtn:hover { opacity: 0.7; }
-.cartIconContainer { position: relative; }
+.iconBtn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
+.iconBtn:hover {
+  opacity: 0.7;
+}
+
+.cartIconContainer {
+  position: relative;
+}
 .cartBadge {
   position: absolute;
   top: -5px;
@@ -48,6 +63,7 @@
   border-radius: 50%;
   padding: 2px 5px;
   font-size: 0.7rem;
+  line-height: 1;
   font-weight: bold;
 }
 
@@ -55,31 +71,23 @@
 /* ===== LÓGICA RESPONSIVE (MÓVIL vs ESCRITORIO) ===== */
 /* ========================================================= */
 
-/* --- Para MÓVIL Y TABLET (hasta 1024px) --- */
-@media (max-width: 1024px) {
-  .navLinks {
-    display: none; /* OCULTA los enlaces de texto de la barra */
-  }
-  .menuBtn {
-    display: flex; /* MUESTRA el botón de hamburguesa */
-  }
-}
-
 /* --- Para ESCRITORIO (más de 1024px) --- */
 @media (min-width: 1025px) {
   .menuBtn {
-    display: none; /* OCULTA el botón de hamburguesa */
+    display: none;
   }
+
   .navLinks {
-    display: flex; /* MUESTRA los enlaces de texto en la barra */
-    gap: 1.5rem;
+    display: flex;
+    gap: 1.8rem;
   }
+
   .navLink {
     font-family: Arial, Helvetica, sans-serif;
     color: #333;
     font-weight: 400;
     text-decoration: none;
-    font-size: 0.9em;
+    font-size: 0.8em; /* <<< MÁS CHICO */
     text-transform: none;
     white-space: nowrap;
     position: relative;
@@ -98,41 +106,72 @@
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    transition: width 0.3s ease-in-out;
+    /* transition: width 0.3s ease-in-out; */ /* <<< ANIMACIÓN ELIMINADA */
   }
   .navLink:hover::after, .navLink.active::after {
     width: 100%;
   }
+
+  .mobileNavLinks {
+    display: none;
+  }
 }
 
-/* --- Estilos para el MENÚ DESPLEGABLE (que se abre en móvil) --- */
-.mobileNavLinks {
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 80%;
-  max-width: 320px;
-  height: 100vh;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  background-color: white;
-  color: #111;
-  padding: 2rem;
-  transition: left 0.3s ease-in-out;
-  z-index: 999;
-  border-right: 1px solid #e5e5e5;
-  gap: 1.5rem;
-  box-sizing: border-box;
-}
-.mobileNavLinks.open {
-  left: 0;
-}
-.mobileNavLink {
-  color: #111;
-  font-size: 1.2rem;
-  font-weight: 500;
-  text-decoration: none;
-  text-transform: uppercase;
+/* --- Para MÓVIL Y TABLET (hasta 1024px) --- */
+@media (max-width: 1024px) {
+  .navLinks {
+    display: none;
+  }
+
+  .menuBtn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1000;
+  }
+  .menuBtn div {
+    width: 24px;
+    height: 2px;
+    background: #111;
+    border-radius: 10px;
+  }
+  
+  .mobileNavLinks {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    max-width: 320px;
+    height: 100vh;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    background-color: white;
+    color: #111;
+    padding: 2rem;
+    transition: left 0.3s ease-in-out;
+    z-index: 999;
+    border-right: 1px solid #e5e5e5;
+    gap: 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .mobileNavLinks.open {
+    left: 0;
+  }
+
+  .mobileNavLink {
+    color: #111;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
 }
