@@ -60,7 +60,7 @@ export default function HomePage() {
       {/* Hero Section con Video de Fondo */}
       <section className="hero-section">
         <video autoPlay loop muted playsInline className="hero-video">
-          <source src="/quita-pelusas.mp4" type="video/mp4" />
+          <source src="/video/quita-pelusas.mp4" type="video/mp4" />
           Tu navegador no soporta el tag de video.
         </video>
         <div className="hero-content">
