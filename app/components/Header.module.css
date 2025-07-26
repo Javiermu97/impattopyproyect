@@ -73,3 +73,15 @@
     text-align: center;
   }
 }
+
+/* --- Para Tablets (hasta 1024px) --- */
+/* En esta vista, se mantiene horizontal pero ocultamos las redes para dar más espacio */
+@media (max-width: 1024px) {
+  .headerLeft, .headerRightPlaceholder {
+    display: none;
+  }
+  .headerCenter {
+    flex-grow: 1;
+    justify-content: center;
+  }
+}
