@@ -26,9 +26,9 @@ const Navbar = () => {
     { href: '/', label: 'Inicio' },
     { href: '/mas-vendidos', label: 'Más Vendidos' },
     { href: '/hogar-cocina', label: 'Hogar' },
-    { href: '/salud-bienestar', label: 'Salud' },
+    { href: '/salud-bienestar', label: 'Bienestar' },
     { href: '/limpieza', label: 'Limpieza' },
-    { href: '/vehiculo', label: 'Vehículo' },
+    { href: '/vehiculo', label: 'Mecánica & Más' },
   ];
 
   return (
