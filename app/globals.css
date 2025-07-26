@@ -1766,3 +1766,10 @@ body {
      padding-left: 0; /* Resetea el padding del modo escritorio */
   }
 }
+/* --- Ajuste para Títulos de Sección en Móviles --- */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.6em; /* Letra más pequeña */
+    white-space: nowrap; /* Evita que el texto salte a la siguiente línea */
+  }
+}
