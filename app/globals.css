@@ -149,7 +149,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .philosophy-content p { line-height: 1.7; color: #666; margin-bottom: 20px; }
 
 /* Franja Azul Informativa */
-.info-banner-section { background-color: #36547a; color: white; padding: 30px 20px; }
+.info-banner-section { background-color: #A78D5A; color: white; padding: 30px 20px; }
 .info-banner-container { color: white; display: grid; grid-template-columns: repeat(4, 1fr); gap: 60px; max-width: 1200px; margin: 0 auto; text-align: center; }
 
 .info-banner-item {

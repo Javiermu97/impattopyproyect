@@ -1,4 +1,4 @@
-import { allProducts, Product } from '@/lib/data'; // Ajusta la ruta a tus datos
+import { allProducts, Product } from '@/lib/data';
 import ShopPageClient from '@/app/components/ShopPageClient';
 
 export const metadata = {
@@ -7,9 +7,12 @@ export const metadata = {
 };
 
 export default function BienestarPage() {
-  // Filtramos productos que contengan 'Masajeador'
+  // REVISA AQUÍ: Asegúrate de que la palabra clave exista
+  // en los nombres de tus productos en el archivo de datos.
+  const keyword = 'Masajeador';
+  
   const bienestarProducts = allProducts.filter((p: Product) => 
-    p.name.includes('Masajeador')
+    p.name.toLowerCase().includes(keyword.toLowerCase())
   );
 
   return (
