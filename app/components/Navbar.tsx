@@ -28,7 +28,7 @@ const Navbar = () => {
     { href: '/hogar', label: 'Hogar' },
     { href: '/bienestar', label: 'Bienestar' },
     { href: '/limpieza', label: 'Limpieza' },
-    { href: '/mecánica', label: 'Mecánica & Más' },
+    { href: '/mecanica', label: 'Mecánica & Más' },
   ];
 
   return (
