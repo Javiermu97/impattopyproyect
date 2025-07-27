@@ -25,10 +25,10 @@ const Navbar = () => {
   const navLinks = [
     { href: '/', label: 'Inicio' },
     { href: '/mas-vendidos', label: 'Más Vendidos' },
-    { href: '/Hogar', label: 'Hogar' },
-    { href: '/Bienestar', label: 'Bienestar' },
+    { href: '/hogar', label: 'Hogar' },
+    { href: '/bienestar', label: 'Bienestar' },
     { href: '/limpieza', label: 'Limpieza' },
-    { href: '/Mecánica & Más', label: 'Mecánica & Más' },
+    { href: '/mecánica', label: 'Mecánica & Más' },
   ];
 
   return (
