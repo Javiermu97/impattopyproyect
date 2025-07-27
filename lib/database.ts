@@ -1,5 +1,5 @@
 import { supabase } from './supabaseClient';
-import { Product } from './types'; // <-- AHORA IMPORTA EL TIPO DESDE types.ts
+import { Product } from './types';
 
 // Ya no necesitamos definir Product o Feature aquí
 
@@ -15,7 +15,7 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 // Función para obtener UN producto por su ID, incluyendo sus características
-export async function getProductById(id: string): Promise<Product | null> {
+export async function getProductById(id: number): Promise<Product | null> { // <-- CORRECCIÓN AQUÍ
   const { data, error } = await supabase
     .from('productos')
     .select('*, caracteristicas (*)')

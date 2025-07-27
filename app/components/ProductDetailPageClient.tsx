@@ -2,7 +2,7 @@
 
 import { useState, useEffect, MouseEvent, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from 'next/image'; // <-- Importamos el componente Image
 import { useCart } from '@/app/context/CartContext';
 import CheckoutForm from '@/app/components/CheckoutForm';
 import { Product, ProductVariant, Feature } from '@/lib/types';
@@ -69,7 +69,15 @@ const OrderConfirmation = ({ orderData, onGoBack }: OrderConfirmationProps) => (
           </div>
         </div>
         <div className="confirmation-summary">
-          <div className="summary-product"><img src={orderData.formVariant.image} alt={orderData.product.name} /><div className="summary-product-info"><span>{orderData.selectedQuantity} x {orderData.product.name}</span><span>{orderData.formVariant.color}</span></div><span className="summary-product-price">Gs. {orderData.totalPrice.toLocaleString('es-PY')}</span></div>
+          <div className="summary-product">
+            {/* CORREGIDO: <img> a <Image> */}
+            <Image src={orderData.formVariant.image} alt={orderData.product.name} width={80} height={80} />
+            <div className="summary-product-info">
+                <span>{orderData.selectedQuantity} x {orderData.product.name}</span>
+                <span>{orderData.formVariant.color}</span>
+            </div>
+            <span className="summary-product-price">Gs. {orderData.totalPrice.toLocaleString('es-PY')}</span>
+          </div>
           <div className="summary-row"><span>Subtotal</span><span>Gs. {orderData.totalPrice.toLocaleString('es-PY')}</span></div>
           <div className="summary-row"><span>Envío</span><span>Gratis</span></div>
           <div className="summary-row total"><span>Total</span><span>PYG {orderData.totalPrice.toLocaleString('es-PY')}</span></div>
@@ -185,11 +193,20 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
     const y = ((e.pageY - top) / height) * 100;
     setImgPos({ x: `${x}%`, y: `${y}%` });
   };
+  
   const handleAddToCart = () => {
-    if (product && selectedVariant) {
-      addToCart(product, selectedVariant, quantity);
-    }
+    const variantToCart = selectedVariant || {
+      color: 'Único',
+      image: product.imageUrl,
+      colorHex: '#FFFFFF',
+    };
+    addToCart(product, variantToCart, quantity);
   };
+  
+  const handleRealizarPedido = () => {
+    setCheckoutVisible(true);
+  };
+  
   const handleOrderConfirmation = async (data: OrderData) => {
     try {
       const response = await fetch('/api/send-order-email', {
@@ -209,7 +226,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
     return <div className="pdp-container"><p>Cargando producto...</p></div>;
   }
   if (orderData) {
-      return <OrderConfirmation orderData={orderData} onGoBack={() => setOrderData(null)} />;
+    return <OrderConfirmation orderData={orderData} onGoBack={() => setOrderData(null)} />;
   }
 
   const accordionData: AccordionItemData[] = [
@@ -218,9 +235,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
       icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>,
       content: (
         <>
-          <p>Nuestro envío es gratuito para cualquiera de los productos en un plazo de 2 a 3 días hábiles, sin embargo contamos con un Envío Urgente en un plazo de entrega en el día o máximo 24hrs que incluye seguro por solo 10.000 Gs.</p>
-          <p>Todos los plazos propuestos de entrega de los productos son siempre estimativos pudiendo verificarse demoras en la entrega del producto sin que ello acarree responsabilidad alguna a PAP.</p>
-          <p>El usuario será informado de los motivos de esta demora si es que ocurre y así lo requiere.</p>
+          <p>Nuestro envío es gratuito para cualquiera de los productos en un plazo de 2 a 3 días hábiles...</p>
         </>
       )
     },
@@ -229,9 +244,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
       icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>,
       content: (
         <>
-          <p>La garantía del producto es de hasta 5 (cinco) días desde la entrega del mismo. Dentro de ese plazo, el usuario puede contactarse con nosotros al +595 123123123 o al correo contacto@arcashop.py para hacer sus reclamos y/o solicitar la devolución de su compra, según lo dicta la Ley del Comercio Electrónico.</p>
-          <p>En el caso de que su pedido haya llegado en malas condiciones, el usuario debe contactarse con nosotros por los mismos medios dentro de los primeros 5 días (Calendario) desde la recepción del producto.</p>
-          <p>Nos encargamos de solicitar a PAP el retiro del producto a devolver desde la dirección que nos indique el cliente. El costo de la devolución del producto corre por cuenta del cliente, que debe pagar por el envío a PAP cuando este haga el retiro del mismo.</p>
+          <p>La garantía del producto es de hasta 5 (cinco) días desde la entrega del mismo...</p>
         </>
       )
     },
@@ -239,8 +252,13 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
 
   return (
     <>
-      {isCheckoutVisible && selectedVariant && (
-        <CheckoutForm product={product} selectedVariant={selectedVariant} onClose={() => setCheckoutVisible(false)} onConfirm={handleOrderConfirmation} />
+      {isCheckoutVisible && (
+        <CheckoutForm
+          product={product}
+          selectedVariant={selectedVariant || { color: 'Único', image: product.imageUrl, colorHex: '#FFFFFF' }}
+          onClose={() => setCheckoutVisible(false)}
+          onConfirm={handleOrderConfirmation}
+        />
       )}
       <div className="pdp-container">
         <div className="pdp-header-row">
@@ -249,9 +267,30 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
         </div>
         <div className="pdp-main-layout">
           <div className="pdp-gallery">
-            <div className="pdp-main-image-wrapper" onMouseEnter={() => setZoomActive(true)} onMouseLeave={() => setZoomActive(false)} onMouseMove={handleMouseMove}><img src={mainImage} alt={product.name} className="pdp-main-image" style={{ transformOrigin: `${imgPos.x} ${imgPos.y}`, transform: zoomActive ? 'scale(2)' : 'scale(1)' }}/></div>
+            <div 
+                className="pdp-main-image-wrapper" 
+                onMouseEnter={() => setZoomActive(true)} 
+                onMouseLeave={() => setZoomActive(false)} 
+                onMouseMove={handleMouseMove}
+            >
+                {/* CORREGIDO: <img> a <Image> con fill y priority */}
+                <Image 
+                    src={mainImage} 
+                    alt={product.name} 
+                    className="pdp-main-image" 
+                    style={{ transformOrigin: `${imgPos.x} ${imgPos.y}`, transform: zoomActive ? 'scale(2)' : 'scale(1)' }}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                />
+            </div>
             <div className="pdp-thumbnails">
-              {product.galleryImages && product.galleryImages.map((imgSrc, index) => (<div key={index} className={`pdp-thumbnail ${mainImage === imgSrc ? 'active' : ''}`} onClick={() => setMainImage(imgSrc)}><img src={imgSrc} alt={`Thumbnail ${index + 1}`} /></div>))}
+              {product.galleryImages && product.galleryImages.map((imgSrc, index) => (
+                <div key={index} className={`pdp-thumbnail ${mainImage === imgSrc ? 'active' : ''}`} onClick={() => setMainImage(imgSrc)}>
+                    {/* CORREGIDO: <img> a <Image> */}
+                    <Image src={imgSrc} alt={`Thumbnail ${index + 1}`} width={100} height={100} />
+                </div>
+              ))}
             </div>
           </div>
           <div className="pdp-info">
@@ -271,7 +310,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
             )}
             <div className="pdp-actions-wrapper">
               <div className="add-to-cart-row"><div className="quantity-selector"><button onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1}>-</button><span>{quantity}</span><button onClick={() => handleQuantityChange(1)}>+</button></div><button onClick={handleAddToCart} className="add-to-cart-btn">AGREGAR AL CARRITO</button></div>
-              <button className="buy-now-btn" onClick={() => setCheckoutVisible(true)}><span>REALIZAR MI PEDIDO</span></button>
+              <button className="buy-now-btn" onClick={handleRealizarPedido}><span>REALIZAR MI PEDIDO</span></button>
             </div>
             <div className="pdp-trust-badges-wrapper">
               <div className="trust-badge-item"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg><span>Envío Gratis</span></div>
@@ -286,13 +325,19 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               <h2 className="promo-title">SÚPER PROMO POR <br /> {product.price.toLocaleString('es-PY')} GS 👑👑👑</h2>
               <h3 className="promo-subtitle">{product.promoSubtitle}</h3>
               <p>{product.description}</p>
-              {product.videoUrl ? (<video key={product.id} src={product.videoUrl} className="promo-image" autoPlay loop muted playsInline>Tu navegador no soporta el vídeo.</video>) : (<img src={product.imageUrl} alt={product.name} className="promo-image" />)}
+              {product.videoUrl ? (
+                <video key={product.id} src={product.videoUrl} className="promo-image" autoPlay loop muted playsInline>Tu navegador no soporta el vídeo.</video>
+              ) : (
+                /* CORREGIDO: <img> a <Image> */
+                <Image src={product.imageUrl} alt={product.name} className="promo-image" width={500} height={500} style={{width: '100%', height: 'auto'}} />
+              )}
             </div>
             {product.caracteristicas && product.caracteristicas.map((feature: Feature) => (
               <div key={feature.id} className="info-promo-block-2">
                 <h2>{feature.titulo}</h2>
                 <p>{feature.descripcion}</p>
-                <img src={feature.imagen} alt={feature.titulo} className="promo-image" />
+                {/* CORREGIDO: <img> a <Image> */}
+                <Image src={feature.imagen} alt={feature.titulo} className="promo-image" width={500} height={500} style={{width: '100%', height: 'auto'}} />
               </div>
             ))}
             <div className="pdp-final-accordion">
@@ -305,4 +350,3 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
     </>
   );
 }
-
