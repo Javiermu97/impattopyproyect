@@ -15,9 +15,11 @@ const Navbar = () => {
   const { openCart, cartItems } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
+  // Obtenemos la ruta actual con el hook usePathname
+  const currentPath = usePathname();
+  
   const totalItems = cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
 
-  const currentPath = usePathname();
   useEffect(() => {
     setIsMenuOpen(false);
   }, [currentPath]);
@@ -34,41 +36,41 @@ const Navbar = () => {
   return (
     <>
       <div className={styles.navbar}>
-        {/* Lado Izquierdo */}
         <div className={styles.left}>
           <button className={styles.menuBtn} onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Abrir menú">
             <IoMenuOutline size={32} />
           </button>
-          {/* Ícono de búsqueda PARA MÓVIL */}
-          <button className={`${styles.iconBtn} ${styles.searchIconMobile}`} aria-label="Buscar">
-            <IoSearchOutline size={24} />
-          </button>
           <nav className={styles.navLinks}>
-            {navLinks.map(link => (
-              <Link key={link.href} href={link.href} className={styles.navLink}>
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map(link => {
+              // Comparamos la ruta actual con la del enlace
+              const isActive = currentPath === link.href;
+              return (
+                <Link 
+                  key={link.href} 
+                  href={link.href} 
+                  // Añadimos la clase 'active' si las rutas coinciden
+                  className={`${styles.navLink} ${isActive ? styles.active : ''}`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
 
-        {/* Centro: Logo */}
         <div className={styles.logo}>
           <Link href="/">
             IMPATTO <br /> BOUTIQUE
           </Link>
         </div>
 
-        {/* Lado Derecho */}
         <div className={styles.right}>
-          {/* Ícono de búsqueda PARA ESCRITORIO */}
           <button className={`${styles.iconBtn} ${styles.searchIconDesktop}`} aria-label="Buscar">
             <IoSearchOutline size={24} />
           </button>
           <button className={styles.iconBtn} aria-label="Perfil">
             <IoPersonOutline size={24} />
           </button>
-          {/* NUEVO ÍCONO DE CORAZÓN */}
           <button className={styles.iconBtn} aria-label="Lista de deseos">
             <IoHeartOutline size={24} />
           </button>
@@ -79,7 +81,6 @@ const Navbar = () => {
         </div>
       </div>
       
-      {/* Menú Desplegable para Móvil */}
       <nav className={`${styles.mobileNavLinks} ${isMenuOpen ? styles.open : ''}`}>
         {navLinks.map(link => (
           <Link key={link.href} href={link.href} className={styles.mobileNavLink}>

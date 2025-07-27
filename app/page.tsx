@@ -116,7 +116,7 @@ export default function HomePage() {
             { id: 3, name: 'Mini Masajeador', price: 'Gs. 149.000', oldPrice: 'Gs. 299.000', imageUrl: '/product3.png', imageUrl2: '/product4.png', offer: true },
             { id: 4, name: 'Solar Charger', price: 'Gs. 199.000', oldPrice: 'Gs. 399.000', imageUrl: '/product4.png', imageUrl2: '/product3.png', offer: true },
           ].map(product => (
-            <Link key={product.id} href="/hogar-cocina" className="shop-product-card-link">
+            <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
               <div className="shop-product-card">
                 <div className="image-container">
                   {product.offer && <span className="shop-offer-badge">Oferta</span>}
@@ -132,7 +132,7 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
-        <Link href="/hogar-cocina">
+        <Link href="/hogar">
             <button className="btn-secondary">VER TODOS</button>
         </Link>
       </section>
