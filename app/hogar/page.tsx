@@ -1,5 +1,5 @@
 import { allProducts, Product } from '@/lib/data'; // Asumiendo que tus productos vienen de aquí
-import ShopPageClient from '../components/ShopPageClient'; // Importamos el nuevo componente maestro
+import ShopPageClient from '@/app/components/ShopPageClient'; // Importamos el nuevo componente maestro
 
 export const metadata = {
   title: 'Hogar - Impatto Py',

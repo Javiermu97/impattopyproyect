@@ -1,12 +1,12 @@
 import { allProducts, Product } from '@/lib/data'; // Asumiendo que tus productos vienen de aquí
-import ShopPageClient from '../components/ShopPageClient'; // Importamos el nuevo componente maestro
+import ShopPageClient from '@/app/components/ShopPageClient'; // Importamos el nuevo componente maestro
 
 export const metadata = {
   title: 'Bienestar - Impatto Py',
   description: 'Encuentra todo lo que necesitas para tu hogar y cocina.',
 };
 
-export default function HogarPage() {
+export default function BienestarPage() {
   // 1. Pre-filtramos los productos para esta categoría en el servidor
   const keywords = ['Organizador', 'Licuadora', 'Alfombra', 'Cinta', 'Lint'];
   const bienestarProducts = allProducts
@@ -16,7 +16,7 @@ export default function HogarPage() {
   return (
     <div className="shop-container">
         <header className="shop-header">
-            <h1>Hogar</h1>
+            <h1>Bienestar</h1>
             <p style={{ textAlign: 'center', color: '#666' }}>
                 Soluciones para mantenerte siempre saludable.
             </p>
