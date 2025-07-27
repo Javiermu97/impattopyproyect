@@ -1,5 +1,5 @@
-import { allProducts, Product } from '@/lib/data'; // Asumiendo que tus productos vienen de aquí
-import ShopPageClient from '@/app/components/ShopPageClient'; // Importamos el nuevo componente maestro
+import { allProducts, Product } from '@/lib/data';
+import ShopPageClient from '../components/ShopPageClient';
 
 export const metadata = {
   title: 'Hogar - Impatto Py',
@@ -7,12 +7,14 @@ export const metadata = {
 };
 
 export default function HogarPage() {
-  // 1. Pre-filtramos los productos para esta categoría en el servidor
   const keywords = ['Organizador', 'Licuadora', 'Alfombra', 'Cinta', 'Lint'];
+  
+  // La única línea que cambiamos es la siguiente:
   const hogarProducts = allProducts
-    .filter((p: Product) => keywords.some(key => p.name.includes(key)));
+    .filter((p: Product) => 
+      keywords.some(key => p.name.toLowerCase().includes(key.toLowerCase()))
+    );
 
-  // 2. Pasamos solo esa lista de productos al componente de cliente
   return (
     <div className="shop-container">
         <header className="shop-header">
