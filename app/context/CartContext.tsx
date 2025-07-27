@@ -1,8 +1,8 @@
 'use client';
 
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-// CORRECCIÓN: La ruta ahora es correcta, apuntando a la carpeta 'lib' en la raíz.
-import { Product, ProductVariant } from '@/lib/data';
+// CORRECCIÓN: La ruta correcta para los tipos es '@/lib/types', no '@/lib/data'.
+import { Product, ProductVariant } from '@/lib/types';
 
 // Interfaz para un item dentro del carrito
 interface CartItem {
