@@ -1,12 +1,11 @@
-// app/components/Cart.tsx
 'use client';
 
 import Image from 'next/image';
-// CORRECCIÓN: Se añade 'app/' a la ruta del contexto.
 import { useCart } from '@/app/context/CartContext';
-import { Product, ProductVariant } from '@/lib/data';
+// --- CORRECCIÓN: Importamos los tipos desde el archivo central 'lib/types.ts' ---
+import { Product, ProductVariant } from '@/lib/types';
 
-// Definimos el tipo para un item del carrito
+// Esta interfaz ahora usa los tipos 'Product' y 'ProductVariant' correctos
 interface CartItem {
   product: Product;
   variant: ProductVariant;
@@ -37,15 +36,16 @@ export default function Cart() {
         ) : (
           <div className="cart-items">
             {cartItems.map((item: CartItem) => (
-              <div key={`${item.product.id}-${item.variant.color}`} className="cart-item">
-                <Image src={item.variant.image} alt={item.product.name} width={80} height={80} />
+              <div key={`${item.product.id}-${item.variant ? item.variant.color : ''}`} className="cart-item">
+                {/* Usamos imageUrl del producto como fallback si la variante no tiene imagen */}
+                <Image src={item.variant?.image || item.product.imageUrl} alt={item.product.name} width={80} height={80} />
                 <div className="item-details">
                   <p className="item-name">{item.product.name}</p>
-                  <p className="item-variant">{item.variant.color}</p>
+                  {item.variant && <p className="item-variant">{item.variant.color}</p>}
                   <p className="item-price">Gs. {(item.product.price * item.quantity).toLocaleString('es-PY')}</p>
                   <div className="item-quantity">
                     <span>Cantidad: {item.quantity}</span>
-                    <button onClick={() => removeFromCart(item.product.id, item.variant.color)} className="remove-btn">
+                    <button onClick={() => removeFromCart(item.product.id, item.variant ? item.variant.color : '')} className="remove-btn">
                       Remove
                     </button>
                   </div>

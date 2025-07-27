@@ -1,12 +1,13 @@
-'use client'; // ¡Esta es la línea más importante!
+'use client';
 
 import React from 'react';
 import { useCart } from '@/app/context/CartContext';
 import Cart from '@/app/components/Cart';
 import CheckoutForm from '@/app/components/CheckoutForm';
-import { Product, ProductVariant } from '@/lib/data';
+// --- CORRECCIÓN: Importamos los tipos desde el archivo central 'lib/types.ts' ---
+import { Product, ProductVariant } from '@/lib/types';
 
-// Definimos el tipo para la data de la orden
+// Esta interfaz ahora usa los tipos 'Product' y 'ProductVariant' correctos
 interface OrderPayload {
   orderId: number;
   orderDate: string;
@@ -27,7 +28,6 @@ interface OrderPayload {
 export default function PageWrapper({ children }: { children: React.ReactNode }) {
   const { isCheckoutOpen, closeCheckout, selectedProductInfo } = useCart();
   
-  // Lógica para el envío de la orden
   const handleConfirmOrder = async (orderData: OrderPayload) => {
     try {
       const response = await fetch('/api/send-order-email', {

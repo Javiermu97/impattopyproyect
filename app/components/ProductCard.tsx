@@ -1,8 +1,7 @@
-// app/components/ProductCard.tsx
 import Link from 'next/link';
 import Image from 'next/image';
-// CORRECCIÓN: La ruta ahora incluye la carpeta 'lib' desde la raíz.
-import { Product } from '@/lib/data';
+// --- CORRECCIÓN: Importamos el tipo desde el archivo central 'lib/types.ts' ---
+import { Product } from '@/lib/types';
 
 const ProductCard = ({ product }: { product: Product }) => (
   <Link href={`/products/${product.id}`} className="shop-product-card-link">

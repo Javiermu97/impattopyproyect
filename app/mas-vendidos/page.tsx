@@ -1,18 +1,25 @@
-import { allProducts, Product } from '@/lib/data'; // Asumiendo que tus productos vienen de aquí
-import ShopPageClient from '../components/ShopPageClient'; // Importamos el nuevo componente maestro
+import { getProducts } from '@/lib/database';
+import ShopPageClient from '@/app/components/ShopPageClient';
+import { Product } from '@/lib/types';
 
 export const metadata = {
   title: 'Más Vendidos - Impatto Py',
   description: 'Descubre nuestros productos más populares y en tendencia.',
 };
 
-export default function MasVendidosPage() {
-  // 1. Pre-filtramos los productos para esta categoría en el servidor
-  const bestSellers = allProducts
-    .filter((p: Product) => p.inStock)
-    .sort((a: Product, b: Product) => b.dateAdded.getTime() - a.dateAdded.getTime());
+// La página ahora es ASÍNCRONA para poder conectarse a la base de datos
+export default async function MasVendidosPage() {
+  
+  // 1. Obtenemos todos los productos desde Supabase
+  const allProducts = await getProducts();
 
-  // 2. Pasamos solo esa lista de productos al componente de cliente
+  // 2. Ordenamos los productos por fecha de creación (el más nuevo primero)
+  //    Ya no filtramos por 'inStock' porque ese dato no viene de la base de datos.
+  const bestSellers = allProducts.sort((a, b) => 
+    new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+
+  // 3. Pasamos la lista ordenada de productos al componente de cliente
   return (
     <div className="shop-container">
         <header className="shop-header">

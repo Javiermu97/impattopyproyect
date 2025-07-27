@@ -5,26 +5,10 @@ import * as Slider from '@radix-ui/react-slider';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// --- DEFINICIÓN DE TIPOS (Asegúrate de que coincida con tus datos) ---
-type ProductVariant = {
-  color: string;
-  colorHex: string;
-  image: string;
-};
+// --- CORRECCIÓN #1: Importamos el tipo correcto desde nuestro archivo central 'types.ts' ---
+import { Product } from '@/lib/types';
 
-type Product = { 
-  id: number; 
-  name: string; 
-  price: number; 
-  oldPrice?: number; 
-  inStock: boolean; 
-  dateAdded: Date;
-  imageUrl: string; 
-  imageUrl2?: string;
-  galleryImages: string[];
-  variants: ProductVariant[];
-  description: string;
-};
+// --- Se elimina la definición de tipo 'Product' de aquí para evitar conflictos ---
 
 // --- ÍCONOS (Componentes internos para limpieza) ---
 const IconColumns2 = () => ( <svg viewBox="0 0 16 16" fill="currentColor" height="1.2em" width="1.2em" style={{ display: 'block' }}><rect x="2" y="2" width="5" height="12" rx="1"></rect><rect x="9" y="2" width="5" height="12" rx="1"></rect></svg> );
@@ -34,12 +18,11 @@ const IconX = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="12" height=
 const IconChevron = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg> );
 
 // --- COMPONENTE PRINCIPAL ---
-export default function ShopPageClient({ products: allProducts }: { products: Product[] }) {
+export default function ShopPageClient({ products }: { products: Product[] }) {
   const MIN_PRICE = 0;
   const MAX_PRICE = 500000;
-  const PRODUCTS_PER_PAGE = 9; // Puedes ajustar cuántos productos por página
+  const PRODUCTS_PER_PAGE = 8;
 
-  // --- Estados (Toda tu lógica original) ---
   const [availability, setAvailability] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([MIN_PRICE, MAX_PRICE]);
   const [sortBy, setSortBy] = useState('caracteristicas');
@@ -48,38 +31,42 @@ export default function ShopPageClient({ products: allProducts }: { products: Pr
   const [openFilters, setOpenFilters] = useState({ availability: true, price: true });
   const [currentPage, setCurrentPage] = useState(1);
 
-  // --- Lógica de cálculo y efectos (Tu lógica original) ---
   const toggleFilterSection = (name: keyof typeof openFilters) => { setOpenFilters(prev => ({ ...prev, [name]: !prev[name] })); };
-  const availabilityCounts = useMemo(() => ({ inStock: allProducts.filter(p => p.inStock).length, outOfStock: allProducts.filter(p => !p.inStock).length }), [allProducts]);
+  
+  const availabilityCounts = useMemo(() => ({
+    // --- CORRECCIÓN #2: Hacemos el filtro seguro, contando solo si 'inStock' es explícitamente true ---
+    inStock: products.filter(p => p.inStock === true).length,
+    outOfStock: products.filter(p => p.inStock !== true).length
+  }), [products]);
   
   useEffect(() => { setPriceInputs({ min: priceRange[0].toLocaleString('es-PY'), max: priceRange[1].toLocaleString('es-PY') }) }, [priceRange]);
   
-  useEffect(() => { setCurrentPage(1); }, [availability, priceRange, sortBy]);
+  useEffect(() => { setCurrentPage(1); }, [availability, priceRange, sortBy, products]);
   
   const filteredProducts = useMemo(() => {
-    let products = [...allProducts];
+    let filtered = [...products];
     if (availability.length > 0) {
         const inStockSelected = availability.includes('in-stock');
         const outOfStockSelected = availability.includes('out-of-stock');
-        if (inStockSelected && !outOfStockSelected) { products = products.filter(p => p.inStock); } 
-        else if (!inStockSelected && outOfStockSelected) { products = products.filter(p => !p.inStock); }
+        // --- CORRECCIÓN #3: Hacemos la lógica de filtrado segura ---
+        if (inStockSelected && !outOfStockSelected) { filtered = filtered.filter(p => p.inStock === true); } 
+        else if (!inStockSelected && outOfStockSelected) { filtered = filtered.filter(p => p.inStock !== true); }
     }
-    products = products.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
+    filtered = filtered.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
     switch (sortBy) {
-        case 'precio-asc': products.sort((a, b) => a.price - b.price); break;
-        case 'precio-desc': products.sort((a, b) => b.price - a.price); break;
-        case 'nombre-asc': products.sort((a, b) => a.name.localeCompare(b.name)); break;
-        case 'nombre-desc': products.sort((a, b) => b.name.localeCompare(a.name)); break;
-        case 'fecha-desc': products.sort((a, b) => b.dateAdded.getTime() - a.dateAdded.getTime()); break;
-        case 'fecha-asc': products.sort((a, b) => a.dateAdded.getTime() - b.dateAdded.getTime()); break;
+        case 'precio-asc': filtered.sort((a, b) => a.price - b.price); break;
+        case 'precio-desc': filtered.sort((a, b) => b.price - a.price); break;
+        case 'nombre-asc': filtered.sort((a, b) => a.name.localeCompare(b.name)); break;
+        case 'nombre-desc': filtered.sort((a, b) => b.name.localeCompare(a.name)); break;
+        // Usamos created_at de Supabase, con una fecha por defecto si no existe
+        case 'fecha-desc': filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()); break;
+        case 'fecha-asc': filtered.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()); break;
     }
-    return products;
-  }, [allProducts, availability, priceRange, sortBy]);
+    return filtered;
+  }, [products, availability, priceRange, sortBy]);
 
   const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
-  const indexOfLastProduct = currentPage * PRODUCTS_PER_PAGE;
-  const indexOfFirstProduct = indexOfLastProduct - PRODUCTS_PER_PAGE;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredProducts.slice((currentPage - 1) * PRODUCTS_PER_PAGE, currentPage * PRODUCTS_PER_PAGE);
 
   const handleAvailabilityChange = (value: string) => { setAvailability(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]) };
   const handlePriceInputChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => { const value = e.target.value.replace(/\D/g, ''); setPriceInputs(prev => ({ ...prev, [type]: value ? parseInt(value, 10).toLocaleString('es-PY') : '' })) };
@@ -100,8 +87,8 @@ export default function ShopPageClient({ products: allProducts }: { products: Pr
       <div className="shop-layout">
         <aside className="filters-sidebar">
             <div className="filter-group"><h3 className="filter-title-main">TODO</h3><div className="active-filters-container">{availability.map((filterValue) => ( <div key={filterValue} className="active-filter-badge"><span>{filterValue === 'in-stock' ? 'En existencia' : 'Agotado'}</span><button onClick={() => handleAvailabilityChange(filterValue)} className="remove-filter-btn"><IconX /></button></div> ))}</div></div>
-            <div className="filter-group"><button className="filter-title" onClick={() => toggleFilterSection('availability')}><span>AVAILABILITY</span><span className={`filter-chevron ${openFilters.availability ? 'open' : ''}`}><IconChevron /></span></button><div className={`filter-content ${openFilters.availability ? 'open' : ''}`}><div className="filter-option"><input type="checkbox" id="in-stock" checked={availability.includes('in-stock')} onChange={() => handleAvailabilityChange('in-stock')} /><label htmlFor="in-stock">En existencia ({availabilityCounts.inStock})</label></div><div className="filter-option"><input type="checkbox" id="out-of-stock" checked={availability.includes('out-of-stock')} onChange={() => handleAvailabilityChange('out-of-stock')} /><label htmlFor="out-of-stock">Agotado ({availabilityCounts.outOfStock})</label></div></div></div>
-            <div className="filter-group"><button className="filter-title" onClick={() => toggleFilterSection('price')}><span>PRICE</span><span className={`filter-chevron ${openFilters.price ? 'open' : ''}`}><IconChevron /></span></button><div className={`filter-content ${openFilters.price ? 'open' : ''}`}><Slider.Root className="SliderRoot" value={priceRange} min={MIN_PRICE} max={MAX_PRICE} step={10000} minStepsBetweenThumbs={1} onValueChange={(value) => setPriceRange(value as [number, number])}><Slider.Track className="SliderTrack"><Slider.Range className="SliderRange" /></Slider.Track><Slider.Thumb className="SliderThumb" /><Slider.Thumb className="SliderThumb" /></Slider.Root><div className="price-input-container"><div className="price-input-wrapper"><span>Gs.</span><input type="text" className="price-input" value={priceInputs.min} onChange={(e) => handlePriceInputChange(e, 'min')} onBlur={handlePriceInputBlur} /></div><div className="price-input-wrapper"><span>Gs.</span><input type="text" className="price-input" value={priceInputs.max} onChange={(e) => handlePriceInputChange(e, 'max')} onBlur={handlePriceInputBlur} /></div></div></div></div>
+            <div className="filter-group"><button className="filter-title" onClick={() => toggleFilterSection('availability')}><span>Availability</span><span className={`filter-chevron ${openFilters.availability ? 'open' : ''}`}><IconChevron /></span></button><div className={`filter-content ${openFilters.availability ? 'open' : ''}`}><div className="filter-option"><input type="checkbox" id="in-stock" checked={availability.includes('in-stock')} onChange={() => handleAvailabilityChange('in-stock')} /><label htmlFor="in-stock">En existencia ({availabilityCounts.inStock})</label></div><div className="filter-option"><input type="checkbox" id="out-of-stock" checked={availability.includes('out-of-stock')} onChange={() => handleAvailabilityChange('out-of-stock')} /><label htmlFor="out-of-stock">Agotado ({availabilityCounts.outOfStock})</label></div></div></div>
+            <div className="filter-group"><button className="filter-title" onClick={() => toggleFilterSection('price')}><span>Price</span><span className={`filter-chevron ${openFilters.price ? 'open' : ''}`}><IconChevron /></span></button><div className={`filter-content ${openFilters.price ? 'open' : ''}`}><Slider.Root className="SliderRoot" value={priceRange} min={MIN_PRICE} max={MAX_PRICE} step={10000} minStepsBetweenThumbs={1} onValueChange={(value) => setPriceRange(value as [number, number])}><Slider.Track className="SliderTrack"><Slider.Range className="SliderRange" /></Slider.Track><Slider.Thumb className="SliderThumb" /><Slider.Thumb className="SliderThumb" /></Slider.Root><div className="price-input-container"><div className="price-input-wrapper"><span>Gs.</span><input type="text" className="price-input" value={priceInputs.min} onChange={(e) => handlePriceInputChange(e, 'min')} onBlur={handlePriceInputBlur} /></div><div className="price-input-wrapper"><span>Gs.</span><input type="text" className="price-input" value={priceInputs.max} onChange={(e) => handlePriceInputChange(e, 'max')} onBlur={handlePriceInputBlur} /></div></div></div></div>
         </aside>
 
         <main className="product-grid-area">
@@ -110,15 +97,14 @@ export default function ShopPageClient({ products: allProducts }: { products: Pr
                 <div className="sort-by"><label htmlFor="sort">Ordenar:</label><select id="sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}><option value="caracteristicas">Características</option><option value="mas-vendidos">Más vendidos</option><option value="nombre-asc">Alfabéticamente, A-Z</option><option value="nombre-desc">Alfabéticamente, Z-A</option><option value="precio-asc">Precio, menor a mayor</option><option value="precio-desc">Precio, mayor a menor</option><option value="fecha-desc">Fecha: reciente a antiguo(a)</option><option value="fecha-asc">Fecha: antiguo(a) a reciente</option></select></div>
             </div>
 
-          <div className={`product-grid-shop columns-${columns}`}>
-            {currentProducts.length > 0 ? (
-              currentProducts.map(product => (
+            <div className={`product-grid-shop columns-${columns}`}>
+              {currentProducts.map(product => (
                 <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
                   <div className="shop-product-card">
                     <div className="image-container">
                       {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
-                      <Image src={product.imageUrl} alt={product.name} width={250} height={250} className="shop-product-image-primary" />
-                      {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} width={250} height={250} className="shop-product-image-secondary" />}
+                      <Image src={product.imageUrl} alt={product.name} width={250} height={250} className="shop-product-image-primary" style={{ objectFit: 'contain' }} />
+                      {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} width={250} height={250} className="shop-product-image-secondary" style={{ objectFit: 'contain' }} />}
                     </div>
                     <h4>{product.name}</h4>
                     <div className="price-section">
@@ -127,18 +113,17 @@ export default function ShopPageClient({ products: allProducts }: { products: Pr
                     </div>
                   </div>
                 </Link>
-              ))
-            ) : ( <p className="no-products-message">No se encontraron productos con estos filtros.</p> )}
-          </div>
-          
-          {totalPages > 1 && (
-            <div className="pagination">
-              <button onClick={() => setCurrentPage(prev => prev - 1)} disabled={currentPage === 1}>&lt;</button>
-              {getPageNumbers().map(number => ( <button key={number} onClick={() => setCurrentPage(number)} className={currentPage === number ? 'active' : ''}>{number}</button> ))}
-              <button onClick={() => setCurrentPage(prev => prev + 1)} disabled={currentPage === totalPages}>&gt;</button>
+              ))}
             </div>
-          )}
+          
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button onClick={() => setCurrentPage(prev => prev - 1)} disabled={currentPage === 1}>&lt;</button>
+                {getPageNumbers().map(number => ( <button key={number} onClick={() => setCurrentPage(number)} className={currentPage === number ? 'active' : ''}>{number}</button> ))}
+                <button onClick={() => setCurrentPage(prev => prev + 1)} disabled={currentPage === totalPages}>&gt;</button>
+              </div>
+            )}
         </main>
-      </div>
+    </div>
   );
 }

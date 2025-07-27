@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Product, ProductVariant } from '@/lib/data';
+import { Product, ProductVariant } from '@/lib/types';
 
 /* ─────────────── Tipos ─────────────── */
 interface OrderData {
@@ -117,7 +117,7 @@ export default function CheckoutForm({
   };
 
   const handleVariantChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const v = product.variants.find((x) => x.color === e.target.value);
+    const v = product.variants?.find((x) => x.color === e.target.value);
     if (v) setFormVariant(v);
   };
 
@@ -213,7 +213,7 @@ export default function CheckoutForm({
       </div>
 
       {/* ---------- Selector de color ---------- */}
-      {product.variants.length > 1 && (
+      {product.variants && product.variants.length > 0 && (
         <div className="checkout-color-selector">
           <label htmlFor="color-select-checkout" className="variant-label">
             Color:
@@ -224,7 +224,7 @@ export default function CheckoutForm({
             onChange={handleVariantChange}
             className="form-input"
           >
-            {product.variants.map((v) => (
+            {product.variants?.map((v) => (
               <option key={v.color} value={v.color}>
                 {v.color}
               </option>
