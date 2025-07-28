@@ -18,12 +18,10 @@ interface OrderData {
   selectedQuantity: number;
   totalPrice: number;
 }
-
 interface OrderConfirmationProps {
   orderData: OrderData;
   onGoBack: () => void;
 }
-
 type AccordionItemData = {
   title: string;
   content: React.ReactNode;
@@ -57,7 +55,7 @@ const OrderConfirmation = ({ orderData, onGoBack }: OrderConfirmationProps) => (
           </div>
         </div>
         <div className="confirmation-summary">
-          <div className="summary-product"><img src={orderData.formVariant.image} alt={orderData.product.name} /><div className="summary-product-info"><span>{orderData.selectedQuantity} x {orderData.product.name}</span><span>{orderData.formVariant.color}</span></div><span className="summary-product-price">Gs. {orderData.totalPrice.toLocaleString('es-PY')}</span></div>
+          <div className="summary-product"><Image src={orderData.formVariant.image} alt={orderData.product.name} width={80} height={80} /><div className="summary-product-info"><span>{orderData.selectedQuantity} x {orderData.product.name}</span><span>{orderData.formVariant.color}</span></div><span className="summary-product-price">Gs. {orderData.totalPrice.toLocaleString('es-PY')}</span></div>
           <div className="summary-row"><span>Subtotal</span><span>Gs. {orderData.totalPrice.toLocaleString('es-PY')}</span></div>
           <div className="summary-row"><span>Envío</span><span>Gratis</span></div>
           <div className="summary-row total"><span>Total</span><span>PYG {orderData.totalPrice.toLocaleString('es-PY')}</span></div>
@@ -66,14 +64,12 @@ const OrderConfirmation = ({ orderData, onGoBack }: OrderConfirmationProps) => (
     </div>
   </div>
 );
-
 const AccordionItem = ({ item, isOpen, onClick }: { item: AccordionItemData; isOpen: boolean; onClick: () => void; }) => (
   <div className="accordion-item">
     <button className="accordion-header" onClick={onClick}><div className="accordion-title-wrapper"><span className="accordion-title-icon">{item.icon}</span><span>{item.title}</span></div><span className={`accordion-icon ${isOpen ? 'open' : ''}`}>+</span></button>
     <div className={`accordion-content ${isOpen ? 'open' : ''}`}><div className="accordion-content-inner">{item.content}</div></div>
   </div>
 );
-
 const RelatedProductCard = ({ product }: { product: Product }) => (
   <Link href={`/products/${product.id}`} className="shop-product-card-link">
     <div className="shop-product-card">
@@ -83,12 +79,10 @@ const RelatedProductCard = ({ product }: { product: Product }) => (
     </div>
   </Link>
 );
-
 const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-
   const checkScrollability = () => {
     const container = scrollContainerRef.current;
     if (container) {
@@ -97,7 +91,6 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
     }
   };
-
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (container) {
@@ -112,7 +105,6 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
       }
     };
   }, [products]);
-
   const scroll = (direction: 'left' | 'right') => {
     const container = scrollContainerRef.current;
     if (container) {
@@ -120,7 +112,6 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
       container.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
     }
   };
-
   return (
     <div className="related-products-section">
       <h2 className="related-products-title">Te puede interesar</h2>
@@ -134,26 +125,21 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
     </div>
   );
 };
-
 const TitleWithStyledTM = ({ name }: { name: string }) => {
   if (!name.includes('™')) return <>{name}</>;
   const parts = name.split('™');
   return <>{parts[0]}<span className="trademark-symbol">™</span>{parts[1]}</>;
 };
-
 const StarRating = () => (
-  <div className="star-rating">
-    {Array.from({ length: 5 }).map((_, index) => (
-      <svg key={index} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-    ))}
-  </div>
+    <div className="star-rating">{[...Array(5)].map((_, index) => <svg key={index} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>)}</div>
 );
+
 
 // --- COMPONENTE PRINCIPAL DE CLIENTE ---
 export default function ProductDetailPageClient({ product, relatedProducts }: { product: Product, relatedProducts: Product[] }) {
   const { addToCart } = useCart();
 
-  const [mainImage, setMainImage] = useState(product.galleryImages ? product.galleryImages[0] : product.imageUrl);
+  const [mainImage, setMainImage] = useState(product.imageUrl);
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(product.variants ? product.variants[0] : null);
   const [quantity, setQuantity] = useState(1);
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
@@ -161,6 +147,13 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
   const [imgPos, setImgPos] = useState({ x: '50%', y: '50%' });
   const [isCheckoutVisible, setCheckoutVisible] = useState(false);
   const [orderData, setOrderData] = useState<OrderData | null>(null);
+
+  useEffect(() => {
+    if (product) {
+        setMainImage(product.imageUrl);
+        setSelectedVariant(product.variants ? product.variants[0] : null);
+    }
+  }, [product]);
 
   const handleVariantSelect = (variant: ProductVariant) => {
     setSelectedVariant(variant);
@@ -173,16 +166,13 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
     const y = ((e.pageY - top) / height) * 100;
     setImgPos({ x: `${x}%`, y: `${y}%` });
   };
-  
   const handleAddToCart = () => {
     const variantToCart = selectedVariant || { color: 'Único', image: product.imageUrl, colorHex: '#FFFFFF' };
     addToCart(product, variantToCart, quantity);
   };
-  
   const handleRealizarPedido = () => {
     setCheckoutVisible(true);
   };
-  
   const handleOrderConfirmation = async (data: OrderData) => {
     try {
       const response = await fetch('/api/send-order-email', {
@@ -197,11 +187,6 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
     setOrderData(data);
     setCheckoutVisible(false);
   };
-  
-  const galleryImages = [product.imageUrl];
-  if (product.imageUrl2) {
-    galleryImages.push(product.imageUrl2);
-  }
 
   if (!product) {
     return <div className="pdp-container"><p>Cargando producto...</p></div>;
@@ -210,6 +195,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
     return <OrderConfirmation orderData={orderData} onGoBack={() => setOrderData(null)} />;
   }
 
+  // Contenido completo del acordeón restaurado
   const accordionData: AccordionItemData[] = [
     {
       title: 'Información de envío',
@@ -249,10 +235,10 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
 
   return (
     <>
-      {isCheckoutVisible && (
+      {isCheckoutVisible && selectedVariant && (
         <CheckoutForm
           product={product}
-          selectedVariant={selectedVariant || { color: 'Único', image: product.imageUrl, colorHex: '#FFFFFF' }}
+          selectedVariant={selectedVariant}
           onClose={() => setCheckoutVisible(false)}
           onConfirm={handleOrderConfirmation}
         />
@@ -264,9 +250,15 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
         </div>
         <div className="pdp-main-layout">
           <div className="pdp-gallery">
-            <div className="pdp-main-image-wrapper" onMouseEnter={() => setZoomActive(true)} onMouseLeave={() => setZoomActive(false)} onMouseMove={handleMouseMove}><img src={mainImage} alt={product.name} className="pdp-main-image" style={{ transformOrigin: `${imgPos.x} ${imgPos.y}`, transform: zoomActive ? 'scale(2)' : 'scale(1)' }}/></div>
+            <div className="pdp-main-image-wrapper" onMouseEnter={() => setZoomActive(true)} onMouseLeave={() => setZoomActive(false)} onMouseMove={handleMouseMove}>
+              <Image src={mainImage} alt={product.name} className="pdp-main-image" fill sizes="(max-width: 768px) 100vw, 50vw" priority style={{ transformOrigin: `${imgPos.x} ${imgPos.y}`, transform: zoomActive ? 'scale(2)' : 'scale(1)' }}/>
+            </div>
             <div className="pdp-thumbnails">
-              {galleryImages.map((imgSrc, index) => (<div key={index} className={`pdp-thumbnail ${mainImage === imgSrc ? 'active' : ''}`} onClick={() => setMainImage(imgSrc)}><img src={imgSrc} alt={`Thumbnail ${index + 1}`} /></div>))}
+              {product.galleryImages && product.galleryImages.map((imgSrc, index) => (
+                <div key={index} className={`pdp-thumbnail ${mainImage === imgSrc ? 'active' : ''}`} onClick={() => setMainImage(imgSrc)}>
+                  <Image src={imgSrc} alt={`Thumbnail ${index + 1}`} width={100} height={100} />
+                </div>
+              ))}
             </div>
           </div>
           <div className="pdp-info">
@@ -301,13 +293,13 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               <h2 className="promo-title">SÚPER PROMO POR <br /> {product.price.toLocaleString('es-PY')} GS 👑👑👑</h2>
               <h3 className="promo-subtitle">{product.promoSubtitle}</h3>
               <p>{product.description}</p>
-              {product.videoUrl ? (<video key={product.id} src={product.videoUrl} className="promo-image" autoPlay loop muted playsInline>Tu navegador no soporta el vídeo.</video>) : (<img src={product.imageUrl} alt={product.name} className="promo-image" />)}
+              {product.videoUrl ? (<video key={product.id} src={product.videoUrl} className="promo-image" autoPlay loop muted playsInline>Tu navegador no soporta el vídeo.</video>) : (<Image src={product.imageUrl} alt={product.name} className="promo-image" width={500} height={500} style={{width: '100%', height: 'auto'}} />)}
             </div>
             {product.caracteristicas && product.caracteristicas.map((feature: Feature) => (
               <div key={feature.id} className="info-promo-block-2">
                 <h2>{feature.titulo}</h2>
                 <p>{feature.descripcion}</p>
-                <img src={feature.imagen} alt={feature.titulo} className="promo-image" />
+                <Image src={feature.imagen} alt={feature.titulo} className="promo-image" width={500} height={500} style={{width: '100%', height: 'auto'}} />
               </div>
             ))}
             <div className="pdp-final-accordion">

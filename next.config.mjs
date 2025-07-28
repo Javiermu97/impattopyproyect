@@ -1,18 +1,16 @@
-// next.config.mjs
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        // ▼▼▼ REEMPLAZA ESTO con el hostname de tu bucket de Supabase ▼▼▼
-        hostname: 'xxxxxx.supabase.co', 
+        // Este es el hostname correcto de tu proyecto de Supabase
+        hostname: 'wghpygqhmrdvlimszghg.supabase.co',
         port: '',
-        pathname: '/storage/v1/object/public/images/**', // Ajusta si tu ruta es diferente
+        pathname: '/storage/v1/object/public/**',
       },
     ],
   },
 };
 
-export default nextConfig;
+export default nextConfig;;

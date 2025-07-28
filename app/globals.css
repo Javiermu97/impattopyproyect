@@ -381,8 +381,9 @@ body {
 
 /* --- Columna Izquierda: Galería --- */
 .pdp-gallery {
-  position: sticky;
-  top: 20px;
+  display: flex;
+  flex-direction: column; /* Apila la imagen grande y las miniaturas */
+  gap: 1rem; /* Crea un espacio entre la imagen grande y las miniaturas */
 }
 .pdp-main-image-wrapper {
   aspect-ratio: 1/1;
