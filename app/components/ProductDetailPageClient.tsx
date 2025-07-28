@@ -11,13 +11,7 @@ import { Product, ProductVariant, Feature } from '@/lib/types';
 interface OrderData {
   orderId: number;
   orderDate: string;
-  formData: {
-    email: string;
-    name: string;
-    address: string;
-    city: string;
-    phone?: string;
-  };
+  formData: { email: string; name: string; address: string; city: string; phone?: string; };
   department: string;
   formVariant: ProductVariant;
   product: Product;
@@ -42,13 +36,7 @@ const OrderConfirmation = ({ orderData, onGoBack }: OrderConfirmationProps) => (
     <div className="checkout-modal-content confirmation-container">
       <div className="confirmation-header">
         <h2>Pedido #{orderData.orderId}</h2>
-        <button onClick={onGoBack} className="back-to-shop-btn">
-          <span>Volver a comprar</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
+        <button onClick={onGoBack} className="back-to-shop-btn"><span>Volver a comprar</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
       </div>
       <div className="confirmation-main">
         <div className="confirmation-details">
@@ -69,14 +57,7 @@ const OrderConfirmation = ({ orderData, onGoBack }: OrderConfirmationProps) => (
           </div>
         </div>
         <div className="confirmation-summary">
-          <div className="summary-product">
-            <Image src={orderData.formVariant.image} alt={orderData.product.name} width={80} height={80} />
-            <div className="summary-product-info">
-                <span>{orderData.selectedQuantity} x {orderData.product.name}</span>
-                <span>{orderData.formVariant.color}</span>
-            </div>
-            <span className="summary-product-price">Gs. {orderData.totalPrice.toLocaleString('es-PY')}</span>
-          </div>
+          <div className="summary-product"><img src={orderData.formVariant.image} alt={orderData.product.name} /><div className="summary-product-info"><span>{orderData.selectedQuantity} x {orderData.product.name}</span><span>{orderData.formVariant.color}</span></div><span className="summary-product-price">Gs. {orderData.totalPrice.toLocaleString('es-PY')}</span></div>
           <div className="summary-row"><span>Subtotal</span><span>Gs. {orderData.totalPrice.toLocaleString('es-PY')}</span></div>
           <div className="summary-row"><span>Envío</span><span>Gratis</span></div>
           <div className="summary-row total"><span>Total</span><span>PYG {orderData.totalPrice.toLocaleString('es-PY')}</span></div>
@@ -172,8 +153,8 @@ const StarRating = () => (
 export default function ProductDetailPageClient({ product, relatedProducts }: { product: Product, relatedProducts: Product[] }) {
   const { addToCart } = useCart();
 
-  const [mainImage, setMainImage] = useState(product.galleryImages?.[0] || product.imageUrl);
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(product.variants?.[0] || null);
+  const [mainImage, setMainImage] = useState(product.galleryImages ? product.galleryImages[0] : product.imageUrl);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(product.variants ? product.variants[0] : null);
   const [quantity, setQuantity] = useState(1);
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
   const [zoomActive, setZoomActive] = useState(false);
@@ -181,21 +162,11 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
   const [isCheckoutVisible, setCheckoutVisible] = useState(false);
   const [orderData, setOrderData] = useState<OrderData | null>(null);
 
-  useEffect(() => {
-    if (product) {
-      setMainImage(product.galleryImages?.[0] || product.imageUrl);
-      setSelectedVariant(product.variants?.[0] || null);
-      setQuantity(1);
-    }
-  }, [product]);
-
   const handleVariantSelect = (variant: ProductVariant) => {
     setSelectedVariant(variant);
     setMainImage(variant.image);
   };
-  
   const handleQuantityChange = (amount: number) => setQuantity(prev => Math.max(1, prev + amount));
-  
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
     const x = ((e.pageX - left) / width) * 100;
@@ -204,18 +175,12 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
   };
   
   const handleAddToCart = () => {
-    if (product && selectedVariant) {
-      addToCart(product, selectedVariant, quantity);
-    } else if (product && !product.variants?.length) {
-      const defaultVariant = {
-        color: 'Único',
-        image: product.imageUrl,
-        colorHex: '#FFFFFF',
-      };
-      addToCart(product, defaultVariant, quantity);
-    } else {
-      alert("Por favor, selecciona una variante del producto.");
-    }
+    const variantToCart = selectedVariant || { color: 'Único', image: product.imageUrl, colorHex: '#FFFFFF' };
+    addToCart(product, variantToCart, quantity);
+  };
+  
+  const handleRealizarPedido = () => {
+    setCheckoutVisible(true);
   };
   
   const handleOrderConfirmation = async (data: OrderData) => {
@@ -232,15 +197,19 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
     setOrderData(data);
     setCheckoutVisible(false);
   };
+  
+  const galleryImages = [product.imageUrl];
+  if (product.imageUrl2) {
+    galleryImages.push(product.imageUrl2);
+  }
 
   if (!product) {
     return <div className="pdp-container"><p>Cargando producto...</p></div>;
   }
-  
   if (orderData) {
     return <OrderConfirmation orderData={orderData} onGoBack={() => setOrderData(null)} />;
   }
-  
+
   const accordionData: AccordionItemData[] = [
     {
       title: 'Información de envío',
@@ -280,11 +249,10 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
 
   return (
     <>
-      {/* ▼▼▼ CORRECCIÓN AQUÍ: Añadimos "&& selectedVariant" para asegurar que no sea null ▼▼▼ */}
-      {isCheckoutVisible && selectedVariant && (
+      {isCheckoutVisible && (
         <CheckoutForm
           product={product}
-          selectedVariant={selectedVariant}
+          selectedVariant={selectedVariant || { color: 'Único', image: product.imageUrl, colorHex: '#FFFFFF' }}
           onClose={() => setCheckoutVisible(false)}
           onConfirm={handleOrderConfirmation}
         />
@@ -296,28 +264,9 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
         </div>
         <div className="pdp-main-layout">
           <div className="pdp-gallery">
-            <div 
-                className="pdp-main-image-wrapper" 
-                onMouseEnter={() => setZoomActive(true)} 
-                onMouseLeave={() => setZoomActive(false)} 
-                onMouseMove={handleMouseMove}
-            >
-                <Image 
-                    src={mainImage} 
-                    alt={product.name} 
-                    className="pdp-main-image" 
-                    style={{ transformOrigin: `${imgPos.x} ${imgPos.y}`, transform: zoomActive ? 'scale(2)' : 'scale(1)' }}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority
-                />
-            </div>
+            <div className="pdp-main-image-wrapper" onMouseEnter={() => setZoomActive(true)} onMouseLeave={() => setZoomActive(false)} onMouseMove={handleMouseMove}><img src={mainImage} alt={product.name} className="pdp-main-image" style={{ transformOrigin: `${imgPos.x} ${imgPos.y}`, transform: zoomActive ? 'scale(2)' : 'scale(1)' }}/></div>
             <div className="pdp-thumbnails">
-              {product.galleryImages && product.galleryImages.map((imgSrc, index) => (
-                <div key={index} className={`pdp-thumbnail ${mainImage === imgSrc ? 'active' : ''}`} onClick={() => setMainImage(imgSrc)}>
-                    <Image src={imgSrc} alt={`Thumbnail ${index + 1}`} width={100} height={100} />
-                </div>
-              ))}
+              {galleryImages.map((imgSrc, index) => (<div key={index} className={`pdp-thumbnail ${mainImage === imgSrc ? 'active' : ''}`} onClick={() => setMainImage(imgSrc)}><img src={imgSrc} alt={`Thumbnail ${index + 1}`} /></div>))}
             </div>
           </div>
           <div className="pdp-info">
@@ -327,23 +276,17 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               {product.oldPrice && <span className="pdp-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
               {product.oldPrice && <span className="pdp-offer-badge">Oferta</span>}
             </div>
-            {product.variants && product.variants.length > 0 && (
+            {selectedVariant && product.variants && (
               <div className="pdp-variants">
-                <p className="variant-label">Color: <strong>{selectedVariant?.color}</strong></p>
+                <p className="variant-label">Color: <strong>{selectedVariant.color}</strong></p>
                 <div className="variant-swatches">
-                  {product.variants.map((variant) => (<button key={variant.color} className={`variant-swatch ${selectedVariant?.color === variant.color ? 'selected' : ''}`} style={{ backgroundColor: variant.colorHex }} onClick={() => handleVariantSelect(variant)} title={variant.color} />))}
+                  {product.variants.map((variant) => (<button key={variant.color} className={`variant-swatch ${selectedVariant.color === variant.color ? 'selected' : ''}`} style={{ backgroundColor: variant.colorHex }} onClick={() => handleVariantSelect(variant)} title={variant.color} />))}
                 </div>
               </div>
             )}
             <div className="pdp-actions-wrapper">
               <div className="add-to-cart-row"><div className="quantity-selector"><button onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1}>-</button><span>{quantity}</span><button onClick={() => handleQuantityChange(1)}>+</button></div><button onClick={handleAddToCart} className="add-to-cart-btn">AGREGAR AL CARRITO</button></div>
-              <button className="buy-now-btn" onClick={() => setCheckoutVisible(true)}>
-                <div className="buy-now-btn-content">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                  <span>REALIZAR MI PEDIDO</span>
-                </div>
-                <span className="buy-now-btn-subtitle">ENVÍO GRATIS</span>
-              </button>
+              <button className="buy-now-btn" onClick={handleRealizarPedido}><span>REALIZAR MI PEDIDO</span></button>
             </div>
             <div className="pdp-trust-badges-wrapper">
               <div className="trust-badge-item"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg><span>Envío Gratis</span></div>
@@ -358,33 +301,13 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               <h2 className="promo-title">SÚPER PROMO POR <br /> {product.price.toLocaleString('es-PY')} GS 👑👑👑</h2>
               <h3 className="promo-subtitle">{product.promoSubtitle}</h3>
               <p>{product.description}</p>
-              {product.videoUrl ? (
-                <video key={product.id} src={product.videoUrl} className="promo-image" autoPlay loop muted playsInline>Tu navegador no soporta el vídeo.</video>
-              ) : (
-                <Image src={product.imageUrl} alt={product.name} className="promo-image" width={500} height={500} style={{width: '100%', height: 'auto'}} />
-              )}
+              {product.videoUrl ? (<video key={product.id} src={product.videoUrl} className="promo-image" autoPlay loop muted playsInline>Tu navegador no soporta el vídeo.</video>) : (<img src={product.imageUrl} alt={product.name} className="promo-image" />)}
             </div>
-            {product.caracteristicas && product.caracteristicas.map((feature: Feature, index: number) => (
-              <div key={index} className="info-promo-block-2">
+            {product.caracteristicas && product.caracteristicas.map((feature: Feature) => (
+              <div key={feature.id} className="info-promo-block-2">
                 <h2>{feature.titulo}</h2>
-                {feature.descripcion.includes('✅') ? (
-                  <ul style={{ listStyle: 'none', padding: 0, textAlign: 'left' }}>
-                    {feature.descripcion.split('\n').map((line: string, i: number) => {
-                      const parts = line.split(':');
-                      const boldText = parts[0] + ':';
-                      const regularText = parts.slice(1).join(':');
-                      return (
-                        <li key={i} style={{ marginBottom: '0.7rem' }}>
-                          <strong>{boldText}</strong>
-                          {regularText}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
-                  <p style={{ textAlign: 'left' }}>{feature.descripcion}</p>
-                )}
-                <Image src={feature.imagen} alt={feature.titulo} className="promo-image" width={500} height={500} style={{width: '100%', height: 'auto'}} />
+                <p>{feature.descripcion}</p>
+                <img src={feature.imagen} alt={feature.titulo} className="promo-image" />
               </div>
             ))}
             <div className="pdp-final-accordion">
