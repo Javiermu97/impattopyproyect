@@ -2,7 +2,7 @@
 
 import { useState, useEffect, MouseEvent, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // <-- Importamos el componente Image
+import Image from 'next/image';
 import { useCart } from '@/app/context/CartContext';
 import CheckoutForm from '@/app/components/CheckoutForm';
 import { Product, ProductVariant, Feature } from '@/lib/types';
@@ -70,7 +70,6 @@ const OrderConfirmation = ({ orderData, onGoBack }: OrderConfirmationProps) => (
         </div>
         <div className="confirmation-summary">
           <div className="summary-product">
-            {/* CORREGIDO: <img> a <Image> */}
             <Image src={orderData.formVariant.image} alt={orderData.product.name} width={80} height={80} />
             <div className="summary-product-info">
                 <span>{orderData.selectedQuantity} x {orderData.product.name}</span>
@@ -173,8 +172,8 @@ const StarRating = () => (
 export default function ProductDetailPageClient({ product, relatedProducts }: { product: Product, relatedProducts: Product[] }) {
   const { addToCart } = useCart();
 
-  const [mainImage, setMainImage] = useState(product.galleryImages ? product.galleryImages[0] : product.imageUrl);
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(product.variants ? product.variants[0] : null);
+  const [mainImage, setMainImage] = useState(product.galleryImages?.[0] || product.imageUrl);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(product.variants?.[0] || null);
   const [quantity, setQuantity] = useState(1);
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
   const [zoomActive, setZoomActive] = useState(false);
@@ -182,11 +181,21 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
   const [isCheckoutVisible, setCheckoutVisible] = useState(false);
   const [orderData, setOrderData] = useState<OrderData | null>(null);
 
+  useEffect(() => {
+    if (product) {
+      setMainImage(product.galleryImages?.[0] || product.imageUrl);
+      setSelectedVariant(product.variants?.[0] || null);
+      setQuantity(1);
+    }
+  }, [product]);
+
   const handleVariantSelect = (variant: ProductVariant) => {
     setSelectedVariant(variant);
     setMainImage(variant.image);
   };
+  
   const handleQuantityChange = (amount: number) => setQuantity(prev => Math.max(1, prev + amount));
+  
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
     const x = ((e.pageX - left) / width) * 100;
@@ -195,16 +204,18 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
   };
   
   const handleAddToCart = () => {
-    const variantToCart = selectedVariant || {
-      color: 'Único',
-      image: product.imageUrl,
-      colorHex: '#FFFFFF',
-    };
-    addToCart(product, variantToCart, quantity);
-  };
-  
-  const handleRealizarPedido = () => {
-    setCheckoutVisible(true);
+    if (product && selectedVariant) {
+      addToCart(product, selectedVariant, quantity);
+    } else if (product && !product.variants?.length) {
+      const defaultVariant = {
+        color: 'Único',
+        image: product.imageUrl,
+        colorHex: '#FFFFFF',
+      };
+      addToCart(product, defaultVariant, quantity);
+    } else {
+      alert("Por favor, selecciona una variante del producto.");
+    }
   };
   
   const handleOrderConfirmation = async (data: OrderData) => {
@@ -225,17 +236,20 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
   if (!product) {
     return <div className="pdp-container"><p>Cargando producto...</p></div>;
   }
+  
   if (orderData) {
     return <OrderConfirmation orderData={orderData} onGoBack={() => setOrderData(null)} />;
   }
-
+  
   const accordionData: AccordionItemData[] = [
     {
       title: 'Información de envío',
       icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>,
       content: (
         <>
-          <p>Nuestro envío es gratuito para cualquiera de los productos en un plazo de 2 a 3 días hábiles...</p>
+          <p>Nuestro envío es gratuito para cualquiera de los productos en un plazo de 2 a 3 días hábiles, sin embargo contamos con un Envío Urgente en un plazo de entrega en el día o máximo 24hrs que incluye seguro por solo 10.000 Gs.</p>
+          <p>Todos los plazos propuestos de entrega de los productos son siempre estimativos pudiendo verificarse demoras en la entrega del producto sin que ello acarree responsabilidad alguna a PAP.</p>
+          <p>El usuario será informado de los motivos de esta demora si es que ocurre y así lo requiere.</p>
         </>
       )
     },
@@ -244,18 +258,33 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
       icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>,
       content: (
         <>
-          <p>La garantía del producto es de hasta 5 (cinco) días desde la entrega del mismo...</p>
+          <p>La garantía del producto es de hasta 5 (cinco) días desde la entrega del mismo. Dentro de ese plazo, el usuario puede contactarse con nosotros al +595 123123123 o al correo contacto@arcashop.py para hacer sus reclamos y/o solicitar la devolución de su compra, según lo dicta la Ley del Comercio Electrónico.</p>
+          <p>En el caso de que su pedido haya llegado en malas condiciones, el usuario debe contactarse con nosotros por los mismos medios dentro de los primeros 5 días (Calendario) desde la recepción del producto.</p>
+          <p>Nos encargamos de solicitar a PAP el retiro del producto a devolver desde la dirección que nos indique el cliente. El costo de la devolución del producto corre por cuenta del cliente, que debe pagar por el envío a PAP cuando este haga el retiro del mismo.</p>
         </>
       )
     },
+    {
+      title: 'Preguntas Frecuentes',
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>,
+      content: (
+        <ul>
+          <li><strong>¿Cómo realizo el pago?</strong> Disponemos del pago contra entrega, el cual es el método más seguro para que no arriesgues tu dinero, paga solo cuando recibas tu paquete.</li>
+          <li><strong>¿Tienen tienda física?</strong> Somos una tienda 100% online, no tenemos tienda física.</li>
+          <li><strong>¿Los productos son nuevos?</strong> Todos nuestros productos son nuevos y originales.</li>
+          <li><strong>¿Qué pasa si el producto no funciona?</strong> Aceptamos devoluciones.</li>
+        </ul>
+      )
+    }
   ];
 
   return (
     <>
-      {isCheckoutVisible && (
+      {/* ▼▼▼ CORRECCIÓN AQUÍ: Añadimos "&& selectedVariant" para asegurar que no sea null ▼▼▼ */}
+      {isCheckoutVisible && selectedVariant && (
         <CheckoutForm
           product={product}
-          selectedVariant={selectedVariant || { color: 'Único', image: product.imageUrl, colorHex: '#FFFFFF' }}
+          selectedVariant={selectedVariant}
           onClose={() => setCheckoutVisible(false)}
           onConfirm={handleOrderConfirmation}
         />
@@ -273,7 +302,6 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
                 onMouseLeave={() => setZoomActive(false)} 
                 onMouseMove={handleMouseMove}
             >
-                {/* CORREGIDO: <img> a <Image> con fill y priority */}
                 <Image 
                     src={mainImage} 
                     alt={product.name} 
@@ -287,7 +315,6 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
             <div className="pdp-thumbnails">
               {product.galleryImages && product.galleryImages.map((imgSrc, index) => (
                 <div key={index} className={`pdp-thumbnail ${mainImage === imgSrc ? 'active' : ''}`} onClick={() => setMainImage(imgSrc)}>
-                    {/* CORREGIDO: <img> a <Image> */}
                     <Image src={imgSrc} alt={`Thumbnail ${index + 1}`} width={100} height={100} />
                 </div>
               ))}
@@ -300,17 +327,23 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               {product.oldPrice && <span className="pdp-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
               {product.oldPrice && <span className="pdp-offer-badge">Oferta</span>}
             </div>
-            {selectedVariant && product.variants && (
+            {product.variants && product.variants.length > 0 && (
               <div className="pdp-variants">
-                <p className="variant-label">Color: <strong>{selectedVariant.color}</strong></p>
+                <p className="variant-label">Color: <strong>{selectedVariant?.color}</strong></p>
                 <div className="variant-swatches">
-                  {product.variants.map((variant) => (<button key={variant.color} className={`variant-swatch ${selectedVariant.color === variant.color ? 'selected' : ''}`} style={{ backgroundColor: variant.colorHex }} onClick={() => handleVariantSelect(variant)} title={variant.color} />))}
+                  {product.variants.map((variant) => (<button key={variant.color} className={`variant-swatch ${selectedVariant?.color === variant.color ? 'selected' : ''}`} style={{ backgroundColor: variant.colorHex }} onClick={() => handleVariantSelect(variant)} title={variant.color} />))}
                 </div>
               </div>
             )}
             <div className="pdp-actions-wrapper">
               <div className="add-to-cart-row"><div className="quantity-selector"><button onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1}>-</button><span>{quantity}</span><button onClick={() => handleQuantityChange(1)}>+</button></div><button onClick={handleAddToCart} className="add-to-cart-btn">AGREGAR AL CARRITO</button></div>
-              <button className="buy-now-btn" onClick={handleRealizarPedido}><span>REALIZAR MI PEDIDO</span></button>
+              <button className="buy-now-btn" onClick={() => setCheckoutVisible(true)}>
+                <div className="buy-now-btn-content">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                  <span>REALIZAR MI PEDIDO</span>
+                </div>
+                <span className="buy-now-btn-subtitle">ENVÍO GRATIS</span>
+              </button>
             </div>
             <div className="pdp-trust-badges-wrapper">
               <div className="trust-badge-item"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg><span>Envío Gratis</span></div>
@@ -328,15 +361,29 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               {product.videoUrl ? (
                 <video key={product.id} src={product.videoUrl} className="promo-image" autoPlay loop muted playsInline>Tu navegador no soporta el vídeo.</video>
               ) : (
-                /* CORREGIDO: <img> a <Image> */
                 <Image src={product.imageUrl} alt={product.name} className="promo-image" width={500} height={500} style={{width: '100%', height: 'auto'}} />
               )}
             </div>
-            {product.caracteristicas && product.caracteristicas.map((feature: Feature) => (
-              <div key={feature.id} className="info-promo-block-2">
+            {product.caracteristicas && product.caracteristicas.map((feature: Feature, index: number) => (
+              <div key={index} className="info-promo-block-2">
                 <h2>{feature.titulo}</h2>
-                <p>{feature.descripcion}</p>
-                {/* CORREGIDO: <img> a <Image> */}
+                {feature.descripcion.includes('✅') ? (
+                  <ul style={{ listStyle: 'none', padding: 0, textAlign: 'left' }}>
+                    {feature.descripcion.split('\n').map((line: string, i: number) => {
+                      const parts = line.split(':');
+                      const boldText = parts[0] + ':';
+                      const regularText = parts.slice(1).join(':');
+                      return (
+                        <li key={i} style={{ marginBottom: '0.7rem' }}>
+                          <strong>{boldText}</strong>
+                          {regularText}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : (
+                  <p style={{ textAlign: 'left' }}>{feature.descripcion}</p>
+                )}
                 <Image src={feature.imagen} alt={feature.titulo} className="promo-image" width={500} height={500} style={{width: '100%', height: 'auto'}} />
               </div>
             ))}
