@@ -982,8 +982,8 @@ body {
 
 /* --- Contenedor General de la Sección --- */
 .related-products-section {
-  padding: 4rem 0 2rem 0; /* Espacio vertical, sin padding horizontal */
-  background-color: #f7f7f7; /* Fondo gris claro como en la referencia */
+  padding: 4rem 0 2rem 0;
+  background-color: #f7f7f7;
 }
 
 /* --- Título "Te puede interesar" --- */
@@ -996,48 +996,54 @@ body {
 
 /* --- Contenedor del Carrusel (Grid) --- */
 .related-products-grid {
-    display: flex;
-    gap: 0.75rem; /* Espacio reducido entre tarjetas */
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    /* Damos padding para que la primera tarjeta no se pegue al borde */
-    padding: 0 1rem;
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding: 0 1rem;
 }
 
 .related-products-grid::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* --- Tarjeta Individual (El Link) --- */
 .related-products-grid .shop-product-card-link {
-    flex-shrink: 0;
-    scroll-snap-align: start;
-    display: block;
-    background-color: #ffffff; /* Fondo blanco para cada tarjeta */
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #eee;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  display: block;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #eee;
 }
 
 /* --- Contenido Interno de la Tarjeta --- */
 .related-products-grid .shop-product-card {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
+/* --- Contenedor de la Imagen (CORREGIDO PARA CENTRAR) --- */
 .related-products-grid .image-container {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1; /* Imágenes cuadradas */
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  /* Usamos flexbox para centrar la imagen */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Importante para que la imagen no se desborde */
 }
 
+/* --- Imagen (CORREGIDO PARA CENTRAR) --- */
 .related-products-grid .image-container img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  /* Quitamos position: absolute para que el centrado flex funcione */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* --- Información de la Tarjeta (Título y Precio) --- */
@@ -1070,27 +1076,26 @@ body {
 
 /* Vista de Móvil y Tablet (Ancho completo) */
 @media (max-width: 992px) {
-  /* Hacemos que la sección ocupe toda la pantalla */
   .related-products-section {
-      width: 100vw;
-      position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
-      box-sizing: border-box;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    box-sizing: border-box;
   }
   
-  /* Ajustamos el ancho de las tarjetas para mostrar varias */
+  /* AJUSTADO: Ancho de las tarjetas para mostrar 2 completas */
   .related-products-grid .shop-product-card-link {
-      width: 45%; /* Mostramos ~2 tarjetas */
+    width: 44%; 
   }
 }
 
 /* Vista para móviles muy pequeños */
 @media (max-width: 480px) {
   .related-products-grid .shop-product-card-link {
-    width: 60%; /* Mostramos ~1.5 tarjetas */
+    width: 60%;
   }
 }
 
