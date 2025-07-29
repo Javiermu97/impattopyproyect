@@ -1998,3 +1998,27 @@ body {
     white-space: nowrap; /* Evita que el texto salte a la siguiente línea */
   }
 }
+
+/* ========================================================= */
+/* ===== AJUSTE DE ANCHO COMPLETO PARA CARRUSEL MÓVIL ===== */
+/* ========================================================= */
+
+@media (max-width: 992px) {
+  .related-products-section {
+    width: 100vw; /* 1. Ocupa el 100% del ancho de la ventana gráfica */
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw; /* 2. Tira del contenedor hacia la izquierda para centrarlo */
+    margin-right: -50vw;
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+  }
+
+  /*
+    Ajustamos el padding interno para que el contenido no toque los bordes de la pantalla
+  */
+  .related-products-section .carousel-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
