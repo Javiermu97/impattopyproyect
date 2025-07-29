@@ -977,13 +977,14 @@ body {
 }
 
 /* ========================================================= */
-/* ===== CÓDIGO DEFINITIVO PARA EL CARRUSEL DE PRODUCTOS ===== */
+/* ========================================================= */
+/* ===== CÓDIGO FINAL Y CORREGIDO PARA CARRUSEL DE PRODUCTOS ===== */
 /* ========================================================= */
 
-/* --- Contenedor del Carrusel (Grid) --- */
+/* --- 1. Contenedor Principal del Carrusel --- */
 .related-products-grid {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem; /* Espacio entre tarjetas */
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -ms-overflow-style: none;
@@ -995,37 +996,71 @@ body {
     display: none;
 }
 
-/* --- Tarjeta de Producto (Estilo Base para Escritorio) --- */
+/* --- 2. Tarjeta Individual (El Link) --- */
+/* Esta es la corrección más importante */
 .related-products-grid .shop-product-card-link {
-    flex: 0 0 23%; /* Base del 23% del ancho en escritorio */
-    min-width: 200px;
+    flex-shrink: 0; /* Evita que las tarjetas se encojan */
     scroll-snap-align: start;
+    display: block;
+    
+    /* FORZAMOS A QUE LA TARJETA SEA CUADRADA */
+    aspect-ratio: 1 / 1;
+    
+    /* GARANTIZAMOS QUE NADA SE SALGA DE LA TARJETA */
+    overflow: hidden;
+    border-radius: 8px; /* Opcional: para bordes redondeados */
 }
 
-/* --- AJUSTES RESPONSIVOS PARA LAS TARJETAS DEL CARRUSEL --- */
+/* --- 3. Contenido Interno de la Tarjeta --- */
+.related-products-grid .shop-product-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
-/* --- Vista de Tablet (hasta 992px) --- */
+.related-products-grid .image-container {
+    flex-grow: 1; /* El contenedor de la imagen ocupa el espacio sobrante */
+    position: relative;
+    width: 100%;
+}
+
+.related-products-grid .image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 'cover' se ve mejor que 'contain' para tarjetas cuadradas */
+}
+
+/* --- 4. TAMAÑOS RESPONSIVOS DEL CARRUSEL --- */
+
+/* Vista de Escritorio y Tablets Grandes */
+@media (min-width: 993px) {
+    .related-products-grid .shop-product-card-link {
+        flex-basis: 23%;
+    }
+}
+
+/* Vista de Tablet (hasta 992px) - Muestra ~3 tarjetas */
 @media (max-width: 992px) {
     .related-products-grid .shop-product-card-link {
-        flex-basis: 30% !important;
-        border: 2px solid red !important; /* Borde de prueba */
+        flex-basis: 31%;
     }
 }
 
-/* --- Vista de Móvil (hasta 768px) --- */
+/* Vista de Móvil (hasta 768px) - Muestra ~2 tarjetas */
 @media (max-width: 768px) {
     .related-products-grid .shop-product-card-link {
-        flex-basis: 46% !important;
-        border: 2px solid red !important; /* Borde de prueba */
+        flex-basis: 46%;
     }
 }
 
-/* --- Vista de Móvil Pequeño (hasta 480px) --- */
+/* Vista de Móvil Pequeño (hasta 480px) - Muestra ~1.5 tarjetas */
 @media (max-width: 480px) {
     .related-products-grid .shop-product-card-link {
-        flex-basis: 60% !important;
-        min-width: 150px !important;
-        border: 2px solid red !important; /* Borde de prueba */
+        flex-basis: 65%;
     }
 }
 
