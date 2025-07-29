@@ -1033,13 +1033,15 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
+  overflow: hidden;
+
+  /* === LA SOLUCIÓN REAL ESTÁ AQUÍ === */
+  /* Añadimos un relleno para forzar a la imagen (con fill) a ser más pequeña */
+  padding: 8%; 
+  box-sizing: border-box; /* Importante para que el padding no altere el tamaño total */
 }
 
-.related-products-grid .image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* 'contain' para que la imagen completa se vea */
-}
+
 
 /* --- 4. Información de la Tarjeta (Título y Precio) --- */
 .related-products-grid .card-info {
