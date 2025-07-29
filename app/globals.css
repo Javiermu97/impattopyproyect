@@ -1015,8 +1015,8 @@ body {
 /* Muestra 1.5 tarjetas para indicar que hay más */
 @media (max-width: 480px) {
   .related-products-grid .shop-product-card-link {
-    flex-basis: 65%;
-    min-width: 150px;
+    flex-basis: 30%;
+    min-width: 130px;
   }
 }
 
