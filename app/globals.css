@@ -1041,8 +1041,8 @@ body {
 /* --- Imagen (CORRECCIÓN FINAL PARA CENTRADO REAL) --- */
 .related-products-grid .image-container img {
   /* Le decimos que no se estire, sino que se ajuste como máximo al contenedor */
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 80%;
+  max-height: 80%;
   
   /* 'contain' asegura que toda la imagen sea visible sin ser recortada */
   object-fit: contain; 
