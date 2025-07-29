@@ -73,9 +73,26 @@ const AccordionItem = ({ item, isOpen, onClick }: { item: AccordionItemData; isO
 const RelatedProductCard = ({ product }: { product: Product }) => (
   <Link href={`/products/${product.id}`} className="shop-product-card-link">
     <div className="shop-product-card">
-      {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
-      <Image src={product.imageUrl} alt={product.name} width={300} height={300} className="shop-product-image-primary" />
-      {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} width={300} height={300} className="shop-product-image-secondary" />}
+      <div className="image-container">
+        {/* La insignia de oferta ahora está DENTRO del contenedor de la imagen */}
+        {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
+        <Image 
+          src={product.imageUrl} 
+          alt={product.name} 
+          fill 
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className="shop-product-image-primary" 
+        />
+        {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="shop-product-image-secondary" />}
+      </div>
+      {/* AÑADIDO: Mostramos el nombre y precio del producto */}
+      <div className="card-info">
+        <h4>{product.name}</h4>
+        <div className="card-price">
+          <span>Gs. {product.price.toLocaleString('es-PY')}</span>
+          {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
+        </div>
+      </div>
     </div>
   </Link>
 );
