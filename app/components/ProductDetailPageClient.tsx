@@ -96,10 +96,12 @@ const RelatedProductCard = ({ product }: { product: Product }) => (
     </div>
   </Link>
 );
+// Reemplaza tu componente actual con este:
 const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+
   const checkScrollability = () => {
     const container = scrollContainerRef.current;
     if (container) {
@@ -108,6 +110,7 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
     }
   };
+
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (container) {
@@ -122,6 +125,7 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
       }
     };
   }, [products]);
+
   const scroll = (direction: 'left' | 'right') => {
     const container = scrollContainerRef.current;
     if (container) {
@@ -129,10 +133,14 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
       container.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
     }
   };
+
   return (
-    <div className="related-products-section">
-      <h2 className="related-products-title">Te puede interesar</h2>
-      <div className="carousel-container">
+    // CAMBIO 1: Añadimos la clase 'arcashop-style' aquí
+    <div className="related-products-section arcashop-style">
+      {/* CAMBIO 2: Y también al título */}
+      <h2 className="related-products-title arcashop-style">Te puede interesar</h2>
+      {/* CAMBIO 3: Y al contenedor principal para afectar a las flechas y tarjetas */}
+      <div className="carousel-container arcashop-style">
         <button className={`carousel-nav-btn prev ${!canScrollLeft ? 'disabled' : ''}`} onClick={() => scroll('left')} disabled={!canScrollLeft} aria-label="Scroll Left"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
         <div className="related-products-grid" ref={scrollContainerRef}>
           {products.map((p: Product) => <RelatedProductCard key={p.id} product={p} />)}
