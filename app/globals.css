@@ -1038,12 +1038,14 @@ body {
   overflow: hidden; /* Importante para que la imagen no se desborde */
 }
 
-/* --- Imagen (CORREGIDO PARA CENTRAR) --- */
+/* --- Imagen (CORRECCIÓN FINAL PARA CENTRADO REAL) --- */
 .related-products-grid .image-container img {
-  /* Quitamos position: absolute para que el centrado flex funcione */
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  /* Le decimos que no se estire, sino que se ajuste como máximo al contenedor */
+  max-width: 90%;
+  max-height: 90%;
+  
+  /* 'contain' asegura que toda la imagen sea visible sin ser recortada */
+  object-fit: contain; 
 }
 
 /* --- Información de la Tarjeta (Título y Precio) --- */
