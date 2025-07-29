@@ -327,21 +327,13 @@ body {
 
 
 
-
-
 /* ============================================= */
 /* ===== PÁGINA DE DETALLE DE PRODUCTO (PDP) PAGE HOME ===== */
 /* ============================================= */
 
 /* Animación para el botón de compra */
 /* --- NUEVA SECCIÓN DE ENCABEZADO --- */
-.pdp-header-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center; /* Alinea verticalmente el breadcrumb y el título */
-  gap: 3rem;
-  margin-bottom: 1.5rem;
-}
+
 
 .breadcrumb {
   font-size: 0.9rem;
@@ -357,10 +349,10 @@ body {
 
 /* Tamaño de la pantalla al dar click a una imagen */
 .pdp-container {
-  width: 95%; /* Ocupará el 95% del ancho de la pantalla */
-  max-width: 1600px; /* Un límite muy generoso para pantallas extra grandes */
-  margin: 0 auto; /* Esto centra el contenedor */
-  padding: 2rem 0; /* Solo relleno vertical, NADA de relleno horizontal */
+   width: 95%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1rem 0; /* REDUCIDO: Menos espacio en blanco arriba de la página */
   background-color: #ffffff;
   box-sizing: border-box;
 }
@@ -373,53 +365,90 @@ body {
 
 .pdp-main-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* <-- CORREGIDO: Columnas 50% y 50% */
-  gap: 3rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem; /* REDUCIDO: Menos espacio entre las columnas */
   align-items: start;
-  margin-bottom: 4rem; 
+  margin-bottom: 1.5rem !important; 
 }
 
 /* --- Columna Izquierda: Galería --- */
 .pdp-gallery {
   display: flex;
-  flex-direction: column; /* Apila la imagen grande y las miniaturas */
-  gap: 1rem; /* Crea un espacio entre la imagen grande y las miniaturas */
+  flex-direction: column;
+  gap: 2rem;/* Reduce el espacio entre la imagen principal y las miniaturas */
+  
+  /* --- CAMBIOS PRINCIPALES AQUÍ --- */
+  position: sticky; /* Hacemos que la galería se quede fija al hacer scroll */
+  top: 1rem;       /* Distancia que mantiene desde la parte superior */
+  align-self: start; /* Asegura que se alinee correctamente en el grid */
+  margin-bottom: 0;  /* ELIMINADO: Quitamos el margen inferior que creaba el espacio en blanco */
+}
+
+/* --- Columna Derecha: Información --- */
+.pdp-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem; /* REDUCIDO: Compacta los elementos de la columna derecha */
 }
 .pdp-main-image-wrapper {
-  aspect-ratio: 1/1;
+  position: relative; /* <-- AÑADE ESTA LÍNEA */
+  aspect-ratio: 3 / 2.7; /* NUEVO: Hace la imagen más alta que ancha (puedes ajustar este valor) */
   border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 1rem;
+  margin-bottom: 0 !important;
   background-color: #ffffff;
   border: none; /* <-- CORREGIDO: Sin borde */
 }
 .pdp-main-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease-out;
+  /* Las propiedades width y height al 100% son manejadas por el prop 'fill' de Next/Image */
+  /* object-fit es controlado en línea en el componente Image */
+  transition: opacity 0.3s ease-out; /* Una transición suave al cambiar de imagen */
 }
+
+
 .pdp-thumbnails {
-  display: grid;
-  /* CORREGIDO: Tamaño fijo para los thumbnails, ya no dependen de la columna */
-  grid-template-columns: repeat(auto-fill, 80px);
-  gap: 0.75rem;
+  display: flex;
+  flex-direction: row; /* Cambiamos a disposición horizontal */
+  gap: 0.75rem; /* Espacio entre las miniaturas */
+  margin-top: 1rem; /* Añadimos espacio entre la imagen principal y las miniaturas */
+  padding: 0.20rem 0.25rem 0.25rem 2.3rem; /* ¡ESTA ES LA SOLUCIÓN! Empuja todo el grupo desde el borde izquierdo. */
+  overflow-x: auto; /* Permite el desplazamiento horizontal si hay muchas miniaturas */
+  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */
+  -ms-overflow-style: none; /* Oculta la barra de desplazamiento en IE y Edge */
+  
 }
+
+/* Oculta la barra de desplazamiento en Chrome, Safari y Opera */
+.pdp-thumbnails::-webkit-scrollbar {
+  display: none; 
+}
+
 .pdp-thumbnail {
-  aspect-ratio: 1 / 1;
   border-radius: 8px;
-  cursor: pointer;
   overflow: hidden;
-  border: 2px solid transparent; /* Sin borde por defecto */
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s ease-in-out;
+  width: 70px; /* Define un ancho fijo para las miniaturas */
+  height: 70px; /* Define una altura fija para las miniaturas */
+  flex-shrink: 0; /* Evita que las miniaturas se encojan */
+  cursor: pointer;
+  transition: border-color 0.2s ease-in-out;
 }
+
 .pdp-thumbnail.active {
-  border-color: #244c8d; /* Borde azul solo en el activo */
+  border-color: #000000; /* Borde negro cuando está activa */
 }
+
+.pdp-thumbnail:hover {
+  border-color: #888888; /* Borde gris al pasar el cursor (si no está activa) */
+}
+
 .pdp-thumbnail img {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  display: block;
+  object-fit: cover; /* Recorta la imagen para que encaje sin deformarse */
 }
 
 /* --- Columna Derecha: Información --- */
@@ -432,10 +461,12 @@ body {
   width: 100%; 
 }
 
+/* Título del producto (ahora dentro de la columna derecha) */
 .pdp-title {
-  font-size: 1.5rem;
+  font-size: 1.8rem; /* Un poco más grande para darle jerarquía */
   font-weight: 600;
   line-height: 1.3;
+  margin: 0; /* Quitamos cualquier margen por defecto */
 }
 
 /* AÑADIDO: Estilo para el símbolo de marca registrada */
@@ -749,11 +780,16 @@ body {
 .info-promo-block-2 ul { list-style: none; padding-left: 0; margin: 0; }
 /* Estilo unificado para las imágenes de las secciones promocionales */
 .promo-image {
-  width: 100%;
+  width: 100%; /* Permite que ocupe el 100% de su espacio si es menor que max-width */
   max-width: 450px; /* Un ancho máximo para que no sea demasiado grande */
+  height: 400px; /* <--- AÑADIDO: Define una altura fija para que sea "más larga" */
+  object-fit: cover; /* <--- AÑADIDO: Asegura que la imagen cubra el área, recortando si es necesario */
   display: block;
   margin: 1.5rem auto 0 auto; /* Centra la imagen horizontalmente */
   border-radius: 8px;
+  /* Opcional: añade una sombra o transición si quieres */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 
 /* INICIO: Estilos actualizados para el acordeón */
@@ -832,9 +868,8 @@ body {
 
 
 .related-products-section {
-  padding: 10rem 3rem 1.5rem 2rem;
+  padding: 2rem 3rem 2rem 3rem; /* REDUCIDO: El padding superior ahora es mucho menor */
   background-color: #ffffff;
-  
   margin-top: 0;
 }
 .related-products-title {
@@ -937,7 +972,19 @@ body {
 /* --- Media Queries --- */
 @media (max-width: 992px) {
   .pdp-main-layout { grid-template-columns: 1fr; }
-  .pdp-gallery { position: static; }
+   .pdp-gallery {
+    /* Desactivamos el efecto "sticky" porque ahora es una sola columna */
+    position: static; 
+    
+    /* Centramos la galería y le damos un ancho máximo */
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    
+    /* Añadimos un espacio debajo para separarlo de la info del producto */
+    margin-bottom: 3rem; 
+  }
   .pdp-header-row { grid-template-columns: 1fr; } /* Apila el breadcrumb y el título en pantallas pequeñas */
   
   .related-products-grid .shop-product-card-link {
@@ -1476,6 +1523,52 @@ body {
 /* ===== ESTILOS RESPONSIVOS PARA PÁGINA DE PRODUCTO (PDP) ===== */
 /* ========================================================= */
 
+/* --- NUEVO: Estilos para los botones de navegación de la galería --- */
+.image-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  
+  opacity: 0; /* Oculto por defecto */
+  transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Muestra los botones cuando el cursor está sobre la galería */
+.pdp-main-image-wrapper:hover .image-nav-button {
+  opacity: 1;
+}
+
+.image-nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.image-nav-button.prev {
+  left: 2.5rem; /* Distancia desde el borde IZQUIERDO */
+  right: auto; /* Anulamos cualquier posicionamiento derecho */
+}
+
+.image-nav-button.next {
+  right: 2.5rem; /* Misma distancia desde el borde DERECHO */
+  left: auto; /* Anulamos cualquier posicionamiento izquierdo */
+}
+
 /* --- Para Tablets y dispositivos medianos (hasta 992px) --- */
 @media (max-width: 992px) {
   .pdp-main-layout {
@@ -1484,10 +1577,12 @@ body {
   }
 
   .pdp-gallery {
-    position: static; /* El carrusel deja de ser fijo */
+    position: static;
     width: 100%;
-    margin: 0 auto;
-    max-width: 500px; /* Limita el tamaño de la galería en tablets */
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px; /* Limita el ancho de la galería en tablets */
+    /* La propiedad margin-bottom: 5rem; del estilo base se sigue aplicando aquí */
   }
 
   .pdp-info {
@@ -1542,7 +1637,7 @@ body {
   .pdp-header-row {
     grid-template-columns: 1fr; /* Apila el breadcrumb y el título */
     text-align: center;
-    gap: 1rem;
+    gap: 0.5rem;
   }
 
   .breadcrumb {

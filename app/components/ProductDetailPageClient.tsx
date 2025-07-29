@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, MouseEvent, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/app/context/CartContext';
@@ -139,33 +139,37 @@ const StarRating = () => (
 export default function ProductDetailPageClient({ product, relatedProducts }: { product: Product, relatedProducts: Product[] }) {
   const { addToCart } = useCart();
 
-  const [mainImage, setMainImage] = useState(product.imageUrl);
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(product.variants ? product.variants[0] : null);
   const [quantity, setQuantity] = useState(1);
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
-  const [zoomActive, setZoomActive] = useState(false);
-  const [imgPos, setImgPos] = useState({ x: '50%', y: '50%' });
   const [isCheckoutVisible, setCheckoutVisible] = useState(false);
   const [orderData, setOrderData] = useState<OrderData | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const galleryImages = product.galleryImages || [];
 
   useEffect(() => {
-    if (product) {
-        setMainImage(product.imageUrl);
-        setSelectedVariant(product.variants ? product.variants[0] : null);
-    }
+    setCurrentImageIndex(0);
+    setSelectedVariant(product.variants ? product.variants[0] : null);
   }, [product]);
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % galleryImages.length);
+  };
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + galleryImages.length) % galleryImages.length);
+  };
 
   const handleVariantSelect = (variant: ProductVariant) => {
     setSelectedVariant(variant);
-    setMainImage(variant.image);
+    const imageIndex = galleryImages.findIndex(img => img === variant.image);
+    if (imageIndex !== -1) {
+      setCurrentImageIndex(imageIndex);
+    }
   };
+
   const handleQuantityChange = (amount: number) => setQuantity(prev => Math.max(1, prev + amount));
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    const x = ((e.pageX - left) / width) * 100;
-    const y = ((e.pageY - top) / height) * 100;
-    setImgPos({ x: `${x}%`, y: `${y}%` });
-  };
+
   const handleAddToCart = () => {
     const variantToCart = selectedVariant || { color: 'Único', image: product.imageUrl, colorHex: '#FFFFFF' };
     addToCart(product, variantToCart, quantity);
@@ -195,7 +199,6 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
     return <OrderConfirmation orderData={orderData} onGoBack={() => setOrderData(null)} />;
   }
 
-  // Contenido completo del acordeón restaurado
   const accordionData: AccordionItemData[] = [
     {
       title: 'Información de envío',
@@ -244,24 +247,52 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
         />
       )}
       <div className="pdp-container">
-        <div className="pdp-header-row">
-          <p className="breadcrumb"><span>Home</span> / <span>Productos</span> / <span>{product.name}</span></p>
-          <h1 className="pdp-title"><TitleWithStyledTM name={product.name} />!! SUPER PROMO!!!</h1>
-        </div>
+        {/*
+          IMPORTANTE: La fila .pdp-header-row ha sido eliminada.
+          El título h1 se ha movido dentro de .pdp-info.
+        */}
         <div className="pdp-main-layout">
           <div className="pdp-gallery">
-            <div className="pdp-main-image-wrapper" onMouseEnter={() => setZoomActive(true)} onMouseLeave={() => setZoomActive(false)} onMouseMove={handleMouseMove}>
-              <Image src={mainImage} alt={product.name} className="pdp-main-image" fill sizes="(max-width: 768px) 100vw, 50vw" priority style={{ transformOrigin: `${imgPos.x} ${imgPos.y}`, transform: zoomActive ? 'scale(2)' : 'scale(1)' }}/>
+            <div className="pdp-main-image-wrapper">
+              {galleryImages.length > 0 && (
+                <Image 
+                  src={galleryImages[currentImageIndex]} 
+                  alt={product.name} 
+                  className="pdp-main-image" 
+                  fill 
+                  sizes="(max-width: 768px) 100vw, 50vw" 
+                  priority 
+                  style={{ objectFit: 'contain' }}
+                />
+              )}
+              {galleryImages.length > 1 && (
+                <>
+                  <button onClick={handlePrevImage} className="image-nav-button prev" aria-label="Imagen anterior">
+                    &lt;
+                  </button>
+                  <button onClick={handleNextImage} className="image-nav-button next" aria-label="Siguiente imagen">
+                    &gt;
+                  </button>
+                </>
+              )}
             </div>
             <div className="pdp-thumbnails">
-              {product.galleryImages && product.galleryImages.map((imgSrc, index) => (
-                <div key={index} className={`pdp-thumbnail ${mainImage === imgSrc ? 'active' : ''}`} onClick={() => setMainImage(imgSrc)}>
+              {galleryImages.map((imgSrc, index) => (
+                <div 
+                  key={index} 
+                  className={`pdp-thumbnail ${currentImageIndex === index ? 'active' : ''}`} 
+                  onClick={() => setCurrentImageIndex(index)}
+                >
                   <Image src={imgSrc} alt={`Thumbnail ${index + 1}`} width={100} height={100} />
                 </div>
               ))}
             </div>
           </div>
+          
           <div className="pdp-info">
+            {/* TÍTULO MOVIDO AQUÍ PARA UNA ALINEACIÓN PERFECTA */}
+            <h1 className="pdp-title"><TitleWithStyledTM name={product.name} />!! SUPER PROMO!!!</h1>
+
             <StarRating />
             <div className="pdp-price-section">
               <span className="pdp-price">Gs. {product.price.toLocaleString('es-PY')}</span>
@@ -293,13 +324,29 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               <h2 className="promo-title">SÚPER PROMO POR <br /> {product.price.toLocaleString('es-PY')} GS 👑👑👑</h2>
               <h3 className="promo-subtitle">{product.promoSubtitle}</h3>
               <p>{product.description}</p>
-              {product.videoUrl ? (<video key={product.id} src={product.videoUrl} className="promo-image" autoPlay loop muted playsInline>Tu navegador no soporta el vídeo.</video>) : (<Image src={product.imageUrl} alt={product.name} className="promo-image" width={500} height={500} style={{width: '100%', height: 'auto'}} />)}
+              {product.videoUrl ? (
+                <video key={product.id} src={product.videoUrl} className="promo-image" autoPlay loop muted playsInline>Tu navegador no soporta el vídeo.</video>
+              ) : (
+                <Image 
+                  src={product.imageUrl} 
+                  alt={product.name} 
+                  className="promo-image" 
+                  width={800} 
+                  height={600}
+                />
+              )}
             </div>
             {product.caracteristicas && product.caracteristicas.map((feature: Feature) => (
               <div key={feature.id} className="info-promo-block-2">
                 <h2>{feature.titulo}</h2>
                 <p>{feature.descripcion}</p>
-                <Image src={feature.imagen} alt={feature.titulo} className="promo-image" width={500} height={500} style={{width: '100%', height: 'auto'}} />
+                <Image 
+                  src={feature.imagen} 
+                  alt={feature.titulo} 
+                  className="promo-image" 
+                  width={800}
+                  height={600}
+                />
               </div>
             ))}
             <div className="pdp-final-accordion">
