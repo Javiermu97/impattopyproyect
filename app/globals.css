@@ -976,14 +976,23 @@ body {
     }
 }
 
+
 /* ========================================================= */
-/* ===== CÓDIGO FINAL Y DEFINITIVO PARA EL CARRUSEL ===== */
+/* ===== CÓDIGO MODIFICADO PARA EL CARRUSEL (ESTILO ARCA SHOP) ===== */
 /* ========================================================= */
 
 /* --- Contenedor General de la Sección --- */
 .related-products-section {
   padding: 4rem 0 2rem 0;
-  background-color: #f7f7f7;
+  background-color: #ffffff; /* Fondo blanco como Arca Shop */
+}
+
+/* --- Contenedor Wrapper (para posicionar las flechas) --- */
+.related-products-wrapper {
+  position: relative; /* Clave para que las flechas se posicionen correctamente */
+  max-width: 1200px; /* Limita el ancho en pantallas grandes */
+  margin: 0 auto;
+  padding: 0 1rem; /* Espaciado lateral */
 }
 
 /* --- Título "Te puede interesar" --- */
@@ -997,53 +1006,64 @@ body {
 /* --- Contenedor del Carrusel (Grid) --- */
 .related-products-grid {
   display: flex;
-  gap: 0.75rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  padding: 0 1rem;
+  gap: 1rem; /* Espacio entre tarjetas */
+  overflow-x: hidden; /* Ocultamos el scroll, lo controlaremos con JS */
+  scroll-behavior: smooth; /* Animación suave al usar los botones */
+  padding: 0.5rem 0; /* Pequeño padding para que la sombra no se corte */
 }
 
-.related-products-grid::-webkit-scrollbar {
-  display: none;
-}
-
-/* --- 1. La Tarjeta Principal (el link) --- */
-/* Esta es la ÚNICA caja visible */
+/* --- La Tarjeta Principal (el link) --- */
 .related-products-grid .shop-product-card-link {
-  flex-shrink: 0;
-  scroll-snap-align: start;
+  flex: 0 0 calc(50% - 0.5rem); /* Muestra 2 tarjetas, restando la mitad del gap */
   display: block;
   background-color: #ffffff;
-  border-radius: 8px;
+  border-radius: 4px; /* Esquinas menos redondeadas */
   overflow: hidden;
-  border: 1px solid #eee;
+  
+  /* ESTILO ARCA SHOP: Reemplazamos el borde por una sombra */
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
 }
 
-/* --- 2. El Contenido Interno --- */
+.related-products-grid .shop-product-card-link:hover {
+    transform: translateY(-5px);
+}
+
+/* --- Contenido Interno de la tarjeta (no necesita muchos cambios) --- */
 .related-products-grid .shop-product-card {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-/* --- 3. El Contenedor de la Imagen --- */
-/* Este es ahora un contenedor ESTRUCTURAL, sin estilos visuales (sin fondo, sin borde) */
 .related-products-grid .image-container {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  overflow: hidden;
-
-  /* === LA SOLUCIÓN REAL ESTÁ AQUÍ === */
-  /* Añadimos un relleno para forzar a la imagen (con fill) a ser más pequeña */
-  padding: 8%; 
-  box-sizing: border-box; /* Importante para que el padding no altere el tamaño total */
 }
 
+.related-products-grid .shop-product-image-primary,
+.related-products-grid .shop-product-image-secondary {
+  object-fit: contain;
+}
 
+/* Etiqueta de Oferta rectangular */
+.related-products-grid .shop-offer-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #d9534f; /* Un color de oferta genérico */
+    color: white;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 3px; /* Rectángulo con esquinas suaves */
+    z-index: 2;
+}
 
-/* --- 4. Información de la Tarjeta (Título y Precio) --- */
+/* Información de la Tarjeta (Título y Precio) */
 .related-products-grid .card-info {
   padding: 0.75rem;
   text-align: left;
@@ -1056,7 +1076,13 @@ body {
   color: #333;
 }
 
-.related-products-grid .card-price {
+.related-products-grid .price-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.related-products-grid .shop-product-price {
   font-size: 1rem;
   font-weight: 600;
   color: #000;
@@ -1066,35 +1092,58 @@ body {
   font-size: 0.85rem;
   color: #888;
   text-decoration: line-through;
-  margin-left: 0.5rem;
 }
 
-/* --- 5. TAMAÑOS RESPONSIVOS --- */
 
-/* Ancho completo para la sección en móvil/tablet */
-@media (max-width: 992px) {
-  .related-products-section {
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    box-sizing: border-box;
-  }
+/* --- FLECHAS DE NAVEGACIÓN (NUEVO) --- */
+.carousel-arrow {
+  position: absolute;
+  top: 40%; /* Posición vertical (ajustar si es necesario) */
+  transform: translateY(-50%);
+  z-index: 20;
+  background-color: rgba(40, 40, 40, 0.5); /* Fondo semitransparente */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-/* Ancho de las tarjetas en móvil para que se vean dos */
-@media (max-width: 768px) {
+.carousel-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-arrow.left {
+  left: -5px; /* Ligeramente fuera del contenedor */
+}
+
+.carousel-arrow.right {
+  right: -5px; /* Ligeramente fuera del contenedor */
+}
+
+
+/* --- TAMAÑOS RESPONSIVOS --- */
+@media (min-width: 768px) {
   .related-products-grid .shop-product-card-link {
-    width: 45%;
+    /* En desktop, mostramos 4 tarjetas */
+    flex: 0 0 calc(25% - 0.75rem);
   }
 }
-/* --- Vista de Móvil Pequeño (hasta 480px) --- */
-/* Muestra 1.5 tarjetas para mejorar la visibilidad */
+
+@media (max-width: 992px) {
+  .carousel-arrow.left { left: 5px; }
+  .carousel-arrow.right { right: 5px; }
+}
+
 @media (max-width: 480px) {
   .related-products-grid .shop-product-card-link {
-    width: 60%;
+    /* En móvil pequeño, solo 1 tarjeta y un poco de la siguiente */
+    flex: 0 0 80%;
   }
 }
 
