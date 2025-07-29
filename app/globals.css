@@ -1011,12 +1011,14 @@ body {
 }
 
 
+/* --- Vista de Móvil Pequeño (hasta 480px) --- */
+/* Muestra 1.5 tarjetas para indicar que hay más */
 @media (max-width: 480px) {
-    .related-products-grid .shop-product-card-link {
-        flex-basis: 70%; /* Casi toda la pantalla en móviles muy pequeños */
-    }
+  .related-products-grid .shop-product-card-link {
+    flex-basis: 65%;
+    min-width: 150px;
+  }
 }
-
 
 /* ============================================= */
 /* ===== PÁGINA DE DETALLE DE PRODUCTO (PDP) PAGE HOME VA HASTA AQUI. ES DECIR AQUÍ TERMINA ===== */
