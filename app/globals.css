@@ -1004,25 +1004,28 @@ body {
 
 /* --- AJUSTES RESPONSIVOS PARA LAS TARJETAS DEL CARRUSEL --- */
 
-/* Vista de Tablet (hasta 992px) - Muestra ~3 tarjetas */
+/* --- Vista de Tablet (hasta 992px) --- */
 @media (max-width: 992px) {
     .related-products-grid .shop-product-card-link {
-        flex-basis: 30%;
+        flex-basis: 30% !important;
+        border: 2px solid red !important; /* Borde de prueba */
     }
 }
 
-/* Vista de Móvil (hasta 768px) - Muestra ~2 tarjetas */
+/* --- Vista de Móvil (hasta 768px) --- */
 @media (max-width: 768px) {
     .related-products-grid .shop-product-card-link {
-        flex-basis: 46%;
+        flex-basis: 46% !important;
+        border: 2px solid red !important; /* Borde de prueba */
     }
 }
 
-/* Vista de Móvil Pequeño (hasta 480px) - Muestra ~1.5 tarjetas */
+/* --- Vista de Móvil Pequeño (hasta 480px) --- */
 @media (max-width: 480px) {
     .related-products-grid .shop-product-card-link {
-        flex-basis: 60%;
-        min-width: 150px;
+        flex-basis: 60% !important;
+        min-width: 150px !important;
+        border: 2px solid red !important; /* Borde de prueba */
     }
 }
 
