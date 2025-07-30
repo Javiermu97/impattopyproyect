@@ -105,22 +105,24 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
     const container = scrollContainerRef.current;
     if (container) {
       const { scrollLeft, scrollWidth, clientWidth } = container;
-      setCanScrollLeft(scrollLeft > 5);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
     }
   };
 
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (container) {
-      const timer = setTimeout(() => checkScrollability(), 100);
+      const timer = setTimeout(() => checkScrollability(), 150);
       container.addEventListener('scroll', checkScrollability);
       window.addEventListener('resize', checkScrollability);
       
       return () => {
         clearTimeout(timer);
-        container.removeEventListener('scroll', checkScrollability);
-        window.removeEventListener('resize', checkScrollability);
+        if (container) {
+          container.removeEventListener('scroll', checkScrollability);
+          window.removeEventListener('resize', checkScrollability);
+        }
       };
     }
   }, [products]);
@@ -128,7 +130,7 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
   const scroll = (direction: 'left' | 'right') => {
     const container = scrollContainerRef.current;
     if (container) {
-      const scrollAmount = container.clientWidth * 0.8;
+      const scrollAmount = container.clientWidth * 0.9;
       container.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
     }
   };
@@ -143,7 +145,20 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
           disabled={!canScrollLeft}
           aria-label="Scroll Left"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        
+        <div className="related-products-grid" ref={scrollContainerRef}>
+          {products.map((p: Product) => <RelatedProductCard key={p.id} product={p} />)}
+        </div>
+        
+        <button
+          className={`carousel-nav-btn next ${!canScrollRight ? 'disabled' : ''}`}
+          onClick={() => scroll('right')}
+          disabled={!canScrollRight}
+          aria-label="Scroll Right"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
         
         <div className="related-products-grid" ref={scrollContainerRef}>
