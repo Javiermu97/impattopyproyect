@@ -1119,17 +1119,19 @@ body {
 }
 
 
-/* --- Media Queries para Escritorio --- */
+/*/* --- Media Queries para Escritorio --- */
 @media (min-width: 768px) {
   .arcashop-style .related-products-grid .shop-product-card-link {
-    flex-basis: 23%; /* Base de 23% para que quepan 4 */
+    flex-basis: 23%;
     max-width: 220px;
   }
+
+  /* REGLA DEFINITIVA PARA TABLET Y PC */
   .arcashop-style .carousel-nav-btn.prev {
-    left: -20px;
+    left: 2rem !important; /* Aumentamos la distancia y forzamos la regla */
   }
   .arcashop-style .carousel-nav-btn.next {
-    right: -20px;
+    right: 2rem !important; /* Aumentamos la distancia y forzamos la regla */
   }
 }
 
