@@ -979,86 +979,137 @@ body {
 
 /* ========================================================= */
 /* ===== ESTILOS PARA ADAPTAR CARRUSEL AL DISEÑO ARCA SHOP ===== */
+/* ===== (CORRECCIÓN - DISPOSICIÓN HORIZONTAL Y TAMAÑO) ===== */
 /* ========================================================= */
 
-/* Usamos ".arcashop-style" como una clase contenedora para asegurar
-  que estos estilos solo se apliquen donde nosotros queramos, 
-  sin afectar otros carruseles o componentes del sitio.
-*/
-
-/* --- 1. Contenedor principal de la sección --- */
-/* Lo hacemos más compacto, reduciendo el espacio vertical (padding) */
+/* Contenedor principal de la sección */
 .related-products-section.arcashop-style {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
-  background-color: #ffffff; /* Fondo blanco, como Arca Shop */
-}
-
-/* --- 2. Título "Te puede interesar" --- */
-/* Hacemos la fuente más gruesa y ajustamos el espacio */
-.related-products-title.arcashop-style {
-  font-weight: 700; /* Letra en negrita (bold) */
-  font-size: 1.6rem; 
-  margin-bottom: 1.5rem; /* Menos espacio debajo del título */
-}
-
-/* --- 3. Tarjeta de Producto (Card) --- */
-/* Este es el cambio principal: un diseño más plano y compacto */
-.arcashop-style .shop-product-card-link {
-  border: 1px solid #e5e5e5; /* Borde sutil en lugar de sombra */
-  border-radius: 8px; /* Esquinas un poco menos redondeadas */
   background-color: #ffffff;
-  box-shadow: none; /* Quitamos la sombra para un look "plano" */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden; /* Importante para el scroll horizontal */
 }
 
-/* Añadimos una sombra sutil solo al pasar el cursor */
+/* Título "Te puede interesar" */
+.related-products-title.arcashop-style {
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  text-align: left; /* Alineamos el título a la izquierda como en Arca Shop */
+  padding-left: 1rem; /* Añadimos un poco de espacio a la izquierda */
+}
+
+/* Contenedor del Carrusel (Grid) - ¡CLAVE PARA LA DISPOSICIÓN HORIZONTAL! */
+.arcashop-style .carousel-container {
+  position: relative; /* Para posicionar las flechas */
+  margin-left: 0; /* Aseguramos que no haya margen izquierdo innecesario */
+  margin-right: 0; /* Aseguramos que no haya margen derecho innecesario */
+  padding: 0 1rem; /* Espaciado lateral */
+}
+
+.arcashop-style .related-products-grid {
+  display: flex; /* Habilitamos el flexbox para la disposición horizontal */
+  flex-direction: row; /* Aseguramos que los elementos se alineen en fila */
+  gap: 0.75rem;
+  overflow-x: auto; /* Permitimos el scroll horizontal */
+  scroll-snap-type: x mandatory; /* Opcional: para que el scroll se detenga en cada tarjeta */
+  padding-bottom: 1rem; /* Espacio inferior para la barra de scroll si aparece */
+  -webkit-overflow-scrolling: touch; /* Para un scroll más suave en iOS */
+}
+
+.arcashop-style .related-products-grid > * {
+  flex: 0 0 auto; /* Evita que las tarjetas se estiren y permite definir su ancho */
+  width: calc(50% - 0.75rem); /* Inicialmente mostramos 2 tarjetas en pantallas pequeñas */
+  scroll-snap-align: start; /* Opcional: alinea el inicio de cada tarjeta al hacer scroll */
+}
+
+/* Tarjeta de Producto (Card) */
+.arcashop-style .shop-product-card-link {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: block; /* Aseguramos que el link ocupe todo el espacio de la tarjeta */
+}
+
 .arcashop-style .shop-product-card-link:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-/* --- 4. Contenido de la Tarjeta (Nombre y Precio) --- */
-/* Hacemos el área de texto más compacta */
+/* Contenido de la Tarjeta (Nombre y Precio) */
 .arcashop-style .card-info {
-  padding: 0.75rem; /* Menos espacio interno */
+  padding: 0.75rem;
   text-align: left;
 }
 
-/* Nombre del producto más audaz */
 .arcashop-style .card-info h4 {
-  font-weight: 600; /* Más grueso que el actual */
+  font-weight: 600;
   font-size: 0.9rem;
+  margin-bottom: 0.25rem; /* Reducimos un poco el margen inferior */
 }
 
-/* Precios más audaces, como en Arca Shop */
 .arcashop-style .card-price span {
-  font-weight: 700; /* Precio principal muy audaz */
+  font-weight: 700;
 }
 .arcashop-style .shop-product-old-price {
-  font-weight: 400; /* El precio tachado lo dejamos normal */
+  font-weight: 400;
 }
 
-
-/* --- 5. Flechas de Navegación --- */
-/* Flechas más visibles y definidas, sin transparencias */
-.arcashop-style .carousel-nav-btn {
-  background-color: #ffffff;   /* Fondo blanco sólido */
-  border: 1px solid #cccccc;   /* Borde gris definido */
-  color: #333333;             /* Ícono de flecha oscuro */
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* Sombra muy sutil */
+/* Flechas de Navegación */
+.arcashop-style .carousel-container .carousel-nav-btn { /* Especificamos el contenedor padre */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  color: #333333;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  width: 30px; /* Reducimos el tamaño de las flechas */
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
-/* Efecto hover más simple */
-.arcashop-style .carousel-nav-btn:hover:not(:disabled) {
+.arcashop-style .carousel-container .carousel-nav-btn.prev {
+  left: 0.5rem;
+}
+
+.arcashop-style .carousel-container .carousel-nav-btn.next {
+  right: 0.5rem;
+}
+
+.arcashop-style .carousel-container .carousel-nav-btn:hover:not(:disabled) {
   background-color: #f5f5f5;
   transform: translateY(-50%) scale(1.05);
 }
 
-/* --- 6. Contenedor del Grid --- */
-/* Juntamos un poco más las tarjetas */
-.arcashop-style .related-products-grid {
-  gap: 0.75rem; /* Espacio reducido entre tarjetas (antes era 1rem) */
+.arcashop-style .carousel-container .carousel-nav-btn svg {
+  width: 16px; /* Reducimos el tamaño del icono SVG */
+  height: 16px;
+}
+
+.arcashop-style .carousel-container .carousel-nav-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Adaptación para pantallas más grandes */
+@media (min-width: 768px) {
+  .arcashop-style .related-products-grid > * {
+    width: calc(33.333% - 0.75rem); /* Mostramos 3 tarjetas en tabletas */
+  }
+}
+
+@media (min-width: 1024px) {
+  .arcashop-style .related-products-grid > * {
+    width: calc(25% - 0.75rem); /* Mostramos 4 tarjetas en escritorios */
+  }
 }
 
 /* ============================================= */
