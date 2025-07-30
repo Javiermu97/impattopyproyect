@@ -1061,21 +1061,26 @@ body {
 /* --- Flechas de Navegación --- */
 .arcashop-style .carousel-nav-btn {
   position: absolute;
-  top: 35%; /* Ajustamos la posición vertical */
+  top: 35%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  color: #333;
-  background-color: #ffffff;
+  width: 40px;  /* Ancho y alto iguales */
+  height: 40px; /* Ancho y alto iguales */
+  padding: 0;   /* Quita el padding para evitar deformaciones */
+  background-color: white;
   border: 1px solid #e0e0e0;
-  border-radius: 50%;
+  border-radius: 50%; /* Esto crea el círculo */
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s ease;
+}
+/* Y AÑADE esta nueva regla justo debajo para el ícono: */
+.arcashop-style .carousel-nav-btn svg {
+  width: 22px;
+  height: 22px;
+  stroke: #333; /* Color oscuro para la flecha */
 }
 .arcashop-style .carousel-nav-btn:hover:not(:disabled) {
     transform: translateY(-50%) scale(1.1);
