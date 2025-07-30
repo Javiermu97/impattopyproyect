@@ -1027,14 +1027,14 @@ body {
   border-radius: 8px;
   background-color: #ffffff;
   /* Una sombra muy sutil para que "flote" como en Arca Shop, en lugar de un borde */
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: none;
   transition: box-shadow 0.2s ease;
   text-decoration: none; /* Importante para que no se subraye el texto */
 }
 
 /* --- Efecto al pasar el mouse sobre la tarjeta --- */
 .arcashop-style .related-products-grid .shop-product-card-link:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 /* --- Contenido de la Tarjeta (Centrado y Elegante) --- */
