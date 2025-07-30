@@ -1016,6 +1016,8 @@ body {
 /* Oculta la barra de scroll en Chrome/Safari */
 .arcashop-style .related-products-grid::-webkit-scrollbar {
   display: none;
+} /* <--- AÑADE ESTA LLAVE AQUÍ */
+
 /* --- Tarjeta de Producto Individual --- */
 .arcashop-style .related-products-grid .shop-product-card-link {
   flex: 0 0 48%;
@@ -1033,7 +1035,6 @@ body {
 /* --- Efecto al pasar el mouse sobre la tarjeta --- */
 .arcashop-style .related-products-grid .shop-product-card-link:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
 }
 
 /* --- Contenido de la Tarjeta --- */
