@@ -1016,6 +1016,24 @@ body {
 /* Oculta la barra de scroll en Chrome/Safari */
 .arcashop-style .related-products-grid::-webkit-scrollbar {
   display: none;
+/* --- Tarjeta de Producto Individual --- */
+.arcashop-style .related-products-grid .shop-product-card-link {
+  flex: 0 0 48%;
+  max-width: 180px;
+  display: block;
+  border: none; /* ¡Esta es la línea clave que elimina el borde! */
+  border-radius: 8px;
+  background-color: #ffffff;
+  /* Una sombra muy sutil para que "flote" como en Arca Shop, en lugar de un borde */
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s ease;
+  text-decoration: none; /* Importante para que no se subraye el texto */
+}
+
+/* --- Efecto al pasar el mouse sobre la tarjeta --- */
+.arcashop-style .related-products-grid .shop-product-card-link:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 }
 
 /* --- Contenido de la Tarjeta --- */
@@ -1039,8 +1057,8 @@ body {
 /* Título del producto (MÁS AUDAZ Y EN MAYÚSCULAS) */
 .arcashop-style .card-info h4 {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 700;          /* Hacemos la letra más gruesa (bold) */
-  font-size: 0.8rem;         /* Ajustamos el tamaño para que sea compacto */
+  font-weight: 500;          /* Hacemos la letra más gruesa (bold) */
+  font-size: 0.6rem;         /* Ajustamos el tamaño para que sea compacto */
   line-height: 1.4;
   margin: 0 0 0.5rem 0;      /* Aumentamos el espacio con el precio */
   text-transform: uppercase; /* Convertimos el texto a mayúsculas */
