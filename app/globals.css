@@ -992,7 +992,7 @@ body {
   font-weight: 700;
   font-size: 1.5rem;
   text-align: center;
-  margin: 0 0 1rem 0; /* Margen inferior y un poco a la izquierda */
+  margin: 0 0 2.5rem 0; /* Margen inferior y un poco a la izquierda */
   padding: 0;
 }
 
