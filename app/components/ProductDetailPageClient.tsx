@@ -74,16 +74,18 @@ const RelatedProductCard = ({ product }: { product: Product }) => (
   <Link href={`/products/${product.id}`} className="shop-product-card-link">
     <div className="shop-product-card">
       <div className="image-container">
+        {/* La insignia de oferta ahora está DENTRO del contenedor de la imagen */}
         {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
-        <Image
-          src={product.imageUrl}
-          alt={product.name}
-          fill
+        <Image 
+          src={product.imageUrl} 
+          alt={product.name} 
+          fill 
           sizes="(max-width: 768px) 50vw, 25vw"
-          className="shop-product-image-primary"
+          className="shop-product-image-primary" 
         />
         {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="shop-product-image-secondary" />}
       </div>
+      {/* AÑADIDO: Mostramos el nombre y precio del producto */}
       <div className="card-info">
         <h4>{product.name}</h4>
         <div className="card-price">
@@ -94,76 +96,52 @@ const RelatedProductCard = ({ product }: { product: Product }) => (
     </div>
   </Link>
 );
-
 const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-
   const checkScrollability = () => {
     const container = scrollContainerRef.current;
     if (container) {
       const { scrollLeft, scrollWidth, clientWidth } = container;
-      setCanScrollLeft(scrollLeft > 10);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+      setCanScrollLeft(scrollLeft > 5);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
     }
   };
-
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (container) {
-      const timer = setTimeout(() => checkScrollability(), 150);
+      setTimeout(() => { checkScrollability(); }, 100);
       container.addEventListener('scroll', checkScrollability);
       window.addEventListener('resize', checkScrollability);
-      
-      return () => {
-        clearTimeout(timer);
-        if (container) {
-          container.removeEventListener('scroll', checkScrollability);
-          window.removeEventListener('resize', checkScrollability);
-        }
-      };
     }
+    return () => {
+      if (container) {
+        container.removeEventListener('scroll', checkScrollability);
+        window.removeEventListener('resize', checkScrollability);
+      }
+    };
   }, [products]);
-
   const scroll = (direction: 'left' | 'right') => {
     const container = scrollContainerRef.current;
     if (container) {
-      const scrollAmount = container.clientWidth * 0.9;
+      const scrollAmount = container.clientWidth * 0.8;
       container.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
     }
   };
-
   return (
-    <div className="related-products-section arcashop-style">
-      <h2 className="related-products-title arcashop-style">Te puede interesar</h2>
-      <div className="carousel-container arcashop-style">
-        <button
-          className={`carousel-nav-btn prev ${!canScrollLeft ? 'disabled' : ''}`}
-          onClick={() => scroll('left')}
-          disabled={!canScrollLeft}
-          aria-label="Scroll Left"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
-        
+    <div className="related-products-section">
+      <h2 className="related-products-title">Te puede interesar</h2>
+      <div className="carousel-container">
+        <button className={`carousel-nav-btn prev ${!canScrollLeft ? 'disabled' : ''}`} onClick={() => scroll('left')} disabled={!canScrollLeft} aria-label="Scroll Left"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
         <div className="related-products-grid" ref={scrollContainerRef}>
           {products.map((p: Product) => <RelatedProductCard key={p.id} product={p} />)}
         </div>
-        
-        <button
-          className={`carousel-nav-btn next ${!canScrollRight ? 'disabled' : ''}`}
-          onClick={() => scroll('right')}
-          disabled={!canScrollRight}
-          aria-label="Scroll Right"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
+        <button className={`carousel-nav-btn next ${!canScrollRight ? 'disabled' : ''}`} onClick={() => scroll('right')} disabled={!canScrollRight} aria-label="Scroll Right"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
       </div>
     </div>
   );
 };
-
 const TitleWithStyledTM = ({ name }: { name: string }) => {
   if (!name.includes('™')) return <>{name}</>;
   const parts = name.split('™');
@@ -286,17 +264,21 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
         />
       )}
       <div className="pdp-container">
+        {/*
+          IMPORTANTE: La fila .pdp-header-row ha sido eliminada.
+          El título h1 se ha movido dentro de .pdp-info.
+        */}
         <div className="pdp-main-layout">
           <div className="pdp-gallery">
             <div className="pdp-main-image-wrapper">
               {galleryImages.length > 0 && (
-                <Image
-                  src={galleryImages[currentImageIndex]}
-                  alt={product.name}
-                  className="pdp-main-image"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
+                <Image 
+                  src={galleryImages[currentImageIndex]} 
+                  alt={product.name} 
+                  className="pdp-main-image" 
+                  fill 
+                  sizes="(max-width: 768px) 100vw, 50vw" 
+                  priority 
                   style={{ objectFit: 'contain' }}
                 />
               )}
@@ -313,9 +295,9 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
             </div>
             <div className="pdp-thumbnails">
               {galleryImages.map((imgSrc, index) => (
-                <div
-                  key={index}
-                  className={`pdp-thumbnail ${currentImageIndex === index ? 'active' : ''}`}
+                <div 
+                  key={index} 
+                  className={`pdp-thumbnail ${currentImageIndex === index ? 'active' : ''}`} 
                   onClick={() => setCurrentImageIndex(index)}
                 >
                   <Image src={imgSrc} alt={`Thumbnail ${index + 1}`} width={100} height={100} />
@@ -361,11 +343,11 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               {product.videoUrl ? (
                 <video key={product.id} src={product.videoUrl} className="promo-image" autoPlay loop muted playsInline>Tu navegador no soporta el vídeo.</video>
               ) : (
-                <Image
-                  src={product.imageUrl}
-                  alt={product.name}
-                  className="promo-image"
-                  width={800}
+                <Image 
+                  src={product.imageUrl} 
+                  alt={product.name} 
+                  className="promo-image" 
+                  width={800} 
                   height={600}
                 />
               )}
@@ -374,10 +356,10 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               <div key={feature.id} className="info-promo-block-2">
                 <h2>{feature.titulo}</h2>
                 <p>{feature.descripcion}</p>
-                <Image
-                  src={feature.imagen}
-                  alt={feature.titulo}
-                  className="promo-image"
+                <Image 
+                  src={feature.imagen} 
+                  alt={feature.titulo} 
+                  className="promo-image" 
                   width={800}
                   height={600}
                 />
