@@ -1128,10 +1128,10 @@ body {
 
   /* REGLA DEFINITIVA PARA TABLET Y PC */
   .arcashop-style .carousel-nav-btn.prev {
-    left: 2rem !important; /* Aumentamos la distancia y forzamos la regla */
+    left: 4rem !important; /* Aumentamos la distancia y forzamos la regla */
   }
   .arcashop-style .carousel-nav-btn.next {
-    right: 2rem !important; /* Aumentamos la distancia y forzamos la regla */
+    right: 4rem !important; /* Aumentamos la distancia y forzamos la regla */
   }
 }
 
