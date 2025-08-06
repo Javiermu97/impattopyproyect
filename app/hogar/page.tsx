@@ -1,32 +1,45 @@
-import { getProducts } from '@/lib/database';
+// Importamos las herramientas necesarias
+import { supabase } from '@/lib/supabaseClient'; 
 import { Product } from '@/lib/types';
 import ShopPageClient from '@/app/components/ShopPageClient';
 
+// Metadata de la página
 export const metadata = {
   title: 'Hogar - Impatto Py',
   description: 'Soluciones prácticas y novedosas para hacer tu vida más fácil.',
 };
 
-// La página ahora es ASÍNCRONA para poder conectarse a la base de datos
 export default async function HogarPage() {
   
-  // 1. Obtenemos todos los productos desde Supabase
-  const allProducts = await getProducts();
+  const { data: hogarProducts, error } = await supabase
+    .from('productos')
+    .select('*') 
+    .ilike('categoria', '%Hogar%'); // <-- ¡AQUÍ ESTÁ LA CORRECCIÓN FINAL!
 
-  // 2. Filtramos los productos para esta categoría (tu lógica de keywords se mantiene)
-  const keywords = ['Organizador', 'Licuadora', 'Alfombra', 'Cinta', 'Lint'];
-  const hogarProducts = allProducts
-    .filter((p: Product) => 
-      keywords.some(key => p.name.toLowerCase().includes(key.toLowerCase()))
-    );
+  if (error) {
+    console.error('Error al cargar productos de la categoría Hogar:', error);
+  }
 
-  // 3. Pasamos los productos filtrados al componente de cliente
   return (
     <div className="shop-container">
         <header className="shop-header">
             <h1>Hogar</h1>
+            
         </header>
-        <ShopPageClient products={hogarProducts} />
+
+        {/* Muestra un mensaje si la consulta no devuelve productos */}
+        {(!hogarProducts || hogarProducts.length === 0) && (
+          <div className="product-grid-area">
+            <p className="no-products-message">
+              No se encontraron productos para esta categoría.
+            </p>
+          </div>
+        )}
+
+        {/* Solo muestra el componente de la tienda si hay productos */}
+        {hogarProducts && hogarProducts.length > 0 && (
+          <ShopPageClient products={hogarProducts} />
+        )}
     </div>
   );
 }

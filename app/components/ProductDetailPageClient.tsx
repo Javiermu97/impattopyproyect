@@ -325,7 +325,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
           </div>
           
           <div className="pdp-info">
-            <h1 className="pdp-title"><TitleWithStyledTM name={product.name} />!! SUPER PROMO!!!</h1>
+            <h1 className="pdp-title"><TitleWithStyledTM name={product.name} /></h1>
 
             <StarRating />
             <div className="pdp-price-section">
@@ -355,7 +355,9 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               <span>Productos 100% Paraguayos de calidad garantizada que se acomodan a tus necesidades y gustos.</span>
             </div>
             <div className="info-promo-block">
-              <h2 className="promo-title">SÚPER PROMO POR <br /> {product.price.toLocaleString('es-PY')} GS 👑👑👑</h2>
+              <h2 className="promo-title" style={{ whiteSpace: 'pre-line' }}>
+    {product.texto_oferta}
+  </h2>
               <h3 className="promo-subtitle">{product.promoSubtitle}</h3>
               <p>{product.description}</p>
               {product.videoUrl ? (
@@ -373,7 +375,32 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
             {product.caracteristicas && product.caracteristicas.map((feature: Feature) => (
               <div key={feature.id} className="info-promo-block-2">
                 <h2>{feature.titulo}</h2>
-                <p>{feature.descripcion}</p>
+                {/* INICIA EL CAMBIO */}
+    <div className="ventajas-list">
+  {feature.descripcion.split('\n').map((linea, index) => {
+    // Revisa si la línea contiene el patrón de negrita (*texto*)
+    if (linea.includes('*')) {
+      // Divide la línea en partes usando los asteriscos como separadores
+      const parts = linea.split(/\*(.*?)\*/);
+      
+      // parts[0] = texto antes de la negrita (si lo hay)
+      // parts[1] = el texto que debe ir en negrita
+      // parts[2] = texto después de la negrita (si lo hay)
+      
+      return (
+        <p key={index}>
+          <span>{parts[0]}</span>
+          <strong>{parts[1]}</strong>
+          <span>{parts[2]}</span>
+        </p>
+      );
+    }
+    
+    // Si no hay asteriscos en la línea, la muestra de forma normal
+    return <p key={index}>{linea}</p>;
+  })}
+</div>
+    {/* TERMINA EL CAMBIO */}
                 <Image
                   src={feature.imagen}
                   alt={feature.titulo}

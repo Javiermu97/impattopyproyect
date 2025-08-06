@@ -22,7 +22,7 @@ export interface Product {
   price: number;
   description: string;
   imageUrl: string;
-  
+  texto_oferta?: string; // <-- AÑADE ESTA LÍNEA
   // Propiedades de tu archivo `data.ts` que pueden no estar en Supabase (las hacemos opcionales)
   oldPrice?: number;
   inStock?: boolean;

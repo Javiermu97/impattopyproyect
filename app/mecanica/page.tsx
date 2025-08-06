@@ -1,31 +1,44 @@
-import { getProducts } from '@/lib/database';
+// Importamos las herramientas necesarias
+import { supabase } from '@/lib/supabaseClient';
 import { Product } from '@/lib/types';
 import ShopPageClient from '@/app/components/ShopPageClient';
 
+// Metadata de la página
 export const metadata = {
-  title: 'Mecánica & Más - Impatto Py',
-  description: 'Accesorios y herramientas para tu vehículo.',
+  title: 'Mecánica - Impatto Py',
+  description: 'Herramientas y accesorios para el mantenimiento de tu vehículo.',
 };
 
-// La página ahora es ASÍNCRONA para poder conectarse a la base de datos
 export default async function MecanicaPage() {
   
-  // 1. Obtenemos todos los productos desde Supabase
-  const allProducts = await getProducts();
+  const { data: mecanicaProducts, error } = await supabase
+    .from('productos')
+    .select('*')
+    .ilike('categoria', '%Mecanica%');
 
-  // 2. Filtramos los productos para esta categoría (tu lógica de keywords se mantiene)
-  const keywords = ['Solar Charger', 'Vehiculo'];
-  const mecanicaProducts = allProducts.filter((p: Product) => 
-    keywords.some(key => p.name.toLowerCase().includes(key.toLowerCase()))
-  );
+  if (error) {
+    console.error('Error al cargar productos de la categoría Mecánica:', error);
+  }
 
-  // 3. Pasamos los productos filtrados al componente de cliente
   return (
     <div className="shop-container">
         <header className="shop-header">
-            <h1>Mecánica & Más</h1>
+            <h1>Mecánica</h1>
         </header>
-        <ShopPageClient products={mecanicaProducts} />
+
+        {/* Muestra un mensaje si la consulta no devuelve productos */}
+        {(!mecanicaProducts || mecanicaProducts.length === 0) && (
+          <div className="product-grid-area">
+            <p className="no-products-message">
+              No se encontraron productos para esta categoría.
+            </p>
+          </div>
+        )}
+
+        {/* Solo muestra el componente de la tienda si hay productos */}
+        {mecanicaProducts && mecanicaProducts.length > 0 && (
+          <ShopPageClient products={mecanicaProducts} />
+        )}
     </div>
   );
 }

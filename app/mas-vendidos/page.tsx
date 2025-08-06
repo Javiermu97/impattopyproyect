@@ -1,25 +1,30 @@
-import { getProducts } from '@/lib/database';
-import ShopPageClient from '@/app/components/ShopPageClient';
+// Importamos las herramientas necesarias de Supabase y nuestros componentes
+import { supabase } from '@/lib/supabaseClient';
 import { Product } from '@/lib/types';
+import ShopPageClient from '@/app/components/ShopPageClient';
 
+// Metadata para SEO y la pestaña del navegador
 export const metadata = {
   title: 'Más Vendidos - Impatto Py',
   description: 'Descubre nuestros productos más populares y en tendencia.',
 };
 
-// La página ahora es ASÍNCRONA para poder conectarse a la base de datos
+// La página es asíncrona para poder consultar la base de datos
 export default async function MasVendidosPage() {
   
-  // 1. Obtenemos todos los productos desde Supabase
-  const allProducts = await getProducts();
+  // ¡CAMBIO CLAVE AQUÍ!
+  // Consultamos la tabla 'productos' filtrando por la columna booleana 'es_mas_vendido'.
+  const { data: bestSellers, error } = await supabase
+    .from('productos')
+    .select('*')
+    .eq('es_mas_vendido', true); // Usamos .eq() para buscar un valor exacto (true)
 
-  // 2. Ordenamos los productos por fecha de creación (el más nuevo primero)
-  //    Ya no filtramos por 'inStock' porque ese dato no viene de la base de datos.
-  const bestSellers = allProducts.sort((a, b) => 
-    new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  );
+  // Manejamos cualquier error que pueda ocurrir durante la consulta
+  if (error) {
+    console.error('Error al cargar los productos más vendidos:', error);
+  }
 
-  // 3. Pasamos la lista ordenada de productos al componente de cliente
+  // Renderizamos el componente
   return (
     <div className="shop-container">
         <header className="shop-header">
@@ -28,7 +33,20 @@ export default async function MasVendidosPage() {
                 Aquí encontrarás los productos favoritos de nuestra comunidad.
             </p>
         </header>
-        <ShopPageClient products={bestSellers} />
+
+        {/* Renderizado Condicional: Muestra un mensaje si no hay productos */}
+        {(!bestSellers || bestSellers.length === 0) && (
+          <div className="product-grid-area">
+            <p className="no-products-message">
+              Actualmente no hay productos marcados como más vendidos.
+            </p>
+          </div>
+        )}
+
+        {/* Renderizado Condicional: Muestra los productos solo si existen */}
+        {bestSellers && bestSellers.length > 0 && (
+          <ShopPageClient products={bestSellers} />
+        )}
     </div>
   );
 }

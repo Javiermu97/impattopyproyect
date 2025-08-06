@@ -15,11 +15,13 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 // Función para obtener UN producto por su ID, incluyendo sus características
-export async function getProductById(id: number): Promise<Product | null> { // <-- CORRECCIÓN AQUÍ
+export async function getProductById(id: number): Promise<Product | null> {
   const { data, error } = await supabase
     .from('productos')
     .select('*, caracteristicas (*)')
     .eq('id', id)
+    // 👇 VOLVEMOS A ESTA LÍNEA QUE SÍ FUNCIONA 👇
+    .order('orden', { referencedTable: 'caracteristicas', ascending: true })
     .single();
 
   if (error) {

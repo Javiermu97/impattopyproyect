@@ -764,20 +764,42 @@ body {
 .info-promo-block .promo-subtitle,
 .info-promo-block-2 h2 {
   font-size: 1.2rem;
-  color: black;
+  color: #A78D5A;
   margin-bottom: 1rem;
   font-family: 'Arial Black', Gadget, sans-serif;
   font-weight: bold;
   text-align: center;
 }
-.info-promo-block p { 
-  font-size: 0.9rem; 
-  color: #475569; 
-  text-align: left; /* Restablece la alineación del párrafo si es necesario */
-}
 
-.info-promo-block-2 p, .info-promo-block-2 li { font-size: 0.9rem; color: #475569; line-height: 1.5; }
 .info-promo-block-2 ul { list-style: none; padding-left: 0; margin: 0; }
+
+/* Estilo UNIFICADO para TODOS los párrafos de descripción */
+.info-promo-block > p {
+
+  /* --- Estilo de la fuente para que sea consistente --- */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1rem; /* Tamaño de letra consistente */
+  color: #333; /* Color de texto oscuro y legible */
+  line-height: 1.7;
+
+  /* --- Control de Ancho y Alineación del BLOQUE --- */
+  max-width: 85%;          /* Un ancho máximo para que no se vea tan extendido */
+  margin-left: 7.5%; /* Pequeño margen para que no esté pegado a la izquierda */
+  text-align: left;   /* El texto de las líneas inicia a la izquierda */
+  margin-right: auto;      /* Esto centra el bloque de párrafo */
+
+}
+.ventajas-list p {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Una fuente atractiva y común */
+  font-size: 1.1rem;      /* Un poco más grande */
+  font-weight: normal;         /* Semibold, un grosor elegante */
+  line-height: 1.6;         /* Espacio entre líneas */
+  margin-bottom: 0.75rem;     /* Espacio debajo de cada ventaja */
+  color: #1E293B;          /* Un color de texto oscuro, no negro puro */
+  max-width: 85%;
+  margin-left: 7.5%; /* Pequeño margen para que no esté pegado a la izquierda */
+  text-align: left;   /* El texto de las líneas inicia a la izquierda */
+}
 /* Estilo unificado para las imágenes de las secciones promocionales */
 .promo-image {
   width: 100%; /* Permite que ocupe el 100% de su espacio si es menor que max-width */
