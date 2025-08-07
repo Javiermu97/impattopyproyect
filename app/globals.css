@@ -209,14 +209,39 @@ body {
 }
 
 .shop-container { 
-  max-width: 1400px; 
+  max-width: 1800px; 
   margin: 0 auto; 
   padding: 0 2rem; 
   background-color: #ffffff; 
 }
+.shop-layout {
+  width: 100vw; /* Ocupa el 100% del ANCHO DE LA PANTALLA */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw; /* Truco para centrar un elemento de ancho de pantalla */
+  margin-right: -50vw;
+  padding: 0 2rem; /* Añadimos padding aquí para que los productos no toquen los bordes */
+  box-sizing: border-box; /* Importante para que el padding no añada más ancho */
+}
+
+/* 3. Ocultamos la barra lateral en escritorio (como antes) */
+@media (min-width: 992px) {
+  .filters-sidebar {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+
 .shop-header { margin-bottom: 2rem; padding-top: 2rem; }
 .shop-header h1 { font-size: 2.5rem; font-weight: bold; text-align: center; margin-bottom: 1rem; }
-.shop-layout { display: grid; grid-template-columns: 280px 1fr; gap: 2.5rem; }
+
 .filters-sidebar { border-right: 1px solid #e5e5e5; padding-right: 2.5rem; }
 .filter-group { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #f0f0f0; }
 .filter-title-main { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
@@ -255,7 +280,7 @@ body {
 .view-toggles button { background: none; border: 1px solid #ccc; padding: 10px; cursor: pointer; color: #888; display: flex; align-items: center; justify-content: center; border-radius: 5px; }
 .view-toggles button.active { background-color: #f0f0f0; color: #333; border-color: #ccc; }
 .sort-by select { padding: 8px 12px; border-radius: 5px; border: 1px solid #ccc; background-color: #ffffff; color: #333; cursor: pointer; width: auto; min-width: 200px; }
-.product-grid-shop { display: grid; gap: 2.5 rem 1.5rem; }
+
 .product-grid-shop.columns-2 { grid-template-columns: repeat(2, 1fr); }
 .product-grid-shop.columns-3 { grid-template-columns: repeat(3, 1fr); }
 .product-grid-shop.columns-4 { grid-template-columns: repeat(4, 1fr); }
@@ -263,29 +288,29 @@ body {
 
 
 /* ==================================================================== */
-/* ===== ESTILOS CORREGIDOS PARA LA GRILLA DE PRODUCTOS ===== */
+/* ===== VERSIÓN FINAL Y DEFINITIVA - ESTILO DVF ===== */
 /* ==================================================================== */
 
-/* 1. La "tarjeta" invisible, solo agrupa. */
+.product-grid-shop {
+  display: grid;
+  gap: 2rem 1.5rem;
+}
+
 .shop-product-card {
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  background-color: transparent;
   text-align: center;
 }
 
-/* 2. El contenedor de la imagen con la proporción vertical y fondo blanco. */
+/* 1. EL "MARCO" DE LA IMAGEN: Proporción fija y sin fondo. */
 .shop-product-card .image-container {
   position: relative;
   width: 100%;
-  aspect-ratio: 2 / 3; /* Proporción de retrato (más alto que ancho) */
+  aspect-ratio: 4 / 5; /* Proporción de retrato profesional. Puedes ajustar a 2/3 si quieres más altura. */
   overflow: hidden;
   margin-bottom: 1rem;
-  background-color: #ffffff; /* CORREGIDO: Fondo blanco en lugar de gris */
+  background-color: transparent; /* CORREGIDO: Sin fondo gris, sin bordes. */
 }
 
-/* 3. Las imágenes se apilan y cubren el contenedor por completo. */
+/* 2. LA IMAGEN: Se estira para CUBRIR el marco. */
 .shop-product-card .image-container .shop-product-image-primary,
 .shop-product-card .image-container .shop-product-image-secondary {
   position: absolute;
@@ -293,11 +318,11 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* La imagen cubre todo el espacio */
+  object-fit: cover; /* CLAVE: La imagen rellena el espacio, recortándose si es necesario. */
   transition: opacity 0.4s ease-in-out;
 }
 
-/* 4. La animación de hover que intercambia las imágenes. */
+/* 3. Lógica de Hover (sin cambios, ya estaba bien) */
 .shop-product-card .shop-product-image-secondary {
   opacity: 0;
 }
@@ -305,135 +330,36 @@ body {
   opacity: 1;
 }
 
-/* 5. RESTAURADO: Estilo para la etiqueta de "Oferta". */
+/* 4. Etiqueta de "Oferta" (restaurada) */
 .shop-offer-badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: #A78D5A;
-  color: white;
-  padding: 3px 8px;
-  border-radius: 3px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  z-index: 2;
+  position: absolute; top: 12px; left: 12px; background-color: #A78D5A;
+  color: white; padding: 4px 10px; border-radius: 4px;
+  font-size: 0.8rem; font-weight: 500; z-index: 2;
 }
 
-/* 6. Estilos para el texto (nombre y precio). */
+/* 5. Estilos para el Texto (nombre y precios) */
 .shop-product-card h4 {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #333;
-  margin: 0 0 0.5rem 0;
+  font-size: 0.95rem; font-weight: 500; color: #333; margin: 0 0 0.5rem 0;
+  padding: 0 0.5rem;
 }
 
 .shop-product-card .price-section {
-  justify-content: center;
-  gap: 0.5rem; /* Espacio entre precios */
+  display: flex; justify-content: center; align-items: baseline;
+  gap: 0.5rem;
 }
 
 .shop-product-card .shop-product-price {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #333;
+  font-size: 1rem; font-weight: 500; color: #000;
 }
 
-/* 7. RESTAURADO: Estilo para el precio antiguo tachado. */
 .shop-product-card .shop-product-old-price {
-  text-decoration: line-through;
-  color: #888;
-  font-size: 0.9rem;
-  font-weight: 400;
+  text-decoration: line-through; color: #888; font-size: 0.9rem;
 }
-
-/* ==================================================================== */
-/* ===== ESTILOS CORREGIDOS PARA LA GRILLA DE PRODUCTOS ===== */
-/* ==================================================================== */
-
-/* 1. La "tarjeta" invisible, solo agrupa. */
-.shop-product-card {
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  background-color: transparent;
-  text-align: center;
+/* Esto quita el subrayado en las tarjetas de producto */
+.shop-product-card-link,
+.shop-product-card-link:hover {
+  text-decoration: none;
 }
-
-/* 2. El contenedor de la imagen con la proporción vertical y fondo blanco. */
-.shop-product-card .image-container {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 2 / 3; /* Proporción de retrato (más alto que ancho) */
-  overflow: hidden;
-  margin-bottom: 1rem;
-  background-color: #ffffff; /* CORREGIDO: Fondo blanco en lugar de gris */
-}
-
-/* 3. Las imágenes se apilan y cubren el contenedor por completo. */
-.shop-product-card .image-container .shop-product-image-primary,
-.shop-product-card .image-container .shop-product-image-secondary {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* La imagen cubre todo el espacio */
-  transition: opacity 0.4s ease-in-out;
-}
-
-/* 4. La animación de hover que intercambia las imágenes. */
-.shop-product-card .shop-product-image-secondary {
-  opacity: 0;
-}
-.shop-product-card-link:hover .shop-product-image-secondary {
-  opacity: 1;
-}
-
-/* 5. RESTAURADO: Estilo para la etiqueta de "Oferta". */
-.shop-offer-badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: #A78D5A;
-  color: white;
-  padding: 3px 8px;
-  border-radius: 3px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  z-index: 2;
-}
-
-/* 6. Estilos para el texto (nombre y precio). */
-.shop-product-card h4 {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #333;
-  margin: 0 0 0.5rem 0;
-}
-
-.shop-product-card .price-section {
-  justify-content: center;
-  gap: 0.5rem; /* Espacio entre precios */
-}
-
-.shop-product-card .shop-product-price {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #333;
-}
-
-/* 7. RESTAURADO: Estilo para el precio antiguo tachado. */
-.shop-product-card .shop-product-old-price {
-  text-decoration: line-through;
-  color: #888;
-  font-size: 0.9rem;
-  font-weight: 400;
-}
-
 
 
 
