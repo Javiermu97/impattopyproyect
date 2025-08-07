@@ -294,7 +294,7 @@ body {
   background-color: #fff; 
 }
 .shop-product-card .shop-product-image-secondary { opacity: 0; }
-.shop-product-card:hover .shop-product-image-primary { opacity: 0; }
+
 .shop-product-card:hover .shop-product-image-secondary { opacity: 1; }
 /* boton de oferta sobre las imágenes */
 .shop-offer-badge { position: absolute; top: 10px; left: 10px; background-color: #A78D5A; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.8rem; font-weight: bold; z-index: 2; }
