@@ -19,8 +19,8 @@ a:hover { text-decoration: underline; }
 button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; }
 .btn-primary { background-color: #A78D5A; color: white; margin-top: 20px; padding: 12px 28px; border-radius: 50px; transition: background-color 0.2s ease-in-out; }
 .btn-primary:hover { background-color: #A78D5A; }
-.btn-secondary { background-color: transparent; border: 1px solid #A78D5A; color: #A78D6A; margin: 40px auto 20px auto; display: block; width: fit-content; padding: 10px 40px; text-transform: uppercase; }
-.btn-secondary:hover { background-color: #e6f2ff; }
+.btn-secondary { background-color: transparent; border: 1px solid #A78D7A; color: #A78D6A; margin: 40px auto 20px auto; display: block; width: fit-content; padding: 10px 40px; text-transform: uppercase; }
+.btn-secondary:hover { background-color:#A78D7A}
 .btn-tertiary { background-color: #333; color: white; margin-top: 20px; }
 .btn-tertiary:hover { background-color: #1a1a1a; }
 
@@ -148,9 +148,9 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .philosophy-content h2 { font-size: 2.5em; font-weight: 700; margin-bottom: 20px; }
 .philosophy-content p { line-height: 1.7; color: #666; margin-bottom: 20px; }
 
-/* Franja Azul Informativa */
-.info-banner-section { background-color: #A78D5A; color: white; padding: 30px 20px; }
-.info-banner-container { color: white; display: grid; grid-template-columns: repeat(4, 1fr); gap: 60px; max-width: 1200px; margin: 0 auto; text-align: center; }
+/* Franja Dorada Informativa */
+.info-banner-section { background-color:white; color:#A78D5A; padding: 30px 20px; }
+.info-banner-container { color:#A78D5A; display: grid; grid-template-columns: repeat(4, 1fr); gap: 60px; max-width: 1200px; margin: 0 auto; text-align: center; }
 
 .info-banner-item {
   opacity: 0;
