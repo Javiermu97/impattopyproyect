@@ -255,7 +255,7 @@ body {
 .view-toggles button { background: none; border: 1px solid #ccc; padding: 10px; cursor: pointer; color: #888; display: flex; align-items: center; justify-content: center; border-radius: 5px; }
 .view-toggles button.active { background-color: #f0f0f0; color: #333; border-color: #ccc; }
 .sort-by select { padding: 8px 12px; border-radius: 5px; border: 1px solid #ccc; background-color: #ffffff; color: #333; cursor: pointer; width: auto; min-width: 200px; }
-.product-grid-shop { display: grid; gap: 1.5rem; }
+.product-grid-shop { display: grid; gap: 2.5 rem 1.5rem; }
 .product-grid-shop.columns-2 { grid-template-columns: repeat(2, 1fr); }
 .product-grid-shop.columns-3 { grid-template-columns: repeat(3, 1fr); }
 .product-grid-shop.columns-4 { grid-template-columns: repeat(4, 1fr); }
@@ -274,7 +274,7 @@ body {
   position: relative; 
   margin-bottom: 1rem; 
   width: 100%; 
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 4;
   transition: box-shadow 0.2s ease;
   border-radius: 8px;
 }
