@@ -277,14 +277,18 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
 
   return (
     <>
-      {isCheckoutVisible && selectedVariant && (
-        <CheckoutForm
-          product={product}
-          selectedVariant={selectedVariant}
-          onClose={() => setCheckoutVisible(false)}
-          onConfirm={handleOrderConfirmation}
-        />
-      )}
+      {isCheckoutVisible && (
+  <CheckoutForm
+    product={product}
+    selectedVariant={selectedVariant || { 
+      color: 'Único', 
+      image: product.imageUrl, 
+      colorHex: '#FFFFFF' 
+    }}
+    onClose={() => setCheckoutVisible(false)}
+    onConfirm={handleOrderConfirmation}
+  />
+)}
       <div className="pdp-container">
         <div className="pdp-main-layout">
           <div className="pdp-gallery">
