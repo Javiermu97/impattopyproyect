@@ -2,28 +2,28 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaWhatsapp } from "react-icons/fa";
 import CarruselInferior from './components/CarruselInferior';
-import InfoBanner from './components/InfoBanner'; // Corregido: Usamos tu componente existente
+import InfoBanner from './components/InfoBanner';
 import { supabase } from '@/lib/supabaseClient';
 import { Product } from '@/lib/types';
 
 export default async function HomePage() {
 
-  // Obtenemos los productos "Más Vendidos"
-  const { data: masVendidosProducts, error: masVendidosError } = await supabase
+  // 1. Obtenemos los productos destacados para "Especial de la Semana"
+  const { data: destacadosSemana, error: errorSemana } = await supabase
     .from('productos')
     .select('*')
-    .eq('es_mas_vendido', true)
+    .eq('es_destacado_semana', true) // Buscamos los productos que marcaste
     .limit(4);
 
-  // Obtenemos los productos de la categoría "Hogar"
-  const { data: hogarProducts, error: hogarError } = await supabase
+  // 2. Obtenemos los productos destacados para "Hechos para tu hogar"
+  const { data: destacadosHogar, error: errorHogar } = await supabase
     .from('productos')
     .select('*')
-    .ilike('categoria', '%Hogar%')
+    .eq('es_destacado_hogar', true) // Buscamos los productos que marcaste
     .limit(8);
 
-  if (masVendidosError) console.error('Error al cargar productos más vendidos:', masVendidosError);
-  if (hogarError) console.error('Error al cargar productos de hogar:', hogarError);
+  if (errorSemana) console.error('Error al cargar productos destacados de la semana:', errorSemana);
+  if (errorHogar) console.error('Error al cargar productos destacados de hogar:', errorHogar);
 
   return (
     <>
@@ -44,11 +44,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Sección "Especial de la Semana" con datos reales */}
+      {/* Sección "Especial de la Semana" con datos elegidos por ti */}
       <section className="products-section products-section-gray">
         <h2 className="section-title">🔥Especial de la Semana <span role="img" aria-label="fire">🔥</span></h2>
         <div className="product-grid-shop columns-4">
-          {masVendidosProducts?.map((product: Product) => (
+          {destacadosSemana?.map((product: Product) => (
             <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
               <div className="shop-product-card">
                 <div className="image-container">
@@ -70,12 +70,12 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      {/* Sección "Hechos para tu hogar" con datos reales */}
+      {/* Sección "Hechos para tu hogar" con datos elegidos por ti */}
       <section className="products-section">
         <h2 className="section-title">Confort y Diseño</h2>
         <h3 className="section-subtitle"> Hechos para tu hogar <span role="img" aria-label="house">🏠</span></h3>
         <div className="product-grid-shop columns-4">
-          {hogarProducts?.map((product: Product) => (
+          {destacadosHogar?.map((product: Product) => (
             <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
               <div className="shop-product-card">
                 <div className="image-container">
@@ -113,7 +113,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Corregido: Usamos tu componente de cliente existente para la franja informativa */}
       <InfoBanner />
 
       <a href="https://wa.me/595983491155" target="_blank" rel="noopener noreferrer" className="whatsapp-button">
