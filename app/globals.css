@@ -299,7 +299,7 @@ body {
 /* boton de oferta sobre las imágenes */
 .shop-offer-badge { position: absolute; top: 10px; left: 10px; background-color: #A78D5A; color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.8rem; font-weight: bold; z-index: 2; }
 .shop-product-card h4 { font-size: 1rem; margin-bottom: 0.5rem; color: #333; word-wrap: break-word; font-weight: 500; }
-.shop-product-price { font-size: 1.1rem; font-weight: 600; color: #0066cc; }
+.shop-product-price { font-size: 1.1rem; font-weight: 600; color:#A78D5A; }
 .shop-product-old-price {
   text-decoration: line-through;
   color: #747070;
