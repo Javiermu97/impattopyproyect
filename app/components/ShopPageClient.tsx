@@ -129,27 +129,22 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
 
         <div className={`product-grid-shop columns-${columns}`}>
           {currentProducts.length > 0 ? (
-            currentProducts.map(product => {
-              // ESTA ES LA LÍNEA DE PRUEBA PARA VER LOS DATOS EN LA CONSOLA
-              console.log('Datos del producto:', product);
-
-              return (
-                <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
-                  <div className="shop-product-card">
-                    <div className="image-container">
-                      {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
-                      <Image src={product.imageUrl} alt={product.name || 'Producto sin nombre'} width={250} height={250} className="shop-product-image-primary" style={{ objectFit: 'contain' }} />
-                      {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name || 'Producto sin nombre'} width={250} height={250} className="shop-product-image-secondary" style={{ objectFit: 'contain' }} />}
-                    </div>
-                    <h4>{product.name}</h4>
-                    <div className="price-section">
-                      <span className="shop-product-price">Gs. {(product.price || 0).toLocaleString('es-PY')}</span>
-                      {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
-                    </div>
-                  </div>
-                </Link>
-              );
-            })
+            currentProducts.map(product => (
+  <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
+    <div className="shop-product-card">
+      <div className="image-container">
+        {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
+        <Image src={product.imageUrl} alt={product.name || 'Producto sin nombre'} width={250} height={250} className="shop-product-image-primary" style={{ objectFit: 'contain' }} />
+        {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name || 'Producto sin nombre'} width={250} height={250} className="shop-product-image-secondary" style={{ objectFit: 'contain' }} />}
+      </div>
+      <h4>{product.name}</h4>
+      <div className="price-section">
+        <span className="shop-product-price">Gs. {(product.price || 0).toLocaleString('es-PY')}</span>
+        {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
+      </div>
+    </div>
+  </Link>
+))
           ) : (
             <p className="no-products-message">No se encontraron productos con estos filtros.</p>
           )}
