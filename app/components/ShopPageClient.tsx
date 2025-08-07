@@ -40,9 +40,7 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
   useEffect(() => { setCurrentPage(1); }, [availability, priceRange, sortBy, products]);
 
   const filteredProducts = useMemo(() => {
-    // CORRECCIÓN: Si no hay productos, devuelve un array vacío para evitar errores.
     if (!products) return [];
-
     let filtered = [...products];
     
     if (availability.length > 0) {
@@ -52,10 +50,8 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
       else if (!inStockSelected && outOfStockSelected) { filtered = filtered.filter(p => p.inStock !== true); }
     }
     
-    // CORRECCIÓN: Filtro de precio más seguro
     filtered = filtered.filter(p => typeof p.price === 'number' && p.price >= priceRange[0] && p.price <= priceRange[1]);
     
-    // CORRECCIÓN: Ordenamiento seguro que no se rompe con valores nulos
     switch (sortBy) {
       case 'precio-asc': filtered.sort((a, b) => (a.price || 0) - (b.price || 0)); break;
       case 'precio-desc': filtered.sort((a, b) => (b.price || 0) - (a.price || 0)); break;
@@ -133,22 +129,27 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
 
         <div className={`product-grid-shop columns-${columns}`}>
           {currentProducts.length > 0 ? (
-            currentProducts.map(product => (
-              <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
-                <div className="shop-product-card">
-                  <div className="image-container">
-                    {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
-                    <Image src={product.imageUrl} alt={product.name || 'Producto sin nombre'} width={250} height={250} className="shop-product-image-primary" style={{ objectFit: 'contain' }} />
-                    {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name || 'Producto sin nombre'} width={250} height={250} className="shop-product-image-secondary" style={{ objectFit: 'contain' }} />}
+            currentProducts.map(product => {
+              // ESTA ES LA LÍNEA DE PRUEBA PARA VER LOS DATOS EN LA CONSOLA
+              console.log('Datos del producto:', product);
+
+              return (
+                <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
+                  <div className="shop-product-card">
+                    <div className="image-container">
+                      {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
+                      <Image src={product.imageUrl} alt={product.name || 'Producto sin nombre'} width={250} height={250} className="shop-product-image-primary" style={{ objectFit: 'contain' }} />
+                      {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name || 'Producto sin nombre'} width={250} height={250} className="shop-product-image-secondary" style={{ objectFit: 'contain' }} />}
+                    </div>
+                    <h4>{product.name}</h4>
+                    <div className="price-section">
+                      <span className="shop-product-price">Gs. {(product.price || 0).toLocaleString('es-PY')}</span>
+                      {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
+                    </div>
                   </div>
-                  <h4>{product.name}</h4>
-                  <div className="price-section">
-                    <span className="shop-product-price">Gs. {(product.price || 0).toLocaleString('es-PY')}</span>
-                    {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
-                  </div>
-                </div>
-              </Link>
-            ))
+                </Link>
+              );
+            })
           ) : (
             <p className="no-products-message">No se encontraron productos con estos filtros.</p>
           )}
