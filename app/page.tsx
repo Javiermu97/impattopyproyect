@@ -54,8 +54,8 @@ export default async function HomePage() {
               <div className="shop-product-card">
                 <div className="image-container">
                   {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
-                  <Image src={product.imageUrl} alt={product.name} width={250} height={250} className="shop-product-image-primary" style={{ objectFit: 'contain' }} />
-                  {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} width={250} height={250} className="shop-product-image-secondary" style={{ objectFit: 'contain' }} />}
+                  <Image src={product.imageUrl} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-primary" />
+{product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-secondary" />}
                 </div>
                 <h4>{product.name}</h4>
                 <div className="price-section">
