@@ -21,7 +21,7 @@ export default async function HomePage() {
     .from('productos')
     .select('*')
     .eq('es_destacado_hogar', true) // Buscamos los productos que marcaste
-    .limit(8);
+    .limit(4);
 
   if (errorSemana) console.error('Error al cargar productos destacados de la semana:', errorSemana);
   if (errorHogar) console.error('Error al cargar productos destacados de hogar:', errorHogar);
@@ -47,8 +47,10 @@ export default async function HomePage() {
 
       {/* Sección "Especial de la Semana" con datos elegidos por ti */}
       <section className="products-section products-section-gray">
+
+
         <h2 className="section-title">🔥Especial de la Semana <span role="img" aria-label="fire">🔥</span></h2>
-        <div className="product-grid-shop columns-4">
+        <div className="product-grid-shop columns-3">
           {destacadosSemana?.map((product: Product) => (
             <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
               <div className="shop-product-card">
@@ -73,9 +75,11 @@ export default async function HomePage() {
 
       {/* Sección "Hechos para tu hogar" con datos elegidos por ti */}
       <section className="products-section">
+
+
         <h2 className="section-title">Confort y Diseño</h2>
         <h3 className="section-subtitle"> Hechos para tu hogar <span role="img" aria-label="house">🏠</span></h3>
-        <div className="product-grid-shop columns-4">
+        <div className="product-grid-shop columns-3">
           {destacadosHogar?.map((product: Product) => (
             <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
               <div className="shop-product-card">

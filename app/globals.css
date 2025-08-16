@@ -90,22 +90,31 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 /* Products Section */
 .products-section {
-  max-width: 1200px;
-  margin: 50px auto;
-  padding: 0 20px;
-  text-align: center;
+  max-width: 1800px;
+  margin: 60px auto;  /* Centra la sección y da espacio vertical */
+  padding: 0 4rem;
+  text-align: center; /* Centra los títulos */
+  box-sizing: border-box;
 }
 
+/* Regla específica para las secciones con fondo gris */
 .products-section-gray {
-  background-color: white; 
-  max-width: none; 
-  padding: 50px 20px; 
-  margin: 50px 0;
+  max-width: none; /* Permite que el fondo gris ocupe todo el ancho */
+  background-color: #f8f8f8;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  margin-top: 60px;
+  margin-bottom: 60px;
 }
+
+/* Centra la grilla de productos DENTRO de la sección gris */
 .products-section-gray .product-grid-shop {
-    max-width: 1200px;
-    margin: 0 auto;
+  max-width: 1800px; /* Mismo ancho que las secciones normales */
+  margin: 0 auto;
+  padding: 0 4rem;
 }
+
+
 .products-section-gray {
   background-color:white;
   max-width: none;
@@ -214,22 +223,28 @@ body {
   padding: 0 2rem; 
   background-color: #ffffff; 
 }
-.shop-layout {
-  width: 100vw; /* Ocupa el 100% del ANCHO DE LA PANTALLA */
+/* ==================================================================== */
+/* ===== ESTILOS DEFINITIVOS PARA SECCIONES DE PRODUCTOS EN HOME ===== */
+/* ==================================================================== */
+
+/* 1. Hacemos que la sección sea de ancho completo Y centramos los títulos */
+.home-products-section {
+  width: 100vw;
   position: relative;
   left: 50%;
   right: 50%;
-  margin-left: -50vw; /* Truco para centrar un elemento de ancho de pantalla */
+  margin-left: -50vw;
   margin-right: -50vw;
-  padding: 0 2rem; /* Añadimos padding aquí para que los productos no toquen los bordes */
-  box-sizing: border-box; /* Importante para que el padding no añada más ancho */
+  box-sizing: border-box;
+  padding: 50px 0; /* Padding vertical, el horizontal lo controla la grilla de abajo */
+  text-align: center; /* <-- CORRECCIÓN: Centra los títulos como "Especial de la Semana" */
 }
 
-/* 3. Ocultamos la barra lateral en escritorio (como antes) */
-@media (min-width: 992px) {
-  .filters-sidebar {
-    display: none;
-  }
+/* 2. Limitamos el ancho de la GRILLA DE PRODUCTOS para que no toque los bordes */
+.home-products-section .product-grid-shop {
+  max-width: 1800px; /* Define el ancho máximo para la grilla de productos */
+  margin: 0 auto;    /* Centra la grilla dentro de la sección de ancho completo */
+  padding: 0 2rem;  /* Crea el espacio a los costados para que no se pegue a los bordes */
 }
 
 
@@ -287,79 +302,122 @@ body {
 
 
 
+
 /* ==================================================================== */
-/* ===== VERSIÓN FINAL Y DEFINITIVA - ESTILO DVF ===== */
+/* ===== CÓDIGO ÚNICO Y DEFINITIVO PARA LA TIENDA Y PRODUCTOS ===== */
 /* ==================================================================== */
 
-.product-grid-shop {
-  display: grid;
-  gap: 2rem 1.5rem;
+/* --- Contenedor Principal de la Tienda (Ancho y con márgenes) --- */
+.shop-container { 
+  max-width: 1800px; 
+  margin: 0 auto; 
+  padding: 0 2rem; 
+  background-color: #ffffff; 
 }
 
-.shop-product-card {
+/* --- Layout de la Tienda (Filtros delgados + Productos anchos) --- */
+.shop-layout { 
+  display: grid; 
+  grid-template-columns: 220px 1fr; 
+  gap: 2.5rem; 
+}
+
+/* --- Estilos para la Grilla de Productos (Centrada) --- */
+.product-grid-shop { 
+  display: grid; 
+  gap: 1.5rem;
+  justify-content: center; /* Centra los productos en la Home */
+}
+.product-grid-shop.columns-2 { grid-template-columns: repeat(2, 1fr); }
+.product-grid-shop.columns-3 { grid-template-columns: repeat(3, 1fr); }
+.product-grid-shop.columns-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* --- Estilos para la Tarjeta del Producto --- */
+
+.shop-product-card-link,
+.shop-product-card-link:hover { 
+  text-decoration: none; 
+}
+
+.shop-product-card { 
   text-align: center;
+  /* (Se quitan otros estilos que ya no son necesarios) */
 }
 
-/* 1. EL "MARCO" DE LA IMAGEN: Proporción fija y sin fondo. */
-.shop-product-card .image-container {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 5; /* Proporción de retrato profesional. Puedes ajustar a 2/3 si quieres más altura. */
-  overflow: hidden;
-  margin-bottom: 1rem;
-  background-color: transparent; /* CORREGIDO: Sin fondo gris, sin bordes. */
+.shop-product-card .image-container { 
+  position: relative; 
+  margin-bottom: 0.75rem; /* Menos espacio entre imagen y texto */
+  width: 100%; 
+  aspect-ratio: 1 / 1; /* Mantenemos el aspect-ratio original que funcionaba */
+  transition: box-shadow 0.2s ease;
+  border-radius: 8px;
 }
 
-/* 2. LA IMAGEN: Se estira para CUBRIR el marco. */
-.shop-product-card .image-container .shop-product-image-primary,
-.shop-product-card .image-container .shop-product-image-secondary {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* CLAVE: La imagen rellena el espacio, recortándose si es necesario. */
-  transition: opacity 0.4s ease-in-out;
+.shop-product-card:hover .image-container { 
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
 }
 
-/* 3. Lógica de Hover (sin cambios, ya estaba bien) */
-.shop-product-card .shop-product-image-secondary {
-  opacity: 0;
+.shop-product-card .image-container img { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 8px; 
+  background-color: #fff; 
 }
-.shop-product-card-link:hover .shop-product-image-secondary {
-  opacity: 1;
+.shop-product-card .shop-product-image-secondary { opacity: 0; }
+.shop-product-card-link:hover .shop-product-image-secondary { opacity: 1; }
+
+.shop-offer-badge { 
+  position: absolute; top: 10px; left: 10px; background-color: #A78D5A; 
+  color: white; padding: 3px 8px; border-radius: 3px; 
+  font-size: 0.8rem; font-weight: bold; z-index: 2; 
 }
 
-/* 4. Etiqueta de "Oferta" (restaurada) */
-.shop-offer-badge {
-  position: absolute; top: 12px; left: 12px; background-color: #A78D5A;
-  color: white; padding: 4px 10px; border-radius: 4px;
-  font-size: 0.8rem; font-weight: 500; z-index: 2;
-}
-
-/* 5. Estilos para el Texto (nombre y precios) */
-.shop-product-card h4 {
-  font-size: 0.95rem; font-weight: 500; color: #333; margin: 0 0 0.5rem 0;
-  padding: 0 0.5rem;
+.shop-product-card h4 { 
+  font-size: 1rem; margin-bottom: 0.5rem; color: #333; 
+  word-wrap: break-word; font-weight: 500; 
 }
 
 .shop-product-card .price-section {
-  display: flex; justify-content: center; align-items: baseline;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
   gap: 0.5rem;
 }
 
-.shop-product-card .shop-product-price {
-  font-size: 1rem; font-weight: 500; color: #000;
+.shop-product-card .shop-product-price { 
+  font-size: 1.1rem; font-weight: 600; color: #0066cc; 
 }
 
 .shop-product-card .shop-product-old-price {
-  text-decoration: line-through; color: #888; font-size: 0.9rem;
+  text-decoration: line-through;
+  color: #747070;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+  font-weight: 400;
 }
-/* Esto quita el subrayado en las tarjetas de producto */
-.shop-product-card-link,
-.shop-product-card-link:hover {
-  text-decoration: none;
+
+/* --- Reglas para la vista en Móvil --- */
+@media (max-width: 992px) {
+  .shop-layout {
+    grid-template-columns: 1fr;
+  }
+  .filters-sidebar {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 1.5rem;
+  }
+  .product-grid-shop.columns-4,
+  .product-grid-shop.columns-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
+
 
 
 
