@@ -1,5 +1,7 @@
 'use client';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
+// CAMBIO: Importamos la librería base para crear el cliente en el navegador
+import { createClient } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -7,7 +9,11 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  
+  // CAMBIO: Creamos el cliente de Supabase de forma directa
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,19 +23,41 @@ export default function LoginPage() {
     });
 
     if (!error) {
-      router.push('/admin'); // Redirige al dashboard si el login es exitoso
+      router.push('/admin');
     } else {
       alert('Error al iniciar sesión: ' + error.message);
     }
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '100px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
-      <h2>Admin Login</h2>
-      <form onSubmit={handleSignIn}>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required style={{ width: '100%', padding: '8px', marginBottom: '10px' }} />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Contraseña" required style={{ width: '100%', padding: '8px', marginBottom: '10px' }} />
-        <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: '#333', color: 'white' }}>
+    <div className="admin-container">
+      <h1>Admin Login</h1>
+      <form onSubmit={handleSignIn} className="admin-form">
+        <div className="form-group">
+          <label className="form-label" htmlFor="email">Email</label>
+          <input 
+            id="email"
+            type="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            placeholder="Email" 
+            required 
+            className="form-input"
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor="password">Contraseña</label>
+          <input 
+            id="password"
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            placeholder="Contraseña" 
+            required 
+            className="form-input"
+          />
+        </div>
+        <button type="submit" className="admin-submit-btn">
           Iniciar Sesión
         </button>
       </form>
