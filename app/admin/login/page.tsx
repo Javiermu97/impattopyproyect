@@ -1,5 +1,4 @@
 'use client';
-
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -30,11 +29,27 @@ export default function LoginPage() {
       <form onSubmit={handleSignIn} className="admin-form">
         <div className="form-group">
           <label className="form-label" htmlFor="email">Email</label>
-          <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="form-input"/>
+          <input 
+            id="email"
+            type="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            placeholder="Email" 
+            required 
+            className="form-input"
+          />
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="password">Contraseña</label>
-          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="form-input"/>
+          <input 
+            id="password"
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            placeholder="Contraseña" 
+            required 
+            className="form-input"
+          />
         </div>
         <button type="submit" className="admin-submit-btn">
           Iniciar Sesión

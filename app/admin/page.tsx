@@ -13,17 +13,19 @@ type Order = {
 
 export default async function AdminDashboard() {
   const supabase = createServerComponentClient({ cookies });
+
   const { data: { session } } = await supabase.auth.getSession();
+
   if (!session) {
     redirect('/admin/login');
   }
 
-  const { data, error } = await supabase
+  const { data: orders, error } = await supabase
     .from('orders')
     .select('*')
     .order('created_at', { ascending: false });
   
-  const orders: Order[] = data || [];
+  const ordersData: Order[] = orders || [];
 
   if (error) {
     console.error('Error fetching orders:', error.message);
@@ -33,7 +35,8 @@ export default async function AdminDashboard() {
     <div style={{ padding: '20px' }}>
       <h1>Panel de Administración</h1>
       <h2>Historial de Pedidos</h2>
-      <OrdersTable initialOrders={orders} />
+      
+      <OrdersTable initialOrders={ordersData} />
     </div>
   );
 }
