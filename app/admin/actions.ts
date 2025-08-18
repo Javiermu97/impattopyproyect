@@ -4,24 +4,15 @@ import { createClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-// ====================================================================
-// VERSIÓN DEFINITIVA DEL CLIENTE DE SUPABASE PARA SERVIDOR
-// ====================================================================
 const createSupabaseServerClient = () => {
-  // Leemos las variables directamente del entorno del servidor de Vercel.
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    // Si después de esto el error persiste, sabremos que el problema
-    // es 100% la configuración de las variables en Vercel.
     throw new Error('Variables de entorno de Supabase no encontradas.');
   }
-
-  // Creamos el cliente de forma manual y explícita.
   return createClient(supabaseUrl, supabaseKey);
 };
-
 
 // --- ACCIONES PARA ÓRDENES ---
 export async function updateOrderStatus(orderId: number, newStatus: string) {
@@ -39,24 +30,29 @@ export async function updateOrderStatus(orderId: number, newStatus: string) {
   return data;
 }
 
-// --- ACCIONES PARA PRODUCTOS ---
+// --- ACCIONES PARA PRODUCTOS (VERSIÓN FINAL) ---
 const getNumberOrNull = (formData: FormData, fieldName: string) => {
     const value = formData.get(fieldName) as string;
     return value ? Number(value) : null;
 };
-const getStringOrNull = (formData: FormData, fieldName:string) => {
+const getStringOrNull = (formData: FormData, fieldName: string) => {
     const value = formData.get(fieldName) as string;
-    return value || null;
+    return value.trim() || null;
+};
+const getGalleryImages = (formData: FormData, fieldName: string) => {
+    const value = formData.get(fieldName) as string;
+    if (!value) return null;
+    return value.split(',').map(url => url.trim()).filter(url => url);
 };
 
 export async function createProduct(formData: FormData) {
   const supabase = createSupabaseServerClient();
 
   const newProduct = {
-    name: formData.get('name') as string,
-    price: Number(formData.get('price')),
-    description: formData.get('description') as string,
-    imageUrl: formData.get('imageUrl') as string,
+    name: getStringOrNull(formData, 'name'),
+    price: getNumberOrNull(formData, 'price'),
+    description: getStringOrNull(formData, 'description'),
+    imageUrl: getStringOrNull(formData, 'imageUrl'),
     inStock: formData.get('inStock') === 'on',
     oldPrice: getNumberOrNull(formData, 'oldPrice'),
     imageUrl2: getStringOrNull(formData, 'imageUrl2'),
@@ -65,6 +61,10 @@ export async function createProduct(formData: FormData) {
     es_mas_vendido: formData.get('es_mas_vendido') === 'on',
     es_destacado: formData.get('es_destacado') === 'on',
     es_destacado_hogar: formData.get('es_destacado_hogar') === 'on',
+    es_destacado_semana: formData.get('es_destacado_semana') === 'on',
+    texto_oferta: getStringOrNull(formData, 'texto_oferta'),
+    promoSubtitle: getStringOrNull(formData, 'promoSubtitle'),
+    galleryImages: getGalleryImages(formData, 'galleryImages'),
   };
 
   const { error } = await supabase.from('products').insert(newProduct);
@@ -81,10 +81,10 @@ export async function createProduct(formData: FormData) {
 export async function updateProduct(productId: number, formData: FormData) {
   const supabase = createSupabaseServerClient();
   const updatedProduct = {
-    name: formData.get('name') as string,
-    price: Number(formData.get('price')),
-    description: formData.get('description') as string,
-    imageUrl: formData.get('imageUrl') as string,
+    name: getStringOrNull(formData, 'name'),
+    price: getNumberOrNull(formData, 'price'),
+    description: getStringOrNull(formData, 'description'),
+    imageUrl: getStringOrNull(formData, 'imageUrl'),
     inStock: formData.get('inStock') === 'on',
     oldPrice: getNumberOrNull(formData, 'oldPrice'),
     imageUrl2: getStringOrNull(formData, 'imageUrl2'),
@@ -93,6 +93,10 @@ export async function updateProduct(productId: number, formData: FormData) {
     es_mas_vendido: formData.get('es_mas_vendido') === 'on',
     es_destacado: formData.get('es_destacado') === 'on',
     es_destacado_hogar: formData.get('es_destacado_hogar') === 'on',
+    es_destacado_semana: formData.get('es_destacado_semana') === 'on',
+    texto_oferta: getStringOrNull(formData, 'texto_oferta'),
+    promoSubtitle: getStringOrNull(formData, 'promoSubtitle'),
+    galleryImages: getGalleryImages(formData, 'galleryImages'),
   };
   const { error } = await supabase
     .from('products')
@@ -115,12 +119,10 @@ export async function deleteProduct(productId: number) {
     .from('products')
     .delete()
     .eq('id', productId);
-
   if (error) {
     console.error('Error al eliminar producto:', error.message);
     throw new Error(`No se pudo eliminar el producto. Razón: ${error.message}`);
   }
-
   revalidatePath('/admin/products');
 }
 
