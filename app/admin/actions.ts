@@ -1,16 +1,13 @@
 'use server';
 
-// Usamos la librería base de Supabase, es más estable para Server Actions
-import { createClient } from '@supabase/supabase-js';
+import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 // --- ACCIONES PARA ÓRDENES ---
 export async function updateOrderStatus(orderId: number, newStatus: string) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
+  const supabase = createServerActionClient({ cookies });
   const { data, error } = await supabase
     .from('orders')
     .update({ status: newStatus })
@@ -40,10 +37,7 @@ const getGalleryImages = (formData: FormData, fieldName: string) => {
 };
 
 export async function createProduct(formData: FormData) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
+  const supabase = createServerActionClient({ cookies });
   const newProduct = {
     name: getStringOrNull(formData, 'name'),
     price: getNumberOrNull(formData, 'price'),
@@ -75,10 +69,7 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(productId: number, formData: FormData) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
+  const supabase = createServerActionClient({ cookies });
   const updatedProduct = {
     name: getStringOrNull(formData, 'name'),
     price: getNumberOrNull(formData, 'price'),
@@ -97,7 +88,6 @@ export async function updateProduct(productId: number, formData: FormData) {
     promoSubtitle: getStringOrNull(formData, 'promoSubtitle'),
     galleryImages: getGalleryImages(formData, 'galleryImages'),
   };
-  
   const { error } = await supabase
     .from('products')
     .update(updatedProduct)
@@ -114,15 +104,11 @@ export async function updateProduct(productId: number, formData: FormData) {
 }
 
 export async function deleteProduct(productId: number) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
-  
+  const supabase = createServerActionClient({ cookies });
   const { error } = await supabase
     .from('products')
     .delete()
     .eq('id', productId);
-    
   if (error) {
     console.error('Error al eliminar producto:', error.message);
     throw new Error(`No se pudo eliminar el producto. Razón: ${error.message}`);
