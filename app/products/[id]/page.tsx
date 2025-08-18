@@ -4,9 +4,9 @@ import ProductDetailPageClient from '@/app/components/ProductDetailPageClient';
 import type { Metadata } from 'next';
 import { Product } from '@/lib/types';
 
-// La definición del tipo para las props ahora debe reflejar que params es una promesa.
+// Definición de props estándar
 type Props = {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 };
 
 export async function generateStaticParams() {
@@ -19,11 +19,9 @@ export async function generateStaticParams() {
   }));
 }
 
-// Corregimos la firma de la función y usamos await
+// La función ahora recibe params como un objeto simple
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  // ▼▼▼ CAMBIO 1: Accedemos al ID esperando la promesa de params ▼▼▼
-  const { id } = await params;
-  const productId = Number(id);
+  const productId = Number(params.id);
 
   if (isNaN(productId)) {
     return { title: 'Producto no encontrado' };
@@ -39,11 +37,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Hacemos lo mismo para el componente de la página
+// El componente de la página también recibe params como un objeto simple
 export default async function ProductPage({ params }: Props) {
-  // ▼▼▼ CAMBIO 2: Accedemos al ID de la misma forma ▼▼▼
-  const { id } = await params;
-  const productId = Number(id);
+  const productId = Number(params.id);
 
   if (isNaN(productId)) {
     notFound();
