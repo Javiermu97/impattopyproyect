@@ -4,11 +4,12 @@ import ProductDetailPageClient from '@/app/components/ProductDetailPageClient';
 import type { Metadata } from 'next';
 import { Product } from '@/lib/types';
 
-// Definición de props estándar
+// La definición del tipo para las props ahora refleja que params es una promesa
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
+// Generación de parámetros estáticos
 export async function generateStaticParams() {
   const products: Product[] = await getProducts();
   if (!Array.isArray(products)) {
@@ -19,13 +20,15 @@ export async function generateStaticParams() {
   }));
 }
 
-// La función ahora recibe params como un objeto simple
+// Generación de metadata dinámica
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const productId = Number(params.id);
+  const { id } = await params;
+  const productId = Number(id);
 
   if (isNaN(productId)) {
     return { title: 'Producto no encontrado' };
   }
+
   const product = await getProductById(productId);
   if (!product) {
     return { title: 'Producto no encontrado' };
@@ -37,9 +40,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// El componente de la página también recibe params como un objeto simple
+// Componente de página
 export default async function ProductPage({ params }: Props) {
-  const productId = Number(params.id);
+  const { id } = await params;
+  const productId = Number(id);
 
   if (isNaN(productId)) {
     notFound();

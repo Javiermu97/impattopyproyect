@@ -1,24 +1,29 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { updateProduct } from '../../../actions'; // Apuntamos a las acciones del admin
+import { updateProduct } from '../../../actions';
 
-// Esta función obtiene los datos del producto específico del servidor
+// ▼▼▼ CAMBIO CLAVE 1: Definimos el tipo Props para que coincida con tu otro archivo ▼▼▼
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
 async function getProduct(id: number) {
   const supabase = createServerComponentClient({ cookies });
   const { data } = await supabase.from('products').select('*').eq('id', id).single();
   return data;
 }
 
-export default async function EditProductPage({ params }: { params: { id: string } }) {
-  const productId = Number(params.id);
+export default async function EditProductPage({ params }: Props) {
+  // ▼▼▼ CAMBIO CLAVE 2: Usamos 'await' para resolver la promesa de params ▼▼▼
+  const { id } = await params;
+  const productId = Number(id);
   const product = await getProduct(productId);
 
   if (!product) {
     notFound();
   }
 
-  // Creamos una acción específica para este formulario, pasando el ID.
   const updateProductWithId = updateProduct.bind(null, product.id);
 
   return (
