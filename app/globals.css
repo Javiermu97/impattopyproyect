@@ -91,7 +91,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 /* Products Section */
 .products-section {
   max-width: 1800px;
-  margin: 60px auto;  /* Centra la sección y da espacio vertical */
+  margin: 20px auto;  /* Centra la sección y da espacio vertical */
   padding: 0 4rem;
   text-align: center; /* Centra los títulos */
   box-sizing: border-box;
@@ -101,7 +101,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .products-section-gray {
   max-width: none; /* Permite que el fondo gris ocupe todo el ancho */
   background-color: #f8f8f8;
-  padding-top: 60px;
+  padding-top: 40px;
   padding-bottom: 60px;
   margin-top: 60px;
   margin-bottom: 60px;
@@ -122,7 +122,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   margin: 0 0 50px; 
 }
 
-.section-title { font-size: 2em; margin-bottom: 10px; }
+.section-title { font-size: 2em; margin-bottom: 40px; }
 .section-subtitle { font-size: 1.2em; color: #666; margin-bottom: 40px; }
 
 .product-grid {
@@ -257,8 +257,8 @@ body {
 .shop-header { margin-bottom: 2rem; padding-top: 2rem; }
 .shop-header h1 { font-size: 2.5rem; font-weight: bold; text-align: center; margin-bottom: 1rem; }
 
-.filters-sidebar { border-right: 1px solid #e5e5e5; padding-right: 2.5rem; }
-.filter-group { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #f0f0f0; }
+.filters-sidebar {padding-right: 2.5rem; }
+.filter-group { margin-bottom: 1rem; padding-bottom: 1rem }
 .filter-title-main { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
 .filter-title { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 0; font-size: 1.1rem; font-weight: 600; text-transform: uppercase; background: none; border: none; cursor: pointer; text-align: left; }
 .filter-chevron { transition: transform 0.2s ease-in-out; }
@@ -274,7 +274,7 @@ body {
 .SliderRoot { position: relative; display: flex; align-items: center; user-select: none; touch-action: none; width: 100%; height: 20px; }
 .SliderTrack { background-color: #ddd; position: relative; flex-grow: 1; border-radius: 9999px; height: 4px; }
 .SliderRange { position: absolute; background-color: #A78D5A; border-radius: 9999px; height: 100%; }
-.SliderThumb { display: block; width: 16px; height: 16px; background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); border-radius: 50%; border: 2px solid #0066cc; cursor: grab; }
+.SliderThumb { display: block; width: 16px; height: 16px; background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); border-radius: 50%; border: 2px solid #A78D5A; cursor: grab; }
 .SliderThumb:focus { outline: none; box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.3); }
 .price-input-container { display: flex; justify-content: space-between; margin-top: 1rem; gap: 1rem; }
 .price-input-wrapper { display: flex; align-items: center; border: 1px solid #ccc; border-radius: 5px; padding: 0 8px; background-color: #f9f9f9; }
@@ -353,9 +353,7 @@ body {
   border-radius: 8px;
 }
 
-.shop-product-card:hover .image-container { 
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
-}
+
 
 .shop-product-card .image-container img { 
   position: absolute; 
@@ -2300,4 +2298,12 @@ body {
     padding-left: 1rem;
     padding-right: 1rem;
   }
+}
+
+
+
+/* --- CLASE PARA FORZAR LA REDUCCIÓN DE ESPACIO SUPERIOR --- */
+.reducir-espacio-superior {
+  margin-top: -70px !important; /* Usamos un margen negativo para "subir" la sección */
+  padding-top: 0 !important;   /* Eliminamos cualquier relleno superior */
 }

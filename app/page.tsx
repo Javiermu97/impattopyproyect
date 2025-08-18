@@ -74,7 +74,7 @@ export default async function HomePage() {
       </section>
 
       {/* Sección "Hechos para tu hogar" con datos elegidos por ti */}
-      <section className="products-section">
+      <section className="products-section reducir-espacio-superior">
 
 
         <h2 className="section-title">Confort y Diseño</h2>

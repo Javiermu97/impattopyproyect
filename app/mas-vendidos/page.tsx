@@ -29,9 +29,7 @@ export default async function MasVendidosPage() {
     <div className="shop-container">
         <header className="shop-header">
             <h1>Más Vendidos</h1>
-            <p style={{ textAlign: 'center', color: '#666' }}>
-                Aquí encontrarás los productos favoritos de nuestra comunidad.
-            </p>
+            
         </header>
 
         {/* Renderizado Condicional: Muestra un mensaje si no hay productos */}
