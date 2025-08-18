@@ -16,8 +16,9 @@ export async function updateOrderStatus(orderId: number, newStatus: string) {
     .eq('id', orderId);
 
   if (error) {
-    console.error('Error en Server Action (updateOrderStatus):', error);
-    throw new Error('No se pudo actualizar la orden.');
+    // CAMBIO: Hacemos el log y el error más detallado
+    console.error('Error en Server Action (updateOrderStatus):', error.message);
+    throw new Error(`No se pudo actualizar la orden. Razón: ${error.message}`);
   }
 
   revalidatePath('/admin');
@@ -39,8 +40,9 @@ export async function createProduct(formData: FormData) {
   const { error } = await supabase.from('products').insert(newProduct);
 
   if (error) {
-    console.error('Error al crear producto:', error);
-    throw new Error('No se pudo crear el producto.');
+    // CAMBIO: Hacemos el log y el error más detallado
+    console.error('Error de Supabase al crear producto:', error.message);
+    throw new Error(`No se pudo crear el producto. Razón: ${error.message}`);
   }
 
   revalidatePath('/admin/products');
@@ -64,8 +66,9 @@ export async function updateProduct(productId: number, formData: FormData) {
     .eq('id', productId);
 
   if (error) {
-    console.error('Error al actualizar producto:', error);
-    throw new Error('No se pudo actualizar el producto.');
+    // CAMBIO: Hacemos el log y el error más detallado
+    console.error('Error al actualizar producto:', error.message);
+    throw new Error(`No se pudo actualizar el producto. Razón: ${error.message}`);
   }
 
   revalidatePath('/admin/products');
@@ -82,8 +85,9 @@ export async function deleteProduct(productId: number) {
     .eq('id', productId);
 
   if (error) {
-    console.error('Error al eliminar producto:', error);
-    throw new Error('No se pudo eliminar el producto.');
+    // CAMBIO: Hacemos el log y el error más detallado
+    console.error('Error al eliminar producto:', error.message);
+    throw new Error(`No se pudo eliminar el producto. Razón: ${error.message}`);
   }
 
   revalidatePath('/admin/products');
