@@ -1,5 +1,5 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+// CAMBIO: Importamos la librería base en lugar de auth-helpers
+import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
 import { updateProduct } from '../../../actions';
 
@@ -8,7 +8,11 @@ type Props = {
 };
 
 async function getProduct(id: number) {
-  const supabase = createServerComponentClient({ cookies });
+  // CAMBIO: Creamos el cliente de la forma más directa
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
   const { data } = await supabase.from('products').select('*').eq('id', id).single();
   return data;
 }
@@ -28,6 +32,7 @@ export default async function EditProductPage({ params }: Props) {
     <div className="admin-container">
       <h1>Editar Producto: {product.name}</h1>
       <form action={updateProductWithId} className="admin-form">
+        {/* El resto del formulario se mantiene exactamente igual */}
         <div className="form-group">
           <label htmlFor="name" className="form-label">Nombre del Producto:</label>
           <input id="name" name="name" type="text" defaultValue={product.name || ''} required className="form-input" />
