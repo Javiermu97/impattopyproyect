@@ -31,8 +31,8 @@ export default function NewProductPage() {
             <input id="precio" name="precio" type="number" required className="form-input" />
           </div>
           <div className="form-group">
-            <label htmlFor="precio_anterior" className="form-label">precio_anterior:</label>
-            <input id="precio_anterior" name="precio_anterior" type="number" className="form-input" />
+            <label htmlFor="precio_antiguo" className="form-label">precio_antiguo:</label>
+            <input id="precio_antiguo" name="precio_antiguo" type="number" className="form-input" />
           </div>
         </div>
         <div className="form-grid">
@@ -73,7 +73,7 @@ export default function NewProductPage() {
         </fieldset>
         <div className="form-grid">
             <BooleanSelect name="es_mas_vendido" label="es_mas_vendido" />
-            <BooleanSelect name="es_destacado" label="es_destacado" />
+           
             <BooleanSelect name="es_destacado_semana" label="es_destacado_semana" />
             <BooleanSelect name="es_destacado_hogar" label="es_destacado_hogar" />
         </div>

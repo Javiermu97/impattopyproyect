@@ -55,8 +55,8 @@ export default async function EditProductPage({ params }: Props) {
             <input id="precio" name="precio" type="number" defaultValue={product.precio || ''} required className="form-input" />
           </div>
           <div className="form-group">
-            <label htmlFor="precio_anterior" className="form-label">precio_anterior:</label>
-            <input id="precio_anterior" name="precio_anterior" type="number" defaultValue={product.precio_anterior || ''} className="form-input" />
+            <label htmlFor="precio_antiguo" className="form-label">precio_antiguo:</label>
+            <input id="precio_antiguo" name="precio_antiguo" type="number" defaultValue={product.precio_anterior || ''} className="form-input" />
           </div>
         </div>
         <div className="form-grid">
@@ -97,7 +97,7 @@ export default async function EditProductPage({ params }: Props) {
         </fieldset>
         <div className="form-grid">
             <BooleanSelectEdit name="es_mas_vendido" label="es_mas_vendido" value={product.es_mas_vendido} />
-            <BooleanSelectEdit name="es_destacado" label="es_destacado" value={product.es_destacado} />
+            
             <BooleanSelectEdit name="es_destacado_semana" label="es_destacado_semana" value={product.es_destacado_semana} />
             <BooleanSelectEdit name="es_destacado_hogar" label="es_destacado_hogar" value={product.es_destacado_hogar} />
         </div>
