@@ -4,73 +4,62 @@ import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { z } from 'zod';
 
-// --- ACCIONES PARA ÓRDENES (sin cambios) ---
-export async function updateOrderStatus(orderId: number, newStatus: string) {
-  const supabase = createServerActionClient({ cookies });
-  // ... (código se mantiene igual)
-}
+// Zod Schema que refleja tu lista de columnas, sin cambios.
+const ProductSchema = z.object({
+  name: z.string().min(3),
+  price: z.coerce.number().positive(),
+  texto_oferta: z.string().trim().nullable().optional(),
+  description: z.string().trim().nullable().optional(),
+  ImageUrl: z.string().url().nullable().optional(),
+  ImageUrl2: z.string().url().nullable().optional(),
+  oldPrice: z.coerce.number().positive().nullable().optional(),
+  categoria: z.string().trim().nullable().optional(),
+  es_mas_vendido: z.boolean().nullable().optional(),
+  videoUrl: z.string().url().nullable().optional(),
+  galleryImages: z.array(z.string().url()).nullable().optional(),
+  inStock: z.boolean(),
+  es_destacado_semana: z.boolean().nullable().optional(),
+  es_destacado_hogar: z.boolean().nullable().optional(),
+});
 
-// --- ACCIONES PARA PRODUCTOS (VERSIÓN FINAL) ---
-
-// Funciones auxiliares para procesar los datos del formulario
-const getNumberOrNull = (formData: FormData, fieldName: string) => {
-    const value = formData.get(fieldName) as string;
-    return value ? Number(value) : null;
-};
-const getStringOrNull = (formData: FormData, fieldName: string) => {
-  const rawValue = formData.get(fieldName);
-  if (typeof rawValue === 'string') {
-    const trimmed = rawValue.trim();
-    return trimmed.length > 0 ? trimmed : null;
-  }
-  return null;
-};
-const getGalleryImages = (formData: FormData, fieldName: string) => {
-  const rawValue = formData.get(fieldName);
-  if (typeof rawValue !== 'string' || rawValue.trim() === '') {
-    return null;
-  }
-  return rawValue.split(',')
-    .map(url => url.trim())
-    .filter(url => url.length > 0);
-};
-// NUEVA FUNCIÓN para manejar los valores booleanos que pueden ser nulos
-const getBooleanOrNull = (formData: FormData, fieldName: string) => {
-    const value = formData.get(fieldName) as string;
+const getBooleanOrNull = (value: string | null) => {
     if (value === 'true') return true;
     if (value === 'false') return false;
     return null;
 };
 
+// --- ACCIONES DE PRODUCTOS ---
 export async function createProduct(formData: FormData) {
-  const supabase = createServerActionClient({ cookies });
-
-  const newProduct = {
-    nombre: getStringOrNull(formData, 'nombre'),
-    precio: getNumberOrNull(formData, 'precio'),
-    descripcion: getStringOrNull(formData, 'descripcion'),
-    imageUrl: getStringOrNull(formData, 'imageUrl'),
-    inStock: formData.get('inStock') === 'on', // Este campo no es nulo
-    precio_anterior: getNumberOrNull(formData, 'precio_anterior'),
-    imageUrl2: getStringOrNull(formData, 'imageUrl2'),
-    videoUrl: getStringOrNull(formData, 'videoUrl'),
-    categorias: getStringOrNull(formData, 'categorias'),
-    texto_oferta: getStringOrNull(formData, 'texto_oferta'),
-    subtitulo_promo: getStringOrNull(formData, 'subtitulo_promo'),
-    galleryImages: getGalleryImages(formData, 'galleryImages'),
-    // Campos booleanos que pueden ser nulos
-    es_mas_vendido: getBooleanOrNull(formData, 'es_mas_vendido'),
-    es_destacado: getBooleanOrNull(formData, 'es_destacado'),
-    es_destacado_hogar: getBooleanOrNull(formData, 'es_destacado_hogar'),
-    es_destacado_semana: getBooleanOrNull(formData, 'es_destacado_semana'),
+  const rawData = {
+    name: formData.get('name'),
+    price: formData.get('price'),
+    texto_oferta: formData.get('texto_oferta'),
+    description: formData.get('description'),
+    ImageUrl: formData.get('ImageUrl'),
+    ImageUrl2: formData.get('ImageUrl2') || null,
+    oldPrice: formData.get('oldPrice'),
+    categoria: formData.get('categoria'),
+    es_mas_vendido: getBooleanOrNull(formData.get('es_mas_vendido') as string | null),
+    videoUrl: formData.get('videoUrl') || null,
+    galleryImages: (formData.get('galleryImages') as string || '').split(',').map(url => url.trim()).filter(Boolean),
+    inStock: formData.get('inStock') === 'on',
+    es_destacado_semana: getBooleanOrNull(formData.get('es_destacado_semana') as string | null),
+    es_destacado_hogar: getBooleanOrNull(formData.get('es_destacado_hogar') as string | null),
   };
+  
+  const validation = ProductSchema.safeParse(rawData);
+  if (!validation.success) {
+      console.error("ERROR DE VALIDACIÓN:", validation.error.flatten().fieldErrors);
+      throw new Error(`Datos inválidos: ${validation.error.issues[0].message}`);
+  }
 
-  const { error } = await supabase.from('products').insert(newProduct);
-
+  const supabase = createServerActionClient({ cookies });
+  const { error } = await supabase.from('productos').insert(validation.data);
   if (error) {
-    console.error('Error de Supabase al crear producto:', error.message);
-    throw new Error(`No se pudo crear el producto. Razón: ${error.message}`);
+      console.error("ERROR DE SUPABASE:", error);
+      throw new Error(`No se pudo guardar el producto.`);
   }
 
   revalidatePath('/admin/products');
@@ -78,37 +67,37 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(productId: number, formData: FormData) {
-  const supabase = createServerActionClient({ cookies });
-  const updatedProduct = {
-    nombre: getStringOrNull(formData, 'nombre'),
-    precio: getNumberOrNull(formData, 'precio'),
-    descripcion: getStringOrNull(formData, 'descripcion'),
-    imageUrl: getStringOrNull(formData, 'imageUrl'),
-    inStock: formData.get('inStock') === 'on',
-    precio_anterior: getNumberOrNull(formData, 'precio_anterior'),
-    imageUrl2: getStringOrNull(formData, 'imageUrl2'),
-    videoUrl: getStringOrNull(formData, 'videoUrl'),
-    categorias: getStringOrNull(formData, 'categorias'),
-    texto_oferta: getStringOrNull(formData, 'texto_oferta'),
-    subtitulo_promo: getStringOrNull(formData, 'subtitulo_promo'),
-    galleryImages: getGalleryImages(formData, 'galleryImages'),
-    es_mas_vendido: getBooleanOrNull(formData, 'es_mas_vendido'),
-    es_destacado: getBooleanOrNull(formData, 'es_destacado'),
-    es_destacado_hogar: getBooleanOrNull(formData, 'es_destacado_hogar'),
-    es_destacado_semana: getBooleanOrNull(formData, 'es_destacado_semana'),
-  };
-  const { error } = await supabase.from('productos').update(updatedProduct).eq('id', productId);
+    const rawData = {
+        name: formData.get('name'),
+        price: formData.get('price'),
+        texto_oferta: formData.get('texto_oferta'),
+        description: formData.get('description'),
+        ImageUrl: formData.get('ImageUrl'),
+        ImageUrl2: formData.get('ImageUrl2') || null,
+        oldPrice: formData.get('oldPrice'),
+        categoria: formData.get('categoria'),
+        es_mas_vendido: getBooleanOrNull(formData.get('es_mas_vendido') as string | null),
+        videoUrl: formData.get('videoUrl') || null,
+        galleryImages: (formData.get('galleryImages') as string || '').split(',').map(url => url.trim()).filter(Boolean),
+        inStock: formData.get('inStock') === 'on',
+        es_destacado_semana: getBooleanOrNull(formData.get('es_destacado_semana') as string | null),
+        es_destacado_hogar: getBooleanOrNull(formData.get('es_destacado_hogar') as string | null),
+    };
 
+  const validation = ProductSchema.safeParse(rawData);
+  if (!validation.success) {
+    console.error("ERROR DE VALIDACIÓN:", validation.error.flatten().fieldErrors);
+    throw new Error(`Datos inválidos: ${validation.error.issues[0].message}`);
+  }
+
+  const supabase = createServerActionClient({ cookies });
+  const { error } = await supabase.from('productos').update(validation.data).eq('id', productId);
   if (error) {
-    console.error('Error al actualizar producto:', error.message);
-    throw new Error(`No se pudo actualizar el producto. Razón: ${error.message}`);
+    console.error("ERROR DE SUPABASE:", error);
+    throw new Error(`No se pudo actualizar el producto.`);
   }
 
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/edit/${productId}`);
   redirect('/admin/products');
-}
-
-export async function deleteProduct(productId: number) {
-    // ... (código se mantiene igual)
 }
