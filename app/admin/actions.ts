@@ -102,8 +102,20 @@ export async function updateProduct(productId: number, formData: FormData) {
   redirect('/admin/products');
 }
 
+// ✅ FUNCIÓN RESTAURADA
+export async function deleteProduct(productId: number) {
+  const supabase = createServerActionClient({ cookies });
+  const { error } = await supabase.from('productos').delete().eq('id', productId);
+  if (error) {
+    console.error('Error al eliminar producto:', error);
+    throw new Error('No se pudo eliminar el producto.');
+  }
+  revalidatePath('/admin/products');
+  redirect('/admin/products');
+}
+
+
 // --- ACCIÓN PARA ÓRDENES ---
-// ✅ AQUÍ ESTÁ LA FUNCIÓN QUE FALTABA
 export async function updateOrderStatus(orderId: number, newStatus: string) {
   const supabase = createServerActionClient({ cookies });
   const { error } = await supabase
