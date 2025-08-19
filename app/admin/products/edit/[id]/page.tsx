@@ -1,21 +1,30 @@
-// CAMBIO: Importamos la librería base en lugar de auth-helpers
-import { createClient } from '@supabase/supabase-js';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { updateProduct } from '../../../actions';
 
-type Props = {
-  params: Promise<{ id: string }>;
-};
+type Props = { params: Promise<{ id: string }> };
 
 async function getProduct(id: number) {
-  // CAMBIO: Creamos el cliente de la forma más directa
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
+  const supabase = createServerComponentClient({ cookies });
   const { data } = await supabase.from('products').select('*').eq('id', id).single();
   return data;
 }
+
+// Componente para el menú desplegable booleano en modo edición
+const BooleanSelectEdit = ({ name, label, value }: { name: string, label: string, value: boolean | null }) => {
+    const defaultValue = value === true ? 'true' : value === false ? 'false' : 'null';
+    return (
+        <div className="form-group">
+            <label htmlFor={name} className="form-label">{label}:</label>
+            <select id={name} name={name} defaultValue={defaultValue} className="form-input">
+                <option value="null">Indefinido / N/A</option>
+                <option value="true">Sí (Verdadero)</option>
+                <option value="false">No (Falso)</option>
+            </select>
+        </div>
+    );
+};
 
 export default async function EditProductPage({ params }: Props) {
   const { id } = await params;
@@ -30,25 +39,24 @@ export default async function EditProductPage({ params }: Props) {
 
   return (
     <div className="admin-container">
-      <h1>Editar Producto: {product.name}</h1>
+      <h1>Editar Producto: {product.nombre}</h1>
       <form action={updateProductWithId} className="admin-form">
-        {/* El resto del formulario se mantiene exactamente igual */}
         <div className="form-group">
-          <label htmlFor="name" className="form-label">Nombre del Producto:</label>
-          <input id="name" name="name" type="text" defaultValue={product.name || ''} required className="form-input" />
+          <label htmlFor="nombre" className="form-label">Nombre del Producto:</label>
+          <input id="nombre" name="nombre" type="text" defaultValue={product.nombre || ''} required className="form-input" />
         </div>
         <div className="form-group">
-          <label htmlFor="description" className="form-label">Descripción:</label>
-          <textarea id="description" name="description" defaultValue={product.description || ''} className="form-textarea" />
+          <label htmlFor="descripcion" className="form-label">Descripción:</label>
+          <textarea id="descripcion" name="descripcion" defaultValue={product.descripcion || ''} className="form-textarea" />
         </div>
         <div className="form-grid">
           <div className="form-group">
-            <label htmlFor="price" className="form-label">Precio (Gs.):</label>
-            <input id="price" name="price" type="number" defaultValue={product.price || ''} required className="form-input" />
+            <label htmlFor="precio" className="form-label">Precio (Gs.):</label>
+            <input id="precio" name="precio" type="number" defaultValue={product.precio || ''} required className="form-input" />
           </div>
           <div className="form-group">
-            <label htmlFor="oldPrice" className="form-label">Precio Antiguo (Opcional):</label>
-            <input id="oldPrice" name="oldPrice" type="number" defaultValue={product.oldPrice || ''} className="form-input" />
+            <label htmlFor="precio_anterior" className="form-label">Precio Anterior (Opcional):</label>
+            <input id="precio_anterior" name="precio_anterior" type="number" defaultValue={product.precio_anterior || ''} className="form-input" />
           </div>
         </div>
         <div className="form-grid">
@@ -71,12 +79,12 @@ export default async function EditProductPage({ params }: Props) {
         </div>
         <div className="form-grid">
             <div className="form-group">
-                <label htmlFor="categoria" className="form-label">Categoría:</label>
-                <input id="categoria" name="categoria" type="text" defaultValue={product.categoria || ''} className="form-input" />
+                <label htmlFor="categorias" className="form-label">Categorías:</label>
+                <input id="categorias" name="categorias" type="text" defaultValue={product.categorias || ''} className="form-input" />
             </div>
             <div className="form-group">
-                <label htmlFor="promoSubtitle" className="form-label">Subtítulo de Promoción:</label>
-                <input id="promoSubtitle" name="promoSubtitle" type="text" defaultValue={product.promoSubtitle || ''} className="form-input" />
+                <label htmlFor="subtitulo_promo" className="form-label">Subtítulo de Promoción:</label>
+                <input id="subtitulo_promo" name="subtitulo_promo" type="text" defaultValue={product.subtitulo_promo || ''} className="form-input" />
             </div>
         </div>
         <div className="form-group">
@@ -85,12 +93,17 @@ export default async function EditProductPage({ params }: Props) {
         </div>
         <fieldset className="form-fieldset">
           <legend className="form-label">Opciones</legend>
-          <div className="form-checkbox-group"><input id="inStock" name="inStock" type="checkbox" defaultChecked={product.inStock} /><label htmlFor="inStock">En Stock</label></div>
-          <div className="form-checkbox-group"><input id="es_mas_vendido" name="es_mas_vendido" type="checkbox" defaultChecked={product.es_mas_vendido} /><label htmlFor="es_mas_vendido">Es Más Vendido</label></div>
-          <div className="form-checkbox-group"><input id="es_destacado" name="es_destacado" type="checkbox" defaultChecked={product.es_destacado} /><label htmlFor="es_destacado">Destacado (General)</label></div>
-          <div className="form-checkbox-group"><input id="es_destacado_semana" name="es_destacado_semana" type="checkbox" defaultChecked={product.es_destacado_semana} /><label htmlFor="es_destacado_semana">Destacado (Semana)</label></div>
-          <div className="form-checkbox-group"><input id="es_destacado_hogar" name="es_destacado_hogar" type="checkbox" defaultChecked={product.es_destacado_hogar} /><label htmlFor="es_destacado_hogar">Destacado (Hogar)</label></div>
+          <div className="form-checkbox-group">
+            <input id="inStock" name="inStock" type="checkbox" defaultChecked={product.inStock} />
+            <label htmlFor="inStock">En Stock</label>
+          </div>
         </fieldset>
+        <div className="form-grid">
+            <BooleanSelectEdit name="es_mas_vendido" label="Es Más Vendido" value={product.es_mas_vendido} />
+            <BooleanSelectEdit name="es_destacado" label="Destacado (General)" value={product.es_destacado} />
+            <BooleanSelectEdit name="es_destacado_semana" label="Destacado (Semana)" value={product.es_destacado_semana} />
+            <BooleanSelectEdit name="es_destacado_hogar" label="Destacado (Hogar)" value={product.es_destacado_hogar} />
+        </div>
         <button type="submit" className="admin-submit-btn">Actualizar Producto</button>
       </form>
     </div>

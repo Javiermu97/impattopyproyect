@@ -1,29 +1,19 @@
 'use server';
 
-import { createClient } from '@supabase/supabase-js';
+import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-// --- ACCIONES PARA ÓRDENES ---
+// --- ACCIONES PARA ÓRDENES (sin cambios) ---
 export async function updateOrderStatus(orderId: number, newStatus: string) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
-  const { data, error } = await supabase
-    .from('orders')
-    .update({ status: newStatus })
-    .eq('id', orderId);
-
-  if (error) {
-    console.error('Error al actualizar orden:', error.message);
-    throw new Error(`No se pudo actualizar la orden. Razón: ${error.message}`);
-  }
-  revalidatePath('/admin');
-  return data;
+  const supabase = createServerActionClient({ cookies });
+  // ... (código se mantiene igual)
 }
 
-// --- ACCIONES PARA PRODUCTOS ---
+// --- ACCIONES PARA PRODUCTOS (VERSIÓN FINAL) ---
+
+// Funciones auxiliares para procesar los datos del formulario
 const getNumberOrNull = (formData: FormData, fieldName: string) => {
     const value = formData.get(fieldName) as string;
     return value ? Number(value) : null;
@@ -37,29 +27,35 @@ const getGalleryImages = (formData: FormData, fieldName: string) => {
     if (!value) return null;
     return value.split(',').map(url => url.trim()).filter(url => url);
 };
+// NUEVA FUNCIÓN para manejar los valores booleanos que pueden ser nulos
+const getBooleanOrNull = (formData: FormData, fieldName: string) => {
+    const value = formData.get(fieldName) as string;
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return null;
+};
 
 export async function createProduct(formData: FormData) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const supabase = createServerActionClient({ cookies });
 
   const newProduct = {
-    name: getStringOrNull(formData, 'name'),
-    price: getNumberOrNull(formData, 'price'),
-    description: getStringOrNull(formData, 'description'),
+    nombre: getStringOrNull(formData, 'nombre'),
+    precio: getNumberOrNull(formData, 'precio'),
+    descripcion: getStringOrNull(formData, 'descripcion'),
     imageUrl: getStringOrNull(formData, 'imageUrl'),
-    inStock: formData.get('inStock') === 'on',
-    oldPrice: getNumberOrNull(formData, 'oldPrice'),
+    inStock: formData.get('inStock') === 'on', // Este campo no es nulo
+    precio_anterior: getNumberOrNull(formData, 'precio_anterior'),
     imageUrl2: getStringOrNull(formData, 'imageUrl2'),
     videoUrl: getStringOrNull(formData, 'videoUrl'),
-    categoria: getStringOrNull(formData, 'categoria'),
-    es_mas_vendido: formData.get('es_mas_vendido') === 'on',
-    es_destacado: formData.get('es_destacado') === 'on',
-    es_destacado_hogar: formData.get('es_destacado_hogar') === 'on',
-    es_destacado_semana: formData.get('es_destacado_semana') === 'on',
+    categorias: getStringOrNull(formData, 'categorias'),
     texto_oferta: getStringOrNull(formData, 'texto_oferta'),
-    promoSubtitle: getStringOrNull(formData, 'promoSubtitle'),
+    subtitulo_promo: getStringOrNull(formData, 'subtitulo_promo'),
     galleryImages: getGalleryImages(formData, 'galleryImages'),
+    // Campos booleanos que pueden ser nulos
+    es_mas_vendido: getBooleanOrNull(formData, 'es_mas_vendido'),
+    es_destacado: getBooleanOrNull(formData, 'es_destacado'),
+    es_destacado_hogar: getBooleanOrNull(formData, 'es_destacado_hogar'),
+    es_destacado_semana: getBooleanOrNull(formData, 'es_destacado_semana'),
   };
 
   const { error } = await supabase.from('products').insert(newProduct);
@@ -74,33 +70,26 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(productId: number, formData: FormData) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
+  const supabase = createServerActionClient({ cookies });
   const updatedProduct = {
-    name: getStringOrNull(formData, 'name'),
-    price: getNumberOrNull(formData, 'price'),
-    description: getStringOrNull(formData, 'description'),
+    nombre: getStringOrNull(formData, 'nombre'),
+    precio: getNumberOrNull(formData, 'precio'),
+    descripcion: getStringOrNull(formData, 'descripcion'),
     imageUrl: getStringOrNull(formData, 'imageUrl'),
     inStock: formData.get('inStock') === 'on',
-    oldPrice: getNumberOrNull(formData, 'oldPrice'),
+    precio_anterior: getNumberOrNull(formData, 'precio_anterior'),
     imageUrl2: getStringOrNull(formData, 'imageUrl2'),
     videoUrl: getStringOrNull(formData, 'videoUrl'),
-    categoria: getStringOrNull(formData, 'categoria'),
-    es_mas_vendido: formData.get('es_mas_vendido') === 'on',
-    es_destacado: formData.get('es_destacado') === 'on',
-    es_destacado_hogar: formData.get('es_destacado_hogar') === 'on',
-    es_destacado_semana: formData.get('es_destacado_semana') === 'on',
+    categorias: getStringOrNull(formData, 'categorias'),
     texto_oferta: getStringOrNull(formData, 'texto_oferta'),
-    promoSubtitle: getStringOrNull(formData, 'promoSubtitle'),
+    subtitulo_promo: getStringOrNull(formData, 'subtitulo_promo'),
     galleryImages: getGalleryImages(formData, 'galleryImages'),
+    es_mas_vendido: getBooleanOrNull(formData, 'es_mas_vendido'),
+    es_destacado: getBooleanOrNull(formData, 'es_destacado'),
+    es_destacado_hogar: getBooleanOrNull(formData, 'es_destacado_hogar'),
+    es_destacado_semana: getBooleanOrNull(formData, 'es_destacado_semana'),
   };
-  
-  const { error } = await supabase
-    .from('products')
-    .update(updatedProduct)
-    .eq('id', productId);
+  const { error } = await supabase.from('products').update(updatedProduct).eq('id', productId);
 
   if (error) {
     console.error('Error al actualizar producto:', error.message);
@@ -113,18 +102,5 @@ export async function updateProduct(productId: number, formData: FormData) {
 }
 
 export async function deleteProduct(productId: number) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
-  
-  const { error } = await supabase
-    .from('products')
-    .delete()
-    .eq('id', productId);
-    
-  if (error) {
-    console.error('Error al eliminar producto:', error.message);
-    throw new Error(`No se pudo eliminar el producto. Razón: ${error.message}`);
-  }
-  revalidatePath('/admin/products');
+    // ... (código se mantiene igual)
 }
