@@ -70,7 +70,7 @@ export default async function EditProductPage({ params }: Props) {
           </div>
         </div>
         <div className="form-group">
-          <label htmlFor="videoUrl" className="form-label">URL del vídeo (Opcional):</label>
+          <label htmlFor="videoUrl" className="form-label">URL del vídeo</label>
           <input id="videoUrl" name="videoUrl" type="text" defaultValue={product.videoUrl || ''} className="form-input" />
         </div>
         <div className="form-group">
@@ -92,7 +92,7 @@ export default async function EditProductPage({ params }: Props) {
           <legend className="form-label">Opciones</legend>
           <div className="form-checkbox-group">
             <input id="inStock" name="inStock" type="checkbox" defaultChecked={product.inStock} />
-            <label htmlFor="inStock">en stock (bool)</label>
+            <label htmlFor="inStock">en stock</label>
           </div>
         </fieldset>
         <div className="form-grid">

@@ -58,10 +58,7 @@ export default function NewProductPage() {
                 <label htmlFor="categorias" className="form-label">categorías:</label>
                 <input id="categorias" name="categorias" type="text" className="form-input" />
             </div>
-            <div className="form-group">
-                <label htmlFor="subtitulo_promo" className="form-label">subtitulo_promo:</label>
-                <input id="subtitulo_promo" name="subtitulo_promo" type="text" className="form-input" />
-            </div>
+            
         </div>
         <div className="form-group">
           <label htmlFor="texto_oferta" className="form-label">texto_oferta:</label>
@@ -71,7 +68,7 @@ export default function NewProductPage() {
           <legend className="form-label">Opciones</legend>
           <div className="form-checkbox-group">
             <input id="inStock" name="inStock" type="checkbox" defaultChecked />
-            <label htmlFor="inStock">en stock (bool)</label>
+            <label htmlFor="inStock">en stock</label>
           </div>
         </fieldset>
         <div className="form-grid">
