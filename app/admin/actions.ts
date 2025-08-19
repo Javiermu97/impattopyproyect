@@ -20,7 +20,11 @@ const getNumberOrNull = (formData: FormData, fieldName: string) => {
 };
 const getStringOrNull = (formData: FormData, fieldName: string) => {
     const value = formData.get(fieldName) as string;
-    return value.trim() || null;
+    // Primero verificamos si el valor existe, LUEGO hacemos trim.
+    if (value) {
+        return value.trim() || null;
+    }
+    return null;
 };
 const getGalleryImages = (formData: FormData, fieldName: string) => {
     const value = formData.get(fieldName) as string;
