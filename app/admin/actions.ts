@@ -97,7 +97,7 @@ export async function updateProduct(productId: number, formData: FormData) {
     es_destacado_hogar: getBooleanOrNull(formData, 'es_destacado_hogar'),
     es_destacado_semana: getBooleanOrNull(formData, 'es_destacado_semana'),
   };
-  const { error } = await supabase.from('products').update(updatedProduct).eq('id', productId);
+  const { error } = await supabase.from('productos').update(updatedProduct).eq('id', productId);
 
   if (error) {
     console.error('Error al actualizar producto:', error.message);
