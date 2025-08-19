@@ -1,6 +1,6 @@
 // Importamos las herramientas necesarias de Supabase y nuestros componentes
 import { supabase } from '@/lib/supabaseClient';
-import { Product } from '@/lib/types';
+
 import ShopPageClient from '@/app/components/ShopPageClient';
 
 // Metadata para SEO y la pestaña del navegador

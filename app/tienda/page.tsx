@@ -5,10 +5,18 @@ import { cookies } from 'next/headers';
 import ShopPageClient from '../components/ShopPageClient';
 import { Product } from '@/lib/types';
 
+// Definimos un tipo para la forma en que vienen las características de la BD
+interface CaracteristicaFromDB {
+  id: number;
+  titulo: string;
+  Descripción: string; // Con mayúscula y tilde
+  imagen: string;
+  // ...cualquier otra propiedad que tenga
+}
+
 async function getProducts() {
   const supabase = createServerComponentClient({ cookies });
   
-  // Consulta que pide todas las columnas necesarias, incluyendo la tabla relacionada
   const { data, error } = await supabase
     .from('productos')
     .select('*, caracteristicas(*)');
@@ -18,23 +26,23 @@ async function getProducts() {
     return [];
   }
 
-  // Mapeamos los nombres para que coincidan 100% con el tipo 'Product'
   const products = data.map(p => ({
     id: p.id,
     name: p.nombre,
     price: p.precio,
     oldPrice: p.precio_antiguo,
-    inStock: p['inStock'],
-    created_at: p.creado_en, // ✅ CORREGIDO: de 'createdAt' a 'created_at'
+    inStock: p['en stock'],
+    created_at: p.creado_en,
     imageUrl: p['URL de la imagen'],
     imageUrl2: p['URL de la imagen2'],
     galleryImages: p['Galería de imágenes'],
     categorias: p.categorias,
     texto_oferta: p.texto_oferta,
     description: p.descripcion,
-    caracteristicas: p.caracteristicas.map((c: any) => ({
+    // ✅ CORREGIDO: Usamos el tipo CaracteristicaFromDB en lugar de 'any'
+    caracteristicas: p.caracteristicas.map((c: CaracteristicaFromDB) => ({
       ...c,
-      descripcion: c.Descripción 
+      descripcion: c.Descripción
     })),
   }));
 
