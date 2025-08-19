@@ -19,17 +19,21 @@ const getNumberOrNull = (formData: FormData, fieldName: string) => {
     return value ? Number(value) : null;
 };
 const getStringOrNull = (formData: FormData, fieldName: string) => {
-    const value = formData.get(fieldName) as string;
-    // Primero verificamos si el valor existe, LUEGO hacemos trim.
-    if (value) {
-        return value.trim() || null;
-    }
-    return null;
+  const rawValue = formData.get(fieldName);
+  if (typeof rawValue === 'string') {
+    const trimmed = rawValue.trim();
+    return trimmed.length > 0 ? trimmed : null;
+  }
+  return null;
 };
 const getGalleryImages = (formData: FormData, fieldName: string) => {
-    const value = formData.get(fieldName) as string;
-    if (!value) return null;
-    return value.split(',').map(url => url.trim()).filter(url => url);
+  const rawValue = formData.get(fieldName);
+  if (typeof rawValue !== 'string' || rawValue.trim() === '') {
+    return null;
+  }
+  return rawValue.split(',')
+    .map(url => url.trim())
+    .filter(url => url.length > 0);
 };
 // NUEVA FUNCIÓN para manejar los valores booleanos que pueden ser nulos
 const getBooleanOrNull = (formData: FormData, fieldName: string) => {
