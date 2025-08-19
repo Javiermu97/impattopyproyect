@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-// Zod Schema que refleja tu lista de columnas, sin cambios.
+// Zod Schema basado en la lista de columnas que me proporcionaste
 const ProductSchema = z.object({
   name: z.string().min(3),
   price: z.coerce.number().positive(),
@@ -100,4 +100,22 @@ export async function updateProduct(productId: number, formData: FormData) {
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/edit/${productId}`);
   redirect('/admin/products');
+}
+
+// --- ACCIÓN PARA ÓRDENES ---
+// ✅ AQUÍ ESTÁ LA FUNCIÓN QUE FALTABA
+export async function updateOrderStatus(orderId: number, newStatus: string) {
+  const supabase = createServerActionClient({ cookies });
+  const { error } = await supabase
+    .from('orders')
+    .update({ status: newStatus })
+    .eq('id', orderId);
+
+  if (error) {
+    console.error('Error al actualizar el estado de la orden:', error);
+    throw new Error('No se pudo actualizar el estado de la orden.');
+  }
+
+  revalidatePath('/admin/orders');
+  revalidatePath(`/admin/orders/${orderId}`);
 }
