@@ -71,7 +71,7 @@ export default async function EditProductPage({ params }: Props) {
           <input id="videoUrl" name="videoUrl" type="text" defaultValue={product.videoUrl || ''} className="form-input" />
         </div>
         <div className="form-group">
-          <label htmlFor="galleryImages" className="form-label">galleryImages (URLs separadas por comas):</label>
+          <label htmlFor="galleryImages" className="form-label">galleryImages:</label>
           <textarea id="galleryImages" name="galleryImages" className="form-textarea" defaultValue={product.galleryImages?.join(', ') || ''} />
         </div>
         <div className="form-group">

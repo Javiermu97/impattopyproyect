@@ -49,7 +49,7 @@ export default function NewProductPage() {
           <input id="videoUrl" name="videoUrl" type="text" className="form-input" />
         </div>
         <div className="form-group">
-          <label htmlFor="galleryImages" className="form-label">galleryImages (URLs separadas por comas):</label>
+          <label htmlFor="galleryImages" className="form-label">galleryImages:</label>
           <textarea id="galleryImages" name="galleryImages" className="form-textarea" />
         </div>
         <div className="form-group">
