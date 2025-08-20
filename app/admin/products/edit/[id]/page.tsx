@@ -6,9 +6,18 @@ import { updateProduct, createCaracteristica, deleteCaracteristica } from '../..
 
 type Props = { params: Promise<{ id: string }> };
 
+// ✅ AÑADIMOS UNA INTERFACE PARA DEFINIR LA FORMA DE UNA CARACTERÍSTICA
+interface Caracteristica {
+  id: number;
+  titulo: string;
+  descripcion: string;
+  imagen: string;
+  orden: number;
+  // Añade aquí cualquier otra propiedad que tenga una característica
+}
+
 async function getProduct(id: number) {
   const supabase = createServerComponentClient({ cookies });
-  // Esta consulta ya trae el producto y sus características relacionadas
   const { data } = await supabase
     .from('productos')
     .select('*, caracteristicas(*)')
@@ -17,7 +26,7 @@ async function getProduct(id: number) {
   return data;
 }
 
-// ... (Tu componente BooleanSelectEdit se mantiene igual)
+// ... (El componente BooleanSelectEdit se mantiene igual)
 
 export default async function EditProductPage({ params }: Props) {
   const { id } = await params;
@@ -28,31 +37,26 @@ export default async function EditProductPage({ params }: Props) {
     notFound();
   }
 
+  // ... (El formulario principal del producto se mantiene igual)
   const updateProductWithId = updateProduct.bind(null, product.id);
-
+  
   return (
     <div className="admin-container">
-      {/* --- FORMULARIO PRINCIPAL DEL PRODUCTO (SIN CAMBIOS) --- */}
       <h1>Editar Producto: {product.name}</h1>
       <form action={updateProductWithId} className="admin-form">
         {/* ... (Todos los campos de tu formulario de producto van aquí, sin cambios) ... */}
-        {/* name, description, price, etc. */}
         <button type="submit" className="admin-submit-btn">Actualizar Producto</button>
       </form>
 
       <hr className="admin-divider" />
 
-      {/* --- SECCIÓN PARA GESTIONAR CARACTERÍSTICAS --- */}
       <div className="admin-section">
         <h2>Gestionar Características</h2>
 
-        {/* --- Formulario para añadir nueva característica --- */}
         <div className="admin-form-container">
           <h3>Añadir Nueva Característica</h3>
           <form action={createCaracteristica} className="admin-form">
-            {/* Campo oculto para enviar el ID del producto */}
             <input type="hidden" name="producto_id" value={product.id} />
-
             <div className="form-group">
               <label htmlFor="titulo" className="form-label">Título:</label>
               <input id="titulo" name="titulo" type="text" required className="form-input" />
@@ -73,12 +77,12 @@ export default async function EditProductPage({ params }: Props) {
           </form>
         </div>
 
-        {/* --- Lista de características existentes --- */}
         <div className="admin-list-container">
           <h3>Características Actuales</h3>
           {product.caracteristicas && product.caracteristicas.length > 0 ? (
             <ul className="admin-list">
-              {product.caracteristicas.map((caracteristica: any) => (
+              {/* ✅ CORREGIDO: Usamos la interface Caracteristica en lugar de 'any' */}
+              {product.caracteristicas.map((caracteristica: Caracteristica) => (
                 <li key={caracteristica.id} className="admin-list-item">
                   <div className="item-info">
                     {caracteristica.imagen && (
