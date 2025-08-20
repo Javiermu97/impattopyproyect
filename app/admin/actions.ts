@@ -132,3 +132,58 @@ export async function updateOrderStatus(orderId: number, newStatus: string) {
   revalidatePath('/admin/orders');
   revalidatePath(`/admin/orders/${orderId}`);
 }
+
+
+
+// --- ZOD SCHEMA PARA CARACTERISTICAS ---
+// Define las reglas para una característica válida
+const CaracteristicaSchema = z.object({
+  titulo: z.string().min(3, { message: 'El título es requerido.' }),
+  descripcion: z.string().nullable().optional(),
+  imagen: z.string().url({ message: 'La URL de la imagen no es válida.' }).nullable().optional(),
+  orden: z.coerce.number().nullable().optional(),
+  producto_id: z.coerce.number(),
+});
+
+
+// --- ACCIONES PARA CARACTERISTICAS ---
+
+export async function createCaracteristica(formData: FormData) {
+  const rawData = {
+    titulo: formData.get('titulo'),
+    descripcion: formData.get('descripcion'),
+    imagen: formData.get('imagen'),
+    orden: formData.get('orden'),
+    producto_id: formData.get('producto_id'),
+  };
+
+  const validation = CaracteristicaSchema.safeParse(rawData);
+
+  if (!validation.success) {
+    console.error("ERROR DE VALIDACIÓN:", validation.error.flatten().fieldErrors);
+    throw new Error(`Datos de característica inválidos: ${validation.error.issues[0].message}`);
+  }
+
+  const supabase = createServerActionClient({ cookies });
+  const { error } = await supabase.from('caracteristicas').insert(validation.data);
+
+  if (error) {
+    console.error("ERROR DE SUPABASE AL CREAR CARACTERÍSTICA:", error);
+    throw new Error('No se pudo guardar la característica.');
+  }
+
+  // Refresca la página de edición para mostrar la nueva característica
+  revalidatePath(`/admin/products/edit/${validation.data.producto_id}`);
+}
+
+export async function deleteCaracteristica(caracteristicaId: number, productoId: number) {
+  const supabase = createServerActionClient({ cookies });
+  const { error } = await supabase.from('caracteristicas').delete().eq('id', caracteristicaId);
+
+  if (error) {
+    console.error('Error al eliminar característica:', error);
+    throw new Error('No se pudo eliminar la característica.');
+  }
+
+  revalidatePath(`/admin/products/edit/${productoId}`);
+}
