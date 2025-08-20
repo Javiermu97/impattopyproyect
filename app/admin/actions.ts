@@ -56,14 +56,32 @@ export async function createProduct(formData: FormData) {
   }
 
   const supabase = createServerActionClient({ cookies });
-  const { error } = await supabase.from('productos').insert(validation.data);
+
+
+  // ===== INICIA EL CAMBIO CLAVE AQUÍ =====
+  // Ahora le pedimos a Supabase que nos devuelva los datos del producto que acaba de crear
+  const { data, error } = await supabase
+    .from('productos')
+    .insert(validation.data)
+    .select() // <-- AÑADIMOS ESTO
+    .single(); // <-- Y ESTO
+
   if (error) {
       console.error("ERROR DE SUPABASE:", error);
       throw new Error(`No se pudo guardar el producto.`);
   }
 
+  // Si no hay datos, lanzamos un error para seguridad
+  if (!data) {
+    throw new Error('No se pudo obtener el producto recién creado.');
+  }
+
+  // Refrescamos la caché de la lista de productos
   revalidatePath('/admin/products');
-  redirect('/admin/products');
+  
+  // ¡Redirigimos a la página de EDICIÓN del nuevo producto!
+  redirect(`/admin/products/edit/${data.id}`); 
+  // ===== TERMINA EL CAMBIO CLAVE AQUÍ =====
 }
 
 export async function updateProduct(productId: number, formData: FormData) {
@@ -135,25 +153,26 @@ export async function updateOrderStatus(orderId: number, newStatus: string) {
 
 
 
-// --- ZOD SCHEMA PARA CARACTERISTICAS ---
-// Define las reglas para una característica válida
+// --- ZOD SCHEMA PARA CARACTERISTICAS (CORREGIDO) ---
+// Define las reglas para una característica válida, coincidiendo con tu tabla
 const CaracteristicaSchema = z.object({
   titulo: z.string().min(3, { message: 'El título es requerido.' }),
+  orden: z.coerce.number().nullable().optional(),
   descripcion: z.string().nullable().optional(),
   imagen: z.string().url({ message: 'La URL de la imagen no es válida.' }).nullable().optional(),
-  orden: z.coerce.number().nullable().optional(),
   producto_id: z.coerce.number(),
 });
 
 
-// --- ACCIONES PARA CARACTERISTICAS ---
+// --- ACCIONES PARA CARACTERISTICAS (CORREGIDO) ---
 
 export async function createCaracteristica(formData: FormData) {
+  // Mapeo directo de los campos del formulario a los nombres de la base de datos
   const rawData = {
     titulo: formData.get('titulo'),
+    orden: formData.get('orden'),
     descripcion: formData.get('descripcion'),
     imagen: formData.get('imagen'),
-    orden: formData.get('orden'),
     producto_id: formData.get('producto_id'),
   };
 
