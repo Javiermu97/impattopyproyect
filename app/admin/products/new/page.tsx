@@ -36,12 +36,12 @@ export default function NewProductPage() {
         </div>
         <div className="form-grid">
           <div className="form-group">
-            <label htmlFor="ImageUrl" className="form-label">ImageUrl:</label>
-            <input id="ImageUrl" name="ImageUrl" type="text" className="form-input" />
+            <label htmlFor="imageUrl" className="form-label">imageUrl:</label>
+            <input id="imageUrl" name="imageUrl" type="text" className="form-input" />
           </div>
           <div className="form-group">
-            <label htmlFor="ImageUrl2" className="form-label">ImageUrl2:</label>
-            <input id="ImageUrl2" name="ImageUrl2" type="text" className="form-input" />
+            <label htmlFor="imageUrl2" className="form-label">imageUrl2:</label>
+            <input id="imageUrl2" name="imageUrl2" type="text" className="form-input" />
           </div>
         </div>
         <div className="form-group">

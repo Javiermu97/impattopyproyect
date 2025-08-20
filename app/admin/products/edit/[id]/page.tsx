@@ -59,11 +59,11 @@ export default async function EditProductPage({ params }: Props) {
         <div className="form-grid">
           <div className="form-group">
             <label htmlFor="imageUrl" className="form-label">imageUrl:</label>
-            <input id="imageUrl" name="imageUrl" type="text" defaultValue={product.ImageUrl || ''} className="form-input" />
+            <input id="imageUrl" name="imageUrl" type="text" defaultValue={product.imageUrl || ''} className="form-input" />
           </div>
           <div className="form-group">
             <label htmlFor="imageUrl2" className="form-label">imageUrl2:</label>
-            <input id="imageUrl2" name="imageUrl2" type="text" defaultValue={product.ImageUrl2 || ''} className="form-input" />
+            <input id="imageUrl2" name="imageUrl2" type="text" defaultValue={product.imageUrl2 || ''} className="form-input" />
           </div>
         </div>
         <div className="form-group">
