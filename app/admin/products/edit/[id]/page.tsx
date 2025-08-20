@@ -48,8 +48,9 @@ const BooleanSelectEdit = ({ name, label, defaultValue }: { name: string, label:
 };
 
 // --- Componente Principal de la Página de Edición ---
-export default async function EditProductPage({ params }: { params: { id: string } }) {
-  const productId = Number(params.id);
+export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params; // <-- Volvemos a 'esperar' los params
+  const productId = Number(id);
   const product = await getProduct(productId);
 
   if (!product) {
