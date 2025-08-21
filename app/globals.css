@@ -179,20 +179,20 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .info-banner-item h3 { font-size: 1.1rem; font-weight: bold; margin-bottom: 10px; }
 .info-banner-item p { font-size: 0.9rem; line-height: 1.5; opacity: 0.9; }
 /* Footer Styles */
-.footer { background-color: #111; color: white; padding: 40px 40px 20px 40px; font-size: 0.9em; }
+.footer { background-color:#999; color: white; padding: 40px 40px 20px 40px; font-size: 0.9em; }
 .footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 1200px; margin: 0 auto 30px auto; gap: 80px; }
 .footer-col { flex: 1; min-width: 220px; margin-bottom: 20px; }
-.footer-col h3 { font-size: 1.1em; margin-bottom: 15px; color: #f0f0f0; }
-.footer-col p, .footer-col ul { color: #bbb; line-height: 1.6; list-style: none; padding: 0; margin: 0; }
+.footer-col h3 { font-size: 1.1em; margin-bottom: 15px; color: black; }
+.footer-col p, .footer-col ul { color:black; line-height: 1.6; list-style: none; padding: 0; margin: 0; }
 .footer-col ul li { margin-bottom: 8px; }
-.footer-col a { color: #bbb; }
-.footer-col a:hover { color: white; text-decoration: underline; }
+.footer-col a { color: black; }
+.footer-col a:hover { color:black; text-decoration: underline; }
 .footer-col form { display: flex; flex-direction: column; gap: 10px; }
 .footer-col input[type="email"] { padding: 10px; border-radius: 5px; border: 1px solid #555; background-color: #222; color: white; text-align: center; }
 .footer-col input[type="email"]::placeholder { color: #888; }
-.footer-col .btn-subscribe { background-color:#A78D5A; color: white; border: none; cursor: pointer; font-weight: bold; transition: background-color 0.2s ease; padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; }
+.footer-col .btn-subscribe { background-color:black; color: white; border: none; cursor: pointer; font-weight: bold; transition: background-color 0.2s ease; padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; }
 .footer-col .btn-subscribe:hover { background-color:#A78D5A; }
-.footer-bottom { text-align: center; border-top: 1px solid #333; padding-top: 20px; color: #888; }
+.footer-bottom { text-align: center; border-top: 1px solid #333; padding-top: 20px; color:black; }
 
 
 /* AÑADIDO: Estilo para el mensaje de suscripción */
@@ -382,9 +382,9 @@ body {
 
 .shop-product-card .price-section {
   display: flex;
-  justify-content: center;
-  align-items: baseline;
-  gap: 0.5rem;
+  flex-direction: column; /* <-- Apila los elementos verticalmente */
+  align-items: center;   /* <-- Centra los elementos horizontalmente */
+  gap: 0.25rem;          /* Espacio vertical entre los precios */
 }
 
 .shop-product-card .shop-product-price { 
@@ -1394,7 +1394,7 @@ body {
   display: block;
 }
 .quantity-discount {
-  background-color: #f8d7da;
+  background-color: #A78D5A;
   color: #721c24;
   font-size: 0.8rem;
   padding: 2px 6px;
@@ -1531,7 +1531,7 @@ body {
   color: white;
 }
 .submit-btn.secondary {
-  background-color: #007bff;
+  background-color: #A78D5A;
   color: white;
 }
 .payment-note {
@@ -2056,7 +2056,7 @@ body {
 .item-variant { font-size: 0.9rem; color: #666; margin: 0 0 0.5rem 0; }
 .item-price { font-weight: bold; margin: 0; }
 .item-quantity { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-top: 0.5rem; }
-.remove-btn { background: none; border: none; color: #cc0000; text-decoration: underline; cursor: pointer; padding: 0; }
+.remove-btn { background: none; border: none; color: #A78D5A; text-decoration: underline; cursor: pointer; padding: 0; }
 
 .cart-footer {
   padding: 1rem;
