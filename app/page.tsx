@@ -51,7 +51,7 @@ export default async function HomePage() {
       <section className="home-products-section">
         <h2 className="section-title">🔥 Especial de la Semana 🔥</h2>
         {/* Usamos 'columns-2' en lugar de 'columns-3' o 'columns-4' para que las imágenes sean más grandes */}
-        <div className="product-grid-shop columns-2">
+        <div className="product-grid-shop columns-3">
           {destacadosSemana?.map((product: Product) => (
             <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
               <div className="shop-product-card">
