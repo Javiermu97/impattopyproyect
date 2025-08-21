@@ -87,20 +87,33 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      {/* Sección "Hechos para tu hogar" con datos elegidos por ti */}
+      {/* ==================================================================== */}
+      {/* ===== SECCIÓN "HECHOS PARA TU HOGAR" (CORREGIDA) ===== */}
+      {/* ==================================================================== */}
       <section className="products-section reducir-espacio-superior">
-
-
         <h2 className="section-title">Confort y Diseño</h2>
-        <h3 className="section-subtitle"> Hechos para tu hogar <span role="img" aria-label="house">🏠</span></h3>
+        <h3 className="section-subtitle">Hechos para tu hogar 🏠</h3>
         <div className="product-grid-shop columns-3">
           {destacadosHogar?.map((product: Product) => (
             <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
               <div className="shop-product-card">
                 <div className="image-container">
                   {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
-                  <Image src={product.imageUrl} alt={product.name} width={250} height={250} className="shop-product-image-primary" style={{ objectFit: 'contain' }} />
-                  {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} width={250} height={250} className="shop-product-image-secondary" style={{ objectFit: 'contain' }} />}
+                  {/* Aplicamos la misma corrección: quitamos el 'style' y usamos 'fill' */}
+                  <Image 
+                    src={product.imageUrl} 
+                    alt={product.name} 
+                    fill
+                    className="shop-product-image-primary"
+                  />
+                  {product.imageUrl2 && (
+                    <Image 
+                      src={product.imageUrl2} 
+                      alt={product.name} 
+                      fill
+                      className="shop-product-image-secondary"
+                    />
+                  )}
                 </div>
                 <h4>{product.name}</h4>
                 <div className="price-section">
