@@ -90,7 +90,7 @@ export default async function HomePage() {
       {/* ==================================================================== */}
       {/* ===== SECCIÓN "HECHOS PARA TU HOGAR" (CORREGIDA) ===== */}
       {/* ==================================================================== */}
-      <section className="products-section reducir-espacio-superior">
+      <section className="home-products-section reducir-espacio-superior">
         <h2 className="section-title">Confort y Diseño</h2>
         <h3 className="section-subtitle">Hechos para tu hogar 🏠</h3>
         <div className="product-grid-shop columns-3">

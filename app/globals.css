@@ -2498,3 +2498,46 @@ body {
     background-color: #ef4444; /* Rojo más intenso */
     color: #ffffff;
 }
+
+/* ========================================================= */
+/* ===== AJUSTE DE ESPACIO PARA "NUESTRA FILOSOFÍA" EN MÓVIL ===== */
+/* ========================================================= */
+
+/* Esta regla solo se aplicará en pantallas con un ancho máximo de 768px (tablets y móviles) */
+@media (max-width: 768px) {
+  .philosophy-section {
+    /* Reducimos el relleno vertical de 80px que tenía a solo 40px en la parte inferior */
+    /* y 50px en la superior para un look más compacto */
+    padding-top: 50px;
+    padding-bottom: 40px;
+  }
+}
+
+/* ========================================================= */
+/* ===== AJUSTES PARA "NUESTRA FILOSOFÍA" EN TABLETS ===== */
+/* ========================================================= */
+
+/* Estas reglas se aplican a tablets (entre 769px y 992px de ancho) */
+@media (min-width: 769px) and (max-width: 992px) {
+
+  .philosophy-image-container {
+    /* Hacemos el contenedor un poco más alto para dar espacio a las imágenes más grandes */
+    height: 400px;
+    
+    /* ¡Esta es la clave para reducir el espacio! */
+    /* Eliminamos el margen inferior que separaba las imágenes del texto. */
+    margin-bottom: 0; 
+  }
+
+  .philosophy-container {
+    /* Reducimos el espacio general entre el bloque de imagen y el de texto */
+    gap: 1.5rem;
+  }
+
+  .philosophy-img-bg,
+  .philosophy-img-fg {
+    /* Aumentamos el ancho de las imágenes del 60% al 70% para que sean más grandes */
+    width: 70%;
+  }
+
+}
