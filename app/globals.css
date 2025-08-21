@@ -361,10 +361,11 @@ body {
   left: 0; 
   width: 100%; 
   height: 100%; 
-  object-fit: cover; 
+  /* ESTE ES EL CAMBIO MÁS IMPORTANTE */
+  object-fit: cover; /* Asegura que la imagen cubra todo el espacio sin deformarse */
   transition: opacity 0.3s ease-in-out;
   border-radius: 8px; 
-  background-color: #fff; 
+  background-color: #f0f0f0; /* Un color de fondo suave por si la imagen tarda en cargar */
 }
 .shop-product-card .shop-product-image-secondary { opacity: 0; }
 .shop-product-card-link:hover .shop-product-image-secondary { opacity: 1; }

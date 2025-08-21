@@ -45,19 +45,33 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Sección "Especial de la Semana" con datos elegidos por ti */}
-      <section className="products-section products-section-gray">
-
-
-        <h2 className="section-title">🔥Especial de la Semana <span role="img" aria-label="fire">🔥</span></h2>
-        <div className="product-grid-shop columns-3">
+      {/* ==================================================================== */}
+      {/* ===== SECCIÓN "ESPECIAL DE LA SEMANA" (ANCHO COMPLETO) ===== */}
+      {/* ==================================================================== */}
+      <section className="home-products-section">
+        <h2 className="section-title">🔥 Especial de la Semana 🔥</h2>
+        {/* Usamos 'columns-2' en lugar de 'columns-3' o 'columns-4' para que las imágenes sean más grandes */}
+        <div className="product-grid-shop columns-2">
           {destacadosSemana?.map((product: Product) => (
             <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
               <div className="shop-product-card">
                 <div className="image-container">
                   {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
-                  <Image src={product.imageUrl} alt={product.name} width={250} height={250} className="shop-product-image-primary" style={{ objectFit: 'contain' }} />
-{product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} width={250} height={250} className="shop-product-image-secondary" style={{ objectFit: 'contain' }} />}
+                  {/* Se elimina el 'style' en línea para que el CSS global tome el control */}
+                  <Image 
+                    src={product.imageUrl} 
+                    alt={product.name} 
+                    fill 
+                    className="shop-product-image-primary" 
+                  />
+                  {product.imageUrl2 && (
+                    <Image 
+                      src={product.imageUrl2} 
+                      alt={product.name} 
+                      fill 
+                      className="shop-product-image-secondary" 
+                    />
+                  )}
                 </div>
                 <h4>{product.name}</h4>
                 <div className="price-section">
