@@ -2513,31 +2513,40 @@ body {
   }
 }
 
-/* ========================================================= */
-/* ===== AJUSTES PARA "NUESTRA FILOSOFÍA" EN TABLETS ===== */
-/* ========================================================= */
+
+/* =================================================================== */
+/* ===== AJUSTE DEFINITIVO PARA "NUESTRA FILOSOFÍA" EN TABLETS ===== */
+/* =================================================================== */
 
 /* Estas reglas se aplican a tablets (entre 769px y 992px de ancho) */
 @media (min-width: 769px) and (max-width: 992px) {
 
   .philosophy-image-container {
-    /* Hacemos el contenedor un poco más alto para dar espacio a las imágenes más grandes */
-    height: 400px;
-    
-    /* ¡Esta es la clave para reducir el espacio! */
-    /* Eliminamos el margen inferior que separaba las imágenes del texto. */
-    margin-bottom: 0; 
+    /* 1. Hacemos el contenedor MÁS ANCHO para usar el espacio de los costados */
+    max-width: 650px; 
+    height: 420px; /* Un poco más de altura para el nuevo layout */
+    margin-bottom: 0;
   }
 
   .philosophy-container {
-    /* Reducimos el espacio general entre el bloque de imagen y el de texto */
     gap: 1.5rem;
   }
-
-  .philosophy-img-bg,
+  
+  /* Imagen de atrás (grupo de personas) */
   .philosophy-img-fg {
-    /* Aumentamos el ancho de las imágenes del 60% al 70% para que sean más grandes */
-    width: 70%;
+    /* 2. La hacemos más grande y la movemos a la derecha */
+    width: 65%;
+    top: 0;
+    right: 5%; /* La alejamos del borde derecho */
+    left: auto; /* Nos aseguramos que no haya un 'left' afectando */
   }
 
+  /* Imagen de adelante (mujer) */
+  .philosophy-img-bg {
+    /* 3. La hacemos más grande y la posicionamos para un solapamiento sutil */
+    width: 65%;
+    top: 25%; /* La bajamos para que no tape tanto la de atrás */
+    left: 5%;  /* La alejamos del borde izquierdo */
+    right: auto;
+  }
 }
