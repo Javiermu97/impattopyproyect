@@ -2537,7 +2537,7 @@ body {
     /* 2. La hacemos más grande y la movemos a la derecha */
     width: 65%;
     top: 0;
-    right: 5%; /* La alejamos del borde derecho */
+    right: 3%; /* La alejamos del borde derecho */
     left: auto; /* Nos aseguramos que no haya un 'left' afectando */
   }
 
@@ -2546,7 +2546,7 @@ body {
     /* 3. La hacemos más grande y la posicionamos para un solapamiento sutil */
     width: 65%;
     top: 50%; /* La bajamos para que no tape tanto la de atrás */
-    left: 5%;  /* La alejamos del borde izquierdo */
+    left: 3%;  /* La alejamos del borde izquierdo */
     right: auto;
   }
 }
