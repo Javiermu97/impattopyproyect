@@ -2543,10 +2543,11 @@ body {
 
   /* Imagen de adelante (mujer) */
   .philosophy-img-bg {
+    
     /* 3. La hacemos más grande y la posicionamos para un solapamiento sutil */
     width: 65%;
     top: 50%; /* La bajamos para que no tape tanto la de atrás */
-    left: 1%;  /* La alejamos del borde izquierdo */
+    left: 0%;  /* La alejamos del borde izquierdo */
     right: auto;
   }
 }
