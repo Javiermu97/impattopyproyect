@@ -2551,3 +2551,17 @@ body {
     right: auto;
   }
 }
+
+/* ======================= */
+/* Ajustes responsive para móviles/tablets */
+/* ======================= */
+@media (max-width: 992px) {
+  .philosophy-section {
+    margin-top: 10px;
+    padding-top: 50px;
+  }
+
+  .home-products-section {
+    margin-bottom: 20px !important;
+  }
+}
