@@ -2499,11 +2499,6 @@ body {
     color: #ffffff;
 }
 
-/* ========================================================= */
-/* ===== AJUSTE DE ESPACIO PARA "NUESTRA FILOSOFÍA" EN MÓVIL ===== */
-/* ========================================================= */
-
-
 
 
 /* =================================================================== */
@@ -2549,8 +2544,8 @@ body {
 /* ======================= */
 @media (max-width: 992px) {
   .philosophy-section {
-    margin-top: 10px;
-    padding-top: 50px;
+    margin-top: 5px;
+    padding-top: 30px;
   }
 
   .home-products-section {
