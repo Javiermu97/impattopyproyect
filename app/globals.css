@@ -217,13 +217,12 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* --- Contenedor Principal de la Tienda (Ancho y con márgenes) --- */
 .shop-container { 
   max-width: 1800px; 
   margin: 0 auto; 
   padding: 2rem 2rem 0 2rem; 
   background-color: #ffffff; 
-  margin-bottom: 4rem; /* <-- CÓDIGO AGREGADO: Para el espacio con el footer */
+  margin-bottom: 6rem;
 }
 /* ==================================================================== */
 /* ===== ESTILOS DEFINITIVOS PARA SECCIONES DE PRODUCTOS EN HOME ===== */
@@ -313,7 +312,7 @@ body {
 .shop-container { 
   max-width: 1800px; 
   margin: 0 auto; 
-  padding: 0 2rem; 
+  padding: 2rem 2rem 0 2rem; 
   background-color: #ffffff; 
 }
 
@@ -2546,11 +2545,22 @@ body {
 /* ======================= */
 @media (max-width: 992px) {
   .philosophy-section {
-    margin-top: -40px !important; /* <<--- CAMBIO 1: Se usa un margen negativo para "subir" la sección y contrarrestar los espacios de arriba */
+    margin-top: -40px !important; 
     padding-top: 30px !important;
   }
 
   .home-products-section {
-    margin-bottom: 0 !important; /* <<--- CAMBIO 2: Se elimina un margen inferior que agregaba espacio innecesario */
+    margin-bottom: 0 !important; 
   }
+}
+
+/* ==================================================================== */
+/* ===== SOLUCIÓN DEFINITIVA PARA LA PÁGINA DE TIENDA ===== */
+/* ==================================================================== */
+.tienda-page-container {
+  max-width: 1800px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 2rem 2rem 0 2rem !important;
+  margin-bottom: 6rem !important; /* Espacio extra antes del footer */
 }
