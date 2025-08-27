@@ -140,7 +140,9 @@ export default async function HomePage() {
             <h2>Nuestra Filosofía</h2>
             <p>Es brindar la mejor experiencia a nuestra comunidad...</p>
             <p><strong>Más de 20mil clientes Paraguayos confiaron en nosotros...</strong></p>
-            <button className="btn-primary">CONÓCENOS</button>
+            <Link href="/sobre-nosotros" className="btn-primary">
+              CONÓCENOS
+            </Link>
           </div>
         </div>
       </section>
