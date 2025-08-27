@@ -2207,55 +2207,61 @@ body {
   }
 }
 
-/* --- ESTILOS PARA "NUESTRA FILOSOFÍA" EN MÓVILES --- */
 
+/* ==================================================================== */
+/* --- CÓDIGO FINAL PARA "NUESTRA FILOSOFÍA" EN MÓVILES (hasta 768px) --- */
+/* ==================================================================== */
 @media (max-width: 768px) {
   /* Apila el contenedor de imagen y el de texto verticalmente */
   .philosophy-container {
     flex-direction: column; 
-    text-align: center; /* Centra el bloque de texto */
+    text-align: center;
     gap: 2rem;
   }
 
-  /* Define el espacio para las imágenes superpuestas */
+  /* Define el espacio para las imágenes, ahora más horizontal */
   .philosophy-image-container {
     position: relative;
     width: 90%;
-    max-width: 400px;
-    height: 300px; /* Altura fija para controlar el solapamiento */
-    margin: 0 auto; /* Centra el bloque de imágenes */
+    max-width: 450px;
+    height: 220px; /* Reducimos la altura para hacerlo más apaisado */
+    margin: 0 auto;
   }
 
   /* Reglas generales para las dos imágenes en móvil */
   .philosophy-img {
-    position: absolute; /* Permite posicionar una sobre otra */
+    position: absolute;
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    object-fit: cover;
+    object-fit: cover; /* Asegura que la imagen cubra el espacio sin deformarse */
   }
 
-  /* Imagen de la mujer con tablet (al frente) */
+  /* Imagen de la mujer (al frente), ahora horizontal */
   .philosophy-img-bg {
-    width: 75%;
-    height: 80%;
-    top: 10%;
+    width: 70%; 
+    height: 85%; /* La altura es menor que el ancho para ser horizontal */
+    top: 15%; /* La bajamos para que se vea bien superpuesta */
     left: 0;
     z-index: 2;
   }
 
-  /* Imagen del grupo de personas (detrás) */
+  /* Imagen del grupo (detrás), ahora horizontal */
   .philosophy-img-fg {
-    width: 65%;
-    height: 70%;
-    top: 0;
+    width: 70%; 
+    height: 85%; /* La altura es menor que el ancho para ser horizontal */
+    top: 0; 
     right: 0;
     z-index: 1;
   }
   
   .philosophy-content {
-     padding-left: 0; /* Resetea el padding del modo escritorio */
+     padding-left: 0;
   }
 }
+
+
+
+
 /* --- Ajuste para Títulos de Sección en Móviles --- */
 @media (max-width: 768px) {
   .section-title {
