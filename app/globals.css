@@ -2544,8 +2544,8 @@ body {
 /* ======================= */
 @media (max-width: 992px) {
   .philosophy-section {
-    margin-top: 5px;
-    padding-top: 30px;
+    margin-top: 5px !important;
+    padding-top: 30px !important;
   }
 
   .home-products-section {
