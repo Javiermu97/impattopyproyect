@@ -217,11 +217,13 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* --- Contenedor Principal de la Tienda (Ancho y con márgenes) --- */
 .shop-container { 
   max-width: 1800px; 
   margin: 0 auto; 
-  padding: 0 2rem; 
+  padding: 2rem 2rem 0 2rem; 
   background-color: #ffffff; 
+  margin-bottom: 4rem; /* <-- CÓDIGO AGREGADO: Para el espacio con el footer */
 }
 /* ==================================================================== */
 /* ===== ESTILOS DEFINITIVOS PARA SECCIONES DE PRODUCTOS EN HOME ===== */
