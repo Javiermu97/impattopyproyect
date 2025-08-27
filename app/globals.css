@@ -2544,11 +2544,11 @@ body {
 /* ======================= */
 @media (max-width: 992px) {
   .philosophy-section {
-    margin-top: 5px !important;
+    margin-top: -40px !important; /* <<--- CAMBIO 1: Se usa un margen negativo para "subir" la sección y contrarrestar los espacios de arriba */
     padding-top: 30px !important;
   }
 
   .home-products-section {
-    margin-bottom: 20px !important;
+    margin-bottom: 0 !important; /* <<--- CAMBIO 2: Se elimina un margen inferior que agregaba espacio innecesario */
   }
 }
