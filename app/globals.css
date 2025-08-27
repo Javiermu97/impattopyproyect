@@ -2216,41 +2216,45 @@ body {
   .philosophy-container {
     flex-direction: column; 
     text-align: center;
-    gap: 2rem;
+    gap: 1.5rem; /* Menos espacio entre las imágenes y el texto */
   }
 
-  /* Define el espacio para las imágenes, ahora más horizontal */
+  /* Define el espacio para la composición de imágenes */
   .philosophy-image-container {
     position: relative;
-    width: 90%;
+    width: 100%;
     max-width: 450px;
-    height: 220px; /* Reducimos la altura para hacerlo más apaisado */
+    height: 280px; /* Altura ajustada para la nueva composición */
     margin: 0 auto;
   }
 
   /* Reglas generales para las dos imágenes en móvil */
   .philosophy-img {
-    position: absolute;
+    position: absolute; /* Permite posicionar cada imagen de forma precisa */
     border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    object-fit: cover; /* Asegura que la imagen cubra el espacio sin deformarse */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
   }
 
-  /* Imagen de la mujer (al frente), ahora horizontal */
+  /* Imagen de la mujer (al frente) - AHORA POSICIONADA A LA IZQUIERDA Y ABAJO */
   .philosophy-img-bg {
-    width: 70%; 
-    height: 85%; /* La altura es menor que el ancho para ser horizontal */
-    top: 15%; /* La bajamos para que se vea bien superpuesta */
-    left: 0;
+    width: 65%; 
+    height: 75%;
+    bottom: 0; /* La anclamos a la parte inferior del contenedor */
+    left: 0;   /* La anclamos a la izquierda */
+    top: auto; /* Anulamos el posicionamiento superior */
+    right: auto;/* Anulamos el posicionamiento derecho */
     z-index: 2;
   }
 
-  /* Imagen del grupo (detrás), ahora horizontal */
+  /* Imagen del grupo (detrás) - AHORA POSICIONADA A LA DERECHA Y ARRIBA */
   .philosophy-img-fg {
-    width: 70%; 
-    height: 85%; /* La altura es menor que el ancho para ser horizontal */
-    top: 0; 
-    right: 0;
+    width: 55%; 
+    height: 70%;
+    top: 0;    /* La anclamos a la parte superior */
+    right: 0;  /* La anclamos a la derecha */
+    bottom: auto; /* Anulamos el posicionamiento inferior */
+    left: auto; /* Anulamos el posicionamiento izquierdo */
     z-index: 1;
   }
   
