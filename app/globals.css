@@ -453,7 +453,7 @@ body {
 .breadcrumb {
   font-size: 0.9rem;
   color: #666;
-  margin-bottom: 0; /* Se quita el margen inferior para que lo maneje el contenedor */
+  margin-bottom: 6; /* Se quita el margen inferior para que lo maneje el contenedor */
 }
 /* --- FIN NUEVA SECCIÓN --- */
 @keyframes shake-horizontal {
