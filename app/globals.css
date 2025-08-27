@@ -2503,15 +2503,7 @@ body {
 /* ===== AJUSTE DE ESPACIO PARA "NUESTRA FILOSOFÍA" EN MÓVIL ===== */
 /* ========================================================= */
 
-/* Esta regla solo se aplicará en pantallas con un ancho máximo de 768px (tablets y móviles) */
-@media (max-width: 768px) {
-  .philosophy-section {
-    /* Reducimos el relleno vertical de 80px que tenía a solo 40px en la parte inferior */
-    /* y 50px en la superior para un look más compacto */
-    padding-top: 50px;
-    padding-bottom: 40px;
-  }
-}
+
 
 
 /* =================================================================== */
