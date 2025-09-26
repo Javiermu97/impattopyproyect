@@ -14,14 +14,14 @@ export default async function HomePage() {
     .from('productos')
     .select('*')
     .eq('es_destacado_semana', true) // Buscamos los productos que marcaste
-    .limit(4);
+    .limit(20);
 
   // 2. Obtenemos los productos destacados para "Hechos para tu hogar"
   const { data: destacadosHogar, error: errorHogar } = await supabase
     .from('productos')
     .select('*')
     .eq('es_destacado_hogar', true) // Buscamos los productos que marcaste
-    .limit(4);
+    .limit(20);
 
   if (errorSemana) console.error('Error al cargar productos destacados de la semana:', errorSemana);
   if (errorHogar) console.error('Error al cargar productos destacados de hogar:', errorHogar);
@@ -129,23 +129,7 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      <section className="philosophy-section">
-        <div className="philosophy-container">
-          <div className="philosophy-image-container">
-            <Image src="/filosofia-1.jpg" alt="Mujer trabajando en un mostrador" width={450} height={300} className="philosophy-img philosophy-img-bg" />
-            <Image src="/filosofia-2.jpg" alt="Personas revisando un catálogo" width={450} height={300} className="philosophy-img philosophy-img-fg" />
-          </div>
-          <div className="philosophy-content">
-            <p className="philosophy-pre-title">IMPATTO PY</p>
-            <h2>Nuestra Filosofía</h2>
-            <p>Es brindar la mejor experiencia a nuestra comunidad...</p>
-            <p><strong>Más de 20mil clientes Paraguayos confiaron en nosotros...</strong></p>
-            <Link href="/sobre-nosotros" className="btn-primary">
-              CONÓCENOS
-            </Link>
-          </div>
-        </div>
-      </section>
+      
 
       <InfoBanner />
 
