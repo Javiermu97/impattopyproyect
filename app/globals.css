@@ -230,10 +230,18 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 /* --- ESTILOS PARA MÓVIL (hasta 768px) --- */
 @media (max-width: 768px) {
+  
+  /* 1. Añade espaciado a toda la sección del banner */
+  .info-banner-section {
+    padding: 2rem 1rem;      /* Espacio interior (arriba/abajo e izquierda/derecha) */
+    margin-bottom: 2rem;     /* Espacio exterior inferior para separarlo del footer */
+  }
+
+  /* 2. Crea la cuadrícula de 2x2 */
   .info-banner-container {
-    flex-direction: column;
-    align-items: flex-start; /* Alineamos a la izquierda */
-    gap: 1.5rem; /* Espacio entre los items apilados */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Crea dos columnas iguales */
+    gap: 2rem 1rem; /* 2rem de espacio vertical, 1rem de espacio horizontal */
   }
 }
 
