@@ -160,6 +160,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   max-width: 1200px;   /* Fondo limitado */
   padding: 2rem 8rem;  /* Espacio arriba, abajo y a los lados */
   border-radius: 8px;  /* Opcional: bordes redondeados */
+  box-sizing: border-box; /* <-- simplemente añadimos esta línea aquí */
 }
 
 /* El nuevo WRAPPER se encarga de centrar y limitar el ancho */
@@ -177,12 +178,25 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 }
 
 /* En pantallas pequeñas, el contenedor cambia a grid 2x2 */
-/* Tablet */
 @media (max-width: 992px) {
-  .info-banner-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 1.5rem;
+  .info-banner-section {
+    width: calc(100% - 2rem);   /* 1rem de espacio a cada lado */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.5rem 1rem;       /* padding lateral más chico */
+  }
+}
+
+@media (max-width: 768px) {
+  .info-banner-section {
+    width: calc(100% - 1.5rem); /* ~0.75rem por lado */
+    padding: 1.25rem 0.75rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .info-banner-content-wrapper { 
+    padding: 0; /* evita doble padding en pantallas pequeñas */
   }
 }
 
