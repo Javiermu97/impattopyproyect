@@ -38,48 +38,40 @@ const InfoBanner = () => {
       ref={bannerRef} 
       className={`info-banner-section ${isBannerVisible ? 'visible' : ''}`}
     >
-      <div className="info-banner-container">
-        {/* 2. Item 1: Entrega Gratis (actualizado) */}
-        <div className="info-banner-item">
-          <div className="info-icon">
-            <TbTruckDelivery />
+      {/* ===== ESTE ES EL DIV ADICIONAL QUE SOLUCIONA EL PROBLEMA ===== */}
+      <div className="info-banner-content-wrapper">
+        <div className="info-banner-container">
+          {/* Item 1: Entrega Gratis */}
+          <div className="info-banner-item">
+            <div className="info-icon"><TbTruckDelivery /></div>
+            <div className="info-text">
+              <h3>Entrega Gratis</h3>
+              <p>En productos seleccionados</p>
+            </div>
           </div>
-          <div className="info-text">
-            <h3>Entrega Gratis</h3>
-            <p>En productos seleccionados</p>
+          {/* Item 2: Compra Garantizada */}
+          <div className="info-banner-item">
+            <div className="info-icon"><TbLock /></div>
+            <div className="info-text">
+              <h3>Compra Garantizada</h3>
+              <p>Garantía en todos los artículos</p>
+            </div>
           </div>
-        </div>
-        
-        {/* 3. Item 2: Compra Garantizada (actualizado) */}
-        <div className="info-banner-item">
-          <div className="info-icon">
-            <TbLock />
+          {/* Item 3: Pago Rápido y Seguro */}
+          <div className="info-banner-item">
+            <div className="info-icon"><TbCreditCard /></div>
+            <div className="info-text">
+              <h3>Pago Rápido y Seguro</h3>
+              <p>Efectivo y Tarjetas de Crédito</p>
+            </div>
           </div>
-          <div className="info-text">
-            <h3>Compra Garantizada</h3>
-            <p>Garantía en todos los artículos</p>
-          </div>
-        </div>
-        
-        {/* 4. Item 3: Pago Rápido y Seguro (actualizado) */}
-        <div className="info-banner-item">
-          <div className="info-icon">
-            <TbCreditCard />
-          </div>
-          <div className="info-text">
-            <h3>Pago Rápido y Seguro</h3>
-            <p>Efectivo y Tarjetas de Crédito</p>
-          </div>
-        </div>
-        
-        {/* 5. Item 4: Asesoramiento en Línea (actualizado) */}
-        <div className="info-banner-item">
-          <div className="info-icon">
-            <TbMessageCircle />
-          </div>
-          <div className="info-text">
-            <h3>Asesoramiento en Línea</h3>
-            <p>¿Dudas? Aquí estamos...</p>
+          {/* Item 4: Asesoramiento en Línea */}
+          <div className="info-banner-item">
+            <div className="info-icon"><TbMessageCircle /></div>
+            <div className="info-text">
+              <h3>Asesoramiento en Línea</h3>
+              <p>¿Dudas? Aquí estamos...</p>
+            </div>
           </div>
         </div>
       </div>

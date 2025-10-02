@@ -150,101 +150,45 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 
 /* ========================================================= */
-/* ===== CÓDIGO DEFINITIVO Y UNIFICADO PARA INFO BANNER ===== */
+/* ===== CÓDIGO FINAL CON WRAPPER PARA INFO BANNER ===== */
 /* ========================================================= */
 
-/* --- 1. ESTILOS PARA COMPUTADORA (VISTA POR DEFECTO) --- */
-
+/* La sección exterior solo se encarga del fondo y el espaciado vertical */
 .info-banner-section {
-  background-color: #f8f8f8; /* Fondo gris claro */
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-  padding: 1.5rem 2rem;
+  background-color: #f8f8f8;
+  padding: 2rem 0; /* Espacio vertical, NADA a los costados */
   margin-bottom: 2rem;
-  /* Animación de entrada para toda la sección */
-  opacity: 0;
-  transition: opacity 0.5s ease-out;
-}
-.info-banner-section.visible {
-  opacity: 1;
 }
 
+/* El nuevo WRAPPER se encarga de centrar y limitar el ancho */
+.info-banner-content-wrapper {
+  max-width: 1200px; /* Límite de ancho */
+  margin: 0 auto; /* Centrado automático */
+  padding: 0 1rem; /* Espacio a los costados */
+}
+
+/* El contenedor de los íconos define el layout (flex o grid) */
 .info-banner-container {
-  display: flex; /* Muestra los items uno al lado del otro */
-  flex-direction: row;
+  display: flex; /* Layout para computadora */
   justify-content: space-around;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
   gap: 1.5rem;
 }
 
-.info-banner-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  text-align: left;
-  /* Animación de entrada para cada item */
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-/* Retraso escalonado para la animación */
-.info-banner-section.visible .info-banner-item {
-  opacity: 1;
-  transform: translateY(0);
-}
-.info-banner-section.visible .info-banner-item:nth-child(1) { transition-delay: 0.1s; }
-.info-banner-section.visible .info-banner-item:nth-child(2) { transition-delay: 0.2s; }
-.info-banner-section.visible .info-banner-item:nth-child(3) { transition-delay: 0.3s; }
-.info-banner-section.visible .info-banner-item:nth-child(4) { transition-delay: 0.4s; }
-
-.info-banner-item .info-icon {
-  font-size: 1rem;
-}
-
-.info-banner-item .info-icon svg {
-  width: 32px;
-  height: 32px;
-  color: #A78D5A;
-  stroke-width: 1.5;
-}
-
-.info-banner-item .info-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.info-banner-item h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-  margin: 0 0 2px 0;
-}
-
-.info-banner-item p {
-  font-size: 0.85rem;
-  color: #777;
-  margin: 0;
-  line-height: 1.5;
-}
-
-
-/* --- 2. ESTILOS PARA TABLET Y MÓVIL (ANULA LO DE ARRIBA) --- */
+/* En pantallas pequeñas, el contenedor cambia a grid 2x2 */
 @media (max-width: 992px) {
-  
-  .info-banner-section {
-    padding: 2rem 0rem; /* Más espacio en los costados */
-  }
-
   .info-banner-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Cuadrícula 2x2 */
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem 1.5rem;
-    padding: 0 1rem; /* ...Y lo ponemos aquí para asegurar el espacio a los costados */
   }
 }
+
+/* --- Estilos de los items (no cambian) --- */
+.info-banner-item { display: flex; align-items: center; gap: 15px; }
+.info-banner-item .info-icon svg { width: 32px; height: 32px; color: #A78D5A; stroke-width: 1.5; }
+.info-banner-item .info-text { display: flex; flex-direction: column; }
+.info-banner-item h3 { font-size: 1rem; font-weight: 600; color: #333; margin: 0 0 2px 0; }
+.info-banner-item p { font-size: 0.85rem; color: #777; margin: 0; }
 
 
 
