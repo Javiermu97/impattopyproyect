@@ -162,7 +162,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   /* Estilos visuales */
   background-color: #f8f8f8;
   border-radius: 8px;
-  padding: 2rem 1rem; /* Espacio interior para que el contenido no se pegue al borde gris */
+  padding: 2rem 8rem; /* Espacio interior para que el contenido no se pegue al borde gris */
   box-sizing: border-box;
 }
 
