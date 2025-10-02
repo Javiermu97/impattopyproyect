@@ -179,19 +179,13 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 /* En pantallas pequeñas, el contenedor cambia a grid 2x2 */
 /* Tablet */
 @media (max-width: 992px) {
-  .info-banner-section {
-    inline-size: calc(100% - 2rem);  /* 1rem por lado */
-    margin: 0 auto 2rem auto;        /* centra + margen abajo */
-    padding: 1.5rem 1rem;            /* menos padding lateral */
+  .info-banner-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1.5rem;
   }
 }
-/* Móvil */
-@media (max-width: 768px) {
-  .info-banner-section {
-    inline-size: calc(100% - 1.5rem); /* ~0.75rem por lado */
-    padding: 1.25rem 0.75rem;
-  }
-}
+
 
 /* --- Estilos de los items (no cambian) --- */
 .info-banner-item { display: flex; align-items: center; gap: 15px; }
