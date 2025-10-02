@@ -238,7 +238,7 @@ body {
 .home-products-section .product-grid-shop {
   max-width: 1800px; /* Define el ancho máximo para la grilla de productos */
   margin: 0 auto;    /* Centra la grilla dentro de la sección de ancho completo */
-  padding: 0 2rem;  /* Crea el espacio a los costados para que no se pegue a los bordes */
+  padding: 0;  /* Crea el espacio a los costados para que no se pegue a los bordes */
 }
 
 .shop-header { margin-bottom: 2rem; padding-top: 2rem; }
