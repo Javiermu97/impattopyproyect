@@ -154,21 +154,8 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 /* ================================================= */
 
 /* Contenedor principal con el borde superior */
-.info-banner-section {
-  background-color: #f8f8f8; /* Un fondo gris muy claro */
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-  padding: 1rem 2rem; /* Menos padding vertical */
-}
 
-/* Contenedor de los 4 items */
-.info-banner-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+
 
 /* Cada uno de los 4 items (ícono + texto) */
 .info-banner-item {
@@ -241,7 +228,33 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
     gap: 2rem 1rem; /* 2rem de espacio vertical, 1rem de espacio horizontal */
   }
 }
+/* ========================================================= */
+/* ===== ESTILOS DEFINITIVOS PARA INFO BANNER RESPONSIVE ===== */
+/* ========================================================= */
+@media (max-width: 992px) { /* Usamos 992px para abarcar tablets y móviles */
+  
+  /* 1. Añade espaciado a toda la sección del banner */
+  .info-banner-section {
+    padding: 2rem 1rem !important;      /* Espacio interior (costados y arriba/abajo) */
+    margin-bottom: 2rem !important;     /* Espacio exterior inferior para separarlo del footer */
+  }
 
+  /* 2. Crea la cuadrícula de 2x2 y anula cualquier otro estilo */
+  .info-banner-container {
+    display: grid !important; /* Forzamos la visualización de grilla */
+    grid-template-columns: repeat(2, 1fr) !important; /* Forzamos las 2 columnas */
+    gap: 2rem 1.5rem !important; /* Espacio vertical y horizontal */
+    
+    /* Anulamos cualquier regla flexbox que pueda interferir */
+    flex-direction: initial !important; 
+    align-items: initial !important;
+  }
+
+  /* Alineamos cada item individualmente dentro de su celda */
+  .info-banner-item {
+    justify-content: flex-start; /* Alinea el contenido (icono + texto) a la izquierda */
+  }
+}
 
 
 
@@ -1759,21 +1772,11 @@ body {
   .product-grid-shop.columns-3 {
     grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
   }
-  
-  /* Ajustamos la franja informativa azul */
-  .info-banner-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
-    gap: 2rem;
-  }
-
 
 }
   
   /* Ajustamos la franja informativa azul */
-  .info-banner-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
-    gap: 2rem;
-  }
+  
 
 
 
@@ -1830,13 +1833,6 @@ body {
 
 /* --- Para Móviles muy pequeños (hasta 480px) --- */
 
-
-
-
-  /* Apilamos la franja azul informativa a una columna */
-  .info-banner-container {
-    grid-template-columns: 1fr;
-  }
   
   .pdp-container {
     padding: 1rem; /* Menos padding en la página de producto */
