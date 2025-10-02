@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+// 1. Importamos los íconos que vamos a usar
+import { TbTruckDelivery, TbLock, TbCreditCard, TbMessageCircle } from "react-icons/tb";
 
 const InfoBanner = () => {
   const bannerRef = useRef<HTMLElement>(null);
@@ -37,25 +39,48 @@ const InfoBanner = () => {
       className={`info-banner-section ${isBannerVisible ? 'visible' : ''}`}
     >
       <div className="info-banner-container">
+        {/* 2. Item 1: Entrega Gratis (actualizado) */}
         <div className="info-banner-item">
-          <div className="info-icon">🚚</div>
-          <h3>Envíos gratis</h3>
-          <p>Envíos en 24/48hrs disponible a todo el País</p>
+          <div className="info-icon">
+            <TbTruckDelivery />
+          </div>
+          <div className="info-text">
+            <h3>Entrega Gratis</h3>
+            <p>En productos seleccionados</p>
+          </div>
         </div>
+        
+        {/* 3. Item 2: Compra Garantizada (actualizado) */}
         <div className="info-banner-item">
-          <div className="info-icon">🌿</div>
-          <h3>Empresa sustentable</h3>
-          <p>Priorizamos la sustentabilidad con el medio ambiente</p>
+          <div className="info-icon">
+            <TbLock />
+          </div>
+          <div className="info-text">
+            <h3>Compra Garantizada</h3>
+            <p>Garantía en todos los artículos</p>
+          </div>
         </div>
+        
+        {/* 4. Item 3: Pago Rápido y Seguro (actualizado) */}
         <div className="info-banner-item">
-          <div className="info-icon">💵</div>
-          <h3>Pagá al recibir</h3>
-          <p>Ofrecemos el pago contra entrega</p>
+          <div className="info-icon">
+            <TbCreditCard />
+          </div>
+          <div className="info-text">
+            <h3>Pago Rápido y Seguro</h3>
+            <p>Efectivo y Tarjetas de Crédito</p>
+          </div>
         </div>
+        
+        {/* 5. Item 4: Asesoramiento en Línea (actualizado) */}
         <div className="info-banner-item">
-          <div className="info-icon">💬</div>
-          <h3>Atención al cliente</h3>
-          <p>Disponible 8:30 a 18:00hs vía WhatsApp</p>
+          <div className="info-icon">
+            <TbMessageCircle />
+          </div>
+          <div className="info-text">
+            <h3>Asesoramiento en Línea</h3>
+            <p>¿Dudas? Aquí estamos...</p>
+          </div>
         </div>
       </div>
     </section>

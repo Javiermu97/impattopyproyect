@@ -49,7 +49,7 @@ export default async function HomePage() {
       {/* ===== SECCIÓN "ESPECIAL DE LA SEMANA" (ANCHO COMPLETO) ===== */}
       {/* ==================================================================== */}
       <section className="home-products-section">
-        <h2 className="section-title">🔥 Especial de la Semana 🔥</h2>
+        <h2 className="section-title"> Especial de la Semana </h2>
         {/* Usamos 'columns-2' en lugar de 'columns-3' o 'columns-4' para que las imágenes sean más grandes */}
         <div className="product-grid-shop columns-3">
           {destacadosSemana?.map((product: Product) => (
@@ -92,7 +92,7 @@ export default async function HomePage() {
       {/* ==================================================================== */}
       <section className="home-products-section reducir-espacio-superior">
         <h2 className="section-title">Confort y Diseño</h2>
-        <h3 className="section-subtitle">Hechos para tu hogar 🏠</h3>
+        <h3 className="section-subtitle">Hechos para tu hogar</h3>
         <div className="product-grid-shop columns-3">
           {destacadosHogar?.map((product: Product) => (
             <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
