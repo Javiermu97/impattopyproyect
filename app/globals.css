@@ -176,7 +176,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   
   /* 1. Reducimos el padding de los costados en la sección */
   .info-banner-section {
-    padding: 2rem 8rem;
+    padding: 2rem 3rem;
   }
 
   /* 2. Cambiamos el contenedor a una cuadrícula 2x2 */
