@@ -159,7 +159,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   max-width: 1200px;
   margin: 0 auto 2rem auto; /* Centra la sección y le da espacio abajo */
   border-radius: 8px;
-  padding: 2rem 3rem; /* Padding para la vista de computadora */
+  padding: 2rem 8rem; /* Padding para la vista de computadora */
   box-sizing: border-box;
 }
 
@@ -176,7 +176,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   
   /* 1. Reducimos el padding de los costados en la sección */
   .info-banner-section {
-    padding: 2rem 1rem;
+    padding: 2rem 3rem;
   }
 
   /* 2. Cambiamos el contenedor a una cuadrícula 2x2 */
