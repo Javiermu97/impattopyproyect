@@ -158,7 +158,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   background-color: #f8f8f8;
   margin: 0 auto 2rem auto;
   max-width: 1200px;   /* Fondo limitado */
-  padding: 2rem 1rem;  /* Espacio arriba, abajo y a los lados */
+  padding: 2rem 4rem;  /* Espacio arriba, abajo y a los lados */
   border-radius: 8px;  /* Opcional: bordes redondeados */
 }
 
@@ -166,7 +166,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .info-banner-content-wrapper {
   
   margin: 0 auto; /* Centrado automático */
-  padding: 0 4rem; /* Espacio a los costados */
+  padding: 0 1rem; /* Espacio a los costados */
   box-sizing: border-box;
 }
 
