@@ -235,13 +235,14 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 @media (max-width: 992px) {
   
   .info-banner-section {
-    padding: 2rem 1rem; /* Más espacio en los costados */
+    padding: 2rem 0rem; /* Más espacio en los costados */
   }
 
   .info-banner-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* Cuadrícula 2x2 */
     gap: 2rem 1.5rem;
+    padding: 0 1rem; /* ...Y lo ponemos aquí para asegurar el espacio a los costados */
   }
 }
 
