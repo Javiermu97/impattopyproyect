@@ -149,24 +149,48 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 
 
-/* ================================================= */
-/* ===== ESTILOS ACTUALIZADOS PARA EL INFO BANNER ===== */
-/* ================================================= */
+/* ========================================================= */
+/* ===== CÓDIGO DEFINITIVO Y UNIFICADO PARA INFO BANNER ===== */
+/* ========================================================= */
 
-/* Contenedor principal con el borde superior */
+/* --- 1. ESTILOS PARA COMPUTADORA (VISTA POR DEFECTO) --- */
 
+.info-banner-section {
+  background-color: #f8f8f8; /* Fondo gris claro */
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  /* Animación de entrada para toda la sección */
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+.info-banner-section.visible {
+  opacity: 1;
+}
 
-
-/* Cada uno de los 4 items (ícono + texto) */
-.info-banner-item {
-  display: flex; /* <-- USAREMOS FLEXBOX PARA ALINEAR */
+.info-banner-container {
+  display: flex; /* Muestra los items uno al lado del otro */
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
-  gap: 15px; /* Espacio entre el ícono y el texto */
-  text-align: left; /* Alineamos el texto a la izquierda */
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 1.5rem;
+}
+
+.info-banner-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-align: left;
+  /* Animación de entrada para cada item */
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
+
+/* Retraso escalonado para la animación */
 .info-banner-section.visible .info-banner-item {
   opacity: 1;
   transform: translateY(0);
@@ -176,83 +200,48 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .info-banner-section.visible .info-banner-item:nth-child(3) { transition-delay: 0.3s; }
 .info-banner-section.visible .info-banner-item:nth-child(4) { transition-delay: 0.4s; }
 
-/* Contenedor del ícono */
 .info-banner-item .info-icon {
-  font-size: 1rem; /* Reiniciamos el tamaño de fuente */
+  font-size: 1rem;
 }
 
-/* Estilo para el ícono SVG de react-icons */
 .info-banner-item .info-icon svg {
   width: 32px;
   height: 32px;
-  color: #A78D5A; /* Color dorado/marrón */
-  stroke-width: 1.5; /* Grosor de la línea del ícono */
+  color: #A78D5A;
+  stroke-width: 1.5;
 }
 
-/* Contenedor del texto (título y subtítulo) */
 .info-banner-item .info-text {
   display: flex;
   flex-direction: column;
 }
 
-/* Título (ej. "Entrega Gratis") */
 .info-banner-item h3 {
   font-size: 1rem;
-  font-weight: 600; /* Un poco menos grueso que 'bold' */
+  font-weight: 600;
   color: #333;
-  margin: 0 0 2px 0; /* Sin margen inferior */
+  margin: 0 0 2px 0;
 }
 
-/* Subtítulo (ej. "En productos seleccionados") */
 .info-banner-item p {
   font-size: 0.85rem;
   color: #777;
   margin: 0;
-  line-height: 1.5; /* Aseguramos un interlineado consistente */
-  opacity: 1; /* Sobrescribimos la opacidad anterior */
+  line-height: 1.5;
 }
 
-/* --- ESTILOS PARA MÓVIL (hasta 768px) --- */
-@media (max-width: 768px) {
+
+/* --- 2. ESTILOS PARA TABLET Y MÓVIL (ANULA LO DE ARRIBA) --- */
+@media (max-width: 992px) {
   
-  /* 1. Añade espaciado a toda la sección del banner */
   .info-banner-section {
-    padding: 2rem 1rem;      /* Espacio interior (arriba/abajo e izquierda/derecha) */
-    margin-bottom: 2rem;     /* Espacio exterior inferior para separarlo del footer */
+    padding: 2rem 1rem; /* Más espacio en los costados */
   }
 
-  /* 2. Crea la cuadrícula de 2x2 */
   .info-banner-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Crea dos columnas iguales */
-    gap: 2rem 1rem; /* 2rem de espacio vertical, 1rem de espacio horizontal */
-  }
-}
-/* ========================================================= */
-/* ===== ESTILOS DEFINITIVOS PARA INFO BANNER RESPONSIVE ===== */
-/* ========================================================= */
-@media (max-width: 992px) { /* Usamos 992px para abarcar tablets y móviles */
-  
-  /* 1. Añade espaciado a toda la sección del banner */
-  .info-banner-section {
-    padding: 2rem 1rem !important;      /* Espacio interior (costados y arriba/abajo) */
-    margin-bottom: 2rem !important;     /* Espacio exterior inferior para separarlo del footer */
-  }
-
-  /* 2. Crea la cuadrícula de 2x2 y anula cualquier otro estilo */
-  .info-banner-container {
-    display: grid !important; /* Forzamos la visualización de grilla */
-    grid-template-columns: repeat(2, 1fr) !important; /* Forzamos las 2 columnas */
-    gap: 2rem 1.5rem !important; /* Espacio vertical y horizontal */
-    
-    /* Anulamos cualquier regla flexbox que pueda interferir */
-    flex-direction: initial !important; 
-    align-items: initial !important;
-  }
-
-  /* Alineamos cada item individualmente dentro de su celda */
-  .info-banner-item {
-    justify-content: flex-start; /* Alinea el contenido (icono + texto) a la izquierda */
+    grid-template-columns: repeat(2, 1fr); /* Cuadrícula 2x2 */
+    gap: 2rem 1.5rem;
   }
 }
 
