@@ -163,7 +163,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   background-color: #f8f8f8;
   border-radius: 8px;
   padding: 2rem 8rem; /* Espacio interior para que el contenido no se pegue al borde gris */
-  box-sizing: border-box;
+  
 }
 
 /* --- 2. ESTILOS PARA EL CONTENEDOR DE LOS ÍCONOS --- */
