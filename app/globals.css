@@ -1739,11 +1739,7 @@ body {
     gap: 1rem;
   }
 
-  /* Reducimos el padding de las secciones */
-  .products-section, .philosophy-section, .info-banner-section {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
+  
 
   .footer-content {
     flex-direction: column; /* Apilamos las columnas del footer */
