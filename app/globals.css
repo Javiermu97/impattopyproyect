@@ -155,16 +155,17 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 /* La sección exterior solo se encarga del fondo y el espaciado vertical */
 .info-banner-section {
-  inline-size: min(1200px, 100% - 4rem); /* 2rem por lado en pantallas grandes también */
-  margin-inline: auto;
+  background-color: #f8f8f8;
+  margin: 0 auto 2rem auto;
+  max-width: 1200px;   /* Fondo limitado */
   padding: 2rem 8rem;  /* Espacio arriba, abajo y a los lados */
   border-radius: 8px;  /* Opcional: bordes redondeados */
 }
 
 /* El nuevo WRAPPER se encarga de centrar y limitar el ancho */
 .info-banner-content-wrapper {
-  padding: 0;           /* deja que el padding lo maneje la sección */
   margin: 0 auto;
+  padding: 0;
   box-sizing: border-box;
 }
 
