@@ -156,7 +156,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 /* La sección exterior solo se encarga del fondo y el espaciado vertical */
 .info-banner-section {
   background-color: #f8f8f8;
-  padding: 2rem 0; /* Espacio vertical, NADA a los costados */
+  padding: 2rem 0 !important; /* Espacio vertical, NADA a los costados */
   margin-bottom: 2rem;
 }
 
@@ -164,7 +164,8 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .info-banner-content-wrapper {
   max-width: 1200px; /* Límite de ancho */
   margin: 0 auto; /* Centrado automático */
-  padding: 0 1rem; /* Espacio a los costados */
+  padding: 0 2rem; /* Espacio a los costados */
+  box-sizing: border-box;
 }
 
 /* El contenedor de los íconos define el layout (flex o grid) */
