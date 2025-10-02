@@ -166,7 +166,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .info-banner-content-wrapper {
   
   margin: 0 auto; /* Centrado automático */
-  padding: 0 1rem; /* Espacio a los costados */
+  padding: 0 4rem; /* Espacio a los costados */
   box-sizing: border-box;
 }
 
