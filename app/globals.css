@@ -160,7 +160,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   margin: 0 auto 2rem auto; /* Centra la sección y le da espacio abajo */
   border-radius: 8px;
   padding: 2rem 8rem; /* Padding para la vista de computadora */
-  box-sizing: border-box;
+  
 }
 
 /* --- ESTILOS PARA EL CONTENEDOR DE LOS ÍCONOS --- */
