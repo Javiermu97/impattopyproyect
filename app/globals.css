@@ -150,54 +150,69 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 
 /* ========================================================= */
-/* ===== CÓDIGO FINAL CON WRAPPER PARA INFO BANNER ===== */
+/* ===== CÓDIGO CORREGIDO PARA INFO BANNER RESPONSIVE ===== */
 /* ========================================================= */
 
-/* La sección exterior solo se encarga del fondo y el espaciado vertical */
+/* --- ESTILOS PARA LA SECCIÓN PRINCIPAL --- */
 .info-banner-section {
   background-color: #f8f8f8;
-  margin: 0 auto 2rem auto;
-  max-width: 1200px;   /* Fondo limitado */
-  padding: 2rem 8rem;  /* Espacio arriba, abajo y a los lados */
-  border-radius: 8px;  /* Opcional: bordes redondeados */
-  box-sizing: border-box; /* <-- simplemente añadimos esta línea aquí */
+  max-width: 1200px;
+  margin: 0 auto 2rem auto; /* Centra la sección y le da espacio abajo */
+  border-radius: 8px;
+  padding: 2rem 3rem; /* Padding para la vista de computadora */
+  box-sizing: border-box;
 }
 
-/* El nuevo WRAPPER se encarga de centrar y limitar el ancho */
-.info-banner-content-wrapper {
-  max-width: 1200px; /* Límite de ancho */
-  margin: 0 auto; /* Centrado automático */
-  padding: 0 1rem; /* Espacio a los costados */
-}
-
-/* El contenedor de los íconos define el layout (flex o grid) */
+/* --- ESTILOS PARA EL CONTENEDOR DE LOS ÍCONOS --- */
 .info-banner-container {
-  display: flex; /* Layout para computadora */
+  display: flex; /* Por defecto (computadora), se muestra en fila */
   justify-content: space-around;
+  align-items: flex-start; /* Alinea mejor si el texto ocupa varias líneas */
   gap: 1.5rem;
 }
 
-/* En pantallas pequeñas, el contenedor cambia a grid 2x2 */
+/* --- MEDIA QUERY PARA TABLET Y MÓVIL (HASTA 992px) --- */
 @media (max-width: 992px) {
+  
+  /* 1. Reducimos el padding de los costados en la sección */
   .info-banner-section {
-    width: calc(100% - 2rem);   /* 1rem de espacio a cada lado */
-    margin-left: auto;
-    margin-right: auto;
-    padding: 1.5rem 1rem;       /* padding lateral más chico */
+    padding: 2rem 1rem;
+  }
+
+  /* 2. Cambiamos el contenedor a una cuadrícula 2x2 */
+  .info-banner-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1rem;
   }
 }
 
-@media (max-width: 768px) {
-  .info-banner-section {
-    width: calc(100% - 1.5rem); /* ~0.75rem por lado */
-    padding: 1.25rem 0.75rem;
-  }
+/* --- Estilos de cada item (estos no cambian) --- */
+.info-banner-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
-
-@media (max-width: 992px) {
-  .info-banner-content-wrapper { 
-    padding: 0; /* evita doble padding en pantallas pequeñas */
-  }
+.info-banner-item .info-icon svg {
+  width: 32px;
+  height: 32px;
+  color: #A78D5A;
+  stroke-width: 1.5;
+}
+.info-banner-item .info-text {
+  display: flex;
+  flex-direction: column;
+}
+.info-banner-item h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 2px 0;
+}
+.info-banner-item p {
+  font-size: 0.85rem;
+  color: #777;
+  margin: 0;
 }
 
 
