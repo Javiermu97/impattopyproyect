@@ -164,9 +164,9 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 /* El nuevo WRAPPER se encarga de centrar y limitar el ancho */
 .info-banner-content-wrapper {
-  margin: 0 auto;
-  padding: 0;
-  box-sizing: border-box;
+  max-width: 1200px; /* Límite de ancho */
+  margin: 0 auto; /* Centrado automático */
+  padding: 0 1rem; /* Espacio a los costados */
 }
 
 /* El contenedor de los íconos define el layout (flex o grid) */
