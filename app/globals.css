@@ -150,36 +150,39 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 
 /* ========================================================= */
-/* ===== CÓDIGO CORREGIDO PARA INFO BANNER RESPONSIVE ===== */
+/* ===== CÓDIGO FINAL Y CORRECTO PARA EL INFO BANNER ===== */
 /* ========================================================= */
 
-/* --- ESTILOS PARA LA SECCIÓN PRINCIPAL --- */
 .info-banner-section {
-  background-color: #f8f8f8;
-  max-width: 1200px;
-  margin: 0 auto 2rem auto; /* Centra la sección y le da espacio abajo */
-  border-radius: 8px;
-  padding: 2rem 8rem; /* Padding para la vista de computadora */
+  /* ESTA ES LA CLAVE: Anulamos cualquier regla de ancho completo */
+  width: auto;
+  position: static;
+  left: auto;
+  right: auto;
+  margin-left: auto;
+  margin-right: auto;
   
+  /* Ahora, creamos el espacio lateral para el fondo gris */
+  max-width: 1200px; /* Ancho máximo del contenedor gris */
+  margin-bottom: 2rem; /* Espacio para separar del footer */
+  
+  /* Estilos visuales */
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
 }
 
-/* --- ESTILOS PARA EL CONTENEDOR DE LOS ÍCONOS --- */
+/* --- Contenedor de los íconos (no cambia) --- */
 .info-banner-container {
-  display: flex; /* Por defecto (computadora), se muestra en fila */
+  display: flex;
   justify-content: space-around;
-  align-items: flex-start; /* Alinea mejor si el texto ocupa varias líneas */
+  align-items: flex-start;
   gap: 1.5rem;
 }
 
-/* --- MEDIA QUERY PARA TABLET Y MÓVIL (HASTA 992px) --- */
+/* --- Media Query para Tablet y Móvil (no cambia) --- */
 @media (max-width: 992px) {
-  
-  /* 1. Reducimos el padding de los costados en la sección */
-  .info-banner-section {
-    padding: 2rem 3rem;
-  }
-
-  /* 2. Cambiamos el contenedor a una cuadrícula 2x2 */
   .info-banner-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -187,7 +190,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   }
 }
 
-/* --- Estilos de cada item (estos no cambian) --- */
+/* --- Estilos de cada item (no cambian) --- */
 .info-banner-item {
   display: flex;
   align-items: center;
@@ -226,7 +229,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 
 /* Footer Styles */
-.footer { background-color:#999; color: white; padding: 40px 40px 20px 40px; font-size: 0.9em; }
+.footer { background-color:#f8f8f8; color: white; padding: 40px 40px 20px 40px; font-size: 0.9em; }
 .footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 1200px; margin: 0 auto 30px auto; gap: 80px; }
 .footer-col { flex: 1; min-width: 220px; margin-bottom: 20px; }
 .footer-col h3 { font-size: 1.1em; margin-bottom: 15px; color: black; }
