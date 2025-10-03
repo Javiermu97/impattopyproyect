@@ -5,6 +5,7 @@ import Header from '@/app/components/Header';
 import Navbar from '@/app/components/Navbar';
 import PageWrapper from '@/app/components/PageWrapper';
 import Footer from '@/app/components/Footer'; // <-- Importa el Footer desde su archivo
+import Copyright from '@/app/components/Copyright'; // <-- 1. IMPORTA EL NUEVO COMPONENTE
 import { CartProvider } from '@/app/context/CartContext';
 
 export const metadata = {
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           
           {/* Aquí se inserta todo el contenido del footer desde su componente */}
           <Footer />
+          <Copyright /> {/* <-- 2. AÑADE EL COMPONENTE AQUÍ */}
 
           <a href="https://wa.me/595983491155" target="_blank" rel="noopener noreferrer" className="whatsapp-button">
             <FaWhatsapp size={22} />

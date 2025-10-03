@@ -148,37 +148,31 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 
 /* ========================================================= */
-/* ===== CÓDIGO FINAL Y CORRECTO PARA EL FOOTER ===== */
+/* ===== CÓDIGO FINAL Y CORRECTO PARA FOOTER Y COPYRIGHT ===== */
 /* ========================================================= */
 
-/* --- 1. ESTILOS PARA EL BLOQUE PRINCIPAL DEL FOOTER (ACORDEÓN) --- */
+/* --- 1. ESTILOS PARA EL BLOQUE PRINCIPAL DEL FOOTER (BLANCO) --- */
 .footer {
   max-width: 1200px;
-  margin: 0 auto 1rem auto; /* Centrado, y margen inferior de 1rem para separar */
-  background-color: white; /* Fondo blanco para que parezca una tarjeta */
+  margin: 0 auto 1rem auto; /* Centrado, con margen inferior para separar */
+  background-color: white; /* Fondo blanco */
   border-radius: 8px;
   padding: 2rem;
   box-sizing: border-box;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Sombra sutil opcional */
 }
 
-.footer-content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 2rem;
-}
-
+.footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; }
 .footer-col { flex: 1; min-width: 220px; }
-.footer-col h3 { font-size: 1.1em; margin-bottom: 15px; color: black; }
-.footer-col p, .footer-col ul { color: black; line-height: 1.6; list-style: none; padding: 0; margin: 0; }
-.footer-col ul li { margin-bottom: 8px; }
+.footer-col h3 { font-size: 1.1em; color: black; }
+/* ... (otros estilos de .footer-col que no cambian) ... */
 
-/* --- 2. ESTILOS PARA EL BLOQUE DE COPYRIGHT (LA NUEVA FRANJA GRIS) --- */
-.footer-bottom {
-  max-width: 1200px; /* Mismo ancho que el footer principal */
-  margin: 0 auto 2rem auto; /* Centrado, y margen inferior de 2rem */
-  background-color: #f8f8f8; /* Fondo gris claro como pediste */
+
+/* --- 2. ESTILOS PARA EL BLOQUE DE COPYRIGHT (GRIS) --- */
+.copyright-section {
+  max-width: 1200px;
+  margin: 0 auto 2rem auto; /* Centrado, con margen inferior */
+  background-color: #f8f8f8; /* Fondo gris claro */
   border-radius: 8px;
   padding: 1rem;
   box-sizing: border-box;
@@ -186,34 +180,35 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   color: #555;
   font-size: 0.85rem;
 }
-.footer-bottom p {
+.copyright-section p {
   margin: 0;
 }
 
-/* --- 3. ESTILOS RESPONSIVOS (MÓVIL Y TABLET) --- */
+/* --- 3. ESTILOS RESPONSIVOS --- */
 @media (max-width: 992px) {
   /* Hacemos que ambos bloques tengan bordes laterales en móvil */
-  .footer, .footer-bottom {
-    max-width: 90%;
+  .footer, .copyright-section {
+    max-width: 95%;
   }
 
+  /* ... (código del acordeón que no cambia) ... */
   .footer-content { flex-direction: column; gap: 0; }
   .footer-col { border-bottom: 1px solid #e0e0e0; }
   .footer-col:last-child { border-bottom: none; }
   .footer-accordion-title { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 1rem 0; }
   .footer-accordion-title h3 { margin: 0; font-size: 1em; }
-  
   .accordion-icon { display: inline-block; font-size: 1.5rem; font-weight: 300; transition: transform 0.3s ease-out; }
   .accordion-icon.open { transform: rotate(45deg); }
   .accordion-icon::before { content: '+'; }
-  
   .footer-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; text-align: left; }
   .footer-accordion-content.open { max-height: 500px; padding: 0.5rem 0 1.5rem 0; }
 }
 
 /* Ocultamos el ícono "+" en la vista de computadora */
 @media (min-width: 993px) {
-  .accordion-icon { display: none; }
+  .accordion-icon {
+    display: none;
+  }
 }
 
 

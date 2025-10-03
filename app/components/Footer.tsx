@@ -6,7 +6,6 @@ import SubscribeForm from './SubscribeForm';
 
 // Sub-componente para cada columna que se puede desplegar
 const FooterAccordionCol = ({ title, children }: { title: string; children: React.ReactNode }) => {
-  // Este 'useState' controla si la sección está abierta o cerrada
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -27,7 +26,6 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        
         <FooterAccordionCol title="Sobre Nosotros">
           <p>Bienvenido a nuestra tienda, tu destino para encontrar una amplia gama de productos que se adaptan a tu estilo de vida. Nos enorgullecemos de ofrecer una cuidadosa selección de artículos para satisfacer tus necesidades diarias.</p>
         </FooterAccordionCol>
@@ -53,10 +51,6 @@ const Footer = () => {
         <FooterAccordionCol title="Suscríbete y Ahorra">
           <SubscribeForm />
         </FooterAccordionCol>
-        
-      </div>
-      <div className="footer-bottom">
-        <p>© {new Date().getFullYear()}, Impatto PY. Todos los derechos reservados | Desarrollado por Impatto Devs</p>
       </div>
     </footer>
   );
