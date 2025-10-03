@@ -148,17 +148,18 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 
 /* ========================================================= */
-/* ===== CÓDIGO DEFINITIVO Y UNIFICADO PARA EL FOOTER ===== */
+/* ===== CÓDIGO FINAL Y CORRECTO PARA EL FOOTER ===== */
 /* ========================================================= */
 
-/* --- 1. ESTILOS PARA EL CONTENEDOR PRINCIPAL DEL FOOTER (LA PRIMERA FRANJA) --- */
+/* --- 1. ESTILOS PARA EL BLOQUE PRINCIPAL DEL FOOTER (ACORDEÓN) --- */
 .footer {
-  max-width: 1200px; /* Ancho máximo */
-  margin: 0 auto;    /* Centrado automático, crea los espacios laterales */
-  background-color: #f8f8f8; /* Fondo gris claro */
+  max-width: 1200px;
+  margin: 0 auto 1rem auto; /* Centrado, y margen inferior de 1rem para separar */
+  background-color: white; /* Fondo blanco para que parezca una tarjeta */
   border-radius: 8px;
   padding: 2rem;
   box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Sombra sutil opcional */
 }
 
 .footer-content {
@@ -168,95 +169,51 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   gap: 2rem;
 }
 
-.footer-col {
-  flex: 1;
-  min-width: 220px;
-}
+.footer-col { flex: 1; min-width: 220px; }
 .footer-col h3 { font-size: 1.1em; margin-bottom: 15px; color: black; }
 .footer-col p, .footer-col ul { color: black; line-height: 1.6; list-style: none; padding: 0; margin: 0; }
 .footer-col ul li { margin-bottom: 8px; }
-.footer-col a { color: black; }
-.footer-col a:hover { text-decoration: underline; }
-.footer-col form { display: flex; flex-direction: column; gap: 10px; }
-.footer-col input[type="email"] { padding: 10px; border-radius: 5px; border: 1px solid #ddd; background-color: white; color: black; }
-.footer-col .btn-subscribe { background-color: black; color: white; transition: background-color 0.2s ease; padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; }
-.footer-col .btn-subscribe:hover { background-color: #A78D5A; }
 
-/* --- 2. ESTILOS PARA LA FRANJA DE COPYRIGHT (SEPARADA) --- */
+/* --- 2. ESTILOS PARA EL BLOQUE DE COPYRIGHT (LA NUEVA FRANJA GRIS) --- */
 .footer-bottom {
-  max-width: 1200px; /* Mismo ancho máximo para consistencia */
-  margin: 1rem auto 2rem auto; /* Margen superior para separar, centrado y margen inferior */
-  text-align: center;
-  color: #555; /* Un color de texto más suave */
-  font-size: 0.85rem;
+  max-width: 1200px; /* Mismo ancho que el footer principal */
+  margin: 0 auto 2rem auto; /* Centrado, y margen inferior de 2rem */
+  background-color: #f8f8f8; /* Fondo gris claro como pediste */
+  border-radius: 8px;
   padding: 1rem;
+  box-sizing: border-box;
+  text-align: center;
+  color: #555;
+  font-size: 0.85rem;
 }
 .footer-bottom p {
   margin: 0;
 }
 
-/* --- 3. ESTILOS RESPONSIVOS PARA EL ACORDEÓN EN MÓVIL Y TABLET --- */
+/* --- 3. ESTILOS RESPONSIVOS (MÓVIL Y TABLET) --- */
 @media (max-width: 992px) {
-  /* Hacemos que los contenedores sean un poco más angostos para tener bordes */
+  /* Hacemos que ambos bloques tengan bordes laterales en móvil */
   .footer, .footer-bottom {
-    max-width: 95%;
+    max-width: 90%;
   }
 
-  .footer-content {
-    flex-direction: column;
-    gap: 0;
-  }
+  .footer-content { flex-direction: column; gap: 0; }
+  .footer-col { border-bottom: 1px solid #e0e0e0; }
+  .footer-col:last-child { border-bottom: none; }
+  .footer-accordion-title { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 1rem 0; }
+  .footer-accordion-title h3 { margin: 0; font-size: 1em; }
   
-  .footer-col {
-    border-bottom: 1px solid #e0e0e0;
-  }
-  .footer-col:last-child {
-    border-bottom: none;
-  }
-
-  .footer-accordion-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    padding: 1rem 0;
-    margin: 0;
-  }
-  .footer-accordion-title h3 {
-    margin: 0;
-    font-size: 1em;
-  }
-
-  .accordion-icon {
-    display: inline-block; /* Muestra el ícono "+" */
-    font-size: 1.5rem;
-    font-weight: 300;
-    transition: transform 0.3s ease-out;
-  }
-  .accordion-icon.open {
-    transform: rotate(45deg);
-  }
-  .accordion-icon::before { /* Crea el "+" */
-    content: '+';
-  }
-
-  .footer-accordion-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-out;
-    text-align: left;
-  }
-  .footer-accordion-content.open {
-    max-height: 500px;
-    padding: 0.5rem 0 1.5rem 0;
-  }
+  .accordion-icon { display: inline-block; font-size: 1.5rem; font-weight: 300; transition: transform 0.3s ease-out; }
+  .accordion-icon.open { transform: rotate(45deg); }
+  .accordion-icon::before { content: '+'; }
+  
+  .footer-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; text-align: left; }
+  .footer-accordion-content.open { max-height: 500px; padding: 0.5rem 0 1.5rem 0; }
 }
 
 /* Ocultamos el ícono "+" en la vista de computadora */
 @media (min-width: 993px) {
-  .accordion-icon {
-    display: none;
-  }
+  .accordion-icon { display: none; }
 }
 
 
