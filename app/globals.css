@@ -208,12 +208,13 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .accordion-icon::before {
   content: '+';
 }
+
+/* 3. Estado abierto: Anula la rotación y fuerza el '-' */
 .accordion-icon.open {
-  transform: none; /* ANULAMOS CUALQUIER ROTACIÓN */
+  transform: none !important;
 }
-/* 3. Estado abierto: Cambia el contenido a '−' */
 .accordion-icon.open::before {
-  content: '−';
+  content: '−' !important;
 }
   .footer-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; text-align: left; }
   .footer-accordion-content.open { max-height: 500px; padding: 0.5rem 0 1.5rem 0; }
