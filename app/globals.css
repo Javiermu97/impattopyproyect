@@ -153,9 +153,9 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 /* --- 1. ESTILOS PARA EL BLOQUE PRINCIPAL DEL FOOTER (BLANCO) --- */
 .footer {
-  max-width: 1200px;
+  max-width: 1700px;
   margin: 0 auto 1rem auto; /* Centrado, con margen inferior para separar */
-  background-color:#f8f8f8; /* Fondo blanco */
+  background-color: #f0f0f0; /* Fondo blanco */
   border-radius: 8px;
   padding: 2rem;
   box-sizing: border-box;
@@ -170,9 +170,9 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 /* --- 2. ESTILOS PARA EL BLOQUE DE COPYRIGHT (GRIS) --- */
 .copyright-section {
-  max-width: 1200px;
+  max-width: 1700px;
   margin: 0 auto 2rem auto; /* Centrado, con margen inferior */
-  background-color: #f8f8f8; /* Fondo gris claro */
+  background-color:  #f0f0f0; /* Fondo gris mas oscuro */
   border-radius: 8px;
   padding: 1rem;
   box-sizing: border-box;
@@ -198,8 +198,10 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   .footer-accordion-title { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 1rem 0; }
   .footer-accordion-title h3 { margin: 0; font-size: 1em; }
   .accordion-icon { display: inline-block; font-size: 1.5rem; font-weight: 300; transition: transform 0.3s ease-out; }
-  .accordion-icon.open { transform: rotate(45deg); }
-  .accordion-icon::before { content: '-'; }
+  .accordion-icon.open::before {
+  content: '−'; /* Cambia el '+' por un signo de menos */
+}
+  .accordion-icon::before { content: '+'; }
   .footer-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; text-align: left; }
   .footer-accordion-content.open { max-height: 500px; padding: 0.5rem 0 1.5rem 0; }
 }
@@ -220,11 +222,11 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 /* --- 1. ESTILOS PARA LA SECCIÓN (EL CONTENEDOR GRIS) --- */
 .info-banner-section {
   /* La clave está aquí: anulamos el ancho completo y lo centramos */
-  max-width: 1200px; /* Ancho máximo del fondo gris */
+  max-width: 1700px; /* Ancho máximo del fondo gris */
   margin: 0 auto 2rem auto; /* Centra la sección y le da espacio abajo */
   
   /* Estilos visuales */
-  background-color: #f8f8f8;
+  background-color: #f0f0f0;
   border-radius: 8px;
   padding: 2rem; /* Espacio interior uniforme */
   box-sizing: border-box; /* Importante para que el padding no afecte el ancho */
