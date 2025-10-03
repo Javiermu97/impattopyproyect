@@ -150,47 +150,45 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 
 /* ========================================================= */
-/* ===== CÓDIGO FINAL Y CORRECTO PARA EL INFO BANNER ===== */
+/* ===== SOLUCIÓN DEFINITIVA PARA INFO BANNER ===== */
 /* ========================================================= */
 
+/* --- 1. ESTILOS PARA LA SECCIÓN (EL CONTENEDOR GRIS) --- */
 .info-banner-section {
-  /* ESTA ES LA CLAVE: Anulamos cualquier regla de ancho completo */
-  width: auto;
-  position: static;
-  left: auto;
-  right: auto;
-  margin-left: auto;
-  margin-right: auto;
-  
-  /* Ahora, creamos el espacio lateral para el fondo gris */
-  max-width: 1200px; /* Ancho máximo del contenedor gris */
-  margin-bottom: 2rem; /* Espacio para separar del footer */
+  /* La clave está aquí: anulamos el ancho completo y lo centramos */
+  max-width: 1200px; /* Ancho máximo del fondo gris */
+  margin: 0 auto 2rem auto; /* Centra la sección y le da espacio abajo */
   
   /* Estilos visuales */
   background-color: #f8f8f8;
   border-radius: 8px;
-  padding: 2rem 1rem;
-  box-sizing: border-box;
+  padding: 2rem; /* Espacio interior uniforme */
+  box-sizing: border-box; /* Importante para que el padding no afecte el ancho */
 }
 
-/* --- Contenedor de los íconos (no cambia) --- */
+/* --- 2. ESTILOS PARA EL CONTENEDOR DE LOS ÍCONOS --- */
 .info-banner-container {
-  display: flex;
+  display: flex; /* Por defecto (computadora), en fila */
   justify-content: space-around;
   align-items: flex-start;
   gap: 1.5rem;
 }
 
-/* --- Media Query para Tablet y Móvil (no cambia) --- */
+/* --- 3. MEDIA QUERY PARA TABLET Y MÓVIL --- */
 @media (max-width: 992px) {
+  .info-banner-section {
+    /* En móvil, hacemos el contenedor gris un poco más angosto que la pantalla */
+    max-width: 95%;
+  }
+
   .info-banner-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Cuadrícula 2x2 */
     gap: 2rem 1rem;
   }
 }
 
-/* --- Estilos de cada item (no cambian) --- */
+/* --- 4. Estilos de cada item (no cambian) --- */
 .info-banner-item {
   display: flex;
   align-items: center;
