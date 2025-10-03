@@ -6,7 +6,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/lib/types';
 
-// --- Íconos ---
+// --- CORRECCIONES Y AÑADIDOS ---
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../context/AuthContext'; // RUTA RELATIVA CORRECTA
+import { IoHeartOutline } from 'react-icons/io5';
+
+// --- Íconos (sin cambios) ---
 const IconColumns2 = () => ( <svg viewBox="0 0 16 16" fill="currentColor" height="1.2em" width="1.2em" style={{ display: 'block' }}><rect x="2" y="2" width="5" height="12" rx="1"></rect><rect x="9" y="2" width="5" height="12" rx="1"></rect></svg> );
 const IconColumns3 = () => ( <svg viewBox="0 0 16 16" fill="currentColor" height="1.2em" width="1.2em" style={{ display: 'block' }}><rect x="1.5" y="2" width="3.66" height="12" rx="1"></rect><rect x="6.16" y="2" width="3.66" height="12" rx="1"></rect><rect x="10.82" y="2" width="3.66" height="12" rx="1"></rect></svg> );
 const IconColumns4 = () => ( <svg viewBox="0 0 16 16" fill="currentColor" height="1.2em" width="1.2em" style={{ display: 'block' }}><rect x="1.5" y="2" width="2.5" height="12" rx="0.5"></rect><rect x="5" y="2" width="2.5" height="12" rx="0.5"></rect><rect x="8.5" y="2" width="2.5" height="12" rx="0.5"></rect><rect x="12" y="2" width="2.5" height="12" rx="0.5"></rect></svg> );
@@ -14,6 +19,9 @@ const IconX = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="12" height=
 const IconChevron = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg> );
 
 export default function ShopPageClient({ products }: { products: Product[] }) {
+  const { user } = useAuth();
+  const router = useRouter();
+
   const MIN_PRICE = 0;
   const MAX_PRICE = 500000;
   const PRODUCTS_PER_PAGE = 8;
@@ -38,6 +46,16 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
 
   useEffect(() => { setPriceInputs({ min: priceRange[0].toLocaleString('es-PY'), max: priceRange[1].toLocaleString('es-PY') }); }, [priceRange]);
   useEffect(() => { setCurrentPage(1); }, [availability, priceRange, sortBy, products]);
+
+  const handleAddToWishlist = (e: React.MouseEvent, productId: number) => {
+    e.preventDefault();
+    if (!user) {
+      router.push('/cuenta/login?redirected=true');
+      return;
+    }
+    console.log(`Añadir producto ${productId} a la lista de deseos del usuario ${user.id}`);
+    alert(`Producto ${productId} añadido a tu lista de deseos (simulación).`);
+  };
 
   const filteredProducts = useMemo(() => {
     if (!products) return [];
@@ -130,21 +148,29 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
         <div className={`product-grid-shop columns-${columns}`}>
           {currentProducts.length > 0 ? (
             currentProducts.map(product => (
-  <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
-    <div className="shop-product-card">
-      <div className="image-container">
-        {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
-        <Image src={product.imageUrl} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-primary" />
-{product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-secondary" />}
-      </div>
-      <h4>{product.name}</h4>
-      <div className="price-section">
-        <span className="shop-product-price">Gs. {(product.price || 0).toLocaleString('es-PY')}</span>
-        {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
-      </div>
-    </div>
-  </Link>
-))
+              <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
+                <div className="shop-product-card">
+                  <div className="image-container">
+                    {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
+                    <Image src={product.imageUrl} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-primary" />
+                    {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-secondary" />}
+                    
+                    <button 
+                      onClick={(e) => handleAddToWishlist(e, product.id)} 
+                      className="wishlist-icon-btn" 
+                      aria-label="Añadir a lista de deseos"
+                    >
+                      <IoHeartOutline size={20} />
+                    </button>
+                  </div>
+                  <h4>{product.name}</h4>
+                  <div className="price-section">
+                    <span className="shop-product-price">Gs. {(product.price || 0).toLocaleString('es-PY')}</span>
+                    {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
+                  </div>
+                </div>
+              </Link>
+            ))
           ) : (
             <p className="no-products-message">No se encontraron productos con estos filtros.</p>
           )}
