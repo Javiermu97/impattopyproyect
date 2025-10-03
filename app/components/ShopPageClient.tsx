@@ -6,10 +6,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/lib/types';
 
-// --- CORRECCIONES Y AÑADIDOS ---
+// --- 1. IMPORTACIONES CORREGIDAS Y AÑADIDAS ---
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext'; // RUTA RELATIVA CORRECTA
 import { IoHeartOutline } from 'react-icons/io5';
+
 
 // --- Íconos (sin cambios) ---
 const IconColumns2 = () => ( <svg viewBox="0 0 16 16" fill="currentColor" height="1.2em" width="1.2em" style={{ display: 'block' }}><rect x="2" y="2" width="5" height="12" rx="1"></rect><rect x="9" y="2" width="5" height="12" rx="1"></rect></svg> );
@@ -19,9 +20,10 @@ const IconX = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="12" height=
 const IconChevron = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg> );
 
 export default function ShopPageClient({ products }: { products: Product[] }) {
+  // --- 2. HOOKS AÑADIDOS ---
   const { user } = useAuth();
   const router = useRouter();
-
+  
   const MIN_PRICE = 0;
   const MAX_PRICE = 500000;
   const PRODUCTS_PER_PAGE = 8;
@@ -47,12 +49,14 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
   useEffect(() => { setPriceInputs({ min: priceRange[0].toLocaleString('es-PY'), max: priceRange[1].toLocaleString('es-PY') }); }, [priceRange]);
   useEffect(() => { setCurrentPage(1); }, [availability, priceRange, sortBy, products]);
 
+  // --- 3. FUNCIÓN PARA MANEJAR EL CLIC EN EL CORAZÓN ---
   const handleAddToWishlist = (e: React.MouseEvent, productId: number) => {
-    e.preventDefault();
+    e.preventDefault(); // Evita que se navegue a la página del producto
     if (!user) {
-      router.push('/cuenta/login?redirected=true');
+      router.push('/cuenta/login?redirected=true'); // Redirige a login si no hay usuario
       return;
     }
+    // Si hay usuario, aquí iría tu lógica para guardar en la base de datos
     console.log(`Añadir producto ${productId} a la lista de deseos del usuario ${user.id}`);
     alert(`Producto ${productId} añadido a tu lista de deseos (simulación).`);
   };
@@ -155,6 +159,7 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
                     <Image src={product.imageUrl} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-primary" />
                     {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-secondary" />}
                     
+                    {/* --- 4. BOTÓN DE CORAZÓN AÑADIDO --- */}
                     <button 
                       onClick={(e) => handleAddToWishlist(e, product.id)} 
                       className="wishlist-icon-btn" 
