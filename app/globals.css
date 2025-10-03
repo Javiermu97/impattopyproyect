@@ -150,40 +150,44 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 
 /* ========================================================= */
-/* ===== CÓDIGO FINAL Y CORRECTO PARA EL INFO BANNER ===== */
+/* ===== CÓDIGO CORREGIDO PARA INFO BANNER RESPONSIVE ===== */
 /* ========================================================= */
 
-/* --- 1. ESTILOS PARA LA SECCIÓN (EL CONTENEDOR GRIS) --- */
+/* --- ESTILOS PARA LA SECCIÓN PRINCIPAL --- */
 .info-banner-section {
-  /* La clave está aquí: limitamos el ancho y centramos el contenedor gris */
-  max-width: 1200px; /* Ancho máximo del fondo gris */
-  margin: 0 auto 2rem auto; /* Centra la sección y le da espacio abajo */
-  
-  /* Estilos visuales */
   background-color: #f8f8f8;
+  max-width: 1200px;
+  margin: 0 auto 2rem auto; /* Centra la sección y le da espacio abajo */
   border-radius: 8px;
-  padding: 2rem 8rem; /* Espacio interior para que el contenido no se pegue al borde gris */
+  padding: 2rem 8rem; /* Padding para la vista de computadora */
   
 }
 
-/* --- 2. ESTILOS PARA EL CONTENEDOR DE LOS ÍCONOS --- */
+/* --- ESTILOS PARA EL CONTENEDOR DE LOS ÍCONOS --- */
 .info-banner-container {
   display: flex; /* Por defecto (computadora), se muestra en fila */
   justify-content: space-around;
-  align-items: flex-start;
+  align-items: flex-start; /* Alinea mejor si el texto ocupa varias líneas */
   gap: 1.5rem;
 }
 
-/* --- 3. MEDIA QUERY PARA TABLET Y MÓVIL --- */
+/* --- MEDIA QUERY PARA TABLET Y MÓVIL (HASTA 992px) --- */
 @media (max-width: 992px) {
+  
+  /* 1. Reducimos el padding de los costados en la sección */
+  .info-banner-section {
+    padding: 2rem 3rem;
+  }
+
+  /* 2. Cambiamos el contenedor a una cuadrícula 2x2 */
   .info-banner-container {
-    display: grid; /* Cambiamos a cuadrícula */
-    grid-template-columns: repeat(2, 1fr); /* Creamos la cuadrícula 2x2 */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem 1rem;
   }
 }
 
-/* --- 4. Estilos de cada item (estos no cambian) --- */
+/* --- Estilos de cada item (estos no cambian) --- */
 .info-banner-item {
   display: flex;
   align-items: center;
