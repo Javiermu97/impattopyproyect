@@ -153,7 +153,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 /* --- 1. ESTILOS PARA EL BLOQUE PRINCIPAL DEL FOOTER (BLANCO) --- */
 .footer {
-  max-width: 1700px;
+  max-width: 1500px;
   margin: 0 auto 1rem auto; /* Centrado, con margen inferior para separar */
   background-color: #f0f0f0; /* Fondo blanco */
   border-radius: 8px;
@@ -170,8 +170,8 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 /* --- 2. ESTILOS PARA EL BLOQUE DE COPYRIGHT (GRIS) --- */
 .copyright-section {
-  max-width: 1700px;
-  margin: 0 auto 2rem auto; /* Centrado, con margen inferior */
+  max-width: 1500px;
+  margin: 1rem auto 0 auto; /* 1rem arriba, 0 abajo, centrado */
   background-color:  #f0f0f0; /* Fondo gris mas oscuro */
   border-radius: 8px;
   padding: 1rem;
@@ -222,7 +222,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 /* --- 1. ESTILOS PARA LA SECCIÓN (EL CONTENEDOR GRIS) --- */
 .info-banner-section {
   /* La clave está aquí: anulamos el ancho completo y lo centramos */
-  max-width: 1700px; /* Ancho máximo del fondo gris */
+  max-width: 1500px; /* Ancho máximo del fondo gris */
   margin: 0 auto 2rem auto; /* Centra la sección y le da espacio abajo */
   
   /* Estilos visuales */
