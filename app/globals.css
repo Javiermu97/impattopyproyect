@@ -208,7 +208,9 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .accordion-icon::before {
   content: '+';
 }
-
+.accordion-icon.open {
+  transform: none; /* ANULAMOS CUALQUIER ROTACIÓN */
+}
 /* 3. Estado abierto: Cambia el contenido a '−' */
 .accordion-icon.open::before {
   content: '−';
