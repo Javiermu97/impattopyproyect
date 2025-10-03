@@ -1,4 +1,3 @@
-'use client'; // <-- AÑADE ESTA LÍNEA AL INICIO
 // Importamos las herramientas necesarias de Supabase y nuestros componentes
 import { supabase } from '@/lib/supabaseClient';
 
