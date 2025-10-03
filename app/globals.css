@@ -155,7 +155,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .footer {
   max-width: 1200px;
   margin: 0 auto 1rem auto; /* Centrado, con margen inferior para separar */
-  background-color: white; /* Fondo blanco */
+  background-color:#f8f8f8; /* Fondo blanco */
   border-radius: 8px;
   padding: 2rem;
   box-sizing: border-box;
@@ -188,7 +188,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 @media (max-width: 992px) {
   /* Hacemos que ambos bloques tengan bordes laterales en móvil */
   .footer, .copyright-section {
-    max-width: 95%;
+    max-width: 90%;
   }
 
   /* ... (código del acordeón que no cambia) ... */
@@ -199,12 +199,12 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   .footer-accordion-title h3 { margin: 0; font-size: 1em; }
   .accordion-icon { display: inline-block; font-size: 1.5rem; font-weight: 300; transition: transform 0.3s ease-out; }
   .accordion-icon.open { transform: rotate(45deg); }
-  .accordion-icon::before { content: '+'; }
+  .accordion-icon::before { content: '-'; }
   .footer-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; text-align: left; }
   .footer-accordion-content.open { max-height: 500px; padding: 0.5rem 0 1.5rem 0; }
 }
 
-/* Ocultamos el ícono "+" en la vista de computadora */
+/* Ocultamos el ícono "-" en la vista de computadora */
 @media (min-width: 993px) {
   .accordion-icon {
     display: none;
