@@ -147,6 +147,118 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 
 
+/* ========================================================= */
+/* ===== CÓDIGO DEFINITIVO Y UNIFICADO PARA EL FOOTER ===== */
+/* ========================================================= */
+
+/* --- 1. ESTILOS PARA EL CONTENEDOR PRINCIPAL DEL FOOTER (LA PRIMERA FRANJA) --- */
+.footer {
+  max-width: 1200px; /* Ancho máximo */
+  margin: 0 auto;    /* Centrado automático, crea los espacios laterales */
+  background-color: #f8f8f8; /* Fondo gris claro */
+  border-radius: 8px;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.footer-col {
+  flex: 1;
+  min-width: 220px;
+}
+.footer-col h3 { font-size: 1.1em; margin-bottom: 15px; color: black; }
+.footer-col p, .footer-col ul { color: black; line-height: 1.6; list-style: none; padding: 0; margin: 0; }
+.footer-col ul li { margin-bottom: 8px; }
+.footer-col a { color: black; }
+.footer-col a:hover { text-decoration: underline; }
+.footer-col form { display: flex; flex-direction: column; gap: 10px; }
+.footer-col input[type="email"] { padding: 10px; border-radius: 5px; border: 1px solid #ddd; background-color: white; color: black; }
+.footer-col .btn-subscribe { background-color: black; color: white; transition: background-color 0.2s ease; padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; }
+.footer-col .btn-subscribe:hover { background-color: #A78D5A; }
+
+/* --- 2. ESTILOS PARA LA FRANJA DE COPYRIGHT (SEPARADA) --- */
+.footer-bottom {
+  max-width: 1200px; /* Mismo ancho máximo para consistencia */
+  margin: 1rem auto 2rem auto; /* Margen superior para separar, centrado y margen inferior */
+  text-align: center;
+  color: #555; /* Un color de texto más suave */
+  font-size: 0.85rem;
+  padding: 1rem;
+}
+.footer-bottom p {
+  margin: 0;
+}
+
+/* --- 3. ESTILOS RESPONSIVOS PARA EL ACORDEÓN EN MÓVIL Y TABLET --- */
+@media (max-width: 992px) {
+  /* Hacemos que los contenedores sean un poco más angostos para tener bordes */
+  .footer, .footer-bottom {
+    max-width: 95%;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .footer-col {
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .footer-col:last-child {
+    border-bottom: none;
+  }
+
+  .footer-accordion-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 1rem 0;
+    margin: 0;
+  }
+  .footer-accordion-title h3 {
+    margin: 0;
+    font-size: 1em;
+  }
+
+  .accordion-icon {
+    display: inline-block; /* Muestra el ícono "+" */
+    font-size: 1.5rem;
+    font-weight: 300;
+    transition: transform 0.3s ease-out;
+  }
+  .accordion-icon.open {
+    transform: rotate(45deg);
+  }
+  .accordion-icon::before { /* Crea el "+" */
+    content: '+';
+  }
+
+  .footer-accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    text-align: left;
+  }
+  .footer-accordion-content.open {
+    max-height: 500px;
+    padding: 0.5rem 0 1.5rem 0;
+  }
+}
+
+/* Ocultamos el ícono "+" en la vista de computadora */
+@media (min-width: 993px) {
+  .accordion-icon {
+    display: none;
+  }
+}
+
 
 
 /* ========================================================= */
@@ -178,7 +290,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 @media (max-width: 992px) {
   .info-banner-section {
     /* En móvil, hacemos el contenedor gris un poco más angosto que la pantalla */
-    max-width: 95%;
+    max-width: 90%;
   }
 
   .info-banner-container {
@@ -226,21 +338,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 
 
-/* Footer Styles */
-.footer { background-color:#f8f8f8; color: white; padding: 40px 40px 20px 40px; font-size: 0.9em; }
-.footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 1200px; margin: 0 auto 30px auto; gap: 80px; }
-.footer-col { flex: 1; min-width: 220px; margin-bottom: 20px; }
-.footer-col h3 { font-size: 1.1em; margin-bottom: 15px; color: black; }
-.footer-col p, .footer-col ul { color:black; line-height: 1.6; list-style: none; padding: 0; margin: 0; }
-.footer-col ul li { margin-bottom: 8px; }
-.footer-col a { color: black; }
-.footer-col a:hover { color:black; text-decoration: underline; }
-.footer-col form { display: flex; flex-direction: column; gap: 10px; }
-.footer-col input[type="email"] { padding: 10px; border-radius: 5px; border: 1px solid #555; background-color: #222; color: white; text-align: center; }
-.footer-col input[type="email"]::placeholder { color: #888; }
-.footer-col .btn-subscribe { background-color:black; color: white; border: none; cursor: pointer; font-weight: bold; transition: background-color 0.2s ease; padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; }
-.footer-col .btn-subscribe:hover { background-color:#A78D5A; }
-.footer-bottom { text-align: center; border-top: 1px solid #333; padding-top: 20px; color:black; }
+
 
 
 /* AÑADIDO: Estilo para el mensaje de suscripción */
@@ -1775,11 +1873,7 @@ body {
 
   
 
-  .footer-content {
-    flex-direction: column; /* Apilamos las columnas del footer */
-    gap: 2rem;
-    text-align: center;
-  }
+  
 
   /* Modal de checkout más adaptable */
   .checkout-modal-content {
@@ -2086,11 +2180,6 @@ body {
   margin-bottom: 0.5rem;
 }
 
-.footer-note {
-  font-size: 0.8rem;
-  color: #777;
-  margin-bottom: 1rem;
-}
 
 .checkout-btn {
   width: 100%;
@@ -2111,84 +2200,6 @@ body {
 }
 
 
-/* --- ESTILOS DEFINITIVOS PARA FOOTER RESPONSIVE --- */
-
-/* --- Estilos para Escritorio (Default) --- */
-.footer-accordion-title {
-  cursor: default; /* Cursor normal en escritorio */
-}
-.accordion-icon {
-  display: none; /* OCULTA el ícono en escritorio */
-}
-
-
-/* --- Estilos para Móviles y Tablets (Acordeón Activo) --- */
-@media (max-width: 992px) {
-  .footer-content {
-    flex-direction: column;
-    gap: 0;
-  }
-  
-  .footer-col {
-    border-bottom: 1px solid #333;
-  }
-  .footer-col:last-child {
-    border-bottom: none;
-  }
-
-  .footer-accordion-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    padding: 1rem 0;
-    margin: 0;
-  }
-  .footer-accordion-title h3 {
-    margin: 0;
-    font-size: 1em;
-  }
-
-  /* Estilo para el ícono +/- creado con CSS */
-  .accordion-icon {
-    display: inline-block;
-    position: relative;
-    width: 14px;
-    height: 14px;
-  }
-  .accordion-icon::before,
-  .accordion-icon::after {
-    content: '';
-    position: absolute;
-    background-color: white;
-    transition: transform 0.3s ease-out;
-  }
-  .accordion-icon::before { /* Barra horizontal (-) */
-    left: 0; top: 6px; width: 100%; height: 2px;
-  }
-  .accordion-icon::after { /* Barra vertical */
-    left: 6px; top: 0; width: 2px; height: 100%;
-  }
-
-  /* Contenido del acordeón oculto por defecto */
-  .footer-accordion-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-out;
-    text-align: left; /* ALINEA EL CONTENIDO A LA IZQUIERDA */
-  }
-  
-  /* Cuando está abierto, el contenido se muestra */
-  .footer-accordion-content.open {
-    max-height: 500px;
-    padding: 0.5rem 0 1.5rem 0; /* Espaciado interior al abrir */
-  }
-
-  /* Cuando está abierto, la barra vertical gira para desaparecer */
-  .accordion-icon.open::after {
-    transform: rotate(90deg);
-  }
-}
 
 
 /* ==================================================================== */
