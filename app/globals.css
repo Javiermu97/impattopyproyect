@@ -2515,39 +2515,18 @@ body {
 /* ==================================================================== */
 /* ===== SOLUCIÓN DEFINITIVA PARA LA PÁGINA DE TIENDA ===== */
 /* ==================================================================== */
+/* Mantener */
 .tienda-page-container {
   max-width: 1800px !important;
   margin-left: auto !important;
   margin-right: auto !important;
   padding: 2rem 2rem 0 2rem !important;
-  margin-bottom: 6rem !important; /* Espacio extra antes del footer */
+  margin-bottom: 6rem !important;
 }
 
-.wish-heart-btn {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: none;
-  background: #f0f0f0; /* Fondo gris */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,.12);
-  cursor: pointer;
-}
+/* Elimina el bloque antiguo que definía SOLO .wish-heart-btn ... */
 
-.wish-heart-btn svg {
-  pointer-events: none; /* evita que el click se quede en el svg */
-}
-
-.wish-heart-btn.active {
-  background: #fff0f3;   /* color distinto cuando está activo */
-  outline: 2px solid #ffc4d0;
-}
-/* --- Forzar que el corazón quede arriba de las imágenes --- */
+/* --- Corazón sobre las imágenes (bloque unificado) --- */
 .image-container { position: relative; overflow: hidden; }
 
 .wishlist-icon-btn,
@@ -2559,22 +2538,60 @@ body {
   height: 42px;
   border-radius: 50%;
   border: none;
-  background: #f0f0f0; /* Fondo gris pedido */
+  background: #f0f0f0;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0,0,0,.12);
   cursor: pointer;
-  z-index: 20; /* <-- más alto para superar imágenes con fill */
+  z-index: 30; /* alto para ir sobre next/image fill */
 }
-
 .wishlist-icon-btn svg,
-.wish-heart-btn svg {
-  pointer-events: none;
-}
-
+.wish-heart-btn svg { pointer-events: none; }
 .wishlist-icon-btn.active,
 .wish-heart-btn.active {
   background: #fff0f3;
   outline: 2px solid #ffc4d0;
 }
+
+/* --- Estilos para LOGIN / REGISTRO (añadir al final) --- */
+.auth-page-container {
+  max-width: 1100px;
+  margin: 2rem auto 4rem auto;
+  padding: 0 1rem;
+}
+.auth-form-wrapper {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+.auth-alert {
+  background: #fff8e6;
+  border: 1px solid #ffe2a8;
+  color: #6b4c00;
+  border-radius: 6px;
+  padding: .75rem 1rem;
+  margin-bottom: .75rem;
+  font-size: .95rem;
+}
+.auth-tabs { display: inline-flex; gap: 6px; margin-bottom: .75rem; }
+.auth-tabs button {
+  background: #f5f5f5; border: 1px solid #ddd; padding: .5rem .9rem;
+  font-size: .95rem; border-radius: 6px;
+}
+.auth-tabs button.active { background: #eaeaea; border-color: #cfcfcf; font-weight: 600; }
+.auth-input {
+  width: 100%; border: 1px solid #ccc; border-radius: 6px;
+  padding: .75rem .8rem; font-size: .95rem; margin-bottom: .6rem; background: #fff;
+}
+.auth-options {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: .25rem 0 1rem 0; font-size: .9rem;
+}
+.auth-options a { color: #444; text-decoration: underline; }
+.auth-submit-btn {
+  display: inline-block; background: #A78D5A; color: #fff; border: none;
+  border-radius: 8px; padding: .8rem 1.25rem; font-weight: 600;
+}
+
