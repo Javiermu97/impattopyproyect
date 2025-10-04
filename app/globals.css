@@ -2547,14 +2547,11 @@ body {
   background: #fff0f3;   /* color distinto cuando está activo */
   outline: 2px solid #ffc4d0;
 }
-/* el contenedor de la imagen debe poder posicionar hijos absolutamente */
-.image-container {
-  position: relative;
-  overflow: hidden;
-}
+/* --- Forzar que el corazón quede arriba de las imágenes --- */
+.image-container { position: relative; overflow: hidden; }
 
-/* botón de corazón (fondo gris, esquina inferior derecha) */
-.wishlist-icon-btn {
+.wishlist-icon-btn,
+.wish-heart-btn {
   position: absolute;
   right: 10px;
   bottom: 10px;
@@ -2568,12 +2565,16 @@ body {
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0,0,0,.12);
   cursor: pointer;
-  z-index: 3;
+  z-index: 20; /* <-- más alto para superar imágenes con fill */
 }
 
-.wishlist-icon-btn svg { pointer-events: none; }
+.wishlist-icon-btn svg,
+.wish-heart-btn svg {
+  pointer-events: none;
+}
 
-.wishlist-icon-btn.active {
+.wishlist-icon-btn.active,
+.wish-heart-btn.active {
   background: #fff0f3;
   outline: 2px solid #ffc4d0;
 }

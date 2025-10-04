@@ -1,4 +1,4 @@
-// /app/cuenta/login/Component.tsx
+// /app/cuenta/login/LoginComponent.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
