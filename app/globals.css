@@ -2547,3 +2547,33 @@ body {
   background: #fff0f3;   /* color distinto cuando está activo */
   outline: 2px solid #ffc4d0;
 }
+/* el contenedor de la imagen debe poder posicionar hijos absolutamente */
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* botón de corazón (fondo gris, esquina inferior derecha) */
+.wishlist-icon-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: #f0f0f0; /* Fondo gris pedido */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  cursor: pointer;
+  z-index: 3;
+}
+
+.wishlist-icon-btn svg { pointer-events: none; }
+
+.wishlist-icon-btn.active {
+  background: #fff0f3;
+  outline: 2px solid #ffc4d0;
+}

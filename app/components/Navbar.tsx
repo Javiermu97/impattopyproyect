@@ -5,8 +5,14 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 import { useCart } from '@/app/context/CartContext';
-import { useAuth } from '../context/AuthContext'; // <-- 1. IMPORTA EL HOOK
-import { IoMenuOutline, IoSearchOutline, IoPersonOutline, IoHeartOutline, IoBagHandleOutline } from 'react-icons/io5';
+import { useAuth } from '../context/AuthContext';
+import {
+  IoMenuOutline,
+  IoSearchOutline,
+  IoPersonOutline,
+  IoHeartOutline,
+  IoBagHandleOutline,
+} from 'react-icons/io5';
 
 interface CartItem {
   quantity: number;
@@ -14,14 +20,18 @@ interface CartItem {
 
 const Navbar = () => {
   const { openCart, cartItems } = useCart();
-  const { user } = useAuth(); // <-- 2. OBTIENE EL USUARIO DEL CONTEXTO
+  const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+
   const currentPath = usePathname();
-  
-  const totalItems = cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
+
+  const totalItems = cartItems.reduce(
+    (sum: number, item: CartItem) => sum + item.quantity,
+    0
+  );
 
   useEffect(() => {
+    // al cambiar de ruta, cierra el menú móvil
     setIsMenuOpen(false);
   }, [currentPath]);
 
@@ -37,45 +47,98 @@ const Navbar = () => {
   return (
     <>
       <div className={styles.navbar}>
+        {/* IZQUIERDA: botón menú + links escritorio */}
         <div className={styles.left}>
-          {/* ... (código del menú y búsqueda móvil sin cambios) ... */}
+          <button
+            className={styles.menuBtn}
+            aria-label="Abrir menú"
+            onClick={() => setIsMenuOpen((v) => !v)}
+          >
+            <IoMenuOutline size={24} />
+          </button>
+
           <nav className={styles.navLinks}>
-            {/* ... (código de los links de navegación sin cambios) ... */}
+            {navLinks.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`${styles.navLink} ${
+                  currentPath === l.href ? styles.active : ''
+                }`}
+              >
+                {l.label}
+              </Link>
+            ))}
           </nav>
         </div>
 
+        {/* CENTRO: logo */}
         <div className={styles.logo}>
-          {/* ... (código del logo sin cambios) ... */}
+          <Link href="/">IMPATTO</Link>
         </div>
 
+        {/* DERECHA: acciones */}
         <div className={styles.right}>
-          <button className={`${styles.iconBtn} ${styles.searchIconDesktop}`} aria-label="Buscar">
+          {/* búsqueda (icono) */}
+          <button
+            className={`${styles.iconBtn} ${styles.searchIconDesktop}`}
+            aria-label="Buscar"
+          >
             <IoSearchOutline size={24} />
           </button>
-          
-          {/* --- 3. CAMBIO: El botón de Perfil ahora es un Link condicional --- */}
-          <Link href={user ? '/cuenta' : '/cuenta/login'} className={styles.iconBtn} aria-label="Perfil">
+
+          {/* PERFIL: si hay sesión -> /cuenta; si no -> /cuenta/login */}
+          <Link
+            href={user ? '/cuenta' : '/cuenta/login'}
+            className={styles.iconBtn}
+            aria-label="Perfil"
+            title={user ? 'Mi cuenta' : 'Iniciar sesión'}
+          >
             <IoPersonOutline size={24} />
           </Link>
-          
-          {/* --- 4. CAMBIO: El botón de Lista de Deseos ahora es un Link condicional --- */}
-          <Link 
-            href={user ? '/cuenta/lista-de-deseos' : '/cuenta/login?redirected=true'} 
-            className={styles.iconBtn} 
+
+          {/* LISTA DE DESEOS (CORAZÓN):
+              si hay sesión -> /wishlist;
+              si no -> /cuenta/login?redirected=true */}
+          <Link
+            href={user ? '/wishlist' : '/cuenta/login?redirected=true'}
+            className={styles.iconBtn}
             aria-label="Lista de deseos"
+            title="Lista de deseos"
           >
             <IoHeartOutline size={24} />
           </Link>
-          
-          <button className={`${styles.iconBtn} ${styles.cartIconContainer}`} aria-label="Carrito" onClick={openCart}>
+
+          {/* CARRITO */}
+          <button
+            className={`${styles.iconBtn} ${styles.cartIconContainer}`}
+            aria-label="Carrito"
+            onClick={openCart}
+          >
             <IoBagHandleOutline size={24} />
-            {totalItems > 0 && <span className={styles.cartBadge}>{totalItems}</span>}
+            {totalItems > 0 && (
+              <span className={styles.cartBadge}>{totalItems}</span>
+            )}
           </button>
         </div>
       </div>
-      
-      <nav className={`${styles.mobileNavLinks} ${isMenuOpen ? styles.open : ''}`}>
-        {/* ... (código de los links móviles sin cambios) ... */}
+
+      {/* MENÚ MÓVIL */}
+      <nav
+        className={`${styles.mobileNavLinks} ${
+          isMenuOpen ? styles.open : ''
+        }`}
+      >
+        {navLinks.map((l) => (
+          <Link
+            key={l.href}
+            href={l.href}
+            className={styles.mobileNavLink}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            {l.label}
+          </Link>
+        ))}
       </nav>
     </>
   );
