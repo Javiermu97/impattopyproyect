@@ -2626,21 +2626,21 @@ body {
   height: 42px;
   border-radius: 50%;
   border: 1px solid rgba(0,0,0,0.05);
-  background: white;
+  
+  /* --- CAMBIOS APLICADOS --- */
+  background: #f0f0f0; /* 1. Color de fondo cambiado a gris claro */
+  opacity: 1;          /* 2. Botón siempre visible */
+  
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
-  opacity: 0;
-  transform: translateY(10px);
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.shop-product-card:hover .wishlist-icon-btn {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* Se elimina la regla '.shop-product-card:hover .wishlist-icon-btn' 
+   porque el botón ya no necesita aparecer al pasar el cursor */
 
 .wishlist-icon-btn:hover {
     transform: scale(1.1);
@@ -2649,7 +2649,5 @@ body {
 .wishlist-icon-btn.active {
     background-color: #e11d48;
     color: white;
-    opacity: 1;
-    transform: translateY(0);
 }
 
