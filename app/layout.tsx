@@ -7,7 +7,8 @@ import PageWrapper from '@/app/components/PageWrapper';
 import Footer from '@/app/components/Footer';
 import Copyright from '@/app/components/Copyright';
 import { CartProvider } from '@/app/context/CartContext';
-import { AuthProvider } from '@/app/context/AuthContext'; // <-- AÑADIR
+import { AuthProvider } from '@/app/context/AuthContext';
+import { WishlistProvider } from '@/app/context/WishlistContext';
 
 export const metadata = {
   title: 'Impatto Py| Sentí la diferencia',
@@ -19,32 +20,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es">
       <body>
-        {/* ENVOLVER CON AUTH */}
         <AuthProvider>
           <CartProvider>
-            <header className="main-header">
-              <Header />
-              <Suspense fallback={null}>
-                <Navbar />
-              </Suspense>
-            </header>
+            <WishlistProvider>
+              <header className="main-header">
+                <Header />
+                <Suspense fallback={null}>
+                  <Navbar />
+                </Suspense>
+              </header>
 
-            <main>
-              <PageWrapper>{children}</PageWrapper>
-            </main>
+              <main>
+                <PageWrapper>{children}</PageWrapper>
+              </main>
 
-            <Footer />
-            <Copyright />
+              <Footer />
+              <Copyright />
 
-            <a
-              href="https://wa.me/595983491155"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="whatsapp-button"
-            >
-              <FaWhatsapp size={22} />
-              Contáctanos
-            </a>
+              <a
+                href="https://wa.me/595983491155"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="whatsapp-button"
+              >
+                <FaWhatsapp size={22} />
+                Contáctanos
+              </a>
+            </WishlistProvider>{/* <- cierre correcto */}
           </CartProvider>
         </AuthProvider>
       </body>

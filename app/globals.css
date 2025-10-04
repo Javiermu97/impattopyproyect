@@ -2522,3 +2522,28 @@ body {
   padding: 2rem 2rem 0 2rem !important;
   margin-bottom: 6rem !important; /* Espacio extra antes del footer */
 }
+
+.wish-heart-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: #f0f0f0; /* Fondo gris */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  cursor: pointer;
+}
+
+.wish-heart-btn svg {
+  pointer-events: none; /* evita que el click se quede en el svg */
+}
+
+.wish-heart-btn.active {
+  background: #fff0f3;   /* color distinto cuando está activo */
+  outline: 2px solid #ffc4d0;
+}
