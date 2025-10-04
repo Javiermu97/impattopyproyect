@@ -2594,4 +2594,12 @@ body {
   display: inline-block; background: #A78D5A; color: #fff; border: none;
   border-radius: 8px; padding: .8rem 1.25rem; font-weight: 600;
 }
+/* Forzar stacking correcto frente a next/image con fill */
+.image-container > span { 
+  z-index: 1 !important;           /* las imágenes quedan debajo */
+}
+.image-container > button.wishlist-icon-btn,
+.image-container > button.wish-heart-btn {
+  z-index: 9999 !important;        /* el corazón siempre arriba */
+}
 
