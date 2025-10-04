@@ -4,9 +4,11 @@ import { useState, useMemo, useEffect } from 'react';
 import * as Slider from '@radix-ui/react-slider';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Product } from '@/lib/types';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import { useWishlist } from '@/app/context/WishlistContext';
+import { useAuth } from '@/app/context/AuthContext';
 
 const IconColumns2 = () => (
   <svg viewBox="0 0 16 16" fill="currentColor" height="1.2em" width="1.2em" style={{ display: 'block' }}>
@@ -45,7 +47,9 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
   const MAX_PRICE = 500000;
   const PRODUCTS_PER_PAGE = 8;
 
-  const { isInWishlist, toggleWishlist } = useWishlist(); // espera number en sus funciones :contentReference[oaicite:1]{index=1}
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { user } = useAuth();
+  const router = useRouter();
 
   const [availability, setAvailability] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([MIN_PRICE, MAX_PRICE]);
@@ -168,6 +172,16 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
     return pageNumbers;
   };
 
+  const handleWishlistClick = (e: React.MouseEvent, productId: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) {
+      router.push('/cuenta/login?redirected=true');
+      return;
+    }
+    toggleWishlist(productId);
+  };
+
   return (
     <div className="shop-layout">
       <aside className="filters-sidebar">
@@ -287,43 +301,63 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
         <div className={`product-grid-shop columns-${columns}`}>
           {currentProducts.length > 0 ? (
             currentProducts.map(product => {
-              // 🔑 NORMALIZAMOS EL ID A number PARA WISHLIST
               const pid = typeof product.id === 'string' ? Number(product.id) : product.id;
 
               return (
                 <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
                   <div className="shop-product-card">
-                    <div className="image-container">
+                    <div className="image-container" style={{ position: 'relative' }}>
                       {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
 
-                      <Image
-                        src={product.imageUrl}
-                        alt={product.name}
-                        fill
-                        sizes="(max-width: 768px) 50vw, 33vw"
-                        className="shop-product-image-primary"
-                      />
-                      {product.imageUrl2 && (
+                      {/* Contenedor de imágenes */}
+                      <div style={{ 
+                        position: 'relative', 
+                        width: '100%', 
+                        height: '100%', 
+                        zIndex: 1 
+                      }}>
                         <Image
-                          src={product.imageUrl2}
+                          src={product.imageUrl}
                           alt={product.name}
                           fill
                           sizes="(max-width: 768px) 50vw, 33vw"
-                          className="shop-product-image-secondary"
+                          className="shop-product-image-primary"
+                          style={{ position: 'relative', zIndex: 1 }}
                         />
-                      )}
+                        {product.imageUrl2 && (
+                          <Image
+                            src={product.imageUrl2}
+                            alt={product.name}
+                            fill
+                            sizes="(max-width: 768px) 50vw, 33vw"
+                            className="shop-product-image-secondary"
+                            style={{ position: 'relative', zIndex: 1 }}
+                          />
+                        )}
+                      </div>
 
-                      {/* Corazón */}
+                      {/* Corazón con estilos inline para garantizar visibilidad */}
                       <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          // pid es number; coincide con toggleWishlist/isInWishlist
-                          toggleWishlist(pid);
-                        }}
+                        onClick={(e) => handleWishlistClick(e, pid)}
                         className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
                         aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
                         title="Lista de deseos"
+                        style={{
+                          position: 'absolute',
+                          right: '10px',
+                          bottom: '10px',
+                          zIndex: 9999,
+                          width: '42px',
+                          height: '42px',
+                          borderRadius: '50%',
+                          border: 'none',
+                          background: '#f0f0f0',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0,0,0,.12)',
+                          cursor: 'pointer'
+                        }}
                       >
                         {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
                       </button>

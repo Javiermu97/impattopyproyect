@@ -126,32 +126,58 @@ const RelatedProductCard = ({ product }: { product: Product }) => {
   return (
     <Link href={`/products/${product.id}`} className="shop-product-card-link">
       <div className="shop-product-card">
-        <div className="image-container">
+        <div className="image-container" style={{ position: 'relative' }}>
           {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
 
-          <Image
-            src={product.imageUrl}
-            alt={product.name}
-            fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className="shop-product-image-primary"
-          />
-          {product.imageUrl2 && (
+          {/* Contenedor de imágenes */}
+          <div style={{ 
+            position: 'relative', 
+            width: '100%', 
+            height: '100%', 
+            zIndex: 1 
+          }}>
             <Image
-              src={product.imageUrl2}
+              src={product.imageUrl}
               alt={product.name}
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
-              className="shop-product-image-secondary"
+              className="shop-product-image-primary"
+              style={{ position: 'relative', zIndex: 1 }}
             />
-          )}
+            {product.imageUrl2 && (
+              <Image
+                src={product.imageUrl2}
+                alt={product.name}
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="shop-product-image-secondary"
+                style={{ position: 'relative', zIndex: 1 }}
+              />
+            )}
+          </div>
 
-          {/* Botón corazón: esquina inferior derecha, fondo gris, z-index alto */}
+          {/* Botón corazón con estilos inline para garantizar visibilidad */}
           <button
             onClick={handleWishlistClick}
             className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
             aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
             title="Lista de deseos"
+            style={{
+              position: 'absolute',
+              right: '10px',
+              bottom: '10px',
+              zIndex: 9999,
+              width: '42px',
+              height: '42px',
+              borderRadius: '50%',
+              border: 'none',
+              background: '#f0f0f0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0,0,0,.12)',
+              cursor: 'pointer'
+            }}
           >
             {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
           </button>

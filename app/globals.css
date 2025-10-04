@@ -2524,10 +2524,11 @@ body {
   margin-bottom: 6rem !important;
 }
 
-/* Elimina el bloque antiguo que definía SOLO .wish-heart-btn ... */
-
 /* --- Corazón sobre las imágenes (bloque unificado) --- */
-.image-container { position: relative; overflow: hidden; }
+.image-container { 
+  position: relative; 
+  overflow: visible !important; /* CAMBIO IMPORTANTE: de hidden a visible */
+}
 
 .wishlist-icon-btn,
 .wish-heart-btn {
@@ -2544,7 +2545,7 @@ body {
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0,0,0,.12);
   cursor: pointer;
-  z-index: 30; /* alto para ir sobre next/image fill */
+  z-index: 9999 !important; /* CAMBIO IMPORTANTE: de 30 a 9999 */
 }
 .wishlist-icon-btn svg,
 .wish-heart-btn svg { pointer-events: none; }
@@ -2594,12 +2595,24 @@ body {
   display: inline-block; background: #A78D5A; color: #fff; border: none;
   border-radius: 8px; padding: .8rem 1.25rem; font-weight: 600;
 }
-/* Forzar stacking correcto frente a next/image con fill */
-.image-container > span { 
-  z-index: 1 !important;           /* las imágenes quedan debajo */
-}
-.image-container > button.wishlist-icon-btn,
-.image-container > button.wish-heart-btn {
-  z-index: 9999 !important;        /* el corazón siempre arriba */
+
+/* --- REGLAS CRÍTICAS PARA GARANTIZAR QUE EL CORAZÓN ESTÉ ENCIMA --- */
+/* Asegurar que las imágenes de Next.js estén detrás */
+.image-container > span,
+.image-container > div > span {
+  z-index: 1 !important;
+  position: relative !important;
 }
 
+/* Asegurar que las imágenes con fill estén detrás */
+.shop-product-image-primary,
+.shop-product-image-secondary,
+.pdp-main-image {
+  z-index: 1 !important;
+}
+
+/* El corazón SIEMPRE encima */
+.image-container > button.wishlist-icon-btn,
+.image-container > button.wish-heart-btn {
+  z-index: 9999 !important; /* Valor muy alto para garantizar que esté encima */
+}
