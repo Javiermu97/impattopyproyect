@@ -104,8 +104,7 @@ const AccordionItem = ({ item, isOpen, onClick }: { item: AccordionItemData; isO
 );
 
 /* ===========================
-   TARJETA "TE PUEDE INTERESAR"
-   (con botón de wishlist)
+   TARJETA "TE PUEDE INTERESAR" (CORREGIDA)
    =========================== */
 const RelatedProductCard = ({ product }: { product: Product }) => {
   const { isInWishlist, toggleWishlist } = useWishlist();
@@ -126,58 +125,35 @@ const RelatedProductCard = ({ product }: { product: Product }) => {
   return (
     <Link href={`/products/${product.id}`} className="shop-product-card-link">
       <div className="shop-product-card">
-        <div className="image-container" style={{ position: 'relative' }}>
+        <div className="image-container">
           {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
 
-          {/* Contenedor de imágenes */}
-          <div style={{ 
-            position: 'relative', 
-            width: '100%', 
-            height: '100%', 
-            zIndex: 1 
-          }}>
+          {/* Imagen Principal */}
+          <Image
+            src={product.imageUrl}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 50vw, 25vw"
+            className="shop-product-image-primary"
+          />
+          
+          {/* Imagen Secundaria */}
+          {product.imageUrl2 && (
             <Image
-              src={product.imageUrl}
+              src={product.imageUrl2}
               alt={product.name}
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
-              className="shop-product-image-primary"
-              style={{ position: 'relative', zIndex: 1 }}
+              className="shop-product-image-secondary"
             />
-            {product.imageUrl2 && (
-              <Image
-                src={product.imageUrl2}
-                alt={product.name}
-                fill
-                sizes="(max-width: 768px) 50vw, 25vw"
-                className="shop-product-image-secondary"
-                style={{ position: 'relative', zIndex: 1 }}
-              />
-            )}
-          </div>
+          )}
 
-          {/* Botón corazón con estilos inline para garantizar visibilidad */}
+          {/* Botón de Wishlist */}
           <button
             onClick={handleWishlistClick}
             className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
             aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
             title="Lista de deseos"
-            style={{
-              position: 'absolute',
-              right: '10px',
-              bottom: '10px',
-              zIndex: 9999,
-              width: '42px',
-              height: '42px',
-              borderRadius: '50%',
-              border: 'none',
-              background: '#f0f0f0',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(0,0,0,.12)',
-              cursor: 'pointer'
-            }}
           >
             {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
           </button>
@@ -196,6 +172,7 @@ const RelatedProductCard = ({ product }: { product: Product }) => {
     </Link>
   );
 };
+
 
 const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);

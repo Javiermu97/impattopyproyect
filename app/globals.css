@@ -2506,113 +2506,150 @@ body {
     margin-top: -40px !important; 
     padding-top: 30px !important;
   }
-
-
-  
+ 
   
 }
 
 /* ==================================================================== */
-/* ===== SOLUCIÓN DEFINITIVA PARA LA PÁGINA DE TIENDA ===== */
+/* ===== ESTILOS GENERALES Y DE FORMULARIOS (CONSERVADOS Y LIMPIOS) ===== */
 /* ==================================================================== */
-/* Mantener */
+
 .tienda-page-container {
-  max-width: 1800px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  padding: 2rem 2rem 0 2rem !important;
-  margin-bottom: 6rem !important;
+    max-width: 1800px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 2rem 2rem 0 2rem !important;
+    margin-bottom: 6rem !important;
 }
 
-/* --- Corazón sobre las imágenes (bloque unificado) --- */
-.image-container { 
-  position: relative; 
-  overflow: visible !important; /* CAMBIO IMPORTANTE: de hidden a visible */
+.auth-page-container {
+    max-width: 1100px;
+    margin: 2rem auto 4rem auto;
+    padding: 0 1rem;
+}
+.auth-form-wrapper {
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    padding: 1.25rem;
+}
+.auth-alert {
+    background: #fff8e6;
+    border: 1px solid #ffe2a8;
+    color: #6b4c00;
+    border-radius: 6px;
+    padding: .75rem 1rem;
+    margin-bottom: .75rem;
+    font-size: .95rem;
+}
+.auth-tabs { 
+    display: inline-flex; 
+    gap: 6px; 
+    margin-bottom: .75rem; 
+}
+.auth-tabs button {
+    background: #f5f5f5; 
+    border: 1px solid #ddd; 
+    padding: .5rem .9rem;
+    font-size: .95rem; 
+    border-radius: 6px;
+}
+.auth-tabs button.active { 
+    background: #eaeaea; 
+    border-color: #cfcfcf; 
+    font-weight: 600; 
+}
+.auth-input {
+    width: 100%; 
+    border: 1px solid #ccc; 
+    border-radius: 6px;
+    padding: .75rem .8rem; 
+    font-size: .95rem; 
+    margin-bottom: .6rem; 
+    background: #fff;
+}
+.auth-options {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    margin: .25rem 0 1rem 0; 
+    font-size: .9rem;
+}
+.auth-options a { 
+    color: #444; 
+    text-decoration: underline; 
+}
+.auth-submit-btn {
+    display: inline-block; 
+    background: #A78D5A; 
+    color: #fff; 
+    border: none;
+    border-radius: 8px; 
+    padding: .8rem 1.25rem; 
+    font-weight: 600;
 }
 
-.wishlist-icon-btn,
-.wish-heart-btn {
+/* ==================================================================== */
+/* ===== SOLUCIÓN CORRECTA PARA TARJETAS DE PRODUCTO (NUEVO CÓDIGO) ===== */
+/* ==================================================================== */
+
+.image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.image-container .shop-product-image-primary,
+.image-container .shop-product-image-secondary {
+  object-fit: cover;
+  transition: opacity 0.35s ease-in-out;
+}
+
+.image-container .shop-product-image-secondary {
+  opacity: 0;
+  z-index: 2;
+}
+
+.shop-product-card:hover .image-container .shop-product-image-secondary {
+  opacity: 1;
+}
+
+.wishlist-icon-btn {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 3;
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  border: none;
-  background: #f0f0f0;
+  border: 1px solid rgba(0,0,0,0.05);
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   cursor: pointer;
-  z-index: 9999 !important; /* CAMBIO IMPORTANTE: de 30 a 9999 */
-}
-.wishlist-icon-btn svg,
-.wish-heart-btn svg { pointer-events: none; }
-.wishlist-icon-btn.active,
-.wish-heart-btn.active {
-  background: #fff0f3;
-  outline: 2px solid #ffc4d0;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+  opacity: 0;
+  transform: translateY(10px);
 }
 
-/* --- Estilos para LOGIN / REGISTRO (añadir al final) --- */
-.auth-page-container {
-  max-width: 1100px;
-  margin: 2rem auto 4rem auto;
-  padding: 0 1rem;
-}
-.auth-form-wrapper {
-  background: #fff;
-  border: 1px solid #e6e6e6;
-  border-radius: 8px;
-  padding: 1.25rem;
-}
-.auth-alert {
-  background: #fff8e6;
-  border: 1px solid #ffe2a8;
-  color: #6b4c00;
-  border-radius: 6px;
-  padding: .75rem 1rem;
-  margin-bottom: .75rem;
-  font-size: .95rem;
-}
-.auth-tabs { display: inline-flex; gap: 6px; margin-bottom: .75rem; }
-.auth-tabs button {
-  background: #f5f5f5; border: 1px solid #ddd; padding: .5rem .9rem;
-  font-size: .95rem; border-radius: 6px;
-}
-.auth-tabs button.active { background: #eaeaea; border-color: #cfcfcf; font-weight: 600; }
-.auth-input {
-  width: 100%; border: 1px solid #ccc; border-radius: 6px;
-  padding: .75rem .8rem; font-size: .95rem; margin-bottom: .6rem; background: #fff;
-}
-.auth-options {
-  display: flex; justify-content: space-between; align-items: center;
-  margin: .25rem 0 1rem 0; font-size: .9rem;
-}
-.auth-options a { color: #444; text-decoration: underline; }
-.auth-submit-btn {
-  display: inline-block; background: #A78D5A; color: #fff; border: none;
-  border-radius: 8px; padding: .8rem 1.25rem; font-weight: 600;
+.shop-product-card:hover .wishlist-icon-btn {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* --- REGLAS CRÍTICAS PARA GARANTIZAR QUE EL CORAZÓN ESTÉ ENCIMA --- */
-/* Asegurar que las imágenes de Next.js estén detrás */
-.image-container > span,
-.image-container > div > span {
-  z-index: 1 !important;
-  position: relative !important;
+.wishlist-icon-btn:hover {
+    transform: scale(1.1);
 }
 
-/* Asegurar que las imágenes con fill estén detrás */
-.shop-product-image-primary,
-.shop-product-image-secondary,
-.pdp-main-image {
-  z-index: 1 !important;
+.wishlist-icon-btn.active {
+    background-color: #e11d48;
+    color: white;
+    opacity: 1;
+    transform: translateY(0);
 }
 
-/* El corazón SIEMPRE encima */
-.image-container > button.wishlist-icon-btn,
-.image-container > button.wish-heart-btn {
-  z-index: 9999 !important; /* Valor muy alto para garantizar que esté encima */
-}
