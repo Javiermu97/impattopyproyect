@@ -3,17 +3,19 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useCart } from '@/app/context/CartContext';
 import CheckoutForm from '@/app/components/CheckoutForm';
 import { Product, ProductVariant, Feature } from '@/lib/types';
-import { IoHeartOutline, IoHeart } from 'react-icons/io5';               // ← NUEVO
-import { useWishlist } from '@/app/context/WishlistContext';             // ← NUEVO
+import { IoHeartOutline, IoHeart } from 'react-icons/io5';
+import { useWishlist } from '@/app/context/WishlistContext';
+import { useAuth } from '@/app/context/AuthContext';
 
 // --- INTERFACES ---
 interface OrderData {
   orderId: number;
   orderDate: string;
-  formData: { email: string; name: string; address: string; city: string; phone?: string; };
+  formData: { email: string; name: string; address: string; city: string; phone?: string };
   department: string;
   formVariant: ProductVariant;
   product: Product;
@@ -86,7 +88,7 @@ const OrderConfirmation = ({ orderData, onGoBack }: OrderConfirmationProps) => (
   </div>
 );
 
-const AccordionItem = ({ item, isOpen, onClick }: { item: AccordionItemData; isOpen: boolean; onClick: () => void; }) => (
+const AccordionItem = ({ item, isOpen, onClick }: { item: AccordionItemData; isOpen: boolean; onClick: () => void }) => (
   <div className="accordion-item">
     <button className="accordion-header" onClick={onClick}>
       <div className="accordion-title-wrapper">
@@ -106,8 +108,20 @@ const AccordionItem = ({ item, isOpen, onClick }: { item: AccordionItemData; isO
    (con botón de wishlist)
    =========================== */
 const RelatedProductCard = ({ product }: { product: Product }) => {
-  const { isInWishlist, toggleWishlist } = useWishlist();                  // ← USA EL CONTEXTO
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { user } = useAuth();
+  const router = useRouter();
   const pid = typeof product.id === 'string' ? Number(product.id) : product.id;
+
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) {
+      router.push('/cuenta/login?redirected=true');
+      return;
+    }
+    toggleWishlist(pid);
+  };
 
   return (
     <Link href={`/products/${product.id}`} className="shop-product-card-link">
@@ -134,15 +148,10 @@ const RelatedProductCard = ({ product }: { product: Product }) => {
 
           {/* Botón corazón: esquina inferior derecha, fondo gris, z-index alto */}
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleWishlist(pid);
-            }}
+            onClick={handleWishlistClick}
             className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
             aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
             title="Lista de deseos"
-            style={{ position: 'absolute', right: 10, bottom: 10, zIndex: 9999 }}
           >
             {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
           </button>
@@ -247,6 +256,9 @@ const StarRating = () => (
 // --- COMPONENTE PRINCIPAL DE CLIENTE ---
 export default function ProductDetailPageClient({ product, relatedProducts }: { product: Product, relatedProducts: Product[] }) {
   const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { user } = useAuth();
+  const router = useRouter();
 
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(product.variants ? product.variants[0] : null);
   const [quantity, setQuantity] = useState(1);
@@ -256,6 +268,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const galleryImages = product.galleryImages || [];
+  const pid = typeof product.id === 'string' ? Number(product.id) : product.id;
 
   useEffect(() => {
     setCurrentImageIndex(0);
@@ -279,13 +292,23 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
 
   const handleQuantityChange = (amount: number) => setQuantity(prev => Math.max(1, prev + amount));
 
+  const handleWishlistClick = () => {
+    if (!user) {
+      router.push('/cuenta/login?redirected=true');
+      return;
+    }
+    toggleWishlist(pid);
+  };
+
   const handleAddToCart = () => {
     const variantToCart = selectedVariant || { color: 'Único', image: product.imageUrl, colorHex: '#FFFFFF' };
     addToCart(product, variantToCart, quantity);
   };
+  
   const handleRealizarPedido = () => {
     setCheckoutVisible(true);
   };
+  
   const handleOrderConfirmation = async (data: OrderData) => {
     try {
       const response = await fetch('/api/create-order', {

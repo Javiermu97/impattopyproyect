@@ -21,8 +21,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es">
       <body>
         <AuthProvider>
-          <CartProvider>
-            <WishlistProvider>
+          <WishlistProvider>
+            <CartProvider>
               <header className="main-header">
                 <Header />
                 <Suspense fallback={null}>
@@ -46,8 +46,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <FaWhatsapp size={22} />
                 Contáctanos
               </a>
-            </WishlistProvider>{/* <- cierre correcto */}
-          </CartProvider>
+            </CartProvider>
+          </WishlistProvider>
         </AuthProvider>
       </body>
     </html>

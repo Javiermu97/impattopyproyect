@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthContext';
 
 type WishlistCtx = {
-  wishlist: number[];                          // IDs de producto
-  toggleWishlist: (productId: number) => void; // Agrega / quita
+  wishlist: number[];
+  toggleWishlist: (productId: number) => void;
   isInWishlist: (productId: number) => boolean;
   clearWishlist: () => void;
 };
