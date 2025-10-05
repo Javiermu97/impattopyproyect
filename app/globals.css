@@ -2532,11 +2532,18 @@ body {
 }
 
 /* === NUEVO: Título + corazón en la misma línea (al lado del nombre) === */
-.shop-title-row {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  margin-top: .5rem;
+.shop-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;   /* <- centra el conjunto */
+  gap:.5rem;
+  margin:.5rem 0 0;
+}
+.shop-title-row h4{
+  margin:0;
+  text-align:center;        /* <- centra el texto del nombre */
+  font-weight:600;
+  line-height:1.25;
 }
 
 /* Si prefieres el corazón pegado a la derecha del renglón, descomenta: */
@@ -2552,23 +2559,30 @@ body {
   color: #333; /* color base; puedes igualar al del navbar */
 }
 
-.wishlist-inline-btn:hover { opacity: .8; }
-
-.wishlist-inline-btn svg {
-  width: 22px;
-  height: 22px;
-  vertical-align: middle;
-}
-
-/* Activo (en wishlist) → rojo */
-.wishlist-inline-btn.active { 
-  color: #e11d48; 
-}
+.wishlist-inline-btn:hover{ opacity:.8; }
+.wishlist-inline-btn.active{ color:#e11d48; }
+.wishlist-inline-btn svg{ width:22px; height:22px; }
 
 /* ==================================================================== */
 /* ========== LIMPIEZA DE ESTILOS ANTIGUOS (ANULA EL CÍRCULO) ========= */
 /* ==================================================================== */
-
+/* ====== PRECIOS CENTRADOS ====== */
+.price-section{
+  display:flex;
+  flex-direction:column;
+  align-items:center;       /* <- centra precios */
+  gap:.25rem;
+  margin-top:.25rem;
+}
+.shop-product-price{
+  font-weight:700;
+  color:#0d47a1;            /* azul suave; cambia si tienes variable */
+}
+.shop-product-old-price{
+  color:#9aa3af;            /* gris */
+  text-decoration:line-through;
+  font-size:.95rem;
+}
 /* Anula el botón que flotaba sobre la imagen con fondo gris redondo */
 .wish-heart-btn,
 .wishlist-icon-btn {
@@ -2579,4 +2593,77 @@ body {
 .wishlist-icon-btn.active {
   all: unset !important;
 }
+
+
+/* ============ AUTH LAYOUT ============ */
+.auth-shell{
+  min-height:calc(100vh - 160px); /* deja espacio para header/footer */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2rem 1rem;
+}
+.auth-card{
+  width:100%;
+  max-width:520px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:24px;
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+.auth-title{
+  text-align:center;
+  margin:0 0 .25rem;
+  font-size:1.5rem;
+  font-weight:700;
+}
+.auth-subtitle{
+  text-align:center;
+  margin:0 0 1rem;
+  color:#6b7280;
+}
+.auth-grid{
+  display:grid;
+  gap:.75rem;
+}
+.auth-label{ font-weight:600; font-size:.95rem; }
+.auth-input{
+  width:100%;
+  padding:.7rem .9rem;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  outline:none;
+}
+.auth-input:focus{ border-color:#0d47a1; box-shadow:0 0 0 3px rgba(13,71,161,.12); }
+.auth-actions{
+  display:flex; align-items:center; justify-content:space-between; margin-top:.5rem;
+}
+.auth-primary{
+  width:100%;
+  padding:.8rem 1rem;
+  border:none; border-radius:12px;
+  font-weight:700;
+  background:#0d47a1; color:#fff; cursor:pointer;
+}
+.auth-primary:hover{ filter:brightness(.95); }
+
+.auth-google{
+  width:100%;
+  display:flex; gap:.6rem; align-items:center; justify-content:center;
+  padding:.7rem 1rem; border-radius:12px;
+  border:1px solid #d1d5db; background:#fff; cursor:pointer;
+}
+.auth-google img{ width:18px; height:18px; }
+
+.auth-links{
+  display:flex; justify-content:space-between; gap:1rem; margin-top:.75rem;
+}
+.auth-link{ color:#0d47a1; text-decoration:underline; }
+
+.auth-sep{ display:flex; align-items:center; gap:.75rem; margin:1rem 0; color:#9ca3af; }
+.auth-sep::before,.auth-sep::after{ content:""; height:1px; background:#e5e7eb; flex:1; }
+
+/* Mensajes */
+.auth-note{ margin-top:.75rem; font-size:.9rem; color:#6b7280; text-align:center; }
 

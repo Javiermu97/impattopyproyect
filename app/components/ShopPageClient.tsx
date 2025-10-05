@@ -306,6 +306,7 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
               return (
                 <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
                   <div className="shop-product-card">
+                    {/* IMAGEN (sin botón aquí) */}
                     <div className="image-container">
                       {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
 
@@ -330,19 +331,20 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
                       )}
                     </div>
 
-                    {/* === NOMBRE + CORAZÓN EN LÍNEA (como pediste) === */}
+                    {/* NOMBRE + CORAZÓN (centrados) */}
                     <div className="shop-title-row">
-                      <h4 style={{ margin: 0 }}>{product.name}</h4>
+                      <h4>{product.name}</h4>
                       <button
                         onClick={(e) => handleWishlistClick(e, pid)}
                         className={`wishlist-inline-btn ${isInWishlist(pid) ? 'active' : ''}`}
                         aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
                         title="Lista de deseos"
                       >
-                        {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
+                        {isInWishlist(pid) ? <IoHeart size={20}/> : <IoHeartOutline size={20}/>}
                       </button>
                     </div>
 
+                    {/* PRECIOS (centrados) */}
                     <div className="price-section">
                       <span className="shop-product-price">
                         Gs. {(product.price || 0).toLocaleString('es-PY')}
