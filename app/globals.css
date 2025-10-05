@@ -2512,9 +2512,12 @@ body {
   
 }
 
+
+
 /* ==================================================================== */
-/* ===== SOLUCIÓN DEFINITIVA PARA LA PÁGINA DE TIENDA ===== */
+/* ===== SOLUCIÓN DEFINITIVA PARA LA PÁGINA DE TIENDA (WISHLIST) ======= */
 /* ==================================================================== */
+
 .tienda-page-container {
   max-width: 1800px !important;
   margin-left: auto !important;
@@ -2523,58 +2526,57 @@ body {
   margin-bottom: 6rem !important; /* Espacio extra antes del footer */
 }
 
-.wish-heart-btn {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: none;
-  background: #f0f0f0; /* Fondo gris */
+.image-container { 
+  position: relative; 
+  overflow: hidden; 
+}
+
+/* === NUEVO: Título + corazón en la misma línea (al lado del nombre) === */
+.shop-title-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  gap: .5rem;
+  margin-top: .5rem;
+}
+
+/* Si prefieres el corazón pegado a la derecha del renglón, descomenta: */
+/* .shop-title-row { justify-content: space-between; } */
+
+/* === NUEVO: botón de wishlist "plano", sin círculo, como el navbar === */
+.wishlist-inline-btn {
+  all: unset;
   cursor: pointer;
-}
-
-.wish-heart-btn svg {
-  pointer-events: none; /* evita que el click se quede en el svg */
-}
-
-.wish-heart-btn.active {
-  background: #fff0f3;   /* color distinto cuando está activo */
-  outline: 2px solid #ffc4d0;
-}
-/* --- Forzar que el corazón quede arriba de las imágenes --- */
-.image-container { position: relative; overflow: hidden; }
-
-.wishlist-icon-btn,
-.wish-heart-btn {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: none;
-  background: #f0f0f0; /* Fondo gris pedido */
-  display: flex;
+  line-height: 0;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,.12);
-  cursor: pointer;
-  z-index: 20; /* <-- más alto para superar imágenes con fill */
+  color: #333; /* color base; puedes igualar al del navbar */
 }
 
-.wishlist-icon-btn svg,
-.wish-heart-btn svg {
-  pointer-events: none;
+.wishlist-inline-btn:hover { opacity: .8; }
+
+.wishlist-inline-btn svg {
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
 }
 
-.wishlist-icon-btn.active,
-.wish-heart-btn.active {
-  background: #fff0f3;
-  outline: 2px solid #ffc4d0;
+/* Activo (en wishlist) → rojo */
+.wishlist-inline-btn.active { 
+  color: #e11d48; 
 }
+
+/* ==================================================================== */
+/* ========== LIMPIEZA DE ESTILOS ANTIGUOS (ANULA EL CÍRCULO) ========= */
+/* ==================================================================== */
+
+/* Anula el botón que flotaba sobre la imagen con fondo gris redondo */
+.wish-heart-btn,
+.wishlist-icon-btn {
+  all: unset !important;
+}
+
+.wish-heart-btn.active,
+.wishlist-icon-btn.active {
+  all: unset !important;
+}
+

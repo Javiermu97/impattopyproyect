@@ -38,7 +38,7 @@ const IconX = () => (
 );
 const IconChevron = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-    <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+    <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0  1 0 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
   </svg>
 );
 
@@ -328,11 +328,14 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
                           className="shop-product-image-secondary"
                         />
                       )}
+                    </div>
 
-                      {/* Botón de Wishlist */}
+                    {/* === NOMBRE + CORAZÓN EN LÍNEA (como pediste) === */}
+                    <div className="shop-title-row">
+                      <h4 style={{ margin: 0 }}>{product.name}</h4>
                       <button
                         onClick={(e) => handleWishlistClick(e, pid)}
-                        className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
+                        className={`wishlist-inline-btn ${isInWishlist(pid) ? 'active' : ''}`}
                         aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
                         title="Lista de deseos"
                       >
@@ -340,7 +343,6 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
                       </button>
                     </div>
 
-                    <h4>{product.name}</h4>
                     <div className="price-section">
                       <span className="shop-product-price">
                         Gs. {(product.price || 0).toLocaleString('es-PY')}

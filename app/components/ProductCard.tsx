@@ -6,17 +6,18 @@ import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { Product } from '@/lib/types';
 
-const ProductCard = ({ product }: { product: Product }) => {
+type Props = { product: Product };
+
+const ProductCard = ({ product }: Props) => {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { user } = useAuth();
   const router = useRouter();
   const pid = typeof product.id === 'string' ? Number(product.id) : product.id;
 
   const handleWishlistClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault(); // evita navegar al hacer click en el corazón
     if (!user) {
-      router.push('/cuenta/login?redirected=true');
+      router.push('/auth/login'); // ajusta si tu ruta de login es otra
       return;
     }
     toggleWishlist(pid);
@@ -25,10 +26,10 @@ const ProductCard = ({ product }: { product: Product }) => {
   return (
     <Link href={`/products/${product.id}`} className="shop-product-card-link">
       <div className="shop-product-card">
+        {/* IMAGEN */}
         <div className="image-container">
           {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
 
-          {/* Imagen Principal */}
           <Image
             src={product.imageUrl}
             alt={product.name}
@@ -36,8 +37,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             sizes="(max-width: 768px) 50vw, 33vw"
             className="shop-product-image-primary"
           />
-          
-          {/* Imagen Secundaria (para el hover) */}
+
           {product.imageUrl2 && (
             <Image
               src={product.imageUrl2}
@@ -47,19 +47,22 @@ const ProductCard = ({ product }: { product: Product }) => {
               className="shop-product-image-secondary"
             />
           )}
+        </div>
 
-          {/* Botón de Wishlist */}
+        {/* TÍTULO + CORAZÓN EN LÍNEA */}
+        <div className="shop-title-row">
+          <h4 style={{ margin: 0 }}>{product.name}</h4>
           <button
             onClick={handleWishlistClick}
-            className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
+            className={`wishlist-inline-btn ${isInWishlist(pid) ? 'active' : ''}`}
             aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
             title="Lista de deseos"
           >
-            {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
+            {isInWishlist(pid) ? <IoHeart /> : <IoHeartOutline />}
           </button>
         </div>
 
-        <h4>{product.name}</h4>
+        {/* PRECIOS */}
         <div className="price-section">
           <span className="shop-product-price">Gs. {product.price.toLocaleString('es-PY')}</span>
           {product.oldPrice && (
