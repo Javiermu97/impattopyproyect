@@ -309,7 +309,6 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
                     <div className="image-container">
                       {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
 
-                      {/* Imagen Principal */}
                       <Image
                         src={product.imageUrl}
                         alt={product.name}
@@ -318,7 +317,6 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
                         className="shop-product-image-primary"
                       />
                       
-                      {/* Imagen Secundaria (para el hover) */}
                       {product.imageUrl2 && (
                         <Image
                           src={product.imageUrl2}
@@ -329,12 +327,10 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
                         />
                       )}
 
-                      {/* Botón de Wishlist */}
                       <button
                         onClick={(e) => handleWishlistClick(e, pid)}
                         className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
                         aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
-                        title="Lista de deseos"
                       >
                         {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
                       </button>

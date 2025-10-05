@@ -28,7 +28,6 @@ const ProductCard = ({ product }: { product: Product }) => {
         <div className="image-container">
           {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
 
-          {/* Imagen Principal */}
           <Image
             src={product.imageUrl}
             alt={product.name}
@@ -37,7 +36,6 @@ const ProductCard = ({ product }: { product: Product }) => {
             className="shop-product-image-primary"
           />
           
-          {/* Imagen Secundaria (para el hover) */}
           {product.imageUrl2 && (
             <Image
               src={product.imageUrl2}
@@ -48,12 +46,10 @@ const ProductCard = ({ product }: { product: Product }) => {
             />
           )}
 
-          {/* Botón de Wishlist */}
           <button
             onClick={handleWishlistClick}
             className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
             aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
-            title="Lista de deseos"
           >
             {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
           </button>

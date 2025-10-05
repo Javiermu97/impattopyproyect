@@ -2626,21 +2626,18 @@ body {
   height: 42px;
   border-radius: 50%;
   border: 1px solid rgba(0,0,0,0.05);
-  
-  /* --- CAMBIOS APLICADOS --- */
-  background: #f0f0f0; /* 1. Color de fondo cambiado a gris claro */
-  opacity: 1;          /* 2. Botón siempre visible */
-  
+  background: #f0f0f0;
+  opacity: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   cursor: pointer;
   transition: transform 0.2s ease, background-color 0.2s ease;
+  
+  /* --- CAMBIO APLICADO --- */
+  color: #2d2d2d; /* 1. Se añade color explícito para el ícono SVG */
 }
-
-/* Se elimina la regla '.shop-product-card:hover .wishlist-icon-btn' 
-   porque el botón ya no necesita aparecer al pasar el cursor */
 
 .wishlist-icon-btn:hover {
     transform: scale(1.1);
@@ -2648,6 +2645,6 @@ body {
 
 .wishlist-icon-btn.active {
     background-color: #e11d48;
-    color: white;
+    color: white; /* El color del ícono cambia a blanco cuando está activo */
 }
 
