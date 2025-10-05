@@ -17,27 +17,26 @@ export default function ForgotPasswordComponent() {
     setLoading(true);
 
     try {
-      // Usamos el método de Supabase para enviar el correo de recuperación
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/cuenta/reset-password`, // Página a la que irá el usuario tras hacer clic en el enlace del correo
+        redirectTo: `${window.location.origin}/cuenta/reset-password`,
       });
 
       if (error) throw error;
 
       setMessage('Se ha enviado un enlace para restablecer tu contraseña a tu correo electrónico.');
 
-    } catch (err: any) {
-      setError(err.message || 'No se pudo enviar el enlace de recuperación.');
+    } catch (err) {
+      // ✅ CORRECCIÓN: Manejamos el error de forma segura
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('No se pudo enviar el enlace de recuperación.');
+      }
     } finally {
       setLoading(false);
     }
   };
-  
-  // NOTA IMPORTANTE SOBRE WHATSAPP:
-  // Supabase no tiene una función nativa para enviar enlaces de recuperación por WhatsApp.
-  // Para que esto funcione, necesitarías un backend (como una Supabase Edge Function)
-  // que use un servicio como Twilio para enviar el mensaje.
-  // Este botón es un ejemplo conceptual.
+
   const handleWhatsAppRecovery = () => {
     alert(
       'Función no implementada.\n\n' +
@@ -69,8 +68,7 @@ export default function ForgotPasswordComponent() {
             <button type="submit" className="auth-primary" disabled={loading}>
               {loading ? 'Enviando…' : 'Enviar por Correo'}
             </button>
-
-            {/* Botón conceptual para WhatsApp */}
+            
             <button type="button" className="auth-google" onClick={handleWhatsAppRecovery}>
               Enviar por WhatsApp (requiere teléfono registrado)
             </button>

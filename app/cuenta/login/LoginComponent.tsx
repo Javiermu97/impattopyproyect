@@ -37,16 +37,20 @@ const LoginForm = () => {
         password: pass,
       });
       if (error) throw error;
-      router.push('/'); // Redirige donde prefieras tras login OK
-    } catch (error: any) {
-      setErr(error.message || 'No se pudo iniciar sesión');
+      router.push('/');
+    } catch (error) {
+      // ✅ CORRECCIÓN 1: Manejamos el error de forma segura
+      if (error instanceof Error) {
+        setErr(error.message);
+      } else {
+        setErr('No se pudo iniciar sesión.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
-    // OAuth con Supabase (Google)
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -134,10 +138,14 @@ const RegisterForm = () => {
         },
       });
       if (error) throw error;
-      // Puedes llevar a login o a home; aquí lo llevamos al login
       router.push('/cuenta/login');
-    } catch (error: any) {
-      setErr(error.message || 'No se pudo registrar');
+    } catch (error) {
+      // ✅ CORRECCIÓN 2: Manejamos el error de forma segura
+      if (error instanceof Error) {
+        setErr(error.message);
+      } else {
+        setErr('No se pudo registrar.');
+      }
     } finally {
       setLoading(false);
     }
@@ -220,8 +228,8 @@ export default function LoginComponent() {
   }, [searchParams]);
 
   return (
-    <div className="auth-shell">{/* contenedor centrado */}
-      <div className="auth-card">{/* tarjeta */}
+    <div className="auth-shell">
+      <div className="auth-card">
         <h1 className="auth-title">{isLoginView ? 'Iniciar sesión' : 'Crear cuenta'}</h1>
         <p className="auth-subtitle">
           {isLoginView
@@ -235,7 +243,6 @@ export default function LoginComponent() {
           </div>
         )}
 
-        {/* Pestañas */}
         <div className="auth-links" style={{ justifyContent: 'center', marginTop: '.75rem' }}>
           <button
             className="auth-google"
