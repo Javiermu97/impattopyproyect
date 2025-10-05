@@ -104,7 +104,7 @@ const AccordionItem = ({ item, isOpen, onClick }: { item: AccordionItemData; isO
 );
 
 /* ===========================
-   TARJETA "TE PUEDE INTERESAR" (CORREGIDA)
+   TARJETA "TE PUEDE INTERESAR" (con wishlist protegido por login)
    =========================== */
 const RelatedProductCard = ({ product }: { product: Product }) => {
   const { isInWishlist, toggleWishlist } = useWishlist();
@@ -136,7 +136,7 @@ const RelatedProductCard = ({ product }: { product: Product }) => {
             sizes="(max-width: 768px) 50vw, 25vw"
             className="shop-product-image-primary"
           />
-          
+
           {/* Imagen Secundaria */}
           {product.imageUrl2 && (
             <Image
@@ -148,12 +148,13 @@ const RelatedProductCard = ({ product }: { product: Product }) => {
             />
           )}
 
-          {/* Botón de Wishlist */}
+          {/* Botón de Wishlist (esquina inferior derecha, fondo gris) */}
           <button
             onClick={handleWishlistClick}
             className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
             aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
             title="Lista de deseos"
+            style={{ position: 'absolute', right: 10, bottom: 10, zIndex: 9999 }}  // asegura overlay
           >
             {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
           </button>
@@ -173,8 +174,10 @@ const RelatedProductCard = ({ product }: { product: Product }) => {
   );
 };
 
-
-const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
+/* ===========================
+   CARRUSEL "TE PUEDE INTERESAR" (a prueba de vacíos)
+   =========================== */
+const RelatedProductsCarousel = ({ products = [] }: { products?: Product[] }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -209,6 +212,15 @@ const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
       container.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
     }
   };
+
+  if (!products || products.length === 0) {
+    return (
+      <div className="related-products-section arcashop-style">
+        <h2 className="related-products-title arcashop-style">Te puede interesar</h2>
+        <p>No hay productos relacionados.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="related-products-section arcashop-style">
@@ -259,7 +271,7 @@ const StarRating = () => (
 // --- COMPONENTE PRINCIPAL DE CLIENTE ---
 export default function ProductDetailPageClient({ product, relatedProducts }: { product: Product, relatedProducts: Product[] }) {
   const { addToCart } = useCart();
-  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { isInWishlist, toggleWishlist } = useWishlist(); // (lo puedes usar si luego agregas corazón en la PDP principal)
   const { user } = useAuth();
   const router = useRouter();
 
@@ -307,11 +319,11 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
     const variantToCart = selectedVariant || { color: 'Único', image: product.imageUrl, colorHex: '#FFFFFF' };
     addToCart(product, variantToCart, quantity);
   };
-  
+
   const handleRealizarPedido = () => {
     setCheckoutVisible(true);
   };
-  
+
   const handleOrderConfirmation = async (data: OrderData) => {
     try {
       const response = await fetch('/api/create-order', {
@@ -555,8 +567,15 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
           </div>
         </div>
 
-        {/* Carrusel con tarjetas que ya incluyen el corazón */}
-        <RelatedProductsCarousel products={relatedProducts} />
+        {/* Carrusel con tarjetas (si hay relacionados) */}
+        {Array.isArray(relatedProducts) && relatedProducts.length > 0 ? (
+          <RelatedProductsCarousel products={relatedProducts} />
+        ) : (
+          <div className="related-products-section arcashop-style">
+            <h2 className="related-products-title arcashop-style">Te puede interesar</h2>
+            <p>No hay productos relacionados.</p>
+          </div>
+        )}
       </div>
     </>
   );
