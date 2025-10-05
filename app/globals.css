@@ -516,7 +516,7 @@ button {
 .product-grid-shop.columns-3 { grid-template-columns: repeat(3, 1fr); }
 .product-grid-shop.columns-4 { grid-template-columns: repeat(4, 1fr); }
 
-/* --- Tarjeta de Producto (SOLUCIÓN FINAL) --- */
+/* --- Tarjeta de Producto (SOLUCIÓN FINAL Y UNIFICADA) --- */
 .shop-product-card-wrapper {
   display: flex;
   flex-direction: column;
@@ -1107,6 +1107,69 @@ button {
 .carousel-container {
   position: relative;
 }
+.carousel-nav-btn {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  color: #000;
+}
+.carousel-nav-btn:hover:not(:disabled) {
+  background-color: #ffffff;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.carousel-nav-btn.prev {
+  left: 0px;
+}
+.carousel-nav-btn.next {
+  right: 0px;
+}
+.carousel-nav-btn svg {
+  width: 28px !important;
+  height: 28px !important;
+  stroke-width: 3 !important;
+  pointer-events: none;
+}
+.related-products-section.arcashop-style {
+  padding: 2rem 0;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+.related-products-title.arcashop-style {
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 0 0 2.5rem 0;
+  padding: 0;
+}
+.carousel-container.arcashop-style {
+  position: relative;
+}
+.arcashop-style .related-products-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0 1rem 1rem 1rem;
+  margin: 0;
+  gap: 0.75rem;
+}
+.arcashop-style .related-products-grid::-webkit-scrollbar {
+  display: none;
+}
 
 /* ==================================================================== */
 /* ===== 6. CARRITO, MODALES Y CONFIRMACIÓN ===== */
@@ -1295,6 +1358,108 @@ button {
 .back-to-shop-btn:hover {
   background-color: #5a6268;
   border-color: #545b62;
+}
+.confirmation-status {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+.confirmation-status p { margin: 0; font-weight: 500; }
+.confirmation-status .status-main-text { 
+  font-size: 1rem; 
+}
+.confirmation-status .status-date {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0.25rem 0;
+}
+.confirmation-status .status-subtext {
+  font-size: 0.9rem;
+  color: #555;
+}
+.confirmation-main {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+.confirmation-details p {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.5;
+  margin-top: 0;
+}
+.confirmation-contact {
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.confirmation-contact h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+.info-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+.info-columns h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+.info-columns p {
+  margin: 0 0 0.25rem 0;
+  color: #555;
+  font-size: 0.9rem;
+  word-wrap: break-word;
+}
+.info-columns > div > div:not(:last-child) {
+  margin-bottom: 1.5rem;
+}
+.confirmation-summary {
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  padding: 1rem;
+  align-self: start;
+}
+.summary-product {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.summary-product img {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: white;
+}
+.summary-product-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.summary-product-price {
+  font-weight: bold;
+}
+.confirmation-summary .summary-row {
+  font-size: 0.95rem;
+}
+.confirmation-summary .summary-row.total {
+  font-size: 1.1rem;
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid #ddd;
 }
 
 /* ==================================================================== */
@@ -1495,6 +1660,52 @@ button {
   .related-products-section .carousel-container {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+  .footer-content { 
+    flex-direction: column; 
+    gap: 0; 
+  }
+  .footer-col { 
+    border-bottom: 1px solid #e0e0e0; 
+  }
+  .footer-col:last-child { 
+    border-bottom: none; 
+  }
+  .footer-accordion-title { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    cursor: pointer; 
+    padding: 1rem 0; 
+  }
+  .footer-accordion-title h3 { 
+    margin: 0; 
+    font-size: 1em; 
+  }
+  .accordion-icon {
+    display: inline-block;
+    font-size: 1.5rem;
+    font-weight: 300;
+    transition: transform 0.3s ease-out;
+  }
+  .accordion-icon::before {
+    content: '+';
+  }
+  .accordion-icon.open {
+    transform: none !important;
+  }
+  .accordion-icon.open::before {
+    content: '−' !important;
+  }
+  .footer-accordion-content { 
+    max-height: 0; 
+    overflow: hidden; 
+    transition: max-height 0.4s ease-out; 
+    text-align: left; 
+  }
+  .footer-accordion-content.open { 
+    max-height: 500px; 
+    padding: 0.5rem 0 1.5rem 0; 
   }
 }
 
