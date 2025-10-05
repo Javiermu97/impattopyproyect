@@ -3,9 +3,13 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useCart } from '@/app/context/CartContext';
 import CheckoutForm from '@/app/components/CheckoutForm';
 import { Product, ProductVariant, Feature } from '@/lib/types';
+import { IoHeartOutline, IoHeart } from 'react-icons/io5';
+import { useWishlist } from '@/app/context/WishlistContext';
+import { useAuth } from '@/app/context/AuthContext';
 
 // --- INTERFACES ---
 interface OrderData {
@@ -70,30 +74,67 @@ const AccordionItem = ({ item, isOpen, onClick }: { item: AccordionItemData; isO
     <div className={`accordion-content ${isOpen ? 'open' : ''}`}><div className="accordion-content-inner">{item.content}</div></div>
   </div>
 );
-const RelatedProductCard = ({ product }: { product: Product }) => (
-  <Link href={`/products/${product.id}`} className="shop-product-card-link">
-    <div className="shop-product-card">
-      <div className="image-container">
-        {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
-        <Image
-          src={product.imageUrl}
-          alt={product.name}
-          fill
-          sizes="(max-width: 768px) 50vw, 25vw"
-          className="shop-product-image-primary"
-        />
-        {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="shop-product-image-secondary" />}
-      </div>
-      <div className="card-info">
-        <h4>{product.name}</h4>
-        <div className="card-price">
-          <span>Gs. {product.price.toLocaleString('es-PY')}</span>
-          {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
+
+/* =============================================================
+   TARJETA "TE PUEDE INTERESAR" (ACTUALIZADA CON LA NUEVA ESTRUCTURA)
+   ============================================================= */
+const RelatedProductCard = ({ product }: { product: Product }) => {
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { user } = useAuth();
+  const router = useRouter();
+  const pid = typeof product.id === 'string' ? Number(product.id) : product.id;
+
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) {
+      router.push('/cuenta/login?redirected=true');
+      return;
+    }
+    toggleWishlist(pid);
+  };
+
+  return (
+    <div className="shop-product-card-wrapper">
+      <Link href={`/products/${product.id}`} className="shop-product-card-link">
+        <div className="shop-product-card">
+          <div className="image-container">
+            {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="shop-product-image-primary"
+            />
+            {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="shop-product-image-secondary" />}
+          </div>
         </div>
+      </Link>
+      <div className="product-title-container">
+        <Link href={`/products/${product.id}`} className="product-title-link">
+          <h4>{product.name}</h4>
+        </Link>
+        <button
+          onClick={handleWishlistClick}
+          className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
+          aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
+        >
+          {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
+        </button>
       </div>
+      <Link href={`/products/${product.id}`} className="price-section-link">
+        <div className="price-section">
+          <span className="shop-product-price">Gs. {product.price.toLocaleString('es-PY')}</span>
+          {product.oldPrice && (
+            <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>
+          )}
+        </div>
+      </Link>
     </div>
-  </Link>
-);
+  );
+};
+
 
 const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -379,32 +420,21 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
             {product.caracteristicas && product.caracteristicas.map((feature: Feature) => (
               <div key={feature.id} className="info-promo-block-2">
                 <h2>{feature.titulo}</h2>
-                {/* INICIA EL CAMBIO */}
-    <div className="ventajas-list">
-  {feature.descripcion.split('\n').map((linea, index) => {
-    // Revisa si la línea contiene el patrón de negrita (*texto*)
-    if (linea.includes('*')) {
-      // Divide la línea en partes usando los asteriscos como separadores
-      const parts = linea.split(/\*(.*?)\*/);
-      
-      // parts[0] = texto antes de la negrita (si lo hay)
-      // parts[1] = el texto que debe ir en negrita
-      // parts[2] = texto después de la negrita (si lo hay)
-      
-      return (
-        <p key={index}>
-          <span>{parts[0]}</span>
-          <strong>{parts[1]}</strong>
-          <span>{parts[2]}</span>
-        </p>
-      );
-    }
-    
-    // Si no hay asteriscos en la línea, la muestra de forma normal
-    return <p key={index}>{linea}</p>;
-  })}
-</div>
-    {/* TERMINA EL CAMBIO */}
+                <div className="ventajas-list">
+                  {feature.descripcion.split('\n').map((linea, index) => {
+                    if (linea.includes('*')) {
+                      const parts = linea.split(/\*(.*?)\*/);
+                      return (
+                        <p key={index}>
+                          <span>{parts[0]}</span>
+                          <strong>{parts[1]}</strong>
+                          <span>{parts[2]}</span>
+                        </p>
+                      );
+                    }
+                    return <p key={index}>{linea}</p>;
+                  })}
+                </div>
                 <Image
                   src={feature.imagen}
                   alt={feature.titulo}
