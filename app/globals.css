@@ -1,4 +1,5 @@
-/* --- CORRECCIÓN DEFINITIVA PARA EL FONDO DE PÁGINA --- */
+/* CORRECCIÓN DEFINITIVA PARA EL FONDO DE PÁGINA --- */
+
 /* Este código anula cualquier otro estilo de fondo */
 
 body,
@@ -13,6 +14,7 @@ body {
   font-family: Arial, sans-serif;
   color: #333;
 }
+
 /* Links & Buttons Global Styles */
 a { color: inherit; text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -26,8 +28,6 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 
 /* Header Wrapper Style */
 .main-header { background-color: white; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); position: sticky; top: 0; z-index: 100; }
-
-
 
 /* --- ESTILOS PARA HERO SECTION CON VIDEO --- */
 
@@ -79,8 +79,6 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   max-width: 800px;
 }
 
-
-
 /* Carrusel Inferior con Animación CSS */
 .franja-descuento { background-color: white; color: black; padding: 15px 0; overflow: hidden; white-space: nowrap; position: relative; }
 .cinta { display: flex; width: fit-content; animation: scroll-left 30s linear infinite; }
@@ -114,7 +112,6 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   padding: 0 4rem;
 }
 
-
 .products-section-gray {
   background-color:white;
   max-width: none;
@@ -145,8 +142,6 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 /* Boton de oferta que está sobre cada imagen */
 .offer-badge { position: absolute; top: 10px; left: 10px; background-color: #ff4500; color: white; padding: 5px 10px; border-radius: 3px; font-size: 0.8em; font-weight: bold; }
 
-
-
 /* ========================================================= */
 /* ===== CÓDIGO FINAL Y CORRECTO PARA FOOTER Y COPYRIGHT ===== */
 /* ========================================================= */
@@ -166,7 +161,6 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 .footer-col { flex: 1; min-width: 220px; }
 .footer-col h3 { font-size: 1.1em; color: black; }
 /* ... (otros estilos de .footer-col que no cambian) ... */
-
 
 /* --- 2. ESTILOS PARA EL BLOQUE DE COPYRIGHT (GRIS) --- */
 .copyright-section {
@@ -226,8 +220,6 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
     display: none;
   }
 }
-
-
 
 /* ========================================================= */
 /* ===== SOLUCIÓN DEFINITIVA PARA INFO BANNER ===== */
@@ -296,18 +288,12 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   margin: 0;
 }
 
-
 /* --- Estilos de los items (no cambian) --- */
 .info-banner-item { display: flex; align-items: center; gap: 15px; }
 .info-banner-item .info-icon svg { width: 32px; height: 32px; color: #A78D5A; stroke-width: 1.5; }
 .info-banner-item .info-text { display: flex; flex-direction: column; }
 .info-banner-item h3 { font-size: 1rem; font-weight: 600; color: #333; margin: 0 0 2px 0; }
 .info-banner-item p { font-size: 0.85rem; color: #777; margin: 0; }
-
-
-
-
-
 
 /* AÑADIDO: Estilo para el mensaje de suscripción */
 .subscribe-message {
@@ -316,7 +302,6 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   margin-top: 10px;
   text-align: center;
 }
-
 
 /* Floating WhatsApp Button */
 .whatsapp-button { position: fixed; bottom: 20px; right: 20px; background-color: #25d366; color: white; padding: 12px 20px; border-radius: 8px; font-size: 1em; font-weight: bold; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); text-decoration: none; z-index: 1000; display: flex; align-items: center; gap: 8px; transition: transform 0.2s ease; }
@@ -411,9 +396,6 @@ body {
 .product-grid-shop.columns-3 { grid-template-columns: repeat(3, 1fr); }
 .product-grid-shop.columns-4 { grid-template-columns: repeat(4, 1fr); }
 
-
-
-
 /* ==================================================================== */
 /* ===== CÓDIGO ÚNICO Y DEFINITIVO PARA LA TIENDA Y PRODUCTOS ===== */
 /* ==================================================================== */
@@ -432,9 +414,7 @@ body {
   justify-content: center; /* Centra los productos en la Home */
 }
 
-
 /* --- Estilos para la Tarjeta del Producto --- */
-
 .shop-product-card-link,
 .shop-product-card-link:hover { 
   text-decoration: none; 
@@ -453,8 +433,6 @@ body {
   transition: box-shadow 0.2s ease;
   border-radius: 8px;
 }
-
-
 
 .shop-product-card .image-container img { 
   position: absolute; 
@@ -518,11 +496,6 @@ body {
   }
 }
 
-
-
-
-
-
 .no-products-message { grid-column: 1 / -1; text-align: center; padding: 3rem 0; color: #666; }
 .pagination { 
   margin-top: 2rem; 
@@ -539,16 +512,12 @@ body {
 .pagination button.active { background-color: #333; color: white; border-color: #333; cursor: default; }
 .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-
-
-
 /* ============================================= */
 /* ===== PÁGINA DE DETALLE DE PRODUCTO (PDP) PAGE HOME ===== */
 /* ============================================= */
 
 /* Animación para el botón de compra */
 /* --- NUEVA SECCIÓN DE ENCABEZADO --- */
-
 
 .breadcrumb {
   font-size: 0.9rem;
@@ -571,7 +540,6 @@ body {
   background-color: #ffffff;
   box-sizing: border-box;
 }
-
 
 .breadcrumb span:not(:last-child)::after {
   content: '>';
@@ -619,7 +587,6 @@ body {
   /* object-fit es controlado en línea en el componente Image */
   transition: opacity 0.3s ease-out; /* Una transición suave al cambiar de imagen */
 }
-
 
 .pdp-thumbnails {
   display: flex;
@@ -919,7 +886,6 @@ body {
   }
 }
 
-
 /* --- ESTILOS FINALES PARA LA FRANJA DE GARANTÍA --- */
 
 /* Estilos para Escritorio (Default) */
@@ -962,7 +928,6 @@ body {
     white-space: normal; /* Permite que el texto se divida en varias líneas */
   }
 }
-
 
 /* REQUERIMIENTOS 4 y 5: Textos de Súper Promo */
 .info-promo-block { 
@@ -1015,6 +980,7 @@ body {
   margin-left: 7.5%; /* Pequeño margen para que no esté pegado a la izquierda */
   text-align: left;   /* El texto de las líneas inicia a la izquierda */
 }
+
 /* Estilo unificado para las imágenes de las secciones promocionales */
 .promo-image {
   width: 100%; /* Permite que ocupe el 100% de su espacio si es menor que max-width */
@@ -1092,17 +1058,16 @@ body {
 /* ===== SECCIÓN DE PRODUCTOS RELACIONADOS (CARRUSEL) ===== */
 /* ================================================= */
 
-/* ——— Título sobre el carrusel “Te puede interesar” ——— */
+/* ——— Título sobre el carrusel "Te puede interesar" ——— */
 .related-products-title {
   font-family: 'Poppins', sans-serif; /* o tu fuente preferida   */
-  color: #0c3c64;                     /* azul de la paleta       */
-  font-size: 4rem;                    /* un poco más grande      */
-  font-weight: 700;                   /* grueso medio‑alto       */
-  letter-spacing: -0.5px;             /* sutilemente más compacto*/
-  text-align: center;                 /* mantiene centrado       */
-  margin-bottom: 1.4rem;              /* separa del carrusel     */
+  color: #0c3c64;                    /* azul de la paleta       */
+  font-size: 4rem;                   /* un poco más grande      */
+  font-weight: 700;                  /* grueso medio‑alto       */
+  letter-spacing: -0.5px;            /* sutilemente más compacto*/
+  text-align: center;                /* mantiene centrado       */
+  margin-bottom: 1.4rem;             /* separa del carrusel     */
 }
-
 
 .related-products-section {
   padding: 2rem 3rem 2rem 3rem; /* REDUCIDO: El padding superior ahora es mucho menor */
@@ -1165,26 +1130,20 @@ body {
   SOLUCIÓN DEFINITIVA:
 /* Flechas dentro del botón del carrusel (más grandes) */
 
-
-
 /* Flecha más grande dentro del botón redondo (sin alterar el círculo) */
 .carousel-nav-btn.svg {
   /* el botón mide 50 × 50 px → 36 px luce equilibrado */
   width: 28px !important;
   height: 28px !important;
 
-  /* trazo un poco más grueso para que la flecha no se vea “delgada” */
+  /* trazo un poco más grueso para que la flecha no se vea "delgada" */
   stroke-width: 3 !important;
 
   /* evita que el SVG intercepte el clic; lo maneja el botón */
   pointer-events: none;
 }
 
-
 /* --- FIN: SOLUCIÓN FINAL PARA BOTONES DEL CARRUSEL --- */
-
-
-
 
 /* --- Media Queries --- */
 @media (max-width: 992px) {
@@ -1205,7 +1164,6 @@ body {
   .pdp-header-row { grid-template-columns: 1fr; } /* Apila el breadcrumb y el título en pantallas pequeñas */
   
 }
-
 
 @media (max-width: 768px) {
     .pdp-container {
@@ -1378,7 +1336,6 @@ body {
     cursor: not-allowed;
 }
 
-
 /*/* --- Media Queries para Escritorio --- */
 @media (min-width: 768px) {
   .arcashop-style .related-products-grid .shop-product-card-link {
@@ -1395,12 +1352,9 @@ body {
   }
 }
 
-
-
 /* ============================================= */
 /* ===== PÁGINA DE DETALLE DE PRODUCTO (PDP) PAGE HOME VA HASTA AQUI. ES DECIR AQUÍ TERMINA ===== */
 /* ============================================= */
-
 
 /* Estilos para la miniatura del vídeo */
 .video-thumbnail {
@@ -1422,7 +1376,6 @@ body {
 .video-thumbnail:hover .play-icon-overlay {
   opacity: 1;
 }
-
 
 /* ============================================= */
 /* ===== ESTILOS PARA EL MODAL DE CHECKOUT ===== */
@@ -1525,7 +1478,6 @@ body {
     font-weight: bold;
     color: #333;
 }
-
 
 .checkout-summary {
   margin: 1.5rem 0;
@@ -1793,8 +1745,6 @@ body {
   border-top: 1px solid #ddd;
 }
 
-
-
 /* ============================================= */
 /* ===== MEDIA QUERIES GLOBALES PARA RESPONSIVIDAD ===== */
 /* ============================================= */
@@ -1811,8 +1761,6 @@ body {
   
   /* Ajustamos la franja informativa azul */
   
-
-
 
 /* --- Para Móviles (hasta 768px) --- */
 @media (max-width: 768px) {
@@ -1871,7 +1819,6 @@ body {
   background-color:#A78D5A; /* Color de fondo cambiado a negro */
   color: #ffffff; /* Asegura que el texto sea blanco */
 }
-
 
 /* ========================================================= */
 /* ===== ESTILOS RESPONSIVOS PARA PÁGINA DE PRODUCTO (PDP) ===== */
@@ -2062,7 +2009,6 @@ body {
   }
 }
 
-
 /* Arreglo para la franja de garantía en móviles */
 @media (max-width: 768px) {
   .pdp-guarantee-banner {
@@ -2148,7 +2094,6 @@ body {
   margin-bottom: 0.5rem;
 }
 
-
 .checkout-btn {
   width: 100%;
   padding: 1rem;
@@ -2166,9 +2111,6 @@ body {
   padding: 2rem;
   color: #888;
 }
-
-
-
 
 /* ==================================================================== */
 /* --- CÓDIGO FINAL PARA "NUESTRA FILOSOFÍA" EN MÓVILES (hasta 768px) --- */
@@ -2225,9 +2167,6 @@ body {
   }
 }
 
-
-
-
 /* --- Ajuste para Títulos de Sección en Móviles --- */
 @media (max-width: 768px) {
   .section-title {
@@ -2260,14 +2199,11 @@ body {
   }
 }
 
-
-
 /* --- CLASE PARA FORZAR LA REDUCCIÓN DE ESPACIO SUPERIOR --- */
 .reducir-espacio-superior {
   margin-top: -70px !important; /* Usamos un margen negativo para "subir" la sección */
   padding-top: 0 !important;   /* Eliminamos cualquier relleno superior */
 }
-
 
 /* ============================================= */
 /* ===== ESTILOS PARA EL PANEL DE ADMINISTRACIÓN ===== */
@@ -2351,12 +2287,6 @@ body {
   background-color: #218838;
 }
 
-
-
-
-
-
-
 /* --- Divisor y Sección Principal --- */
 .admin-divider {
     border: none;
@@ -2382,7 +2312,6 @@ body {
     margin-bottom: 1rem;
 }
 
-
 /* --- Contenedores de Formulario y Lista --- */
 .admin-form-container,
 .admin-list-container {
@@ -2392,7 +2321,6 @@ body {
     border: 1px solid #e5e7eb;
     margin-top: 1.5rem;
 }
-
 
 /* --- Lista de Características Existentes --- */
 .admin-list {
@@ -2439,7 +2367,6 @@ body {
     margin: 0.25rem 0 0 0;
 }
 
-
 /* --- Botón de Eliminar Pequeño --- */
 .delete-btn.small {
     background-color: #fee2e2; /* Fondo rojo claro */
@@ -2457,8 +2384,6 @@ body {
     background-color: black; /* Rojo más intenso */
     color: #ffffff;
 }
-
-
 
 /* =================================================================== */
 /* ===== AJUSTE DEFINITIVO PARA "NUESTRA FILOSOFÍA" EN TABLETS ===== */
@@ -2506,6 +2431,7 @@ body {
     margin-top: -40px !important; 
     padding-top: 30px !important;
   }
+
  
   
 }
