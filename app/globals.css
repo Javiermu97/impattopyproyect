@@ -2436,6 +2436,7 @@ body {
   
 }
 
+
 /* ==================================================================== */
 /* ===== ESTILOS GENERALES Y DE FORMULARIOS (CONSERVADOS Y LIMPIOS) ===== */
 /* ==================================================================== */
@@ -2516,7 +2517,7 @@ body {
 }
 
 /* ==================================================================== */
-/* ===== SOLUCIÓN CORRECTA PARA TARJETAS DE PRODUCTO (CÓDIGO FINAL) ===== */
+/* ===== SOLUCIÓN CORRECTA PARA TARJETAS DE PRODUCTO (NUEVO CÓDIGO) ===== */
 /* ==================================================================== */
 
 .image-container {
@@ -2552,15 +2553,20 @@ body {
   height: 42px;
   border-radius: 50%;
   border: 1px solid rgba(0,0,0,0.05);
-  background: #f0f0f0;
-  opacity: 1;
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-  color: #2d2d2d;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.shop-product-card:hover .wishlist-icon-btn {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .wishlist-icon-btn:hover {
@@ -2569,12 +2575,8 @@ body {
 
 .wishlist-icon-btn.active {
     background-color: #e11d48;
-    color: white; 
+    color: white;
+    opacity: 1;
+    transform: translateY(0);
 }
 
-/* --- REGLA ADICIONAL Y DEFINITIVA PARA FORZAR LA VISIBILIDAD DEL CORAZÓN --- */
-.wishlist-icon-btn svg {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
-}

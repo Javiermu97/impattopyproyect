@@ -103,9 +103,9 @@ const AccordionItem = ({ item, isOpen, onClick }: { item: AccordionItemData; isO
   </div>
 );
 
-/* =============================================================
-   TARJETA "TE PUEDE INTERESAR" (ACTUALIZADA CON LA NUEVA ESTRUCTURA)
-   ============================================================= */
+/* ===========================
+   TARJETA "TE PUEDE INTERESAR" (CORREGIDA)
+   =========================== */
 const RelatedProductCard = ({ product }: { product: Product }) => {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { user } = useAuth();
@@ -123,57 +123,56 @@ const RelatedProductCard = ({ product }: { product: Product }) => {
   };
 
   return (
-    <div className="shop-product-card-wrapper">
-        <Link href={`/products/${product.id}`} className="shop-product-card-link">
-            <div className="shop-product-card">
-                <div className="image-container">
-                    {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
+    <Link href={`/products/${product.id}`} className="shop-product-card-link">
+      <div className="shop-product-card">
+        <div className="image-container">
+          {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
 
-                    <Image
-                        src={product.imageUrl}
-                        alt={product.name}
-                        fill
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                        className="shop-product-image-primary"
-                    />
-                    
-                    {product.imageUrl2 && (
-                        <Image
-                        src={product.imageUrl2}
-                        alt={product.name}
-                        fill
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                        className="shop-product-image-secondary"
-                        />
-                    )}
-                </div>
-            </div>
-        </Link>
+          {/* Imagen Principal */}
+          <Image
+            src={product.imageUrl}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 50vw, 25vw"
+            className="shop-product-image-primary"
+          />
+          
+          {/* Imagen Secundaria */}
+          {product.imageUrl2 && (
+            <Image
+              src={product.imageUrl2}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="shop-product-image-secondary"
+            />
+          )}
 
-        <div className="product-title-container">
-            <Link href={`/products/${product.id}`} className="product-title-link">
-                <h4>{product.name}</h4>
-            </Link>
-            <button
-                onClick={handleWishlistClick}
-                className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
-                aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
-            >
-                {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
-            </button>
+          {/* Botón de Wishlist */}
+          <button
+            onClick={handleWishlistClick}
+            className={`wishlist-icon-btn ${isInWishlist(pid) ? 'active' : ''}`}
+            aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
+            title="Lista de deseos"
+          >
+            {isInWishlist(pid) ? <IoHeart size={20} /> : <IoHeartOutline size={20} />}
+          </button>
         </div>
 
-        <Link href={`/products/${product.id}`} className="price-section-link">
-          <div className="price-section">
-            <span className="shop-product-price">Gs. {product.price.toLocaleString('es-PY')}</span>
+        <div className="card-info">
+          <h4>{product.name}</h4>
+          <div className="card-price">
+            <span>Gs. {product.price.toLocaleString('es-PY')}</span>
             {product.oldPrice && (
               <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>
             )}
           </div>
-        </Link>
-    </div>
+        </div>
+      </div>
+    </Link>
   );
 };
+
 
 const RelatedProductsCarousel = ({ products }: { products: Product[] }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -516,6 +515,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               <div key={feature.id} className="info-promo-block-2">
                 <h2>{feature.titulo}</h2>
 
+                {/* Render de ventajas con posible negrita entre *asteriscos* */}
                 <div className="ventajas-list">
                   {feature.descripcion.split('\n').map((linea, index) => {
                     if (linea.includes('*')) {
@@ -555,6 +555,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
           </div>
         </div>
 
+        {/* Carrusel con tarjetas que ya incluyen el corazón */}
         <RelatedProductsCarousel products={relatedProducts} />
       </div>
     </>
