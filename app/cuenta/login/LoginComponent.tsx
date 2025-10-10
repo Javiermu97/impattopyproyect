@@ -51,13 +51,17 @@ const LoginForm = () => {
   };
 
   const handleGoogleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: typeof window !== 'undefined' ? window.location.origin : undefined,
-      },
-    });
-  };
+  // ✅ CAMBIO: Leemos la URL directamente de las variables de entorno
+  const redirectTo = process.env.NEXT_PUBLIC_SITE_URL;
+
+  await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      // Usamos la variable que acabamos de definir
+      redirectTo: redirectTo,
+    },
+  });
+};
 
   return (
     <>
