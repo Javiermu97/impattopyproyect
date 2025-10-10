@@ -6,10 +6,9 @@ import Image from 'next/image';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-// ✅ CORRECCIÓN: El botón ahora es un enlace directo a nuestra API
-function GoogleButton() {
+function GoogleButton({ onClick }: { onClick: () => void }) {
   return (
-    <a href="/api/auth/google" className="auth-google" aria-label="Iniciar sesión con Google">
+    <button type="button" className="auth-google" onClick={onClick} aria-label="Iniciar sesión con Google">
       <Image
         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
         alt="Google"
@@ -17,7 +16,7 @@ function GoogleButton() {
         height={18}
       />
       <span>Iniciar sesión con Google</span>
-    </a>
+    </button>
   );
 }
 
@@ -50,14 +49,21 @@ const LoginForm = () => {
     }
   };
 
-  // ✅ CORRECCIÓN: La función handleGoogleLogin ya no es necesaria y se ha eliminado.
+  const handleGoogleLogin = async () => {
+    // Usamos el método simple de Supabase
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        // Usaremos la URL de Vercel para la redirección
+        redirectTo: process.env.NEXT_PUBLIC_SITE_URL,
+      },
+    });
+  };
 
   return (
     <>
-      {/* El botón ya no necesita la propiedad onClick */}
-      <GoogleButton />
+      <GoogleButton onClick={handleGoogleLogin} />
       <div className="auth-sep">o</div>
-
       <form onSubmit={handleEmailLogin} className="auth-grid">
         <label className="auth-label" htmlFor="email">Correo electrónico</label>
         <input
@@ -69,7 +75,6 @@ const LoginForm = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-
         <label className="auth-label" htmlFor="pass">Contraseña</label>
         <input
           id="pass"
@@ -80,18 +85,15 @@ const LoginForm = () => {
           value={pass}
           onChange={(e) => setPass(e.target.value)}
         />
-
         <div className="auth-actions">
           <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
             <input type="checkbox" /> Recordarme
           </label>
           <Link href="/cuenta/forgot" className="auth-link">Olvidé mi contraseña</Link>
         </div>
-
         <button type="submit" className="auth-primary" disabled={loading}>
           {loading ? 'Ingresando…' : 'Iniciar sesión'}
         </button>
-
         {err && <p className="auth-note" style={{ color: '#b91c1c' }}>{err}</p>}
       </form>
     </>
@@ -154,7 +156,6 @@ const RegisterForm = () => {
         onChange={(e) => setForm({ ...form, nombre: e.target.value })}
         required
       />
-
       <label className="auth-label" htmlFor="apellido">Apellido *</label>
       <input
         id="apellido"
@@ -163,7 +164,6 @@ const RegisterForm = () => {
         onChange={(e) => setForm({ ...form, apellido: e.target.value })}
         required
       />
-
       <label className="auth-label" htmlFor="email-r">Correo electrónico *</label>
       <input
         id="email-r"
@@ -173,7 +173,6 @@ const RegisterForm = () => {
         onChange={(e) => setForm({ ...form, email: e.target.value })}
         required
       />
-
       <label className="auth-label" htmlFor="tel">Teléfono (opcional)</label>
       <input
         id="tel"
@@ -181,7 +180,6 @@ const RegisterForm = () => {
         value={form.telefono}
         onChange={(e) => setForm({ ...form, telefono: e.target.value })}
       />
-
       <label className="auth-label" htmlFor="pass-r">Contraseña *</label>
       <input
         id="pass-r"
@@ -191,7 +189,6 @@ const RegisterForm = () => {
         onChange={(e) => setForm({ ...form, pass: e.target.value })}
         required
       />
-
       <label className="auth-label" htmlFor="confirm">Confirmar contraseña *</label>
       <input
         id="confirm"
@@ -201,11 +198,9 @@ const RegisterForm = () => {
         onChange={(e) => setForm({ ...form, confirm: e.target.value })}
         required
       />
-
       <button type="submit" className="auth-primary" disabled={loading}>
         {loading ? 'Creando…' : 'Crear una cuenta'}
       </button>
-
       {err && <p className="auth-note" style={{ color: '#b91c1c' }}>{err}</p>}
     </form>
   );
@@ -258,6 +253,7 @@ export default function LoginComponent() {
               padding: '.4rem .8rem',
               borderRadius: 9999,
               borderColor: !isLoginView ? '#0d47a1' : '#d1d5db',
+              // ✅ AQUÍ ESTABA EL ERROR, AHORA CORREGIDO
               fontWeight: !isLoginView ? 700 : 500
             }}
           >
