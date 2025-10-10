@@ -6,9 +6,9 @@ import Image from 'next/image';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-function GoogleButton({ onClick }: { onClick: () => void }) {
+function GoogleButton() {
   return (
-    <button type="button" className="auth-google" onClick={onClick} aria-label="Iniciar sesión con Google">
+    <a href="/api/auth/google" className="auth-google" aria-label="Iniciar sesión con Google">
       <Image
         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
         alt="Google"
@@ -16,7 +16,7 @@ function GoogleButton({ onClick }: { onClick: () => void }) {
         height={18}
       />
       <span>Iniciar sesión con Google</span>
-    </button>
+    </a>
   );
 }
 
@@ -49,20 +49,9 @@ const LoginForm = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    // Usamos el método simple de Supabase
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        // Usaremos la URL de Vercel para la redirección
-        redirectTo: process.env.NEXT_PUBLIC_SITE_URL,
-      },
-    });
-  };
-
   return (
     <>
-      <GoogleButton onClick={handleGoogleLogin} />
+      <GoogleButton />
       <div className="auth-sep">o</div>
       <form onSubmit={handleEmailLogin} className="auth-grid">
         <label className="auth-label" htmlFor="email">Correo electrónico</label>
@@ -100,6 +89,7 @@ const LoginForm = () => {
   );
 };
 
+// ... (El resto del archivo, RegisterForm y LoginComponent, se queda igual)
 const RegisterForm = () => {
   const router = useRouter();
   const [form, setForm] = useState({
@@ -253,7 +243,6 @@ export default function LoginComponent() {
               padding: '.4rem .8rem',
               borderRadius: 9999,
               borderColor: !isLoginView ? '#0d47a1' : '#d1d5db',
-              // ✅ AQUÍ ESTABA EL ERROR, AHORA CORREGIDO
               fontWeight: !isLoginView ? 700 : 500
             }}
           >
