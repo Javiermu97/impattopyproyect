@@ -6,9 +6,10 @@ import Image from 'next/image';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-function GoogleButton({ onClick }: { onClick: () => void }) {
+// ✅ CORRECCIÓN: El botón ahora es un enlace directo a nuestra API
+function GoogleButton() {
   return (
-    <button type="button" className="auth-google" onClick={onClick} aria-label="Iniciar sesión con Google">
+    <a href="/api/auth/google" className="auth-google" aria-label="Iniciar sesión con Google">
       <Image
         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
         alt="Google"
@@ -16,7 +17,7 @@ function GoogleButton({ onClick }: { onClick: () => void }) {
         height={18}
       />
       <span>Iniciar sesión con Google</span>
-    </button>
+    </a>
   );
 }
 
@@ -39,7 +40,6 @@ const LoginForm = () => {
       if (error) throw error;
       router.push('/');
     } catch (error) {
-      // ✅ CORRECCIÓN 1: Manejamos el error de forma segura
       if (error instanceof Error) {
         setErr(error.message);
       } else {
@@ -50,22 +50,12 @@ const LoginForm = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-  // ✅ CAMBIO: Leemos la URL directamente de las variables de entorno
-  const redirectTo = process.env.NEXT_PUBLIC_SITE_URL;
-
-  await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      // Usamos la variable que acabamos de definir
-      redirectTo: redirectTo,
-    },
-  });
-};
+  // ✅ CORRECCIÓN: La función handleGoogleLogin ya no es necesaria y se ha eliminado.
 
   return (
     <>
-      <GoogleButton onClick={handleGoogleLogin} />
+      {/* El botón ya no necesita la propiedad onClick */}
+      <GoogleButton />
       <div className="auth-sep">o</div>
 
       <form onSubmit={handleEmailLogin} className="auth-grid">
@@ -144,7 +134,6 @@ const RegisterForm = () => {
       if (error) throw error;
       router.push('/cuenta/login');
     } catch (error) {
-      // ✅ CORRECCIÓN 2: Manejamos el error de forma segura
       if (error instanceof Error) {
         setErr(error.message);
       } else {
