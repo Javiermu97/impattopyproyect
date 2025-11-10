@@ -37,7 +37,7 @@ const Navbar = () => {
 
   const navLinks = [
     { href: '/', label: 'Inicio' },
-    { href: '/mas-vendidos', label: 'Más Vendidos' },
+    { href: '/tienda', label: 'Más Vendidos' },
     { href: '/hogar', label: 'Hogar' },
     { href: '/bienestar', label: 'Bienestar' },
     { href: '/limpieza', label: 'Limpieza' },
