@@ -2706,20 +2706,26 @@ body {
 
 /* Imagen de fondo (filosofia-1.jpg) */
 .philosophy-img-bg {
-  width: 70%;
-  height: auto;
-  top: 25%;
-  left: 0;
-  z-index: 2; /* Esta va al frente */
+  width: 85%;   /* Hacemos la imagen de fondo un poco más grande */
+  height: 90%;  /* Ajustamos la altura */
+  top: 10%;     /* La movemos un poco más abajo */
+  left: 15%;    /* La movemos más a la derecha */
+  z-index: 1;   /* Ahora la imagen de grupo va *detrás* */
+  border-radius: 8px; /* Asegura el border-radius */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Asegura la sombra */
+  object-fit: cover; /* Asegura el object-fit */
 }
 
 /* Imagen de frente (filosofia-2.jpg) */
 .philosophy-img-fg {
-  width: 70%;
-  height: auto;
-  top: 0;
-  right: 0;
-  z-index: 1; /* Esta va detrás */
+  width: 80%;   /* Hacemos la imagen de frente un poco más pequeña */
+  height: 90%;  /* Ajustamos la altura */
+  top: 0%;      /* La pegamos más arriba */
+  left: 0%;     /* La movemos a la izquierda */
+  z-index: 2;   /* Ahora la imagen de la chica va *delante* */
+  border-radius: 8px; /* Asegura el border-radius */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Asegura la sombra */
+  object-fit: cover; /* Asegura el object-fit */
 }
 
 .philosophy-pre-title {
