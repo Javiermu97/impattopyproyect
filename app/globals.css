@@ -2664,3 +2664,83 @@ body {
 /* Mensajes */
 .auth-note{ margin-top:.75rem; font-size:.9rem; color:#6b7280; text-align:center; }
 
+
+/* ========================================================= */
+/* ===== ESTILOS BASE PARA "NUESTRA FILOSOFÍA" (Escritorio) ===== */
+/* ========================================================= */
+
+/* Añade esta sección a tu globals.css */
+
+.philosophy-section {
+  padding: 4rem 2rem;
+  margin-top: -40px; /* Ajusta esto si es necesario para pegarlo a la sección anterior */
+}
+
+.philosophy-container {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  max-width: 1200px; /* Ancho máximo del contenedor */
+  margin: 0 auto;
+}
+
+.philosophy-image-container {
+  position: relative;
+  flex-basis: 50%; /* Ocupa la mitad del espacio */
+  height: 420px;
+  min-width: 450px;
+}
+
+.philosophy-content {
+  flex-basis: 50%; /* Ocupa la otra mitad */
+  padding-left: 1rem; /* Pequeño espacio para que el texto no se pegue */
+}
+
+.philosophy-img {
+  position: absolute;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+/* Imagen de fondo (filosofia-1.jpg) */
+.philosophy-img-bg {
+  width: 70%;
+  height: auto;
+  top: 25%;
+  left: 0;
+  z-index: 2; /* Esta va al frente */
+}
+
+/* Imagen de frente (filosofia-2.jpg) */
+.philosophy-img-fg {
+  width: 70%;
+  height: auto;
+  top: 0;
+  right: 0;
+  z-index: 1; /* Esta va detrás */
+}
+
+.philosophy-pre-title {
+    color: #777;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-size: 0.9em;
+}
+
+.philosophy-content h2 {
+    font-size: 2.2em;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+.philosophy-content p {
+    font-size: 1.1em;
+    line-height: 1.7;
+    color: #555;
+}
+
+/* --- FIN DE LA SECCIÓN PARA AÑADIR --- */
