@@ -2666,15 +2666,12 @@ body {
 
 
 /* ========================================================= */
-/* ===== ESTILOS BASE PARA "NUESTRA FILOSOFÍA" (Escritorio) ===== */
+/* ===== "NUESTRA FILOSOFÍA" – ajuste de superposición ===== */
 /* ========================================================= */
-
-/* Añade esta sección a tu globals.css */
-
 
 .philosophy-section {
   padding: 4rem 2rem;
-  margin-top: -40px; 
+  margin-top: -40px;
 }
 
 .philosophy-container {
@@ -2703,50 +2700,64 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   object-fit: cover;
   transition: all 0.3s ease;
-  height: auto; /* Dejamos que la altura sea automática */
+  height: auto;
+  aspect-ratio: 16 / 10; /* mantiene proporciones coherentes */
 }
 
-/* --- 1. IMAGEN DE FONDO (GRUPO) --- */
-/* (Corresponde a filosofia-1.jpg) */
+/* --- 1) IMAGEN DE ATRÁS (GRUPO) --- */
 .philosophy-img-bg {
-  width: 75%;  /* Tamaño más conservador */
-  top: 0;      /* Arriba */
-  right: 0;    /* A la derecha */
-  left: auto;  /* Anulamos 'left' */
-  z-index: 1;  /* Va DETRÁS */
+  width: 76%;
+  top: -10px;      /* SUBE un poco */
+  right: -12px;    /* MUEVE a la DERECHA */
+  left: auto;
+  z-index: 1;
 }
 
-/* --- 2. IMAGEN DE FRENTE (MUJER) --- */
-/* (Corresponde a filosofia-2.jpg) */
+/* --- 2) IMAGEN DE FRENTE (MUJER) --- */
 .philosophy-img-fg {
-  width: 75%;  /* Tamaño más conservador */
-  top: 20%;    /* Un poco más abajo */
-  left: 0;     /* A la izquierda */
-  right: auto; /* Anulamos 'right' */
-  z-index: 2;  /* Va AL FRENTE */
+  width: 76%;
+  top: 34%;        /* BAJA un poco más */
+  left: -14px;     /* MUEVE a la IZQUIERDA */
+  right: auto;
+  z-index: 2;
 }
 
-/* --- ESTILOS DE TEXTO (Estos ya deberías tenerlos) --- */
-
+/* -------- Texto -------- */
 .philosophy-pre-title {
-    color: #777;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-    font-size: 0.9em;
+  color: #777;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  font-size: 0.9em;
 }
 
 .philosophy-content h2 {
-    font-size: 2.2em;
-    font-weight: bold;
-    margin-top: 0;
-    margin-bottom: 1.5rem;
+  font-size: 2.2em;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
 }
 
 .philosophy-content p {
-    font-size: 1.1em;
-    line-height: 1.7;
-    color: #555;
+  font-size: 1.1em;
+  line-height: 1.7;
+  color: #555;
 }
 
-/* --- FIN DE LA SECCIÓN PARA AÑADIR --- */
+/* --------- Responsivo (tablet/móvil) --------- */
+@media (max-width: 1024px) {
+  .philosophy-container { flex-direction: column; }
+  .philosophy-image-container {
+    height: 360px;
+    min-width: 0;
+    width: 100%;
+  }
+  .philosophy-img-bg { top: -6px; right: -8px; width: 82%; }
+  .philosophy-img-fg { top: 32%; left: -8px; width: 82%; }
+}
+
+@media (max-width: 640px) {
+  .philosophy-image-container { height: 300px; }
+  .philosophy-img-bg { top: -4px; right: -6px; width: 88%; }
+  .philosophy-img-fg { top: 30%; left: -6px; width: 88%; }
+}
