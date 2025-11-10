@@ -2671,29 +2671,30 @@ body {
 
 /* Añade esta sección a tu globals.css */
 
+
 .philosophy-section {
   padding: 4rem 2rem;
-  margin-top: -40px; /* Ajusta esto si es necesario para pegarlo a la sección anterior */
+  margin-top: -40px; 
 }
 
 .philosophy-container {
   display: flex;
   align-items: center;
   gap: 3rem;
-  max-width: 1200px; /* Ancho máximo del contenedor */
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .philosophy-image-container {
   position: relative;
-  flex-basis: 50%; /* Ocupa la mitad del espacio */
+  flex-basis: 50%;
   height: 420px;
   min-width: 450px;
 }
 
 .philosophy-content {
-  flex-basis: 50%; /* Ocupa la otra mitad */
-  padding-left: 1rem; /* Pequeño espacio para que el texto no se pegue */
+  flex-basis: 50%;
+  padding-left: 1rem;
 }
 
 .philosophy-img {
@@ -2702,31 +2703,30 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   object-fit: cover;
   transition: all 0.3s ease;
+  height: auto; /* Dejamos que la altura sea automática */
 }
 
-/* Imagen de fondo (filosofia-1.jpg) */
+/* --- 1. IMAGEN DE FONDO (GRUPO) --- */
+/* (Corresponde a filosofia-1.jpg) */
 .philosophy-img-bg {
-  width: 85%;   /* Hacemos la imagen de fondo un poco más grande */
-  height: 90%;  /* Ajustamos la altura */
-  top: 10%;     /* La movemos un poco más abajo */
-  left: 15%;    /* La movemos más a la derecha */
-  z-index: 1;   /* Ahora la imagen de grupo va *detrás* */
-  border-radius: 8px; /* Asegura el border-radius */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Asegura la sombra */
-  object-fit: cover; /* Asegura el object-fit */
+  width: 75%;  /* Tamaño más conservador */
+  top: 0;      /* Arriba */
+  right: 0;    /* A la derecha */
+  left: auto;  /* Anulamos 'left' */
+  z-index: 1;  /* Va DETRÁS */
 }
 
-/* Imagen de frente (filosofia-2.jpg) */
+/* --- 2. IMAGEN DE FRENTE (MUJER) --- */
+/* (Corresponde a filosofia-2.jpg) */
 .philosophy-img-fg {
-  width: 80%;   /* Hacemos la imagen de frente un poco más pequeña */
-  height: 90%;  /* Ajustamos la altura */
-  top: 0%;      /* La pegamos más arriba */
-  left: 0%;     /* La movemos a la izquierda */
-  z-index: 2;   /* Ahora la imagen de la chica va *delante* */
-  border-radius: 8px; /* Asegura el border-radius */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Asegura la sombra */
-  object-fit: cover; /* Asegura el object-fit */
+  width: 75%;  /* Tamaño más conservador */
+  top: 20%;    /* Un poco más abajo */
+  left: 0;     /* A la izquierda */
+  right: auto; /* Anulamos 'right' */
+  z-index: 2;  /* Va AL FRENTE */
 }
+
+/* --- ESTILOS DE TEXTO (Estos ya deberías tenerlos) --- */
 
 .philosophy-pre-title {
     color: #777;
