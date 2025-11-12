@@ -13,7 +13,7 @@ export default function PrivacyPage() {
         <p>
           Esta Política de privacidad describe cómo se recopila, utiliza y
           comparte su información personal cuando visita o hace una compra en
-          <strong> arcashop.com.py</strong> (denominado en lo sucesivo el “Sitio”).
+          <strong> impatto.com.py</strong> (denominado en lo sucesivo el “Sitio”).
         </p>
 
         <h2>INFORMACIÓN PERSONAL QUE RECOPILAMOS</h2>
