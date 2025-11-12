@@ -1,0 +1,102 @@
+.page {
+  padding: 2rem 0 4rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: .5rem;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  margin: 0 0 2rem;
+}
+
+.faqList {
+  max-width: 900px;
+  margin: 0 auto;
+  border-top: 1px solid #eee;
+}
+
+.item {
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+}
+
+.questionBtn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: .25rem 0;
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform .2s ease;
+}
+
+.iconOpen {
+  transform: rotate(45deg); /* de + a − */
+}
+
+.answer {
+  color: #555;
+  margin-top: .5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .25s ease, opacity .2s ease;
+  opacity: 0;
+}
+
+.answerOpen {
+  max-height: 200px; /* suficiente para 2–3 líneas */
+  opacity: 1;
+}
+
+/* CTA final */
+.ctaSection {
+  margin-top: 3rem;
+  padding: 2.5rem 1rem;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.02) 100%);
+  text-align: center;
+}
+
+.ctaTitle {
+  margin: 0 0 .5rem;
+  font-size: 1.5rem;
+}
+
+.ctaText {
+  color: #666;
+  margin: 0 0 1rem;
+}
+
+.ctaBtn {
+  display: inline-block;
+  padding: .9rem 1.4rem;
+  background: #2B6CB0; /* azul botón */
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ctaBtn:hover {
+  filter: brightness(1.05);
+}
+
+/* Responsivo */
+@media (max-width: 640px) {
+  .questionBtn { font-size: 1rem; }
+  .icon { font-size: 1.3rem; }
+}
