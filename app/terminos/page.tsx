@@ -118,7 +118,7 @@ export default function TermsPage() {
         <h2>SECCIÓN 20: INFORMACIÓN DE CONTACTO</h2>
         <p>
           Las preguntas sobre los Términos del servicio se deben enviar a
-          <strong> contacto@clickmarket.com.py</strong>.
+          <strong> impattopy@gmail.com</strong>.
         </p>
 
         <h2>POLÍTICA DE PRIVACIDAD</h2>
