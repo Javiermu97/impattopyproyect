@@ -11,8 +11,8 @@ export default function GuaranteePage() {
         <p>
           La garantía del producto es de hasta <strong>5 (cinco) días calendario</strong> desde la
           entrega del mismo (solo por defectos de fábrica o averías en el transporte). Dentro de ese
-          plazo, el usuario puede contactarse con nosotros al <strong>+595 98314342</strong> o al
-          correo <strong>contacto@arcashop.com.py</strong> para hacer sus reclamos y/o solicitar el
+          plazo, el usuario puede contactarse con nosotros al <strong>+595 983491155</strong> o al
+          correo <strong>impattopy@gmail.com</strong> para hacer sus reclamos y/o solicitar el
           cambio de su producto y, en el caso de no contar con stock del producto, la devolución de
           su dinero, según lo dicta la Ley del Comercio Electrónico.
         </p>
@@ -27,7 +27,7 @@ export default function GuaranteePage() {
 
         <p>
           Solo en el caso de que la avería sea confirmada como de fábrica o de transporte,
-          <strong> ArcaShop</strong> se encargará de solicitar a su proveedor de envíos el retiro
+          <strong> Impatto</strong> se encargará de solicitar a su proveedor de envíos el retiro
           del producto en no más de <strong>10 días hábiles</strong> desde la dirección que el
           cliente indique hasta nuestro depósito para efectuar el reemplazo del producto averiado.
           En este caso específico, el costo de los envíos para devolver el producto corre por cuenta
@@ -36,16 +36,16 @@ export default function GuaranteePage() {
 
         <p>
           En el caso que el cliente solicite una devolución o cambio de un producto sin averías de
-          fábrica o daños de transporte confirmados por el equipo de ArcaShop a través del video y
+          fábrica o daños de transporte confirmados por el equipo de Impatto a través del video y
           en los tiempos arriba estipulados, los envíos correrán por cuenta del cliente. Y el
-          reemplazo del producto estará sujeto a la revisión del equipo de ArcaShop que debe pagar
+          reemplazo del producto estará sujeto a la revisión del equipo de Impatto que debe pagar
           por el envío a PAP cuando este haga el retiro del mismo.
         </p>
 
         <h2>No se aceptan devoluciones de:</h2>
         <ul className={styles.list}>
           <li>Compras que hayan sido entregadas al cliente hace más de 5 (cinco) días.</li>
-          <li>Productos que no fueron adquiridos a través de la página web de ArcaShop.</li>
+          <li>Productos que no fueron adquiridos a través de la página web de Impatto.</li>
           <li>Productos que fueron adquiridos en rebajas (Descuentos).</li>
           <li>Productos de uso íntimo (ropa interior, bikinis).</li>
           <li>Accesorios.</li>
@@ -60,7 +60,7 @@ export default function GuaranteePage() {
           </li>
           <li>
             Fotografía de la <strong>etiqueta del transportista</strong> (pegada en la caja o dentro
-            de la bolsa entregada por ArcaShop).
+            de la bolsa entregada por Impatto).
           </li>
           <li>
             Fotografía(s) del <strong>producto</strong> donde se aprecie claramente la incidencia.
