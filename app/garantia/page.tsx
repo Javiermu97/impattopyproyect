@@ -31,7 +31,7 @@ export default function GuaranteePage() {
           del producto en no más de <strong>10 días hábiles</strong> desde la dirección que el
           cliente indique hasta nuestro depósito para efectuar el reemplazo del producto averiado.
           En este caso específico, el costo de los envíos para devolver el producto corre por cuenta
-          de <strong>ArcaShop</strong>.
+          de <strong>Impatto</strong>.
         </p>
 
         <p>
