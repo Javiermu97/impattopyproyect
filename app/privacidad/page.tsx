@@ -6,7 +6,7 @@ export default function PrivacyPage() {
   return (
     <main className={`shop-container ${styles.page}`}>
       <h1 className={`section-title ${styles.title}`}>
-        Política de Privacidad de ArcaShop
+        Política de Privacidad de Impatto
       </h1>
 
       <div className={styles.content}>
