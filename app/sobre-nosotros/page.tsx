@@ -19,7 +19,7 @@ export default function SobreNosotrosPage() {
           Impatto: Innovación, Calidad y Pasión por tu Hogar
         </h1>
         <p style={{ fontSize: '1.1em', color: '#555', lineHeight: '1.7' }}>
-          La historia de Impatto Boutique es la visión de un joven emprendedor que soñó con transformar los hogares y la vida de las personas en Paraguay. Guiado por la convicción de que cada espacio merece ser un reflejo de bienestar y buen gusto, fundó este proyecto con un valor fundamental: <strong>ofrecer soluciones excepcionales que inspiren y mejoren tu día a día.</strong>
+          La historia de Impatto es la visión de un joven emprendedor que soñó con transformar los hogares y la vida de las personas en Paraguay. Guiado por la convicción de que cada espacio merece ser un reflejo de bienestar y buen gusto, fundó este proyecto con un valor fundamental: <strong>ofrecer soluciones excepcionales que inspiren y mejoren tu día a día.</strong>
         </p>
       </div>
 
@@ -59,7 +59,7 @@ export default function SobreNosotrosPage() {
       {/* Sección final con más texto */}
       <div style={{ maxWidth: '900px', margin: '4rem auto 2rem auto', textAlign: 'center' }}>
          <p style={{ fontSize: '1.1em', color: '#555', lineHeight: '1.7' }}>
-            Al elegir Impatto Boutique, no solo adquieres un producto; te unes a una comunidad que valora la excelencia y el diseño. Estamos aquí para proveer, ayudar y presentar lo mejor, porque tu felicidad y la de tu hogar son nuestra mayor recompensa.
+            Al elegir Impatto, no solo adquieres un producto; te unes a una comunidad que valora la excelencia y el diseño. Estamos aquí para proveer, ayudar y presentar lo mejor, porque tu felicidad y la de tu hogar son nuestra mayor recompensa.
         </p>
         <Link href="/tienda">
             <button className="btn-primary" style={{marginTop: '2rem'}}>Explorar la Tienda</button>

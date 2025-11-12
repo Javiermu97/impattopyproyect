@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 import { useCart } from '@/app/context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import SearchModal from './SearchModal'; // <-- 1. IMPORTACIÓN AÑADIDA
 import {
   IoMenuOutline,
   IoSearchOutline,
@@ -22,6 +23,7 @@ const Navbar = () => {
   const { openCart, cartItems } = useCart();
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // <-- 2. ESTADO AÑADIDO
 
   const currentPath = usePathname();
 
@@ -83,6 +85,7 @@ const Navbar = () => {
           <button
             className={`${styles.iconBtn} ${styles.searchIconDesktop}`}
             aria-label="Buscar"
+            onClick={() => setIsSearchOpen(true)} // <-- 3. onClick AÑADIDO
           >
             <IoSearchOutline size={24} />
           </button>
@@ -97,9 +100,7 @@ const Navbar = () => {
             <IoPersonOutline size={24} />
           </Link>
 
-          {/* LISTA DE DESEOS (CORAZÓN):
-              si hay sesión -> /wishlist;
-              si no -> /cuenta/login?redirected=true */}
+          {/* LISTA DE DESEOS (CORAZÓN) */}
           <Link
             href={user ? '/wishlist' : '/cuenta/login?redirected=true'}
             className={styles.iconBtn}
@@ -140,6 +141,9 @@ const Navbar = () => {
           </Link>
         ))}
       </nav>
+
+      {/* 4. MODAL DE BÚSQUEDA AÑADIDO AL FINAL */}
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 };
