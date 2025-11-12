@@ -11,23 +11,25 @@ export default function TermsPage() {
         <h2>GENERALIDADES</h2>
         <p>
           ArcaShop gestiona este sitio web. En todo el sitio, los términos
-          "nosotros", "nos" y "nuestro" se refieren en lo sucesivo a ArcaShop.
+          &quot;nosotros&quot;, &quot;nos&quot; y &quot;nuestro&quot; se refieren en lo sucesivo a ArcaShop.
           ArcaShop ofrece esta página web, incluida toda la información, las
           herramientas y los servicios que se ponen en este sitio a disposición
           suya, el usuario, siempre y cuando acepte la totalidad de los términos,
           condiciones, políticas y avisos contemplados aquí.
         </p>
+
         <p>
           Al visitar nuestro sitio y/o comprarnos algo, usted interactúa con
-          nuestro "Servicio" y reconoce como vinculantes los siguientes términos
-          y condiciones (denominados en lo sucesivo "Términos del servicio",
-          "Términos"), incluidos aquellos términos y condiciones adicionales y
+          nuestro &quot;Servicio&quot; y reconoce como vinculantes los siguientes términos
+          y condiciones (denominados en lo sucesivo &quot;Términos del servicio&quot;,
+          &quot;Términos&quot;), incluidos aquellos términos y condiciones adicionales y
           las políticas que se mencionan aquí y/o disponibles por medio de
           hipervínculo. Estos Términos del servicio se aplican a todos los
           usuarios del sitio, incluyendo de manera enunciativa mas no limitativa
           los usuarios que son navegadores, proveedores, clientes, comerciantes
           y/o que aporten contenido.
         </p>
+
         <p>
           Lea estos Términos del servicio detenidamente antes de acceder o
           utilizar nuestra página web. Al acceder o utilizar cualquier parte del
@@ -35,6 +37,7 @@ export default function TermsPage() {
           totalidad de los términos y condiciones de este acuerdo, no podrá
           acceder al sitio web ni utilizar ningún servicio.
         </p>
+
         <p>
           Las nuevas funciones o herramientas que se agreguen a la tienda actual
           también estarán sujetas a los Términos del servicio. Puede revisar la
@@ -55,6 +58,7 @@ export default function TermsPage() {
           edad y que nos ha dado su consentimiento para permitir que cualquier menor
           bajo su responsabilidad utilice este sitio.
         </p>
+
         <p>
           No puede utilizar nuestros productos para ningún fin ilegal o no autorizado
           ni infringir las leyes de su jurisdicción. No transmitirá virus informáticos
@@ -137,3 +141,4 @@ export default function TermsPage() {
     </main>
   );
 }
+
