@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // 👈 Agregar esto
 import styles from './SearchModal.module.css';
 import { IoCloseOutline, IoSearchOutline } from 'react-icons/io5';
 
@@ -12,36 +13,28 @@ interface SearchModalProps {
 
 const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const router = useRouter(); // 👈 Inicializamos el router
 
-  // Enfocar el input automáticamente cuando se abre el modal
   useEffect(() => {
     if (isOpen) {
-      // Usamos un pequeño timeout para asegurar que el input sea visible antes de enfocarlo
       setTimeout(() => {
         document.getElementById('search-input')?.focus();
       }, 100);
     }
   }, [isOpen]);
 
-  // Manejar el envío de la búsqueda (por ahora solo imprime en consola)
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Buscando:', searchTerm);
-    // Aquí iría la lógica para navegar a la página de resultados
-    // Por ejemplo: router.push(`/buscar?q=${searchTerm}`);
-    onClose(); // Cierra el modal después de buscar
+    if (!searchTerm.trim()) return; // evita búsquedas vacías
+    router.push(`/buscar?q=${encodeURIComponent(searchTerm)}`); // 👈 navegación real
+    onClose();
   };
 
-  if (!isOpen) {
-    return null;
-  }
+  if (!isOpen) return null;
 
   return (
     <>
-      {/* Overlay oscuro */}
       <div className={styles.overlay} onClick={onClose} />
-      
-      {/* Contenido del modal que se desliza */}
       <div className={`${styles.modal} ${isOpen ? styles.open : ''}`}>
         <div className={styles.header}>
           <h2>Buscar</h2>
@@ -49,7 +42,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
             <IoCloseOutline size={30} />
           </button>
         </div>
-        
+
         <div className={styles.content}>
           <form onSubmit={handleSearch} className={styles.searchForm}>
             <input
@@ -65,10 +58,9 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
               <IoSearchOutline size={24} />
             </button>
           </form>
-          
-          {/* Aquí podrías mostrar sugerencias de búsqueda o productos populares */}
+
           <div className={styles.suggestions}>
-            {/* Ejemplo: <p>Productos populares...</p> */}
+            {/* Aquí puedes añadir sugerencias o búsquedas recientes */}
           </div>
         </div>
       </div>
