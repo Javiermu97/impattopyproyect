@@ -41,11 +41,8 @@
 .icon {
   font-size: 1.5rem;
   line-height: 1;
-  transition: transform .2s ease;
-}
-
-.iconOpen {
-  transform: rotate(45deg); /* de + a − */
+  transition: opacity .2s ease;
+  color: #333;
 }
 
 .answer {

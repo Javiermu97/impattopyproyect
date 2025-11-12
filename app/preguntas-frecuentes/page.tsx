@@ -36,11 +36,8 @@ export default function FAQPage() {
                 className={styles.questionBtn}
               >
                 <span>{item.q}</span>
-                <span
-                  aria-hidden="true"
-                  className={`${styles.icon} ${isOpen ? styles.iconOpen : ''}`}
-                >
-                  +
+                <span aria-hidden="true" className={styles.icon}>
+                  {isOpen ? '−' : '+'}
                 </span>
               </button>
 
@@ -56,7 +53,7 @@ export default function FAQPage() {
         <h3 className={styles.ctaTitle}>¿No encontraste tu respuesta?</h3>
         <p className={styles.ctaText}>No dudes en ponerte en contacto con nosotros</p>
         <Link
-          href="https://wa.me/595XXXXXXXXX"  /* reemplazá por tu número */
+          href="https://wa.me/595983491155"  /* reemplazá por tu número */
           target="_blank"
           className={styles.ctaBtn}
         >
@@ -66,4 +63,5 @@ export default function FAQPage() {
     </main>
   );
 }
+
 
