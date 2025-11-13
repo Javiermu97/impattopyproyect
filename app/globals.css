@@ -2779,3 +2779,52 @@ body {
   .philosophy-img-bg { top: -4px; right: -6px; width: 88%; }
   .philosophy-img-fg { top: 30%; left: -6px; width: 88%; }
 }
+/* ====== SOBRE NOSOTROS (RESPONSIVE) ====== */
+@media (max-width: 1024px) {
+  .philosophy-section { padding: 2rem 1rem; margin-top: 0; }
+
+  .philosophy-container {
+    flex-direction: column;         /* apila imagen + texto */
+    gap: 1.75rem;
+    max-width: 900px;
+  }
+
+  .philosophy-image-container {
+    position: relative;             /* deja de ser lienzo para posiciones absolutas */
+    height: auto;                   /* alto se adapta al contenido */
+    min-width: 0;                   /* evita desbordes */
+    width: 100%;
+  }
+
+  /* Todas las imágenes pasan a flujo normal, una debajo de la otra */
+  .philosophy-img {
+    position: relative !important;  /* anula absolute del escritorio */
+    width: 100% !important;
+    height: auto !important;
+    left: auto; right: auto; top: auto;
+    z-index: 0;
+    border-radius: 12px;
+  }
+
+  /* Fondo y frente ya no se superponen en mobile */
+  .philosophy-img-bg,
+  .philosophy-img-fg {
+    margin: 0;                      /* sin traslapes ni offsets */
+  }
+  .philosophy-img-fg { margin-top: .75rem; }  /* pequeño espacio entre ambas */
+
+  .philosophy-content {
+    flex-basis: auto;
+    padding-left: 0;                /* quita sangría en mobile */
+    text-align: left;
+  }
+
+  .philosophy-content h2 { font-size: 1.6rem; }
+  .philosophy-content p  { font-size: 1rem; line-height: 1.7; }
+}
+
+@media (max-width: 640px) {
+  .philosophy-content h2 { font-size: 1.4rem; }
+  .philosophy-content p  { font-size: .98rem; }
+}
+
