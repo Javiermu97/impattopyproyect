@@ -168,22 +168,6 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 /* ... (otros estilos de .footer-col que no cambian) ... */
 
 
-/* --- 2. ESTILOS PARA EL BLOQUE DE COPYRIGHT (GRIS) --- */
-.copyright-section {
-  max-width: 1500px;
-  margin: 1rem auto 0 auto; /* 1rem arriba, 0 abajo, centrado */
-  background-color:  #f0f0f0; /* Fondo gris mas oscuro */
-  border-radius: 8px;
-  padding: 1rem;
-  box-sizing: border-box;
-  text-align: center;
-  color: #555;
-  font-size: 0.85rem;
-}
-.copyright-section p {
-  margin: 0;
-}
-
 /* --- 3. ESTILOS RESPONSIVOS --- */
 @media (max-width: 992px) {
   /* Hacemos que ambos bloques tengan bordes laterales en móvil */
@@ -227,7 +211,21 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   }
 }
 
-
+/* --- 2. ESTILOS PARA EL BLOQUE DE COPYRIGHT (GRIS) --- */
+.copyright-section {
+  max-width: 1500px;
+  margin: 1rem auto 0 auto; /* 1rem arriba, 0 abajo, centrado */
+  background-color:  #f0f0f0; /* Fondo gris mas oscuro */
+  border-radius: 8px;
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: center;
+  color: #555;
+  font-size: 0.85rem;
+}
+.copyright-section p {
+  margin: 0;
+}
 
 /* ========================================================= */
 /* ===== SOLUCIÓN DEFINITIVA PARA INFO BANNER ===== */
@@ -517,8 +515,6 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
-
 
 
 

@@ -66,7 +66,8 @@ const OrderConfirmation = ({ orderData, onGoBack }: OrderConfirmationProps) => (
 );
 const AccordionItem = ({ item, isOpen, onClick }: { item: AccordionItemData; isOpen: boolean; onClick: () => void; }) => (
   <div className="accordion-item">
-    <button className="accordion-header" onClick={onClick}><div className="accordion-title-wrapper"><span className="accordion-title-icon">{item.icon}</span><span>{item.title}</span></div><span className={`accordion-icon ${isOpen ? 'open' : ''}`}>+</span></button>
+    <button className="accordion-header" onClick={onClick}><div className="accordion-title-wrapper"><span className="accordion-title-icon">{item.icon}</span><span>{item.title}</span></div><span className={`pdp-accordion-icon ${isOpen ? 'open' : ''}`}aria-hidden
+  /></button>
     <div className={`accordion-content ${isOpen ? 'open' : ''}`}><div className="accordion-content-inner">{item.content}</div></div>
   </div>
 );
