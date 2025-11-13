@@ -2684,7 +2684,7 @@ body {
 
 
 /* ========================================================= */
-/* ===== "NUESTRA FILOSOFÍA" – ajuste de superposición ===== */
+/* ===== "NUESTRA FILOSOFÍA" – SUPERPOSICIÓN MEJORADA ===== */
 /* ========================================================= */
 
 .philosophy-section {
@@ -2719,23 +2719,23 @@ body {
   object-fit: cover;
   transition: all 0.3s ease;
   height: auto;
-  aspect-ratio: 16 / 10; /* mantiene proporciones coherentes */
+  aspect-ratio: 16 / 10;
 }
 
-/* --- 1) IMAGEN DE ATRÁS (GRUPO) --- */
+/* --- IMAGEN DE ATRÁS (GRUPO) --- */
 .philosophy-img-bg {
   width: 76%;
-  top: -10px;      /* SUBE un poco */
-  right: -12px;    /* MUEVE a la DERECHA */
+  top: -10px;
+  right: -12px;
   left: auto;
   z-index: 1;
 }
 
-/* --- 2) IMAGEN DE FRENTE (MUJER) --- */
+/* --- IMAGEN DE FRENTE (MUJER) --- */
 .philosophy-img-fg {
   width: 76%;
-  top: 34%;        /* BAJA un poco más */
-  left: -14px;     /* MUEVE a la IZQUIERDA */
+  top: 34%;
+  left: -14px;
   right: auto;
   z-index: 2;
 }
@@ -2762,7 +2762,7 @@ body {
   color: #555;
 }
 
-/* --------- RESPONSIVO (tablet y móvil) — SOLUCIÓN MEJORADA --------- */
+/* --------- RESPONSIVO MEJORADO --------- */
 @media (max-width: 1024px) {
   .philosophy-container {
     flex-direction: column;
@@ -2774,31 +2774,34 @@ body {
     position: relative;
     width: 100%;
     max-width: 500px;
-    height: 350px; /* Mantenemos una altura fija para la superposición */
-    margin: 0 auto 2rem auto;
+    height: 400px; /* Altura suficiente para superposición */
+    margin: 0 auto 3rem auto;
     min-width: unset;
   }
 
-  /* Mantenemos las imágenes en posición absoluta para la superposición */
+  /* Mantenemos posición absoluta para superposición */
   .philosophy-img {
     position: absolute;
-    width: 80%;
+    width: 75%;
     border-radius: 10px;
     object-fit: cover;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   }
 
-  /* Ajustamos posiciones para tablet */
+  /* SUPERPOSICIÓN MÁS EVIDENTE */
   .philosophy-img-bg {
     top: 0;
     right: 0;
-    width: 75%;
+    width: 70%;
+    z-index: 1;
   }
 
   .philosophy-img-fg {
-    top: 25%;
+    top: 30%;
     left: 0;
-    width: 75%;
+    width: 70%;
+    z-index: 2;
+    transform: translateY(-20px); /* Añadimos desplazamiento vertical */
   }
 
   .philosophy-content {
@@ -2807,7 +2810,7 @@ body {
   }
 }
 
-/* móvil - ajustes específicos */
+/* MÓVIL - SUPERPOSICIÓN AÚN MÁS MARCADA */
 @media (max-width: 640px) {
   .philosophy-section {
     padding: 3rem 1rem;
@@ -2815,34 +2818,52 @@ body {
   
   .philosophy-image-container {
     max-width: 100%;
-    height: 300px; /* Altura reducida para móviles */
-    margin-bottom: 1.5rem;
+    height: 350px; /* Altura ajustada para móviles */
+    margin-bottom: 2rem;
   }
 
-  /* Ajustamos posiciones para móviles */
+  /* Ajustamos para superposición más evidente en móviles */
   .philosophy-img {
-    width: 85%;
+    width: 80%;
   }
 
   .philosophy-img-bg {
     top: 5%;
     right: 5%;
-    width: 70%;
+    width: 65%;
   }
 
   .philosophy-img-fg {
-    top: 20%;
+    top: 25%;
     left: 5%;
-    width: 70%;
+    width: 65%;
+    transform: translateY(-15px); /* Desplazamiento para móviles */
   }
 
   .philosophy-content h2 {
-    font-size: 1.45rem;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
   }
   
   .philosophy-content p {
-    font-size: 0.98rem;
-    line-height: 1.7;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
+
+/* PEQUEÑOS AJUSTES PARA TABLETS MÁS PEQUEÑAS */
+@media (max-width: 768px) and (min-width: 641px) {
+  .philosophy-image-container {
+    height: 380px;
+  }
+  
+  .philosophy-img-bg {
+    width: 68%;
+  }
+  
+  .philosophy-img-fg {
+    width: 68%;
+    transform: translateY(-25px);
   }
 }
 
