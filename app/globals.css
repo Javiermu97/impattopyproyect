@@ -2770,32 +2770,48 @@ body {
     gap: 2rem;
   }
 
+  /* Ajuste para superposición: Necesitamos altura fija para contener absolutos */
   .philosophy-image-container {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    /* Eliminamos flex-direction: column y display: flex */
     width: 100%;
-    max-width: 500px;
-    margin: 0 auto 1rem auto;
-    height: auto; /* ya no fijo */
+    max-width: 450px; /* Limitamos el ancho para que quepan los offsets */
+    margin: 2rem auto 2rem auto;
+    height: 380px; /* Nueva altura fija para la superposición */
   }
 
-  /* las imágenes se apilan sin posición absoluta */
+  /* Volvemos a usar posición absoluta y tamaño ajustado para la superposición */
   .philosophy-img {
-    position: relative;
-    width: 100%;
-    border-radius: 10px;
+    position: absolute;
+    width: 75%; /* Las hacemos más pequeñas para que el offset funcione */
+    height: 90%; /* Ajustamos la altura */
+    border-radius: 8px;
     object-fit: cover;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    /* Reseteamos estilos que no deben aplicarse aquí */
+    margin: 0; 
   }
 
+  /* --- 1) IMAGEN DE ATRÁS (GRUPO) --- */
   .philosophy-img-bg {
-    margin-bottom: -2rem; /* se superponen un poco */
+    width: 75%;
+    /* Posición: Arriba y a la izquierda */
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: auto;
     z-index: 1;
+    /* Eliminamos el margin-bottom negativo que se usaba para el apilamiento simple */
   }
 
+  /* --- 2) IMAGEN DE FRENTE (MUJER) --- */
   .philosophy-img-fg {
+    width: 75%;
+    /* Posición: Abajo y a la derecha, superponiéndose */
+    bottom: 0;
+    right: 0;
+    left: auto;
+    top: auto;
     z-index: 2;
   }
 
@@ -2808,14 +2824,19 @@ body {
 /* móvil */
 @media (max-width: 640px) {
   .philosophy-image-container {
-    max-width: 100%;
-    margin-bottom: 1.5rem;
+    max-width: 95%; /* Aseguramos que ocupe casi todo el ancho */
+    height: 300px; /* Reducimos la altura en móvil */
+    margin: 1.5rem auto 1.5rem auto;
   }
 
-  .philosophy-img-bg {
-    margin-bottom: -1.5rem; /* leve superposición */
+  .philosophy-img {
+    width: 70%; /* Reducimos el tamaño de la imagen */
+    height: 90%;
   }
-
+  
+  /* Eliminamos la regla de margin-bottom que ya no aplica en este nuevo método */
+  /* .philosophy-img-bg { margin-bottom: -1.5rem; } */ 
+  
   .philosophy-content h2 {
     font-size: 1.45rem;
   }
