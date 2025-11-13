@@ -2762,62 +2762,69 @@ body {
   color: #555;
 }
 
-/* --------- Responsivo (tablet/móvil) — REEMPLAZA TODO ESTO --------- */
+/* --------- RESPONSIVO (tablet y móvil) — SOLUCIÓN FINAL --------- */
 @media (max-width: 1024px) {
   .philosophy-container {
-    flex-direction: column;            /* texto debajo */
+    flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
   .philosophy-image-container {
-    height: clamp(340px, 52vw, 420px); /* alto suficiente segun ancho */
-    min-width: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    margin-bottom: 1rem;               /* aire para que no toque el texto */
+    max-width: 500px;
+    margin: 0 auto 1rem auto;
+    height: auto; /* ya no fijo */
   }
 
-  /* sin offsets negativos: que entren dentro del contenedor */
+  /* las imágenes se apilan sin posición absoluta */
+  .philosophy-img {
+    position: relative;
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  }
+
   .philosophy-img-bg {
-    width: 88%;
-    top: 0;
-    right: 2%;
+    margin-bottom: -2rem; /* se superponen un poco */
+    z-index: 1;
   }
 
-  /* leve solape: SOLO bordes */
   .philosophy-img-fg {
-    width: 84%;
-    top: 14%;   /* antes 32% — esto evita que se salga del contenedor */
-    left: 2%;
+    z-index: 2;
   }
 
   .philosophy-content {
-    padding-left: 0;
     text-align: left;
+    padding-left: 0;
   }
 }
 
+/* móvil */
 @media (max-width: 640px) {
   .philosophy-image-container {
-    height: clamp(260px, 62vw, 360px);
-    margin-bottom: 1.25rem;
+    max-width: 100%;
+    margin-bottom: 1.5rem;
   }
 
   .philosophy-img-bg {
-    width: 92%;
-    top: 0;
-    right: 1%;
+    margin-bottom: -1.5rem; /* leve superposición */
   }
 
-  .philosophy-img-fg {
-    width: 88%;
-    top: 10%;  /* solape suave en móviles */
-    left: 1%;
+  .philosophy-content h2 {
+    font-size: 1.45rem;
   }
-
-  .philosophy-content h2 { font-size: 1.45rem; }
-  .philosophy-content p  { font-size: .98rem; line-height: 1.7; }
+  .philosophy-content p {
+    font-size: 0.98rem;
+    line-height: 1.7;
+  }
 }
+
 
 
 
