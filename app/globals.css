@@ -2762,68 +2762,22 @@ body {
   color: #555;
 }
 
-/* ===== SOBRE NOSOTROS: ajustes finos ===== */
-
-/* Escritorio: apenas superpuestas (solo bordes) */
-@media (min-width: 1025px) {
-  .philosophy-image-container {
-    height: 420px; /* como tenías */
-    min-width: 450px;
-  }
-  .philosophy-img-bg {
-    /* atrás, sup-der */
-    width: 76%;
-    top: 0;
-    right: 0;
-  }
-  .philosophy-img-fg {
-    /* frente, un poco más chica y movida izq/abajo
-       => solo se tocan los bordes, no tapa */
-    width: 72%;
-    top: 10%;
-    left: 6%;
-  }
-}
-
-/* Tablet y móvil: imágenes arriba, texto abajo (siguen tocándose apenas) */
+/* --------- Responsivo (tablet/móvil) --------- */
 @media (max-width: 1024px) {
-  .philosophy-section { padding: 2.25rem 1rem; }
-
-  .philosophy-container {
-    flex-direction: column;      /* texto debajo */
-    align-items: center;
-    gap: 1.5rem;
-  }
-
+  .philosophy-container { flex-direction: column; }
   .philosophy-image-container {
-    position: relative;
-    width: 100%;
+    height: 360px;
     min-width: 0;
-    height: 52vw;                /* mantiene proporción sin saltos */
-    max-height: 420px;
+    width: 100%;
   }
-
-  .philosophy-img { 
-    border-radius: 12px;
-    object-fit: cover;
-  }
-
-  /* leve solape en tablet */
-  .philosophy-img-bg { width: 88%; top: 0;   right: 4%; }
-  .philosophy-img-fg { width: 84%; top: 8%;  left: 4%;  }
-
-  .philosophy-content { padding-left: 0; text-align: left; }
-  .philosophy-content h2 { font-size: 1.6rem; }
-  .philosophy-content p  { font-size: 1rem; line-height: 1.7; }
+  .philosophy-img-bg { top: -6px; right: -8px; width: 82%; }
+  .philosophy-img-fg { top: 32%; left: -8px; width: 82%; }
 }
 
 @media (max-width: 640px) {
-  /* en móvil, un poquito menos de solape aún */
-  .philosophy-image-container { height: 58vw; }
-  .philosophy-img-bg { width: 92%; top: 0;  right: 2%; }
-  .philosophy-img-fg { width: 88%; top: 6%; left: 2%; }
-  .philosophy-content h2 { font-size: 1.45rem; }
-  .philosophy-content p  { font-size: .98rem; }
+  .philosophy-image-container { height: 300px; }
+  .philosophy-img-bg { top: -4px; right: -6px; width: 88%; }
+  .philosophy-img-fg { top: 30%; left: -6px; width: 88%; }
 }
 
 
