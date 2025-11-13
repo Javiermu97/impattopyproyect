@@ -19,7 +19,7 @@ export default function JobsPage() {
         </p>
 
         <a href="impattopy@gmail.com" className={styles.ctaBtn}>
-          Enviar CV por correo
+         
         </a>
       </div>
     </main>
