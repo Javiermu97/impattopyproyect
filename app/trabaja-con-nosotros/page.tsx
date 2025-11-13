@@ -15,7 +15,7 @@ export default function JobsPage() {
         </p>
 
         <p className={styles.ctaText}>
-          Envíanos tu currículum a <a href="mailto:impattopy@gmail.com">contacto@arcashop.com.py</a>
+          Envíanos tu currículum a <a href="mailto:impattopy@gmail.com">impattopy@gmail.com</a>
         </p>
 
         <a href="impattopy@gmail.com" className={styles.ctaBtn}>
