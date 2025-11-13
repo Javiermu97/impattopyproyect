@@ -2683,148 +2683,111 @@ body {
 .auth-note{ margin-top:.75rem; font-size:.9rem; color:#6b7280; text-align:center; }
 
 
-/* ========================================================= */
-/* ===== "NUESTRA FILOSOFÍA" – ajuste de superposición ===== */
-/* ========================================================= */
+/* ===========================
+   SOBRE NOSOTROS — IMÁGENES SUPERPUESTAS + TEXTO ABAJO
+   =========================== */
 
 .philosophy-section {
-  padding: 4rem 2rem;
-  margin-top: -40px;
+  padding: 3rem 1rem;
 }
 
 .philosophy-container {
+  /* SIEMPRE en columna: imágenes arriba, texto abajo */
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 3rem;
-  max-width: 1200px;
+  gap: 1.75rem;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
+/* Lienzo para colocar las 2 imágenes */
 .philosophy-image-container {
+  --img-w: 72%;      /* ancho relativo de cada imagen (ajustá 68–76) */
+  --offset: 6%;      /* cuánto se separan hacia esquinas (4–10) */
   position: relative;
-  flex-basis: 50%;
-  height: 420px;
-  min-width: 450px;
+  width: 100%;
+  max-width: 820px;
+  aspect-ratio: 16 / 9;      /* mantiene proporción sin “saltar” */
+  min-height: 280px;         /* por si el navegador no soporta aspect-ratio */
 }
 
-.philosophy-content {
-  flex-basis: 50%;
-  padding-left: 1rem;
-}
-
+/* Estilo base de ambas imágenes */
 .philosophy-img {
   position: absolute;
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  object-fit: cover;
-  transition: all 0.3s ease;
+  width: var(--img-w);
   height: auto;
-  aspect-ratio: 16 / 10; /* mantiene proporciones coherentes */
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 12px 30px rgba(0,0,0,.12);
+  transition: transform .3s ease;
 }
 
-/* --- 1) IMAGEN DE ATRÁS (GRUPO) --- */
+/* Fondo (grupo) en esquina superior derecha */
 .philosophy-img-bg {
-  width: 76%;
-  top: -10px;      /* SUBE un poco */
-  right: -12px;    /* MUEVE a la DERECHA */
-  left: auto;
+  top: 0; right: 0;
   z-index: 1;
+  /* separa un poco hacia afuera para que SOLO se toquen bordes */
+  transform: translate(var(--offset), calc(-1 * var(--offset)));
 }
 
-/* --- 2) IMAGEN DE FRENTE (MUJER) --- */
+/* Frente (mujer) en esquina inferior izquierda, por encima */
 .philosophy-img-fg {
-  width: 76%;
-  top: 34%;        /* BAJA un poco más */
-  left: -14px;     /* MUEVE a la IZQUIERDA */
-  right: auto;
+  left: 0; bottom: 0;
   z-index: 2;
+  transform: translate(calc(-1 * var(--offset)), var(--offset));
 }
 
-/* -------- Texto -------- */
+/* Texto debajo */
+.philosophy-content {
+  width: 100%;
+  max-width: 820px;
+  padding: 0;
+  text-align: left;
+}
+
 .philosophy-pre-title {
   color: #777;
-  font-weight: bold;
+  font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
-  font-size: 0.9em;
+  margin-bottom: .5rem;
+  font-size: .9rem;
 }
 
 .philosophy-content h2 {
-  font-size: 2.2em;
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 1rem 0;
 }
 
 .philosophy-content p {
-  font-size: 1.1em;
-  line-height: 1.7;
+  font-size: 1.05rem;
+  line-height: 1.75;
   color: #555;
 }
 
-/* --------- Responsivo (tablet/móvil) --------- */
+/* ====== TABLET ====== */
 @media (max-width: 1024px) {
-  .philosophy-container { flex-direction: column; }
+  .philosophy-section { padding: 2.5rem 1rem; }
   .philosophy-image-container {
-    height: 360px;
-    min-width: 0;
-    width: 100%;
+    --img-w: 78%;
+    --offset: 5%;
+    max-width: 760px;
   }
-  .philosophy-img-bg { top: -6px; right: -8px; width: 82%; }
-  .philosophy-img-fg { top: 32%; left: -8px; width: 82%; }
+  .philosophy-content h2 { font-size: 1.8rem; }
 }
 
+/* ====== MÓVIL ====== */
 @media (max-width: 640px) {
-  .philosophy-image-container { height: 300px; }
-  .philosophy-img-bg { top: -4px; right: -6px; width: 88%; }
-  .philosophy-img-fg { top: 30%; left: -6px; width: 88%; }
-}
-/* ====== SOBRE NOSOTROS (RESPONSIVE) ====== */
-@media (max-width: 1024px) {
-  .philosophy-section { padding: 2rem 1rem; margin-top: 0; }
-
-  .philosophy-container {
-    flex-direction: column;         /* apila imagen + texto */
-    gap: 1.75rem;
-    max-width: 900px;
-  }
-
+  .philosophy-section { padding: 2rem 1rem; }
   .philosophy-image-container {
-    position: relative;             /* deja de ser lienzo para posiciones absolutas */
-    height: auto;                   /* alto se adapta al contenido */
-    min-width: 0;                   /* evita desbordes */
-    width: 100%;
+    aspect-ratio: 16 / 11;
+    min-height: 220px;
+    --img-w: 86%;   /* un poco más grandes pero siguen tocándose solo en bordes */
+    --offset: 4%;
   }
-
-  /* Todas las imágenes pasan a flujo normal, una debajo de la otra */
-  .philosophy-img {
-    position: relative !important;  /* anula absolute del escritorio */
-    width: 100% !important;
-    height: auto !important;
-    left: auto; right: auto; top: auto;
-    z-index: 0;
-    border-radius: 12px;
-  }
-
-  /* Fondo y frente ya no se superponen en mobile */
-  .philosophy-img-bg,
-  .philosophy-img-fg {
-    margin: 0;                      /* sin traslapes ni offsets */
-  }
-  .philosophy-img-fg { margin-top: .75rem; }  /* pequeño espacio entre ambas */
-
-  .philosophy-content {
-    flex-basis: auto;
-    padding-left: 0;                /* quita sangría en mobile */
-    text-align: left;
-  }
-
-  .philosophy-content h2 { font-size: 1.6rem; }
-  .philosophy-content p  { font-size: 1rem; line-height: 1.7; }
-}
-
-@media (max-width: 640px) {
-  .philosophy-content h2 { font-size: 1.4rem; }
+  .philosophy-content h2 { font-size: 1.45rem; }
   .philosophy-content p  { font-size: .98rem; }
 }
+
 
