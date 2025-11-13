@@ -2762,7 +2762,7 @@ body {
   color: #555;
 }
 
-/* --------- RESPONSIVO (tablet y móvil) — SOLUCIÓN FINAL --------- */
+/* --------- RESPONSIVO (tablet y móvil) — SOLUCIÓN MEJORADA --------- */
 @media (max-width: 1024px) {
   .philosophy-container {
     flex-direction: column;
@@ -2770,49 +2770,35 @@ body {
     gap: 2rem;
   }
 
-  /* Ajuste para superposición: Necesitamos altura fija para contener absolutos */
   .philosophy-image-container {
     position: relative;
-    /* Eliminamos flex-direction: column y display: flex */
     width: 100%;
-    max-width: 450px; /* Limitamos el ancho para que quepan los offsets */
-    margin: 2rem auto 2rem auto;
-    height: 380px; /* Nueva altura fija para la superposición */
+    max-width: 500px;
+    height: 350px; /* Mantenemos una altura fija para la superposición */
+    margin: 0 auto 2rem auto;
+    min-width: unset;
   }
 
-  /* Volvemos a usar posición absoluta y tamaño ajustado para la superposición */
+  /* Mantenemos las imágenes en posición absoluta para la superposición */
   .philosophy-img {
     position: absolute;
-    width: 75%; /* Las hacemos más pequeñas para que el offset funcione */
-    height: 90%; /* Ajustamos la altura */
-    border-radius: 8px;
+    width: 80%;
+    border-radius: 10px;
     object-fit: cover;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-    /* Reseteamos estilos que no deben aplicarse aquí */
-    margin: 0; 
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
   }
 
-  /* --- 1) IMAGEN DE ATRÁS (GRUPO) --- */
+  /* Ajustamos posiciones para tablet */
   .philosophy-img-bg {
-    width: 75%;
-    /* Posición: Arriba y a la izquierda */
     top: 0;
-    left: 0;
-    right: auto;
-    bottom: auto;
-    z-index: 1;
-    /* Eliminamos el margin-bottom negativo que se usaba para el apilamiento simple */
+    right: 0;
+    width: 75%;
   }
 
-  /* --- 2) IMAGEN DE FRENTE (MUJER) --- */
   .philosophy-img-fg {
+    top: 25%;
+    left: 0;
     width: 75%;
-    /* Posición: Abajo y a la derecha, superponiéndose */
-    bottom: 0;
-    right: 0;
-    left: auto;
-    top: auto;
-    z-index: 2;
   }
 
   .philosophy-content {
@@ -2821,25 +2807,39 @@ body {
   }
 }
 
-/* móvil */
+/* móvil - ajustes específicos */
 @media (max-width: 640px) {
+  .philosophy-section {
+    padding: 3rem 1rem;
+  }
+  
   .philosophy-image-container {
-    max-width: 95%; /* Aseguramos que ocupe casi todo el ancho */
-    height: 300px; /* Reducimos la altura en móvil */
-    margin: 1.5rem auto 1.5rem auto;
+    max-width: 100%;
+    height: 300px; /* Altura reducida para móviles */
+    margin-bottom: 1.5rem;
   }
 
+  /* Ajustamos posiciones para móviles */
   .philosophy-img {
-    width: 70%; /* Reducimos el tamaño de la imagen */
-    height: 90%;
+    width: 85%;
   }
-  
-  /* Eliminamos la regla de margin-bottom que ya no aplica en este nuevo método */
-  /* .philosophy-img-bg { margin-bottom: -1.5rem; } */ 
-  
+
+  .philosophy-img-bg {
+    top: 5%;
+    right: 5%;
+    width: 70%;
+  }
+
+  .philosophy-img-fg {
+    top: 20%;
+    left: 5%;
+    width: 70%;
+  }
+
   .philosophy-content h2 {
     font-size: 1.45rem;
   }
+  
   .philosophy-content p {
     font-size: 0.98rem;
     line-height: 1.7;
