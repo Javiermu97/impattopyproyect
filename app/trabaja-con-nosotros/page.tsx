@@ -11,7 +11,7 @@ export default function JobsPage() {
         <p className={styles.lead}>
           El comercio electrónico cambia las reglas del juego constantemente y propone, todos los días,
           nuevos desafíos. Todas nuestras unidades de negocio requieren del mejor talento. Buscamos
-          personas que sean capaces de asumir el reto, para sumarlas a <strong>Click Market</strong>.
+          personas que sean capaces de asumir el reto, para sumarlas a <strong>Impatto</strong>.
         </p>
 
         <p className={styles.ctaText}>

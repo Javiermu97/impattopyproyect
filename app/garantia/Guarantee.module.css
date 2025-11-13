@@ -1,11 +1,13 @@
 .page {
-  padding: 2rem 0 4rem;
+  padding: 2rem 1rem 4rem;
   line-height: 1.7;
 }
 
 .title {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #222;
 }
 
 .content {
@@ -17,24 +19,54 @@
 .content h2 {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: #222;
 }
 
 .content p {
   margin-bottom: 1rem;
   text-align: justify;
+  font-size: 1.05rem;
 }
 
 .list {
-  margin: 0 0 1rem 1.25rem;
+  margin: 0 0 1rem 1.5rem;
 }
 
 .list li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.6;
 }
 
+/* === TABLET === */
+@media (max-width: 992px) {
+  .title {
+    font-size: 1.75rem;
+  }
+  .content h2 {
+    font-size: 1.2rem;
+  }
+  .content p {
+    font-size: 1rem;
+  }
+  .content {
+    max-width: 720px;
+  }
+}
+
+/* === MÓVIL === */
 @media (max-width: 640px) {
-  .content h2 { font-size: 1.1rem; }
-  .content p { font-size: 0.95rem; }
+  .page {
+    padding: 1.5rem 1rem 3rem;
+  }
+  .title {
+    font-size: 1.5rem;
+  }
+  .content h2 {
+    font-size: 1.05rem;
+  }
+  .content p,
+  .list li {
+    font-size: 0.95rem;
+  }
 }

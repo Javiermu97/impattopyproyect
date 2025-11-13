@@ -1,16 +1,19 @@
 .page {
-  padding: 2rem 0 4rem;
+  padding: 2rem 1rem 4rem;
+  line-height: 1.7;
 }
 
 .header {
   text-align: center;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
 }
 
 .subtitle {
   text-align: center;
   color: #666;
-  margin: 0 0 2rem;
+  margin-bottom: 2rem;
+  font-size: 1rem;
 }
 
 .faqList {
@@ -34,32 +37,37 @@
   text-align: left;
   font-size: 1.05rem;
   font-weight: 600;
-  padding: .25rem 0;
+  padding: 0.25rem 0;
   cursor: pointer;
 }
 
 .icon {
   font-size: 1.5rem;
   line-height: 1;
-  transition: opacity .2s ease;
+  transition: opacity 0.2s ease;
   color: #333;
 }
 
 .answer {
   color: #555;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   max-height: 0;
   overflow: hidden;
-  transition: max-height .25s ease, opacity .2s ease;
+  transition: max-height 0.25s ease, opacity 0.2s ease;
   opacity: 0;
 }
 
 .answerOpen {
-  max-height: 200px; /* suficiente para 2–3 líneas */
+  max-height: 500px;
   opacity: 1;
 }
 
-/* CTA final */
+.answer p {
+  margin: 0 0 0.7rem;
+  line-height: 1.6;
+}
+
+/* CTA */
 .ctaSection {
   margin-top: 3rem;
   padding: 2.5rem 1rem;
@@ -69,19 +77,19 @@
 }
 
 .ctaTitle {
-  margin: 0 0 .5rem;
+  margin-bottom: 0.5rem;
   font-size: 1.5rem;
 }
 
 .ctaText {
   color: #666;
-  margin: 0 0 1rem;
+  margin-bottom: 1rem;
 }
 
 .ctaBtn {
   display: inline-block;
-  padding: .9rem 1.4rem;
-  background: #2B6CB0; /* azul botón */
+  padding: 0.9rem 1.4rem;
+  background: #2B6CB0;
   color: #fff;
   border-radius: 999px;
   font-weight: 600;
@@ -92,8 +100,38 @@
   filter: brightness(1.05);
 }
 
-/* Responsivo */
-@media (max-width: 640px) {
-  .questionBtn { font-size: 1rem; }
-  .icon { font-size: 1.3rem; }
+/* === TABLET === */
+@media (max-width: 992px) {
+  .header {
+    font-size: 1.75rem;
+  }
+  .questionBtn {
+    font-size: 1rem;
+  }
 }
+
+/* === MÓVIL === */
+@media (max-width: 640px) {
+  .header {
+    font-size: 1.5rem;
+  }
+  .questionBtn {
+    font-size: 0.95rem;
+  }
+  .icon {
+    font-size: 1.3rem;
+  }
+  .ctaSection {
+    padding: 2rem 1rem;
+  }
+  .ctaTitle {
+    font-size: 1.25rem;
+  }
+  .ctaText {
+    font-size: 0.95rem;
+  }
+  .ctaBtn {
+    font-size: 0.95rem;
+  }
+}
+

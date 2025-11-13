@@ -1,11 +1,14 @@
 .page {
-  padding: 2rem 0 4rem;
+  padding: 2rem 1rem 4rem;
   line-height: 1.7;
+  background: #fff;
 }
 
 .title {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #222;
 }
 
 .content {
@@ -17,24 +20,50 @@
 .content h2 {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   color: #222;
+  line-height: 1.4;
 }
 
 .content p {
   margin-bottom: 1rem;
   text-align: justify;
+  font-size: 1.05rem;
 }
 
 .content strong {
-  color: #2B6CB0;
+  color: #1a202c;
 }
 
-@media (max-width: 640px) {
+/* === RESPONSIVE TABLET === */
+@media (max-width: 992px) {
+  .title {
+    font-size: 1.75rem;
+  }
   .content h2 {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
+  }
+  .content p {
+    font-size: 1rem;
+  }
+  .content {
+    max-width: 720px;
+  }
+}
+
+/* === RESPONSIVE MÓVIL === */
+@media (max-width: 640px) {
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .content h2 {
+    font-size: 1.1rem;
   }
   .content p {
     font-size: 0.95rem;
+  }
+  .page {
+    padding: 1.5rem 1rem 3rem;
   }
 }
