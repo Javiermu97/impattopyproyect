@@ -2684,12 +2684,12 @@ body {
 
 
 /* ========================================================= */
-/* ===== "NUESTRA FILOSOFÍA" – SUPERPOSICIÓN MEJORADA ===== */
+/* ===== "NUESTRA FILOSOFÍA" – CORRECIÓN COMPLETA ===== */
 /* ========================================================= */
 
 .philosophy-section {
   padding: 4rem 2rem;
-  margin-top: -40px;
+  margin-top: 0; /* Eliminamos el margen negativo */
 }
 
 .philosophy-container {
@@ -2760,69 +2760,71 @@ body {
   font-size: 1.1em;
   line-height: 1.7;
   color: #555;
+  margin-bottom: 1.5rem; /* Controlamos el espacio entre párrafos */
 }
 
-/* --------- RESPONSIVO MEJORADO --------- */
+/* --------- RESPONSIVO CORREGIDO --------- */
 @media (max-width: 1024px) {
+  .philosophy-section {
+    padding: 3rem 1.5rem;
+  }
+
   .philosophy-container {
     flex-direction: column;
-    align-items: center;
-    gap: 2rem;
+    gap: 2.5rem;
   }
 
   .philosophy-image-container {
-    position: relative;
     width: 100%;
     max-width: 500px;
-    height: 400px; /* Altura suficiente para superposición */
-    margin: 0 auto 3rem auto;
+    height: 320px; /* Altura reducida y controlada */
+    margin: 0 auto;
     min-width: unset;
   }
 
-  /* Mantenemos posición absoluta para superposición */
   .philosophy-img {
-    position: absolute;
     width: 75%;
-    border-radius: 10px;
-    object-fit: cover;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   }
 
-  /* SUPERPOSICIÓN MÁS EVIDENTE */
   .philosophy-img-bg {
     top: 0;
     right: 0;
     width: 70%;
-    z-index: 1;
   }
 
   .philosophy-img-fg {
-    top: 30%;
+    top: 25%;
     left: 0;
     width: 70%;
-    z-index: 2;
-    transform: translateY(-20px); /* Añadimos desplazamiento vertical */
+    transform: translateY(-15px);
   }
 
   .philosophy-content {
-    text-align: left;
+    width: 100%;
     padding-left: 0;
+    text-align: center; /* Centramos el texto en móviles */
+  }
+
+  .philosophy-content h2 {
+    font-size: 1.8rem;
   }
 }
 
-/* MÓVIL - SUPERPOSICIÓN AÚN MÁS MARCADA */
+/* MÓVIL - CORRECCIÓN DE ESPACIOS */
 @media (max-width: 640px) {
   .philosophy-section {
-    padding: 3rem 1rem;
-  }
-  
-  .philosophy-image-container {
-    max-width: 100%;
-    height: 350px; /* Altura ajustada para móviles */
-    margin-bottom: 2rem;
+    padding: 2rem 1rem; /* Reducimos padding general */
   }
 
-  /* Ajustamos para superposición más evidente en móviles */
+  .philosophy-container {
+    gap: 2rem;
+  }
+
+  .philosophy-image-container {
+    height: 280px; /* Altura aún más reducida para móviles */
+    margin-bottom: 0; /* Eliminamos margen inferior extra */
+  }
+
   .philosophy-img {
     width: 80%;
   }
@@ -2834,36 +2836,47 @@ body {
   }
 
   .philosophy-img-fg {
-    top: 25%;
+    top: 20%;
     left: 5%;
     width: 65%;
-    transform: translateY(-15px); /* Desplazamiento para móviles */
+    transform: translateY(-10px);
   }
 
   .philosophy-content h2 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     margin-bottom: 1rem;
   }
   
   .philosophy-content p {
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.6;
+    margin-bottom: 1rem; /* Espacio controlado entre párrafos */
   }
 }
 
-/* PEQUEÑOS AJUSTES PARA TABLETS MÁS PEQUEÑAS */
-@media (max-width: 768px) and (min-width: 641px) {
-  .philosophy-image-container {
-    height: 380px;
+/* CORRECCIÓN ESPECÍFICA PARA EL BOTÓN Y ESPACIO FINAL */
+.final-section {
+  max-width: 900px;
+  margin: 3rem auto 2rem auto; /* Reducimos margen superior */
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.final-section p {
+  margin-bottom: 1.5rem; /* Controlamos espacio del párrafo final */
+}
+
+.btn-primary {
+  margin-top: 1rem !important; /* Reducimos espacio del botón */
+}
+
+@media (max-width: 640px) {
+  .final-section {
+    margin: 2rem auto 1rem auto; /* Menos espacio en móviles */
   }
   
-  .philosophy-img-bg {
-    width: 68%;
-  }
-  
-  .philosophy-img-fg {
-    width: 68%;
-    transform: translateY(-25px);
+  .btn-primary {
+    margin-top: 0.5rem !important;
   }
 }
 
