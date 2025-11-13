@@ -15,34 +15,18 @@
   text-align: center;
 }
 
-.lead {
-  font-size: 1.05rem;
+.content p {
   margin-bottom: 1rem;
+  font-size: 1.05rem;
 }
 
-.ctaText {
-  margin-bottom: 1.25rem;
-}
-
-.ctaText a {
+.content a {
   color: #2B6CB0;
   text-decoration: underline;
 }
 
-.ctaBtn {
-  display: inline-block;
-  padding: 0.9rem 1.4rem;
-  background: #2B6CB0;
-  color: #fff;
-  border-radius: 999px;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.ctaBtn:hover {
-  filter: brightness(1.05);
-}
-
 @media (max-width: 640px) {
-  .lead { font-size: 1rem; }
+  .content p {
+    font-size: 1rem;
+  }
 }
