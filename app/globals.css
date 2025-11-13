@@ -2762,23 +2762,63 @@ body {
   color: #555;
 }
 
-/* --------- Responsivo (tablet/móvil) --------- */
+/* --------- Responsivo (tablet/móvil) — REEMPLAZA TODO ESTO --------- */
 @media (max-width: 1024px) {
-  .philosophy-container { flex-direction: column; }
+  .philosophy-container {
+    flex-direction: column;            /* texto debajo */
+    align-items: center;
+    gap: 1.5rem;
+  }
+
   .philosophy-image-container {
-    height: 360px;
+    height: clamp(340px, 52vw, 420px); /* alto suficiente segun ancho */
     min-width: 0;
     width: 100%;
+    margin-bottom: 1rem;               /* aire para que no toque el texto */
   }
-  .philosophy-img-bg { top: -6px; right: -8px; width: 82%; }
-  .philosophy-img-fg { top: 32%; left: -8px; width: 82%; }
+
+  /* sin offsets negativos: que entren dentro del contenedor */
+  .philosophy-img-bg {
+    width: 88%;
+    top: 0;
+    right: 2%;
+  }
+
+  /* leve solape: SOLO bordes */
+  .philosophy-img-fg {
+    width: 84%;
+    top: 14%;   /* antes 32% — esto evita que se salga del contenedor */
+    left: 2%;
+  }
+
+  .philosophy-content {
+    padding-left: 0;
+    text-align: left;
+  }
 }
 
 @media (max-width: 640px) {
-  .philosophy-image-container { height: 300px; }
-  .philosophy-img-bg { top: -4px; right: -6px; width: 88%; }
-  .philosophy-img-fg { top: 30%; left: -6px; width: 88%; }
+  .philosophy-image-container {
+    height: clamp(260px, 62vw, 360px);
+    margin-bottom: 1.25rem;
+  }
+
+  .philosophy-img-bg {
+    width: 92%;
+    top: 0;
+    right: 1%;
+  }
+
+  .philosophy-img-fg {
+    width: 88%;
+    top: 10%;  /* solape suave en móviles */
+    left: 1%;
+  }
+
+  .philosophy-content h2 { font-size: 1.45rem; }
+  .philosophy-content p  { font-size: .98rem; line-height: 1.7; }
 }
+
 
 
 
