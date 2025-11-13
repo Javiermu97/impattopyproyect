@@ -1082,6 +1082,28 @@ body {
 .accordion-content-inner li {
   margin-bottom: 0.75rem;
 }
+
+/* === ÍCONO DE ACORDEÓN EN PÁGINA DE PRODUCTO === */
+.pdp-accordion-icon {
+  font-size: 1.8rem;
+  font-weight: 300;
+  line-height: 1;
+  transition: opacity 0.2s ease;
+  display: inline-block;
+}
+
+.pdp-accordion-icon::before {
+  content: '+';
+}
+
+.pdp-accordion-icon.open::before {
+  content: '−';
+}
+
+/* Evita rotaciones heredadas de otros acordeones */
+.pdp-accordion-icon.open {
+  transform: none !important;
+}
 /* FIN: Estilos actualizados para el acordeón */
 
 /* ================================================= */
