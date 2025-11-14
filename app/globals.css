@@ -2706,10 +2706,11 @@ body {
 .philosophy-image-container {
   position: relative;
   flex-basis: 50%;
-  height: 380px;      /* un poco más alto para que no baje sobre el texto */
+  height: 480px;          /* MÁS ALTO */
   min-width: 450px;
-  margin-bottom: 1.5rem; /* asegura espacio con el texto de abajo */
+  margin-bottom: 2rem;    /* espacio extra con el texto */
 }
+
 
 /* Texto a la derecha */
 .philosophy-content {
@@ -2780,12 +2781,12 @@ body {
   }
 
   .philosophy-image-container {
-    width: 100%;
-    max-width: 500px;
-    height: 330px;          /* algo más alta */
-    margin: 0 auto 1.5rem;  /* espacio con el texto */
-    min-width: unset;
-  }
+  width: 100%;
+  max-width: 500px;
+  height: 430px;              /* MÁS ALTO */
+  margin: 0 auto 2rem auto;   /* espacio con el texto */
+  min-width: unset;
+}
 
   .philosophy-img {
     width: 80%;
@@ -2823,9 +2824,9 @@ body {
   }
 
   .philosophy-image-container {
-    height: 300px;
-    margin-bottom: 1rem;
-  }
+  height: 400px;          /* MÁS ALTO */
+  margin-bottom: 2rem;    /* que el texto quede bien separado */
+}
 
   .philosophy-img {
     width: 82%;
