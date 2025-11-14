@@ -2706,9 +2706,9 @@ body {
 .philosophy-image-container {
   position: relative;
   flex-basis: 50%;
-  max-width: 520px;
-  margin: 0 auto;
-  padding-bottom: 70%;   /* “altura” del bloque */
+  height: 380px;      /* un poco más alto para que no baje sobre el texto */
+  min-width: 450px;
+  margin-bottom: 1.5rem; /* asegura espacio con el texto de abajo */
 }
 
 /* Texto a la derecha */
@@ -2721,24 +2721,27 @@ body {
 .philosophy-img {
   position: absolute;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   object-fit: cover;
   transition: all 0.3s ease;
-  width: 68%;
-  aspect-ratio: 16 / 10;
+  width: 78%;       /* ancho cómodo, sigue siendo horizontal */
+  height: auto;     /* MUY importante: que respete la proporción original */
+  /* quita el aspect-ratio si aún lo tenés */
 }
 
 /* --- IMAGEN DE ATRÁS --- */
 .philosophy-img-bg {
-  top: 6%;
-  left: 4%;   /* un poco a la izquierda */
+  top: 0;
+  left: 6%;      /* más a la izquierda y arriba */
+  right: auto;
   z-index: 1;
 }
 
 /* --- IMAGEN DE ADELANTE --- */
 .philosophy-img-fg {
-  top: 22%;
-  right: 4%; /* un poco a la derecha */
+  top: 18%;      /* un poco más abajo */
+  right: 6%;     /* más a la derecha */
+  left: auto;
   z-index: 2;
 }
 
@@ -2777,24 +2780,25 @@ body {
   }
 
   .philosophy-image-container {
-    flex-basis: auto;
     width: 100%;
-    max-width: 480px;
-    padding-bottom: 72%;
+    max-width: 500px;
+    height: 330px;          /* algo más alta */
+    margin: 0 auto 1.5rem;  /* espacio con el texto */
+    min-width: unset;
   }
 
   .philosophy-img {
-    width: 72%;
+    width: 80%;
   }
 
-  .philosophy-img-bg {
-    top: 4%;
-    left: 8%;
+ .philosophy-img-bg {
+    top: 0;
+    left: 10%;
   }
 
   .philosophy-img-fg {
-    top: 22%;
-    right: 8%;
+    top: 20%;
+    right: 10%;
   }
 
   .philosophy-content {
@@ -2819,21 +2823,21 @@ body {
   }
 
   .philosophy-image-container {
-    max-width: 420px;
-    padding-bottom: 75%;
+    height: 300px;
+    margin-bottom: 1rem;
   }
 
   .philosophy-img {
-    width: 78%;
+    width: 82%;
   }
 
   .philosophy-img-bg {
-    top: 6%;
+    top: 3%;
     left: 10%;
   }
 
   .philosophy-img-fg {
-    top: 24%;
+    top: 22%;
     right: 10%;
   }
 
