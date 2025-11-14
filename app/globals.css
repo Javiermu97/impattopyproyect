@@ -2724,20 +2724,20 @@ body {
 
 /* --- IMAGEN DE ATRÁS (GRUPO) --- */
 .philosophy-img-bg {
-  width: 76%;
-  top: -10px;
-  right: -12px;
-  left: auto;
+  width: 80%;
+  top: 0;
+  left: 0;
   z-index: 1;
+  transform: translate(10px, 10px);
 }
 
 /* --- IMAGEN DE FRENTE (MUJER) --- */
 .philosophy-img-fg {
-  width: 76%;
-  top: 34%;
-  left: -14px;
-  right: auto;
+  width: 80%;
+  top: 20%;
+  left: 20px;
   z-index: 2;
+  transform: translate(-10px, -10px);
 }
 
 /* -------- Texto -------- */
@@ -2830,16 +2830,17 @@ body {
   }
 
   .philosophy-img-bg {
+    width: 70%;
     top: 5%;
-    right: 5%;
-    width: 65%;
+    left: 5%;
+    transform: translate(5px, 5px);
   }
 
   .philosophy-img-fg {
-    top: 20%;
-    left: 5%;
-    width: 65%;
-    transform: translateY(-10px);
+    width: 70%;
+    top: 25%;
+    left: 10%;
+    transform: translate(-5px, -5px);
   }
 
   .philosophy-content h2 {
