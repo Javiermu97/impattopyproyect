@@ -2684,12 +2684,12 @@ body {
 
 
 /* ========================================================= */
-/* ===== "NUESTRA FILOSOFÍA" – CORRECIÓN COMPLETA ===== */
+/* ===== "NUESTRA FILOSOFÍA" – AJUSTE SUPERPOSICIÓN ======== */
 /* ========================================================= */
 
 .philosophy-section {
   padding: 4rem 2rem;
-  margin-top: 0; /* Eliminamos el margen negativo */
+  margin-top: 0;
 }
 
 .philosophy-container {
@@ -2700,44 +2700,46 @@ body {
   margin: 0 auto;
 }
 
+/* Contenedor sin altura fija: usamos padding-bottom
+   para que las imágenes que están en absolute NO salgan
+   del contenedor ni invadan el texto de abajo */
 .philosophy-image-container {
   position: relative;
   flex-basis: 50%;
-  height: 420px;
-  min-width: 450px;
+  max-width: 520px;
+  margin: 0 auto;
+  padding-bottom: 70%;   /* “altura” del bloque */
 }
 
+/* Texto a la derecha */
 .philosophy-content {
   flex-basis: 50%;
   padding-left: 1rem;
 }
 
+/* Estilo base para las dos imágenes */
 .philosophy-img {
   position: absolute;
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
   object-fit: cover;
   transition: all 0.3s ease;
-  height: auto;
+  width: 68%;
   aspect-ratio: 16 / 10;
 }
 
-/* --- IMAGEN DE ATRÁS (GRUPO) --- */
+/* --- IMAGEN DE ATRÁS --- */
 .philosophy-img-bg {
-  width: 80%;
-  top: 0;
-  left: 0;
+  top: 6%;
+  left: 4%;   /* un poco a la izquierda */
   z-index: 1;
-  transform: translate(10px, 10px);
 }
 
-/* --- IMAGEN DE FRENTE (MUJER) --- */
+/* --- IMAGEN DE ADELANTE --- */
 .philosophy-img-fg {
-  width: 80%;
-  top: 20%;
-  left: 20px;
+  top: 22%;
+  right: 4%; /* un poco a la derecha */
   z-index: 2;
-  transform: translate(-10px, -10px);
 }
 
 /* -------- Texto -------- */
@@ -2760,10 +2762,10 @@ body {
   font-size: 1.1em;
   line-height: 1.7;
   color: #555;
-  margin-bottom: 1.5rem; /* Controlamos el espacio entre párrafos */
+  margin-bottom: 1.5rem;
 }
 
-/* --------- RESPONSIVO CORREGIDO --------- */
+/* --------- RESPONSIVO --------- */
 @media (max-width: 1024px) {
   .philosophy-section {
     padding: 3rem 1.5rem;
@@ -2775,34 +2777,30 @@ body {
   }
 
   .philosophy-image-container {
+    flex-basis: auto;
     width: 100%;
-    max-width: 500px;
-    height: 320px; /* Altura reducida y controlada */
-    margin: 0 auto;
-    min-width: unset;
+    max-width: 480px;
+    padding-bottom: 72%;
   }
 
   .philosophy-img {
-    width: 75%;
+    width: 72%;
   }
 
   .philosophy-img-bg {
-    top: 0;
-    right: 0;
-    width: 70%;
+    top: 4%;
+    left: 8%;
   }
 
   .philosophy-img-fg {
-    top: 25%;
-    left: 0;
-    width: 70%;
-    transform: translateY(-15px);
+    top: 22%;
+    right: 8%;
   }
 
   .philosophy-content {
     width: 100%;
     padding-left: 0;
-    text-align: center; /* Centramos el texto en móviles */
+    text-align: center;
   }
 
   .philosophy-content h2 {
@@ -2810,10 +2808,10 @@ body {
   }
 }
 
-/* MÓVIL - CORRECCIÓN DE ESPACIOS */
+/* MÓVIL */
 @media (max-width: 640px) {
   .philosophy-section {
-    padding: 2rem 1rem; /* Reducimos padding general */
+    padding: 2rem 1rem;
   }
 
   .philosophy-container {
@@ -2821,61 +2819,56 @@ body {
   }
 
   .philosophy-image-container {
-    height: 280px; /* Altura aún más reducida para móviles */
-    margin-bottom: 0; /* Eliminamos margen inferior extra */
+    max-width: 420px;
+    padding-bottom: 75%;
   }
 
   .philosophy-img {
-    width: 80%;
+    width: 78%;
   }
 
   .philosophy-img-bg {
-    width: 70%;
-    top: 5%;
-    left: 5%;
-    transform: translate(5px, 5px);
+    top: 6%;
+    left: 10%;
   }
 
   .philosophy-img-fg {
-    width: 70%;
-    top: 25%;
-    left: 10%;
-    transform: translate(-5px, -5px);
+    top: 24%;
+    right: 10%;
   }
 
   .philosophy-content h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
   }
-  
+
   .philosophy-content p {
     font-size: 0.95rem;
     line-height: 1.6;
-    margin-bottom: 1rem; /* Espacio controlado entre párrafos */
+    margin-bottom: 1rem;
   }
 }
 
-/* CORRECCIÓN ESPECÍFICA PARA EL BOTÓN Y ESPACIO FINAL */
+/* Sección final, igual que ya tenías */
 .final-section {
   max-width: 900px;
-  margin: 3rem auto 2rem auto; /* Reducimos margen superior */
+  margin: 3rem auto 2rem auto;
   text-align: center;
   padding: 0 1rem;
 }
 
 .final-section p {
-  margin-bottom: 1.5rem; /* Controlamos espacio del párrafo final */
+  margin-bottom: 1.5rem;
 }
 
 .btn-primary {
-  margin-top: 1rem !important; /* Reducimos espacio del botón */
+  margin-top: 1rem !important;
 }
 
 @media (max-width: 640px) {
   .final-section {
-    margin: 2rem auto 1rem auto; /* Menos espacio en móviles */
+    margin: 2rem auto 1rem auto;
   }
-  
   .btn-primary {
     margin-top: 0.5rem !important;
   }
