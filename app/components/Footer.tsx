@@ -32,7 +32,6 @@ const Footer = () => {
         
         <FooterAccordionCol title="Enlaces de Interés">
           <ul>
-            <li><Link href="/sobre-nosotros">Sobre nosotros</Link></li>
             <li><Link href="/preguntas-frecuentes">Preguntas frecuentes</Link></li>
             <li><Link href="/trabaja-con-nosotros">Trabaja con nosotros</Link></li>
           </ul>
