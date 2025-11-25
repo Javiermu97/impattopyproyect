@@ -16,11 +16,17 @@ const ProductCard = ({ product }: Props) => {
   const pid = typeof product.id === 'string' ? Number(product.id) : product.id;
 
   const handleWishlistClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // evita navegar al hacer click en el corazón
+    // Evitar navegación del Link padre y que el evento burbujee
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Si no hay usuario, redirigir al login (misma ruta que usás en ShopPageClient)
     if (!user) {
-      router.push('/auth/login'); // ajusta si tu ruta de login es otra
+      router.push('/cuenta/login?redirected=true');
       return;
     }
+
+    // Si está logueado, alternar wishlist
     toggleWishlist(pid);
   };
 
@@ -76,3 +82,4 @@ const ProductCard = ({ product }: Props) => {
 };
 
 export default ProductCard;
+
