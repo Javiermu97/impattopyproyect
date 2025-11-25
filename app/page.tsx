@@ -1,4 +1,4 @@
-export const revalidate = 50; // Revalida cada 50 segundos
+export const revalidate = 50; // Revalida cada 300 segundos (5 minutos)
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaWhatsapp } from "react-icons/fa";
@@ -50,13 +50,14 @@ export default async function HomePage() {
       {/* ==================================================================== */}
       <section className="home-products-section">
         <h2 className="section-title"> Especial de la Semana </h2>
-        {/* Usamos 'columns-3' para la cuadrícula */}
+        {/* Usamos 'columns-2' en lugar de 'columns-3' o 'columns-4' para que las imágenes sean más grandes */}
         <div className="product-grid-shop columns-3">
           {destacadosSemana?.map((product: Product) => (
             <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
               <div className="shop-product-card">
                 <div className="image-container">
                   {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
+                  {/* Se elimina el 'style' en línea para que el CSS global tome el control */}
                   <Image 
                     src={product.imageUrl} 
                     alt={product.name} 
@@ -98,6 +99,7 @@ export default async function HomePage() {
               <div className="shop-product-card">
                 <div className="image-container">
                   {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
+                  {/* Aplicamos la misma corrección: quitamos el 'style' y usamos 'fill' */}
                   <Image 
                     src={product.imageUrl} 
                     alt={product.name} 
