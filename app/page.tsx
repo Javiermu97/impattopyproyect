@@ -1,29 +1,11 @@
 export const revalidate = 50; // Revalida cada 50 segundos
 import Image from 'next/image';
 import Link from 'next/link';
-// Importaciones requeridas para el botón de lista de deseos
-import { IoHeart, IoHeartOutline } from 'react-icons/io5'; 
 import { FaWhatsapp } from "react-icons/fa";
 import CarruselInferior from './components/CarruselInferior';
 import InfoBanner from './components/InfoBanner';
 import { supabase } from '@/lib/supabaseClient';
 import { Product } from '@/lib/types';
-
-
-// **IMPORTANTE: En un entorno real, esta lógica de Wishlist debe estar en un CLIENT COMPONENT**
-// **Las siguientes funciones son solo para completar la estructura que solicitaste.**
-// **No serán funcionales en este Server Component.**
-const isInWishlist = (productId: number) => {
-    // Lógica simulada: retorna true/false dependiendo de si el producto está en la lista de deseos
-    return productId % 2 === 0; // Ejemplo: los productos pares están en la lista
-};
-
-const handleWishlistClick = (e: React.MouseEvent, productId: number) => {
-    e.preventDefault(); // Detiene la navegación del Link
-    // Lógica para agregar o quitar el producto (solo para demostración)
-    console.log(`Producto ${productId} manipulado en la lista de deseos.`);
-};
-
 
 export default async function HomePage() {
 
@@ -31,14 +13,14 @@ export default async function HomePage() {
   const { data: destacadosSemana, error: errorSemana } = await supabase
     .from('productos')
     .select('*')
-    .eq('es_destacado_semana', true) 
+    .eq('es_destacado_semana', true) // Buscamos los productos que marcaste
     .limit(20);
 
   // 2. Obtenemos los productos destacados para "Hechos para tu hogar"
   const { data: destacadosHogar, error: errorHogar } = await supabase
     .from('productos')
     .select('*')
-    .eq('es_destacado_hogar', true) 
+    .eq('es_destacado_hogar', true) // Buscamos los productos que marcaste
     .limit(20);
 
   if (errorSemana) console.error('Error al cargar productos destacados de la semana:', errorSemana);
@@ -64,10 +46,11 @@ export default async function HomePage() {
       </section>
 
       {/* ==================================================================== */}
-      {/* ===== SECCIÓN "ESPECIAL DE LA SEMANA" ===== */}
+      {/* ===== SECCIÓN "ESPECIAL DE LA SEMANA" (ANCHO COMPLETO) ===== */}
       {/* ==================================================================== */}
       <section className="home-products-section">
         <h2 className="section-title"> Especial de la Semana </h2>
+        {/* Usamos 'columns-3' para la cuadrícula */}
         <div className="product-grid-shop columns-3">
           {destacadosSemana?.map((product: Product) => (
             <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
@@ -89,20 +72,8 @@ export default async function HomePage() {
                     />
                   )}
                 </div>
-                {/* *** INICIO DEL CÓDIGO MODIFICADO PARA DESTACADOS DE LA SEMANA *** */}
-                <div className="product-header-info">
-                  <h4>{product.name}</h4>
-                  <button
-                    onClick={(e) => handleWishlistClick(e, product.id)}
-                    className={`wishlist-inline-btn ${isInWishlist(product.id) ? 'active' : ''}`}
-                    aria-label={isInWishlist(product.id) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
-                    title="Lista de deseos"
-                  >
-                    {isInWishlist(product.id) ? <IoHeart size={20}/> : <IoHeartOutline size={20}/>}
-                  </button>
-                </div>
+                <h4>{product.name}</h4>
                 <div className="price-section">
-                {/* *** FIN DEL CÓDIGO MODIFICADO *** */}
                   <span className="shop-product-price">Gs. {product.price.toLocaleString('es-PY')}</span>
                   {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
                 </div>
@@ -116,7 +87,7 @@ export default async function HomePage() {
       </section>
 
       {/* ==================================================================== */}
-      {/* ===== SECCIÓN "HECHOS PARA TU HOGAR" ===== */}
+      {/* ===== SECCIÓN "HECHOS PARA TU HOGAR" (CORREGIDA) ===== */}
       {/* ==================================================================== */}
       <section className="home-products-section reducir-espacio-superior">
         <h2 className="section-title">Confort y Diseño</h2>
@@ -142,20 +113,8 @@ export default async function HomePage() {
                     />
                   )}
                 </div>
-                {/* *** INICIO DEL CÓDIGO MODIFICADO PARA DESTACADOS HOGAR *** */}
-                <div className="product-header-info">
-                  <h4>{product.name}</h4>
-                  <button
-                    onClick={(e) => handleWishlistClick(e, product.id)}
-                    className={`wishlist-inline-btn ${isInWishlist(product.id) ? 'active' : ''}`}
-                    aria-label={isInWishlist(product.id) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
-                    title="Lista de deseos"
-                  >
-                    {isInWishlist(product.id) ? <IoHeart size={20}/> : <IoHeartOutline size={20}/>}
-                  </button>
-                </div>
+                <h4>{product.name}</h4>
                 <div className="price-section">
-                {/* *** FIN DEL CÓDIGO MODIFICADO *** */}
                   <span className="shop-product-price">Gs. {product.price.toLocaleString('es-PY')}</span>
                   {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
                 </div>
@@ -167,6 +126,8 @@ export default async function HomePage() {
             <button className="btn-secondary">VER TODOS</button>
         </Link>
       </section>
+
+      
 
       <InfoBanner />
 
