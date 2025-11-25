@@ -7,6 +7,9 @@ import InfoBanner from './components/InfoBanner';
 import { supabase } from '@/lib/supabaseClient';
 import { Product } from '@/lib/types';
 
+// IMPORT DEL PRODUCT CARD (usa useWishlist / useAuth y ya tiene el corazón)
+import ProductCard from './components/ProductCard';
+
 export default async function HomePage() {
 
   // 1. Obtenemos los productos destacados para "Especial de la Semana"
@@ -53,33 +56,8 @@ export default async function HomePage() {
         {/* Usamos 'columns-2' en lugar de 'columns-3' o 'columns-4' para que las imágenes sean más grandes */}
         <div className="product-grid-shop columns-3">
           {destacadosSemana?.map((product: Product) => (
-            <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
-              <div className="shop-product-card">
-                <div className="image-container">
-                  {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
-                  {/* Se elimina el 'style' en línea para que el CSS global tome el control */}
-                  <Image 
-                    src={product.imageUrl} 
-                    alt={product.name} 
-                    fill 
-                    className="shop-product-image-primary" 
-                  />
-                  {product.imageUrl2 && (
-                    <Image 
-                      src={product.imageUrl2} 
-                      alt={product.name} 
-                      fill 
-                      className="shop-product-image-secondary" 
-                    />
-                  )}
-                </div>
-                <h4>{product.name}</h4>
-                <div className="price-section">
-                  <span className="shop-product-price">Gs. {product.price.toLocaleString('es-PY')}</span>
-                  {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
-                </div>
-              </div>
-            </Link>
+            // Usamos ProductCard para asegurar que el corazón y la lógica estén presentes
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
         <Link href="/mas-vendidos">
@@ -95,41 +73,13 @@ export default async function HomePage() {
         <h3 className="section-subtitle">Hechos para tu hogar</h3>
         <div className="product-grid-shop columns-3">
           {destacadosHogar?.map((product: Product) => (
-            <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
-              <div className="shop-product-card">
-                <div className="image-container">
-                  {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
-                  {/* Aplicamos la misma corrección: quitamos el 'style' y usamos 'fill' */}
-                  <Image 
-                    src={product.imageUrl} 
-                    alt={product.name} 
-                    fill
-                    className="shop-product-image-primary"
-                  />
-                  {product.imageUrl2 && (
-                    <Image 
-                      src={product.imageUrl2} 
-                      alt={product.name} 
-                      fill
-                      className="shop-product-image-secondary"
-                    />
-                  )}
-                </div>
-                <h4>{product.name}</h4>
-                <div className="price-section">
-                  <span className="shop-product-price">Gs. {product.price.toLocaleString('es-PY')}</span>
-                  {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
-                </div>
-              </div>
-            </Link>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
         <Link href="/hogar">
             <button className="btn-secondary">VER TODOS</button>
         </Link>
       </section>
-
-      
 
       <InfoBanner />
 
