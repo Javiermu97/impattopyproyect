@@ -66,7 +66,7 @@ export default async function HomePage() {
       </section>
 
       {/* ==================================================================== */}
-      {/* ===== SECCIÓN "HECHOS PARA TU HOGAR" (CORREGIDA) ===== */}
+      {/* ===== SECCIÓN "HECHOS PARA TU HOGAR" (CORREGIDA) ==== */}
       {/* ==================================================================== */}
       <section className="home-products-section reducir-espacio-superior">
         <h2 className="section-title">Confort y Diseño</h2>
