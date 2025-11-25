@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-// Zod Schema basado en la lista de columnas que me proporcionaste
+// Zod Schema basado en la lista de columnas que me proporcionast
 const ProductSchema = z.object({
   name: z.string().min(3),
   price: z.coerce.number().positive(),
