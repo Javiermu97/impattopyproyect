@@ -101,13 +101,26 @@ export async function GET(req: Request) {
 
     // ✅ CORRECCIÓN: Usando URL absoluta con 'base'
     return NextResponse.redirect(`${base}/cuenta`);
-  } catch (err: any) {
-    // ✅ CORRECCIÓN: Usando URL absoluta con 'base'
+  } catch (err: unknown) {
+    // Manejo seguro del error: obtenemos un mensaje sin usar `any`
+    let message = "unknown_error";
+    if (err instanceof Error) {
+      message = err.message;
+    } else if (typeof err === "object" && err !== null && "message" in err) {
+      // Si el objeto tiene una propiedad message, la convertimos a string de forma segura
+      const possible = (err as { message?: unknown }).message;
+      message = typeof possible === "string" ? possible : String(possible);
+    } else {
+      message = String(err);
+    }
+
+    // ✅ CORRECCIÓN: Usando URL absoluta con 'base' y message verificada
     return NextResponse.redirect(
-      `${base}/login?oauth_error=callback_failed&desc=${encodeURIComponent(err.message)}`
+      `${base}/login?oauth_error=callback_failed&desc=${encodeURIComponent(message)}`
     );
   }
 }
+
 
 
 
