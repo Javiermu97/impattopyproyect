@@ -1,7 +1,7 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import Image from 'next/image';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation'; // ✅ CORREGIDO: 'redirect' eliminado
 import { updateProduct, createCaracteristica, deleteCaracteristica } from '../../../actions';
 
 // --- Interface para definir la forma de una Característica ---

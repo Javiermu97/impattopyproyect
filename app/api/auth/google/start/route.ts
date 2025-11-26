@@ -46,10 +46,12 @@ export async function GET() {
     authUrl.searchParams.set("access_type", "offline");
 
     return NextResponse.redirect(authUrl.toString());
-  } catch (error: any) {
+  } catch (error: unknown) { // ✅ CORREGIDO: Reemplazado 'any' con 'unknown'
     const base = process.env.NEXT_PUBLIC_BASE_URL || "https://www.impatto.com.py";
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.redirect(
-      `${base}/login?oauth_error=start_failed&desc=${encodeURIComponent(error.message)}`
+      // Utilizamos 'errorMessage' que es un string seguro
+      `${base}/login?oauth_error=start_failed&desc=${encodeURIComponent(errorMessage)}`
     );
   }
 }
