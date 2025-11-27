@@ -118,7 +118,8 @@ const DynamicContent = ({ activeTab, user, handleLogout }: DynamicContentProps) 
             return (
                 <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200">
                     <h2 className="text-2xl font-semibold mb-6 border-b pb-2 text-gray-900">{activeTab}</h2>
-                    <p className="text-gray-600">El contenido para la sección "{activeTab}" está en desarrollo.</p>
+                    {/* CORRECCIÓN AQUÍ: Se cambiaron las comillas dobles por &quot; */}
+                    <p className="text-gray-600">El contenido para la sección &quot;{activeTab}&quot; está en desarrollo.</p>
                 </div>
             );
     }
@@ -169,7 +170,6 @@ export default function CuentaPage() {
       {/* Título y Bienvenida (como Nissei) */}
       <div className="mb-8 border-b pb-4">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Mi Cuenta</h1>
-        {/* FIX: Se cambia className='...' por className="..." en el <span> para evitar errores de linting */}
         <p className="mt-2 text-sm text-gray-600">Bienvenido, <span className="font-semibold text-[#A78D5A]">{name}</span>. Desde aquí puedes administrar tu información y pedidos.</p>
       </div>
 
