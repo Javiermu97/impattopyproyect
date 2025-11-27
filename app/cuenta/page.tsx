@@ -82,7 +82,7 @@ const AccountInfo = ({ user, handleLogout }: AccountInfoProps) => {
                         Desconectar Cuenta
                     </button>
                 </div>
-                <p className='text-sm text-gray-500 mt-2'>* Al desconectar, deberá iniciar sesión con email y contraseña o volver a conectar con Google.</p>
+                <p className="text-sm text-gray-500 mt-2">* Al desconectar, deberá iniciar sesión con email y contraseña o volver a conectar con Google.</p>
             </div>
         )}
     </div>
@@ -131,6 +131,20 @@ export default function CuentaPage() {
   const { user, session } = useAuth();
   const [activeTab, setActiveTab] = useState('Mi Cuenta');
 
+  // FIX: Se mueve el hook 'useCallback' a la parte superior de la función, 
+  // antes de cualquier 'return' condicional, para cumplir con las reglas de Hooks.
+  const handleLogout = useCallback(async () => {
+    // Supabase está disponible porque la App está envuelta en AuthProvider
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+        console.error('Error al cerrar sesión:', error.message);
+        // NOTA: Usaríamos un modal en producción, pero Next.js acepta 'alert'
+        alert('Error al cerrar sesión. Inténtalo de nuevo.'); 
+    } else {
+        router.replace('/cuenta/login');
+    }
+  }, [router]);
+
   // Redirección en caso de no estar autenticado o mientras carga
   if (session === undefined || user === undefined) {
       // Estado de carga o esperando la respuesta del listener
@@ -150,24 +164,13 @@ export default function CuentaPage() {
   
   const name = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Cliente';
 
-  const handleLogout = useCallback(async () => {
-    // Supabase está disponible porque la App está envuelta en AuthProvider
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-        console.error('Error al cerrar sesión:', error.message);
-        // NOTA: Usaríamos un modal en producción, pero Next.js acepta 'alert'
-        alert('Error al cerrar sesión. Inténtalo de nuevo.'); 
-    } else {
-        router.replace('/cuenta/login');
-    }
-  }, [router]);
-
   return (
     <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       {/* Título y Bienvenida (como Nissei) */}
       <div className="mb-8 border-b pb-4">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Mi Cuenta</h1>
-        <p className="mt-2 text-sm text-gray-600">Bienvenido, <span className='font-semibold text-[#A78D5A]'>{name}</span>. Desde aquí puedes administrar tu información y pedidos.</p>
+        {/* FIX: Se cambia className='...' por className="..." en el <span> para evitar errores de linting */}
+        <p className="mt-2 text-sm text-gray-600">Bienvenido, <span className="font-semibold text-[#A78D5A]">{name}</span>. Desde aquí puedes administrar tu información y pedidos.</p>
       </div>
 
       {/* Layout Principal: Sidebar y Contenido */}
