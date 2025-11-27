@@ -1,4 +1,4 @@
-export const revalidate = 50; // Revalida cada 300 segundos (5 minutos)
+export const revalidate = 50; // Revalida cada 300 segundos (5 minuto)
 import Link from 'next/link';
 import { FaWhatsapp } from "react-icons/fa";
 import CarruselInferior from './components/CarruselInferior';
