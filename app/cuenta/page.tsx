@@ -104,7 +104,8 @@ const AccountInfo = ({ user, handleLogout }: AccountInfoProps) => {
 
         <div className="pt-8 border-t mt-8">
             <Link href="/cuenta/direcciones" className="text-blue-600 hover:text-blue-800 font-medium">
-                Gestionar direcciones &gt; {/* ✅ CORREGIDO: Usando &gt; para el símbolo > */}
+                {/* ✅ CORREGIDO: Separamos el > del texto para evitar el error de linting */}
+                Gestionar direcciones <span aria-hidden="true">&gt;</span> 
             </Link>
         </div>
     </div>
@@ -158,6 +159,7 @@ export default function CuentaPage() {
     const { error } = await supabase.auth.signOut();
     if (error) {
         console.error('Error al cerrar sesión:', error.message);
+        // Usar un modal o toast en un entorno real
         alert('Error al cerrar sesión. Inténtalo de nuevo.'); 
     } else {
         router.replace('/cuenta/login');
@@ -180,8 +182,6 @@ export default function CuentaPage() {
     return null;
   }
   
-  // const name = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Cliente'; // ✅ Eliminada: variable no usada
-
   return (
     <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 bg-white">
       {/* Título de la sección (Réplica del header de Nissei) */}
