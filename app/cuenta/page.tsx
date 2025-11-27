@@ -7,7 +7,7 @@ import { useAuth } from '@/app/context/AuthContext';
 import { supabase } from '@/lib/supabaseClient';
 import { User } from '@supabase/supabase-js';
 
-// Opciones menú lateral
+// Opciones del menú lateral
 const navItems = [
   { name: 'Mi Cuenta', path: 'cuenta', icon: '👤' },
   { name: 'Mis pedidos', path: 'pedidos', icon: '📦' },
@@ -25,6 +25,7 @@ const navItems = [
   { name: 'Mi registro de regalos', path: 'regalos', icon: '🎀' },
 ];
 
+// Componente Información de cuenta
 const AccountInfo = ({ user, handleLogout }: { user: User | null, handleLogout: () => void }) => {
   const meta = user?.user_metadata;
   const name = meta?.full_name || user?.email?.split('@')[0] || "Usuario";
@@ -51,6 +52,9 @@ const AccountInfo = ({ user, handleLogout }: { user: User | null, handleLogout: 
   );
 };
 
+// ==========================
+// 🚀 PÁGINA PRINCIPAL CUENTA
+// ==========================
 export default function CuentaPage() {
   const router = useRouter();
   const { user, session } = useAuth();
@@ -58,31 +62,39 @@ export default function CuentaPage() {
   const [activeTab, setActiveTab] = useState('Mi Cuenta');
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
-  // FIX REAL — evita logout fantasma y bucles
+  // 🛠 FIX DEFINITIVO — evita retrocesos automáticos
   useEffect(() => {
-    if (session === undefined) return;  
-
-    setIsCheckingAuth(false);
-
-    if (!session) router.replace("/cuenta/login");
+    if (session === undefined) return;     // ⏳ Todavía cargando → no redirijas
+    if (session === null) {                // ⛔ Sesión confirmada como nula → login
+      router.replace("/cuenta/login");
+      return;
+    }
+    setIsCheckingAuth(false);              // ✔ Sesión confirmada → todo estable
   }, [session, router]);
 
+  // Logout real
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut();
     router.replace('/cuenta/login');
   }, [router]);
 
-  if (isCheckingAuth) return (
-    <div className="flex justify-center items-center min-h-[60vh]">
-      <div className="animate-spin h-10 w-10 border-t-2 border-b-2 border-[#A78D5A] rounded-full"></div>
-      <p className="ml-3">Conectando...</p>
-    </div>
-  );
+  // Pantalla mientras se verifica sesión
+  if (isCheckingAuth) {
+    return (
+      <div className="flex justify-center items-center min-h-[70vh]">
+        <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-black rounded-full"></div>
+        <p className="ml-3">Verificando sesión...</p>
+      </div>
+    );
+  }
 
+  // Si no hay user luego de validar → nada
   if (!user) return null;
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-6 flex gap-10">
+      
+      {/* SIDEBAR */}
       <aside className="w-64 bg-white p-5 border rounded-lg shadow-sm">
         <h2 className="text-xl font-bold mb-4 border-b pb-2">MENÚ CLIENTE</h2>
 
@@ -98,6 +110,7 @@ export default function CuentaPage() {
         ))}
       </aside>
 
+      {/* CONTENIDO */}
       <section className="flex-1">
         <AccountInfo user={user} handleLogout={handleLogout}/>
       </section>
