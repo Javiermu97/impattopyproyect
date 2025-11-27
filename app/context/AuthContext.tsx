@@ -1,35 +1,33 @@
-// /app/context/AuthContext.tsx
-'use client';
+"use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { supabase } from '@/lib/supabaseClient';
-import { Session, User } from '@supabase/supabase-js';
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { Session, User } from "@supabase/supabase-js";
 
-// Define el tipo para el valor del contexto
 interface AuthContextType {
   user: User | null;
   session: Session | null;
+  loading: boolean;
 }
 
-// Crea el contexto
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Crea el proveedor del contexto
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Escucha los cambios en el estado de autenticación
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+      setLoading(false);
     });
 
-    // Carga la sesión inicial
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      setLoading(false);
     });
 
     return () => {
@@ -37,16 +35,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  const value = { user, session };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, session, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-// Hook personalizado para usar el contexto fácilmente
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth debe ser usado dentro de un AuthProvider');
-  }
+  if (!context) throw new Error("useAuth debe usarse dentro de <AuthProvider>");
   return context;
 };
