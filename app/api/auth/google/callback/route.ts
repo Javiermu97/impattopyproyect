@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 export async function GET(req: Request) {
   // Aseguramos que 'base' siempre sea una URL absoluta (debe empezar con https://)
-  const base = process.env.NEXT_PUBLIC_BASE_URL || "https://www.impatto.com.py";
+  const base = process.env.NEXT_PUBLIC_BASE_URL || "https://impatto.com.py";
 
   try {
     const url = new URL(req.url);

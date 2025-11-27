@@ -47,7 +47,7 @@ export async function GET() {
 
     return NextResponse.redirect(authUrl.toString());
   } catch (error: unknown) { // ✅ CORREGIDO: Reemplazado 'any' con 'unknown'
-    const base = process.env.NEXT_PUBLIC_BASE_URL || "https://www.impatto.com.py";
+    const base = process.env.NEXT_PUBLIC_BASE_URL || "https://impatto.com.py";
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.redirect(
       // Utilizamos 'errorMessage' que es un string seguro
