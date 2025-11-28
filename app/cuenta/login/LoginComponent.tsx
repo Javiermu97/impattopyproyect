@@ -2,19 +2,41 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-// ✅ LÍNEA AÑADIDA: Importación del componente Image
 import Image from 'next/image';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+// --- COMPONENTE BOTÓN DE GOOGLE CORREGIDO ---
 function GoogleButton() {
-  const signIn = () => {
-    // Apuntamos a la nueva ruta "start"
-    window.location.href = "/api/auth/google/start";
+  const handleGoogleLogin = async () => {
+    // Definimos la URL de retorno universal
+    // Esto requiere que hayas creado el archivo en app/auth/callback/route.ts
+    const redirectTo = `${window.location.origin}/auth/callback`;
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: redirectTo,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      },
+    });
+
+    if (error) {
+      console.error('Error login Google:', error.message);
+      alert('Error al iniciar con Google: ' + error.message);
+    }
   };
 
   return (
-    <button type="button" className="auth-google" onClick={signIn} aria-label="Iniciar sesión con Google">
+    <button 
+      type="button" 
+      className="auth-google" 
+      onClick={handleGoogleLogin} 
+      aria-label="Iniciar sesión con Google"
+    >
       <Image
         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
         alt="Google"
@@ -26,6 +48,7 @@ function GoogleButton() {
   );
 }
 
+// --- FORMULARIO DE LOGIN CON EMAIL ---
 const LoginForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -44,10 +67,10 @@ const LoginForm = () => {
       });
       if (error) throw error;
       
-      // ✅ CORRECCIÓN APLICADA AQUÍ:
-      // 1. Refrescamos para que Next.js actualice cookies/sesión
+      // ✅ CORRECCIÓN VITAL:
+      // 1. Refrescamos para que Next.js actualice las cookies de sesión
       router.refresh();
-      // 2. Redirigimos a la página de cuenta
+      // 2. Redirigimos explícitamente al panel de cuenta
       router.push('/cuenta');
       
     } catch (error) {
@@ -101,8 +124,7 @@ const LoginForm = () => {
   );
 };
 
-// --- EL RESTO DEL ARCHIVO SE MANTIENE IGUAL ---
-
+// --- FORMULARIO DE REGISTRO ---
 const RegisterForm = () => {
   const router = useRouter();
   const [form, setForm] = useState({
@@ -137,7 +159,10 @@ const RegisterForm = () => {
         },
       });
       if (error) throw error;
+      
+      // Opcional: router.refresh() aquí si el registro autologuea
       router.push('/cuenta/login');
+      alert('Registro exitoso. Por favor revisa tu correo para confirmar.');
     } catch (error) {
       if (error instanceof Error) {
         setErr(error.message);
@@ -209,6 +234,7 @@ const RegisterForm = () => {
   );
 };
 
+// --- COMPONENTE PRINCIPAL ---
 export default function LoginComponent() {
   const [isLoginView, setIsLoginView] = useState(true);
   const searchParams = useSearchParams();
