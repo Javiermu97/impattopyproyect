@@ -102,7 +102,7 @@ export async function GET(req: Request) {
     // ✅ CORRECCIÓN: Usando URL absoluta con 'base'
     return NextResponse.redirect(`${base}/cuenta`);
   } catch (err: unknown) {
-    // Manejo seguro del error: obtenemos un mensaje sin usar `any`
+    // Manejo seguro del error: obtenmos un mensaje sin usar `any`
     let message = "unknown_error";
     if (err instanceof Error) {
       message = err.message;
