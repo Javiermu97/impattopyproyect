@@ -43,7 +43,13 @@ const LoginForm = () => {
         password: pass,
       });
       if (error) throw error;
-      router.push('/');
+      
+      // ✅ CORRECCIÓN APLICADA AQUÍ:
+      // 1. Refrescamos para que Next.js actualice cookies/sesión
+      router.refresh();
+      // 2. Redirigimos a la página de cuenta
+      router.push('/cuenta');
+      
     } catch (error) {
       if (error instanceof Error) {
         setErr(error.message);
