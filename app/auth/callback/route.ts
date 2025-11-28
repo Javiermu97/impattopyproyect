@@ -8,11 +8,11 @@ export async function GET(request: Request) {
   const next = requestUrl.searchParams.get('next') || '/cuenta';
 
   if (code) {
-    // 1. En Next.js 15, cookies() es una promesa, hay que esperar a que se resuelva
     const cookieStore = await cookies();
     
-    // 2. Creamos el cliente usando un truco (casting) para evitar error de tipos en el Build
     const supabase = createRouteHandlerClient({ 
+      // Esta línea de abajo le dice a ESLint que nos deje usar 'any' solo aquí
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       cookies: () => cookieStore as any 
     });
     
