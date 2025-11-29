@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     const errorDescription = url.searchParams.get("error_description");
 
     if (error) {
-      // ✅ CORRECCIÓN: Usando URL absoluta con 'base'
+      // ✅ CORRECCIÓN: Usando URL absoluta con 'bse'
       return NextResponse.redirect(
         `${base}/login?oauth_error=${encodeURIComponent(error)}&desc=${encodeURIComponent(errorDescription || "")}`
       );
