@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Product, ProductVariant } from '@/lib/types';
+// ✅ IMPORTANTE: Importamos Supabase para poder guardar
+import { supabase } from '@/lib/supabaseClient';
 
 /* ─────────────── Tipos ─────────────── */
 interface OrderData {
@@ -77,6 +79,10 @@ export default function CheckoutForm({
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const [cities, setCities] = useState<string[]>([]);
   const [formVariant, setFormVariant] = useState(selectedVariant);
+  
+  // ✅ Estado de carga para evitar doble clic
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [formData, setFormData] = useState({
     city: '',
     name: '',
@@ -92,7 +98,6 @@ export default function CheckoutForm({
       selectedDepartment &&
       paraguayLocations[selectedDepartment as keyof typeof paraguayLocations]
     ) {
-      /* clonamos para pasar string[] mutable */
       setCities([
         ...paraguayLocations[
           selectedDepartment as keyof typeof paraguayLocations
@@ -126,23 +131,77 @@ export default function CheckoutForm({
     return Math.round(product.price * q * (1 - discount));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // ✅ AQUÍ ESTÁ LA LÓGICA CORREGIDA PARA TUS COLUMNAS REALES
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onConfirm({
-      product,
-      formVariant,
-      selectedQuantity,
-      totalPrice: calculatePrice(selectedQuantity),
-      formData,
-      department: selectedDepartment,
-      orderId: Math.floor(40000 + Math.random() * 10000),
-      orderDate: new Date()
-        .toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
-        .replace('.', ''),
-    });
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    const finalPrice = calculatePrice(selectedQuantity);
+    const generatedOrderId = Math.floor(40000 + Math.random() * 10000);
+
+    try {
+        // Preparamos el objeto JSON para la columna 'order_details'
+        const detallesDelPedido = {
+            product_name: product.name || "Producto sin nombre", // Ajuste de seguridad
+            variant: formVariant.color,
+            quantity: selectedQuantity,
+            unit_price: product.price,
+            ruc: formData.ruc, 
+            city: formData.city 
+        };
+
+        // Insertamos usando los nombres EXACTOS de tus columnas (vistos en las fotos)
+        const { error } = await supabase.from('orders').insert([
+            {
+                customer_name: formData.name,
+                customer_email: formData.email,
+                customer_phone: formData.phone,
+                
+                // Unimos dirección y ciudad en 'shipping_address'
+                shipping_address: `${formData.address}, ${formData.city}`, 
+                
+                department: selectedDepartment,
+                
+                // Nombre correcto de tu columna de precio
+                total_amount: finalPrice, 
+                
+                status: 'Pendiente', 
+                
+                // Todo el resto va al JSON
+                order_details: detallesDelPedido 
+            }
+        ]);
+
+        if (error) {
+            console.error("Error guardando pedido:", error.message);
+            alert("Error al guardar: " + error.message);
+            setIsSubmitting(false);
+            return;
+        }
+
+        // Si todo salió bien, mostramos la confirmación visual
+        onConfirm({
+            product,
+            formVariant,
+            selectedQuantity,
+            totalPrice: finalPrice,
+            formData,
+            department: selectedDepartment,
+            orderId: generatedOrderId,
+            orderDate: new Date()
+                .toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
+                .replace('.', ''),
+        });
+
+    } catch (err) {
+        console.error("Error inesperado:", err);
+        alert("Ocurrió un error inesperado al procesar la compra.");
+        setIsSubmitting(false);
+    }
   };
 
-  /* ─────────────── JSX completo de tu formulario ─────────────── */
+  /* ─────────────── JSX completo ─────────────── */
   const renderForm = () => (
     <form onSubmit={handleSubmit}>
       {/* ---------- Opciones de cantidad ---------- */}
@@ -370,16 +429,21 @@ export default function CheckoutForm({
           estás aceptando nuestras políticas.
         </p>
 
-        <button type="submit" className="submit-btn primary">
-          PAGAR AL RECIBIR Gs.{' '}
-          {calculatePrice(selectedQuantity).toLocaleString('es-PY')}
+        {/* ✅ Botones actualizados con estado de carga */}
+        <button type="submit" disabled={isSubmitting} className="submit-btn primary">
+          {isSubmitting 
+             ? 'PROCESANDO...' 
+             : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`
+          }
         </button>
         <small className="payment-note">
           Efectivo y transferencia bancaria. (Sólo para Asunción y alrededores)
         </small>
-        <button type="submit" className="submit-btn secondary">
-          PAGAR CON TARJETA Gs.{' '}
-          {calculatePrice(selectedQuantity).toLocaleString('es-PY')}
+        <button type="submit" disabled={isSubmitting} className="submit-btn secondary">
+           {isSubmitting 
+             ? 'PROCESANDO...' 
+             : `PAGAR CON TARJETA Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`
+           }
         </button>
       </div>
     </form>
@@ -398,6 +462,5 @@ export default function CheckoutForm({
     </div>
   );
 }
-
 
 
