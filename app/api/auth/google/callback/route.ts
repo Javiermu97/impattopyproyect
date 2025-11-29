@@ -2,48 +2,34 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
-// ESTO ES OBLIGATORIO EN NEXT.JS 15 PARA EVITAR EL BUCLE
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
-  // Aseguramos que 'base' sea correcto
   const base = process.env.NEXT_PUBLIC_BASE_URL || "https://impatto.com.py";
 
   try {
     const url = new URL(req.url);
     const code = url.searchParams.get("code");
     const error = url.searchParams.get("error");
-    const errorDescription = url.searchParams.get("error_description");
 
+    // SI HAY ERROR DE GOOGLE, LO MOSTRAMOS EN PANTALLA
     if (error) {
-      return NextResponse.redirect(
-        `${base}/cuenta/login?oauth_error=${encodeURIComponent(error)}&desc=${encodeURIComponent(errorDescription || "")}`
-      );
+      return NextResponse.json({ error: "Error desde Google", detalles: error });
     }
-
     if (!code) {
-      return NextResponse.redirect(`${base}/cuenta/login?oauth_error=missing_code`);
+      return NextResponse.json({ error: "No llegó ningún código desde Google" });
     }
 
-    // --- CORRECCIÓN NEXT.JS 15: await cookies() ---
     const cookieStore = await cookies();
     
-    const stateCookie = cookieStore.get("oauth_state")?.value;
+    // Verificamos cookies de seguridad (PKCE)
     const verifier = cookieStore.get("pkce_verifier")?.value;
-    const state = url.searchParams.get("state");
-
-    // Validamos seguridad (PKCE y State)
-    if (!state || !stateCookie || state !== stateCookie) {
-      return NextResponse.redirect(`${base}/cuenta/login?oauth_error=invalid_state`);
-    }
-
     if (!verifier) {
-      return NextResponse.redirect(`${base}/cuenta/login?oauth_error=missing_pkce_verifier`);
+       return NextResponse.json({ error: "Falta la cookie pkce_verifier. ¿El navegador está bloqueando cookies?" });
     }
 
-    // 1. Canjeamos el código con Google MANUALMENTE (Esto mantiene tu marca)
+    // 1. Canje con Google
     const redirectUri = `${base}/api/auth/google/callback`;
-
     const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -59,17 +45,13 @@ export async function GET(req: Request) {
 
     const tokenJson = await tokenRes.json();
     if (!tokenRes.ok) {
-      console.error("Error Google:", tokenJson);
-      return NextResponse.redirect(`${base}/cuenta/login?oauth_error=token_exchange_failed`);
+      // SI FALLA EL CANJE, MOSTRAMOS EL JSON DE ERROR
+      return NextResponse.json({ error: "Falló el canje de token con Google", google_response: tokenJson });
     }
 
     const { id_token } = tokenJson;
-    if (!id_token) {
-      return NextResponse.redirect(`${base}/cuenta/login?oauth_error=no_id_token`);
-    }
 
-    // 2. Creamos la sesión en Supabase usando el ID Token de Google
-    // Usamos el cliente oficial para que guarde las cookies automáticamente
+    // 2. Sesión en Supabase
     const supabase = createRouteHandlerClient({ 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cookies: () => cookieStore as any 
@@ -81,21 +63,21 @@ export async function GET(req: Request) {
     });
 
     if (signInError) {
-      console.error("Error Supabase:", signInError);
-      return NextResponse.redirect(`${base}/cuenta/login?oauth_error=supabase_session_failed`);
+      // SI FALLA SUPABASE, MOSTRAMOS EL ERROR EXACTO
+      return NextResponse.json({ error: "Falló signInWithIdToken en Supabase", detalles: signInError });
     }
 
-    // 3. Limpiamos las cookies temporales de seguridad
+    // Limpieza
     cookieStore.delete("oauth_state");
     cookieStore.delete("pkce_verifier");
 
-    // 4. ¡Éxito! Redirigimos a la cuenta
+    // Solo si todo salió perfecto, redirigimos
     return NextResponse.redirect(`${base}/cuenta`);
 
   } catch (err: unknown) {
-    const errorMessage = err instanceof Error ? err.message : String(err);
-    return NextResponse.redirect(
-      `${base}/cuenta/login?oauth_error=callback_failed&desc=${encodeURIComponent(errorMessage)}`
-    );
+    return NextResponse.json({ 
+        error: "Error CRÍTICO en el callback", 
+        mensaje: err instanceof Error ? err.message : String(err) 
+    });
   }
 }
