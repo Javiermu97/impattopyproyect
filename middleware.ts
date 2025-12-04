@@ -18,7 +18,7 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // El matcher ahora excluye explícitamente las rutas de api/auth para evitar conflict
+  // El matcher ahora excluye explícitamente las rutas de api/auth para evitar conflictos
   matcher: [
     '/((?!_next/static|_next/image|favicon.ico|api/auth).*)',
   ],
