@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Product, ProductVariant } from '@/lib/types';
-// ✅ IMPORTANTE: Importamos Supabase para poder guardar
+// ✅ Importamos Supabase para poder guardar
 import { supabase } from '@/lib/supabaseClient';
 
 /* ─────────────── Tipos ─────────────── */
@@ -80,7 +80,7 @@ export default function CheckoutForm({
   const [cities, setCities] = useState<string[]>([]);
   const [formVariant, setFormVariant] = useState(selectedVariant);
   
-  // ✅ Estado de carga para evitar doble clic
+  // ✅ Estado de carga
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -131,7 +131,7 @@ export default function CheckoutForm({
     return Math.round(product.price * q * (1 - discount));
   };
 
-  // ✅ AQUÍ ESTÁ LA LÓGICA CORREGIDA PARA TUS COLUMNAS REALES
+  // ✅ LÓGICA COMPLETA: GUARDAR EN DB + ENVIAR CORREOS
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -141,9 +141,9 @@ export default function CheckoutForm({
     const generatedOrderId = Math.floor(40000 + Math.random() * 10000);
 
     try {
-        // Preparamos el objeto JSON para la columna 'order_details'
+        // 1. Preparar detalles JSON
         const detallesDelPedido = {
-            product_name: product.name || "Producto sin nombre", // Ajuste de seguridad
+            product_name: product.name || "Producto sin nombre", 
             variant: formVariant.color,
             quantity: selectedQuantity,
             unit_price: product.price,
@@ -151,24 +151,16 @@ export default function CheckoutForm({
             city: formData.city 
         };
 
-        // Insertamos usando los nombres EXACTOS de tus columnas (vistos en las fotos)
+        // 2. Guardar en Supabase
         const { error } = await supabase.from('orders').insert([
             {
                 customer_name: formData.name,
                 customer_email: formData.email,
                 customer_phone: formData.phone,
-                
-                // Unimos dirección y ciudad en 'shipping_address'
                 shipping_address: `${formData.address}, ${formData.city}`, 
-                
                 department: selectedDepartment,
-                
-                // Nombre correcto de tu columna de precio
                 total_amount: finalPrice, 
-                
                 status: 'Pendiente', 
-                
-                // Todo el resto va al JSON
                 order_details: detallesDelPedido 
             }
         ]);
@@ -180,7 +172,20 @@ export default function CheckoutForm({
             return;
         }
 
-        // Si todo salió bien, mostramos la confirmación visual
+        // 3. ✅ ENVIAR CORREOS (CLIENTE + ADMIN)
+        // Esto llama a tu archivo route.ts que configuramos con Zoho
+        fetch('/api/notify', {
+            method: 'POST',
+            body: JSON.stringify({
+                orderId: generatedOrderId,
+                customerName: formData.name,
+                customerEmail: formData.email, // Importante para el correo del cliente
+                total: finalPrice.toLocaleString('es-PY'),
+                products: `${product.name} (x${selectedQuantity})`
+            })
+        });
+
+        // 4. Confirmar y Cerrar
         onConfirm({
             product,
             formVariant,
@@ -429,7 +434,6 @@ export default function CheckoutForm({
           estás aceptando nuestras políticas.
         </p>
 
-        {/* ✅ Botones actualizados con estado de carga */}
         <button type="submit" disabled={isSubmitting} className="submit-btn primary">
           {isSubmitting 
              ? 'PROCESANDO...' 
