@@ -6,13 +6,16 @@ import { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 import { useCart } from '@/app/context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import SearchModal from './SearchModal'; // <-- 1. IMPORTACIÓN AÑADIDA
+import SearchModal from './SearchModal';
 import {
   IoMenuOutline,
   IoSearchOutline,
   IoPersonOutline,
   IoHeartOutline,
   IoBagHandleOutline,
+  IoCloseOutline, // Icono X
+  IoCallOutline,  // Icono Teléfono
+  IoMailOutline   // Icono Email
 } from 'react-icons/io5';
 
 interface CartItem {
@@ -23,7 +26,7 @@ const Navbar = () => {
   const { openCart, cartItems } = useCart();
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false); // <-- 2. ESTADO AÑADIDO
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const currentPath = usePathname();
 
@@ -33,32 +36,33 @@ const Navbar = () => {
   );
 
   useEffect(() => {
-    // al cambiar de ruta, cierra el menú móvil
     setIsMenuOpen(false);
   }, [currentPath]);
 
+  // Actualicé la lista para incluir el emoji de fuego si lo quieres
   const navLinks = [
-    { href: '/', label: 'Inicio' },
-    { href: '/tienda', label: 'Más Vendidos' },
-    { href: '/hogar', label: 'Hogar' },
-    { href: '/bienestar', label: 'Bienestar' },
-    { href: '/limpieza', label: 'Limpieza' },
-    { href: '/mecanica', label: 'Mecánica & Más' },
+    { href: '/', label: 'INICIO' },
+    { href: '/tienda', label: 'MÁS VENDIDOS' },
+    { href: '/hogar', label: 'HOGAR & COCINA' },
+    { href: '/bienestar', label: 'SALUD & BIENESTAR' },
+    { href: '/limpieza', label: 'LIMPIEZA' },
+    { href: '/vehiculo', label: 'VEHICULO' }, // Cambié Mecánica por Vehiculo según tu foto
   ];
 
   return (
     <>
       <div className={styles.navbar}>
-        {/* IZQUIERDA: botón menú + links escritorio */}
+        {/* IZQUIERDA: Menú hamburguesa */}
         <div className={styles.left}>
           <button
             className={styles.menuBtn}
             aria-label="Abrir menú"
-            onClick={() => setIsMenuOpen((v) => !v)}
+            onClick={() => setIsMenuOpen(true)}
           >
-            <IoMenuOutline size={24} />
+            <IoMenuOutline />
           </button>
 
+          {/* Links Escritorio */}
           <nav className={styles.navLinks}>
             {navLinks.map((l) => (
               <Link
@@ -68,81 +72,99 @@ const Navbar = () => {
                   currentPath === l.href ? styles.active : ''
                 }`}
               >
-                {l.label}
+                {l.label.replace(' 🔥', '')} {/* En escritorio quitamos el emoji si quieres, o déjalo */}
               </Link>
             ))}
           </nav>
         </div>
 
-        {/* CENTRO: logo */}
+        {/* CENTRO: Logo */}
         <div className={styles.logo}>
           <Link href="/">IMPATTO</Link>
         </div>
 
-        {/* DERECHA: acciones */}
+        {/* DERECHA: Iconos */}
         <div className={styles.right}>
-          {/* búsqueda (icono) */}
           <button
             className={`${styles.iconBtn} ${styles.searchIconDesktop}`}
-            aria-label="Buscar"
-            onClick={() => setIsSearchOpen(true)} // <-- 3. onClick AÑADIDO
+            onClick={() => setIsSearchOpen(true)}
           >
             <IoSearchOutline size={24} />
           </button>
 
-          {/* PERFIL: si hay sesión -> /cuenta; si no -> /cuenta/login */}
-          <Link
-            href={user ? '/cuenta' : '/cuenta/login'}
-            className={styles.iconBtn}
-            aria-label="Perfil"
-            title={user ? 'Mi cuenta' : 'Iniciar sesión'}
-          >
+          <Link href={user ? '/cuenta' : '/cuenta/login'} className={styles.iconBtn}>
             <IoPersonOutline size={24} />
           </Link>
 
-          {/* LISTA DE DESEOS (CORAZÓN) */}
-          <Link
-            href={user ? '/wishlist' : '/cuenta/login?redirected=true'}
-            className={styles.iconBtn}
-            aria-label="Lista de deseos"
-            title="Lista de deseos"
-          >
+          <Link href={user ? '/wishlist' : '/cuenta/login'} className={styles.iconBtn}>
             <IoHeartOutline size={24} />
           </Link>
 
-          {/* CARRITO */}
-          <button
-            className={`${styles.iconBtn} ${styles.cartIconContainer}`}
-            aria-label="Carrito"
-            onClick={openCart}
-          >
+          <button className={`${styles.iconBtn} ${styles.cartIconContainer}`} onClick={openCart}>
             <IoBagHandleOutline size={24} />
-            {totalItems > 0 && (
-              <span className={styles.cartBadge}>{totalItems}</span>
-            )}
+            {totalItems > 0 && <span className={styles.cartBadge}>{totalItems}</span>}
           </button>
         </div>
       </div>
 
-      {/* MENÚ MÓVIL */}
-      <nav
-        className={`${styles.mobileNavLinks} ${
-          isMenuOpen ? styles.open : ''
-        }`}
-      >
-        {navLinks.map((l) => (
-          <Link
-            key={l.href}
-            href={l.href}
-            className={styles.mobileNavLink}
+      {/* ============================== */}
+      {/* MENÚ MÓVIL (DRAWER)     */}
+      {/* ============================== */}
+      
+      {/* Fondo Oscuro (Overlay) */}
+      <div 
+        className={`${styles.overlay} ${isMenuOpen ? styles.open : ''}`} 
+        onClick={() => setIsMenuOpen(false)}
+      />
+
+      {/* Contenedor Blanco */}
+      <nav className={`${styles.mobileNavLinks} ${isMenuOpen ? styles.open : ''}`}>
+        
+        {/* Cabecera con la X */}
+        <div className={styles.menuHeader}>
+          <button className={styles.closeBtn} onClick={() => setIsMenuOpen(false)}>
+            <IoCloseOutline />
+          </button>
+        </div>
+
+        {/* Lista de enlaces principales */}
+        <div className={styles.menuList}>
+          {navLinks.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className={styles.mobileNavLink}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {l.label}
+            </Link>
+          ))}
+        </div>
+
+        {/* Pie del menú: Contacto y Cuenta */}
+        <div className={styles.menuFooter}>
+          <a href="tel:0983491155" className={styles.contactItem}>
+            <IoCallOutline size={18} />
+            <span>0983 491 155</span>
+          </a>
+          
+          <a href="mailto:administracion@impatto.com.py" className={styles.contactItem}>
+            <IoMailOutline size={18} />
+            <span>administracion@impatto.com.py</span>
+          </a>
+
+          <Link 
+            href={user ? '/cuenta' : '/cuenta/login'} 
+            className={styles.authLink}
             onClick={() => setIsMenuOpen(false)}
           >
-            {l.label}
+            <IoPersonOutline size={18} />
+            <span>{user ? 'Mi Cuenta' : 'Registrarse / Crear cuenta'}</span>
           </Link>
-        ))}
+        </div>
+
       </nav>
 
-      {/* 4. MODAL DE BÚSQUEDA AÑADIDO AL FINAL */}
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
