@@ -13,9 +13,9 @@ import {
   IoPersonOutline,
   IoHeartOutline,
   IoBagHandleOutline,
-  IoCloseOutline, // Icono X
-  IoCallOutline,  // Icono Teléfono
-  IoMailOutline   // Icono Email
+  IoCloseOutline,
+  IoCallOutline,
+  IoMailOutline
 } from 'react-icons/io5';
 
 interface CartItem {
@@ -39,30 +39,40 @@ const Navbar = () => {
     setIsMenuOpen(false);
   }, [currentPath]);
 
-  // Actualicé la lista para incluir el emoji de fuego si lo quieres
   const navLinks = [
     { href: '/', label: 'INICIO' },
     { href: '/tienda', label: 'MÁS VENDIDOS' },
     { href: '/hogar', label: 'HOGAR & COCINA' },
     { href: '/bienestar', label: 'SALUD & BIENESTAR' },
     { href: '/limpieza', label: 'LIMPIEZA' },
-    { href: '/vehiculo', label: 'VEHICULO' }, // Cambié Mecánica por Vehiculo según tu foto
+    { href: '/vehiculo', label: 'VEHICULO' },
   ];
 
   return (
     <>
       <div className={styles.navbar}>
-        {/* IZQUIERDA: Menú hamburguesa */}
+        
+        {/* === IZQUIERDA === */}
         <div className={styles.left}>
+          {/* 1. Botón Hamburguesa (Solo Móvil) */}
           <button
             className={styles.menuBtn}
             aria-label="Abrir menú"
             onClick={() => setIsMenuOpen(true)}
           >
-            <IoMenuOutline />
+            <IoMenuOutline size={28} /> {/* Hice el icono un poco más grande */}
           </button>
 
-          {/* Links Escritorio */}
+          {/* 2. Botón Búsqueda (Solo Móvil - Al lado de la hamburguesa) */}
+          <button
+            className={styles.searchIconMobile}
+            aria-label="Buscar"
+            onClick={() => setIsSearchOpen(true)}
+          >
+            <IoSearchOutline size={24} />
+          </button>
+
+          {/* 3. Links de navegación (Solo Escritorio) */}
           <nav className={styles.navLinks}>
             {navLinks.map((l) => (
               <Link
@@ -72,19 +82,20 @@ const Navbar = () => {
                   currentPath === l.href ? styles.active : ''
                 }`}
               >
-                {l.label.replace(' 🔥', '')} {/* En escritorio quitamos el emoji si quieres, o déjalo */}
+                {l.label.replace(' 🔥', '')}
               </Link>
             ))}
           </nav>
         </div>
 
-        {/* CENTRO: Logo */}
+        {/* === CENTRO: Logo === */}
         <div className={styles.logo}>
           <Link href="/">IMPATTO</Link>
         </div>
 
-        {/* DERECHA: Iconos */}
+        {/* === DERECHA === */}
         <div className={styles.right}>
+          {/* Búsqueda (Solo Escritorio) */}
           <button
             className={`${styles.iconBtn} ${styles.searchIconDesktop}`}
             onClick={() => setIsSearchOpen(true)}
@@ -92,14 +103,17 @@ const Navbar = () => {
             <IoSearchOutline size={24} />
           </button>
 
+          {/* Perfil */}
           <Link href={user ? '/cuenta' : '/cuenta/login'} className={styles.iconBtn}>
             <IoPersonOutline size={24} />
           </Link>
 
+          {/* Wishlist */}
           <Link href={user ? '/wishlist' : '/cuenta/login'} className={styles.iconBtn}>
             <IoHeartOutline size={24} />
           </Link>
 
+          {/* Carrito */}
           <button className={`${styles.iconBtn} ${styles.cartIconContainer}`} onClick={openCart}>
             <IoBagHandleOutline size={24} />
             {totalItems > 0 && <span className={styles.cartBadge}>{totalItems}</span>}
@@ -107,27 +121,20 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ============================== */}
-      {/* MENÚ MÓVIL (DRAWER)     */}
-      {/* ============================== */}
-      
-      {/* Fondo Oscuro (Overlay) */}
+      {/* === MENÚ MÓVIL LATERAL === */}
       <div 
         className={`${styles.overlay} ${isMenuOpen ? styles.open : ''}`} 
         onClick={() => setIsMenuOpen(false)}
       />
 
-      {/* Contenedor Blanco */}
       <nav className={`${styles.mobileNavLinks} ${isMenuOpen ? styles.open : ''}`}>
-        
-        {/* Cabecera con la X */}
         <div className={styles.menuHeader}>
+          {/* X de Cerrar (Color Negro forzado en CSS) */}
           <button className={styles.closeBtn} onClick={() => setIsMenuOpen(false)}>
             <IoCloseOutline />
           </button>
         </div>
 
-        {/* Lista de enlaces principales */}
         <div className={styles.menuList}>
           {navLinks.map((l) => (
             <Link
@@ -141,18 +148,15 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Pie del menú: Contacto y Cuenta */}
         <div className={styles.menuFooter}>
           <a href="tel:0983491155" className={styles.contactItem}>
             <IoCallOutline size={18} />
             <span>0983 491 155</span>
           </a>
-          
           <a href="mailto:administracion@impatto.com.py" className={styles.contactItem}>
             <IoMailOutline size={18} />
             <span>administracion@impatto.com.py</span>
           </a>
-
           <Link 
             href={user ? '/cuenta' : '/cuenta/login'} 
             className={styles.authLink}
@@ -162,7 +166,6 @@ const Navbar = () => {
             <span>{user ? 'Mi Cuenta' : 'Registrarse / Crear cuenta'}</span>
           </Link>
         </div>
-
       </nav>
 
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />

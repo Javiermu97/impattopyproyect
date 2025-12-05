@@ -8,7 +8,7 @@
   background-color: #ffffff;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #e5e5e5;
-  color: black;
+  color: #000000; /* Color negro base */
   position: relative;
   z-index: 50;
 }
@@ -27,6 +27,10 @@
 .logo {
   text-align: center;
   line-height: 1.1;
+  /* En móvil, para que quede centrado absolutamente si hay iconos a los lados */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .logo a {
   font-family: "Times New Roman", Times, serif;
@@ -34,12 +38,21 @@
   font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #111;
+  color: #000000;
   text-decoration: none;
 }
 
 /* Botones e Iconos */
-.iconBtn { background: transparent; border: none; padding: 0; cursor: pointer; color: inherit; }
+.iconBtn { 
+  background: transparent; 
+  border: none; 
+  padding: 0; 
+  cursor: pointer; 
+  color: #000000; /* Aseguramos negro */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .cartIconContainer { position: relative; }
 .cartBadge {
   position: absolute;
@@ -49,17 +62,40 @@
   font-size: 0.7rem; font-weight: bold;
 }
 
+/* Botón Hamburguesa (Móvil) */
+.menuBtn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #000000; /* NEGRO EXPLICITO */
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+/* Botón Lupa Móvil (El que va al lado de la hamburguesa) */
+.searchIconMobile {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem; /* Un pequeño espacio entre hamburguesa y lupa */
+}
+
 /* ========================================= */
-/* ESTILOS DEL MENÚ MÓVIL (DRAWER)     */
+/* MENÚ MÓVIL (DRAWER) ESTILOS               */
 /* ========================================= */
 
-/* Fondo oscuro detrás del menú */
 .overlay {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 998; /* Detrás del menú, encima de todo lo demás */
+  z-index: 998;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease;
@@ -69,11 +105,9 @@
   visibility: visible;
 }
 
-/* El contenedor blanco del menú */
 .mobileNavLinks {
   position: fixed;
-  top: 0;
-  left: -100%; /* Oculto a la izquierda */
+  top: 0; left: -100%;
   width: 85%;
   max-width: 350px;
   height: 100vh;
@@ -83,48 +117,39 @@
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-  overflow-y: auto; /* Permite scroll si el menú es muy alto */
+  overflow-y: auto;
 }
+.mobileNavLinks.open { left: 0; }
 
-.mobileNavLinks.open {
-  left: 0; /* Entra en pantalla */
-}
-
-/* Cabecera del menú (Botón cerrar) */
 .menuHeader {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-end; /* X a la derecha */
   padding: 1.5rem;
 }
+/* La X para cerrar */
 .closeBtn {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 2rem; /* Tamaño grande */
   cursor: pointer;
+  color: #000000 !important; /* NEGRO FORZADO */
 }
 
-/* Lista de Enlaces */
 .menuList {
   display: flex;
   flex-direction: column;
   padding: 0 1.5rem;
 }
-
 .mobileNavLink {
   padding: 1rem 0;
   border-bottom: 1px solid #f0f0f0;
-  color: #111;
+  color: #000000;
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.mobileNavLink:last-child {
-  border-bottom: none;
 }
 
-/* Sección de Contacto e Info (Abajo) */
 .menuFooter {
   margin-top: 2rem;
   padding: 0 1.5rem 2rem 1.5rem;
@@ -132,52 +157,40 @@
   flex-direction: column;
   gap: 1rem;
 }
-
-.contactItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #666;
-  font-size: 0.9rem;
-  text-decoration: none;
+.contactItem, .authLink {
+  display: flex; align-items: center; gap: 10px;
+  color: #333; font-size: 0.9rem; text-decoration: none;
 }
-
 .authLink {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #666;
-  font-size: 0.9rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #f0f0f0;
-  text-decoration: none;
+  margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #f0f0f0;
 }
 
-
 /* ========================================= */
-/* MEDIA QUERIES                   */
+/* RESPONSIVE (OCULTAR/MOSTRAR SEGÚN PANTALLA) */
 /* ========================================= */
 
+/* MÓVIL Y TABLET (Hasta 1024px) */
 @media (max-width: 1024px) {
-  .logo { position: absolute; left: 50%; transform: translateX(-50%); }
-  .navLinks { display: none; }
-  .menuBtn { display: flex; background: transparent; border: none; font-size: 1.5rem; cursor: pointer;}
+  .navLinks { display: none; } /* Ocultar links de escritorio */
+  .menuBtn { display: flex; }  /* Mostrar Hamburguesa */
+  
+  /* MOSTRAR LUPA MÓVIL, OCULTAR DE ESCRITORIO */
   .searchIconDesktop { display: none; }
   .searchIconMobile { display: flex; }
 }
 
+/* ESCRITORIO (Más de 1024px) */
 @media (min-width: 1025px) {
-  .menuBtn { display: none; }
+  .logo { position: static; transform: none; } /* Resetear posición logo */
+  .menuBtn { display: none; } /* Ocultar hamburguesa */
   .navLinks { display: flex; gap: 1.5rem; }
-  .navLink {
-    text-decoration: none; color: #333; font-size: 0.9em;
-    position: relative; padding-bottom: 5px; transition: color 0.3s;
-  }
-  .navLink:hover { color: #000; }
+  
+  /* MOSTRAR LUPA ESCRITORIO, OCULTAR MÓVIL */
   .searchIconDesktop { display: flex; }
   .searchIconMobile { display: none; }
   
-  /* Aseguramos que el menú móvil no moleste en escritorio */
-  .mobileNavLinks, .overlay { display: none; }
+  .navLink {
+    text-decoration: none; color: #000; font-size: 0.9em;
+    position: relative; padding-bottom: 5px; transition: color 0.3s;
+  }
 }
