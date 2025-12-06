@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-// Zod Schema corregido solo en oldPrice
+// --- ZOD SCHEMA (REGLAS DE VALIDACIÓN) ---
 const ProductSchema = z.object({
   name: z.string().min(3),
   price: z.coerce.number().positive(),
@@ -14,17 +14,25 @@ const ProductSchema = z.object({
   description: z.string().trim().nullable().optional(),
   imageUrl: z.string().url().nullable().optional(),
   imageUrl2: z.string().url().nullable().optional(),
-  
-  // ✅ CORRECCIÓN: Convierte cadena vacía "" a null para evitar el error de validación
+
+  // Regla inteligente para oldPrice: Vacío o 0 se convierte en NULL
   oldPrice: z.preprocess(
-    (val) => (val === '' || val === null ? null : Number(val)), 
+    (val) => {
+      if (val === '' || val === null) return null;
+      const numero = Number(val);
+      // Si pone 0 o negativo, lo guardamos como null (sin oferta)
+      return numero <= 0 ? null : numero;
+    }, 
     z.number().positive().nullable().optional()
   ),
-  
+
   categoria: z.string().trim().nullable().optional(),
   es_mas_vendido: z.boolean().nullable().optional(),
   videoUrl: z.string().url().nullable().optional(),
+  
+  // Array de imágenes
   galleryImages: z.array(z.string().url()).nullable().optional(),
+  
   inStock: z.boolean(),
   es_destacado_semana: z.boolean().nullable().optional(),
   es_destacado_hogar: z.boolean().nullable().optional(),
@@ -36,7 +44,7 @@ const getBooleanOrNull = (value: string | null) => {
     return null;
 };
 
-// --- ACCIONES DE PRODUCTOS ---
+// --- ACCIÓN: CREAR PRODUCTO ---
 export async function createProduct(formData: FormData) {
   const rawData = {
     name: formData.get('name'),
@@ -56,9 +64,12 @@ export async function createProduct(formData: FormData) {
   };
   
   const validation = ProductSchema.safeParse(rawData);
+  
   if (!validation.success) {
-      console.error("ERROR DE VALIDACIÓN:", validation.error.flatten().fieldErrors);
-      throw new Error(`Datos inválidos: ${validation.error.issues[0].message}`);
+      console.error("ERROR DE VALIDACIÓN DETALLADO:", validation.error.flatten().fieldErrors);
+      const primerError = validation.error.issues[0];
+      // ✅ CORRECCIÓN AQUÍ: Usamos String() para evitar el error de TypeScript
+      throw new Error(`Error en ${String(primerError.path[0])}: ${primerError.message}`);
   }
 
   const supabase = createServerActionClient({ cookies });
@@ -71,7 +82,7 @@ export async function createProduct(formData: FormData) {
 
   if (error) {
       console.error("ERROR DE SUPABASE:", error);
-      throw new Error(`No se pudo guardar el producto.`);
+      throw new Error(`No se pudo guardar en la base de datos: ${error.message}`);
   }
 
   if (!data) {
@@ -79,11 +90,10 @@ export async function createProduct(formData: FormData) {
   }
 
   revalidatePath('/admin/products');
-  
-  // Redirigimos a la edición
   redirect(`/admin/products/edit/${data.id}`); 
 }
 
+// --- ACCIÓN: ACTUALIZAR PRODUCTO ---
 export async function updateProduct(productId: number, formData: FormData) {
     const rawData = {
         name: formData.get('name'),
@@ -105,7 +115,9 @@ export async function updateProduct(productId: number, formData: FormData) {
   const validation = ProductSchema.safeParse(rawData);
   if (!validation.success) {
     console.error("ERROR DE VALIDACIÓN:", validation.error.flatten().fieldErrors);
-    throw new Error(`Datos inválidos: ${validation.error.issues[0].message}`);
+    const primerError = validation.error.issues[0];
+    // ✅ CORRECCIÓN AQUÍ TAMBIÉN
+    throw new Error(`Error en ${String(primerError.path[0])}: ${primerError.message}`);
   }
 
   const supabase = createServerActionClient({ cookies });
@@ -120,6 +132,7 @@ export async function updateProduct(productId: number, formData: FormData) {
   redirect('/admin/products');
 }
 
+// --- ACCIÓN: ELIMINAR PRODUCTO ---
 export async function deleteProduct(productId: number) {
   const supabase = createServerActionClient({ cookies });
   const { error } = await supabase.from('productos').delete().eq('id', productId);
@@ -131,8 +144,7 @@ export async function deleteProduct(productId: number) {
   redirect('/admin/products');
 }
 
-
-// --- ACCIÓN PARA ÓRDENES ---
+// --- ACCIÓN: ESTADO DE ÓRDENES ---
 export async function updateOrderStatus(orderId: number, newStatus: string) {
   const supabase = createServerActionClient({ cookies });
   const { error } = await supabase
@@ -141,26 +153,22 @@ export async function updateOrderStatus(orderId: number, newStatus: string) {
     .eq('id', orderId);
 
   if (error) {
-    console.error('Error al actualizar el estado de la orden:', error);
-    throw new Error('No se pudo actualizar el estado de la orden.');
+    console.error('Error al actualizar orden:', error);
+    throw new Error('No se pudo actualizar la orden.');
   }
 
   revalidatePath('/admin/orders');
   revalidatePath(`/admin/orders/${orderId}`);
 }
 
-
-// --- ZOD SCHEMA PARA CARACTERISTICAS ---
+// --- CARACTERÍSTICAS ---
 const CaracteristicaSchema = z.object({
   titulo: z.string().min(3, { message: 'El título es requerido.' }),
   orden: z.coerce.number().nullable().optional(),
   descripcion: z.string().nullable().optional(),
-  imagen: z.string().url({ message: 'La URL de la imagen no es válida.' }).nullable().optional(),
+  imagen: z.string().url({ message: 'URL de imagen inválida.' }).nullable().optional(),
   producto_id: z.coerce.number(),
 });
-
-
-// --- ACCIONES PARA CARACTERISTICAS ---
 
 export async function createCaracteristica(formData: FormData) {
   const rawData = {
@@ -174,15 +182,15 @@ export async function createCaracteristica(formData: FormData) {
   const validation = CaracteristicaSchema.safeParse(rawData);
 
   if (!validation.success) {
-    console.error("ERROR DE VALIDACIÓN:", validation.error.flatten().fieldErrors);
-    throw new Error(`Datos de característica inválidos: ${validation.error.issues[0].message}`);
+    console.error("ERROR CARACTERÍSTICA:", validation.error.flatten().fieldErrors);
+    throw new Error(`Datos inválidos: ${validation.error.issues[0].message}`);
   }
 
   const supabase = createServerActionClient({ cookies });
   const { error } = await supabase.from('caracteristicas').insert(validation.data);
 
   if (error) {
-    console.error("ERROR DE SUPABASE AL CREAR CARACTERÍSTICA:", error);
+    console.error("ERROR SUPABASE CARACTERÍSTICA:", error);
     throw new Error('No se pudo guardar la característica.');
   }
 
@@ -194,8 +202,8 @@ export async function deleteCaracteristica(caracteristicaId: number, productoId:
   const { error } = await supabase.from('caracteristicas').delete().eq('id', caracteristicaId);
 
   if (error) {
-    console.error('Error al eliminar característica:', error);
-    throw new Error('No se pudo eliminar la característica.');
+    console.error('Error eliminando característica:', error);
+    throw new Error('No se pudo eliminar.');
   }
 
   revalidatePath(`/admin/products/edit/${productoId}`);
