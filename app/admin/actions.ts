@@ -41,7 +41,7 @@ function parseBoolean(value: string | null) {
   return null;
 }
 
-/* ---------------- PRODUCTOS ---------------- */
+/* ---------------- PRODUCTO ---------------- */
 
 export async function createProduct(formData: FormData) {
   // createClient() devuelve supabaseServer (no async aquí)
