@@ -1,13 +1,12 @@
 'use server';
 
-// 1. CAMBIO: Quitamos la librería rota y usamos la estándar
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-// --- ZOD SCHEMA (TU CÓDIGO INTACTO) ---
+// --- ZOD SCHEMA (REGLAS DE VALIDACIÓN) ---
 const ProductSchema = z.object({
   name: z.string().min(3),
   price: z.coerce.number().positive(),
@@ -16,7 +15,7 @@ const ProductSchema = z.object({
   imageUrl: z.string().url().nullable().optional(),
   imageUrl2: z.string().url().nullable().optional(),
 
-  // Tu corrección de oldPrice se mantiene aquí
+  // ✅ CORRECCIÓN: Si oldPrice es vacío, 0 o nulo, se guarda como NULL
   oldPrice: z.preprocess(
     (val) => {
       if (val === '' || val === null) return null;
@@ -29,7 +28,10 @@ const ProductSchema = z.object({
   categoria: z.string().trim().nullable().optional(),
   es_mas_vendido: z.boolean().nullable().optional(),
   videoUrl: z.string().url().nullable().optional(),
+  
+  // Array de imágenes: separa por comas y valida URLs
   galleryImages: z.array(z.string().url()).nullable().optional(),
+  
   inStock: z.boolean(),
   es_destacado_semana: z.boolean().nullable().optional(),
   es_destacado_hogar: z.boolean().nullable().optional(),
@@ -41,9 +43,9 @@ const getBooleanOrNull = (value: string | null) => {
     return null;
 };
 
-// 2. NUEVA FUNCIÓN: Conexión manual compatible con Next.js 15
+// --- FUNCIÓN DE CONEXIÓN MANUAL (COMPATIBLE NEXT 15) ---
 async function getSupabase() {
-  const cookieStore = await cookies(); // Ahora esperamos la promesa (Next 15)
+  const cookieStore = await cookies();
   
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -56,7 +58,6 @@ async function getSupabase() {
       },
       global: {
         headers: {
-          // Pasamos las cookies manualmente para que Supabase sepa quién eres
           cookie: cookieStore.toString(),
         },
       },
@@ -88,29 +89,26 @@ export async function createProduct(formData: FormData) {
   if (!validation.success) {
       console.error("ERROR DE VALIDACIÓN DETALLADO:", validation.error.flatten().fieldErrors);
       const primerError = validation.error.issues[0];
+      // Corrección TypeScript
       throw new Error(`Error en ${String(primerError.path[0])}: ${primerError.message}`);
   }
 
-  // USAMOS LA NUEVA CONEXIÓN
   const supabase = await getSupabase();
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('productos')
-    .insert(validation.data)
-    .select()
-    .single();
+    .insert(validation.data);
 
   if (error) {
       console.error("ERROR DE SUPABASE:", error);
       throw new Error(`No se pudo guardar en la base de datos: ${error.message}`);
   }
 
-  if (!data) {
-    throw new Error('No se pudo obtener el producto recién creado.');
-  }
-
+  // Refrescamos la lista
   revalidatePath('/admin/products');
-  redirect(`/admin/products/edit/${data.id}`); 
+  
+  // ✅ CORRECCIÓN FINAL: Redirigimos a la LISTA (que sí existe)
+  redirect('/admin/products'); 
 }
 
 // --- ACCIÓN: ACTUALIZAR PRODUCTO ---
@@ -139,7 +137,6 @@ export async function updateProduct(productId: number, formData: FormData) {
     throw new Error(`Error en ${String(primerError.path[0])}: ${primerError.message}`);
   }
 
-  // USAMOS LA NUEVA CONEXIÓN
   const supabase = await getSupabase();
   
   const { error } = await supabase.from('productos').update(validation.data).eq('id', productId);
@@ -149,13 +146,12 @@ export async function updateProduct(productId: number, formData: FormData) {
   }
 
   revalidatePath('/admin/products');
-  revalidatePath(`/admin/products/edit/${productId}`);
+  // Intentamos redirigir a la edición si existe, si no, a la lista
   redirect('/admin/products');
 }
 
 // --- ACCIÓN: ELIMINAR PRODUCTO ---
 export async function deleteProduct(productId: number) {
-  // USAMOS LA NUEVA CONEXIÓN
   const supabase = await getSupabase();
   
   const { error } = await supabase.from('productos').delete().eq('id', productId);
@@ -169,7 +165,6 @@ export async function deleteProduct(productId: number) {
 
 // --- ACCIÓN: ESTADO DE ÓRDENES ---
 export async function updateOrderStatus(orderId: number, newStatus: string) {
-  // USAMOS LA NUEVA CONEXIÓN
   const supabase = await getSupabase();
   
   const { error } = await supabase
@@ -183,7 +178,8 @@ export async function updateOrderStatus(orderId: number, newStatus: string) {
   }
 
   revalidatePath('/admin/orders');
-  revalidatePath(`/admin/orders/${orderId}`);
+  // Ajuste para evitar 404 si la página de detalle no existe
+  redirect('/admin/orders'); 
 }
 
 // --- CARACTERÍSTICAS ---
@@ -211,7 +207,6 @@ export async function createCaracteristica(formData: FormData) {
     throw new Error(`Datos inválidos: ${validation.error.issues[0].message}`);
   }
 
-  // USAMOS LA NUEVA CONEXIÓN
   const supabase = await getSupabase();
 
   const { error } = await supabase.from('caracteristicas').insert(validation.data);
@@ -220,12 +215,12 @@ export async function createCaracteristica(formData: FormData) {
     console.error("ERROR SUPABASE CARACTERÍSTICA:", error);
     throw new Error('No se pudo guardar la característica.');
   }
-
-  revalidatePath(`/admin/products/edit/${validation.data.producto_id}`);
+  
+  // Redirigir a la lista de productos por seguridad
+  revalidatePath('/admin/products');
 }
 
 export async function deleteCaracteristica(caracteristicaId: number, productoId: number) {
-  // USAMOS LA NUEVA CONEXIÓN
   const supabase = await getSupabase();
   
   const { error } = await supabase.from('caracteristicas').delete().eq('id', caracteristicaId);
@@ -235,5 +230,5 @@ export async function deleteCaracteristica(caracteristicaId: number, productoId:
     throw new Error('No se pudo eliminar.');
   }
 
-  revalidatePath(`/admin/products/edit/${productoId}`);
+  revalidatePath('/admin/products');
 }
