@@ -1,5 +1,6 @@
 'use server';
 
+// 1. IMPORTAMOS LA LIBRERÍA ESTÁNDAR (NO LA VIEJA DE AUTH-HELPERS)
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
@@ -15,7 +16,7 @@ const ProductSchema = z.object({
   imageUrl: z.string().url().nullable().optional(),
   imageUrl2: z.string().url().nullable().optional(),
 
-  // ✅ CORRECCIÓN: Si oldPrice es vacío, 0 o nulo, se guarda como NULL
+  // Corrección para oldPrice: Vacío o 0 se convierte en NULL
   oldPrice: z.preprocess(
     (val) => {
       if (val === '' || val === null) return null;
@@ -28,10 +29,7 @@ const ProductSchema = z.object({
   categoria: z.string().trim().nullable().optional(),
   es_mas_vendido: z.boolean().nullable().optional(),
   videoUrl: z.string().url().nullable().optional(),
-  
-  // Array de imágenes: separa por comas y valida URLs
   galleryImages: z.array(z.string().url()).nullable().optional(),
-  
   inStock: z.boolean(),
   es_destacado_semana: z.boolean().nullable().optional(),
   es_destacado_hogar: z.boolean().nullable().optional(),
@@ -43,9 +41,9 @@ const getBooleanOrNull = (value: string | null) => {
     return null;
 };
 
-// --- FUNCIÓN DE CONEXIÓN MANUAL (COMPATIBLE NEXT 15) ---
+// 2. FUNCIÓN DE CONEXIÓN MANUAL (SOLUCIÓN AL ERROR DE COOKIES)
 async function getSupabase() {
-  const cookieStore = await cookies();
+  const cookieStore = await cookies(); // Esperamos la promesa (Next 15)
   
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -58,6 +56,7 @@ async function getSupabase() {
       },
       global: {
         headers: {
+          // Pasamos las cookies manualmente
           cookie: cookieStore.toString(),
         },
       },
@@ -87,12 +86,12 @@ export async function createProduct(formData: FormData) {
   const validation = ProductSchema.safeParse(rawData);
   
   if (!validation.success) {
-      console.error("ERROR DE VALIDACIÓN DETALLADO:", validation.error.flatten().fieldErrors);
+      console.error("ERROR DE VALIDACIÓN:", validation.error.flatten().fieldErrors);
       const primerError = validation.error.issues[0];
-      // Corrección TypeScript
       throw new Error(`Error en ${String(primerError.path[0])}: ${primerError.message}`);
   }
 
+  // Usamos la nueva conexión
   const supabase = await getSupabase();
 
   const { error } = await supabase
@@ -101,13 +100,11 @@ export async function createProduct(formData: FormData) {
 
   if (error) {
       console.error("ERROR DE SUPABASE:", error);
-      throw new Error(`No se pudo guardar en la base de datos: ${error.message}`);
+      throw new Error(`No se pudo guardar: ${error.message}`);
   }
 
-  // Refrescamos la lista
   revalidatePath('/admin/products');
-  
-  // ✅ CORRECCIÓN FINAL: Redirigimos a la LISTA (que sí existe)
+  // Redirigimos a la lista para evitar errores 404
   redirect('/admin/products'); 
 }
 
@@ -146,7 +143,6 @@ export async function updateProduct(productId: number, formData: FormData) {
   }
 
   revalidatePath('/admin/products');
-  // Intentamos redirigir a la edición si existe, si no, a la lista
   redirect('/admin/products');
 }
 
@@ -178,8 +174,7 @@ export async function updateOrderStatus(orderId: number, newStatus: string) {
   }
 
   revalidatePath('/admin/orders');
-  // Ajuste para evitar 404 si la página de detalle no existe
-  redirect('/admin/orders'); 
+  redirect('/admin/orders');
 }
 
 // --- CARACTERÍSTICAS ---
@@ -215,8 +210,7 @@ export async function createCaracteristica(formData: FormData) {
     console.error("ERROR SUPABASE CARACTERÍSTICA:", error);
     throw new Error('No se pudo guardar la característica.');
   }
-  
-  // Redirigir a la lista de productos por seguridad
+
   revalidatePath('/admin/products');
 }
 
