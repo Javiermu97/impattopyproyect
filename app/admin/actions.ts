@@ -1,7 +1,7 @@
 // actions.ts
 'use server';
 
-import { createClient } from '@supabase/supabase-js';
+import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -39,46 +39,15 @@ const getBooleanOrNull = (value: string | null) => {
 };
 
 // -----------------------------------------------------------------
-// getSupabase: construye cliente pasando las cookies correctamente
+// getSupabase: usa el helper oficial para Server Actions
 // -----------------------------------------------------------------
-async function getSupabase() {
-  try {
-    // En algunas versiones de Next `cookies()` es async → await
-    const cookieStore = await cookies();
-
-    // Tipamos explícitamente la estructura de cada cookie para TypeScript
-    const cookieList = (cookieStore.getAll 
-      ? cookieStore.getAll() 
-      : []) as Array<{ name: string; value: string }>;
-
-    const cookieHeader = cookieList.map((c: { name: string; value: string }) => `${c.name}=${c.value}`).join('; ');
-
-    console.debug('[getSupabase] cookieHeader:', cookieHeader ? '[present]' : '[empty]');
-
-    return createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        auth: {
-          persistSession: false,
-          autoRefreshToken: false,
-          detectSessionInUrl: false,
-        },
-        global: {
-          headers: {
-            cookie: cookieHeader || '',
-          },
-        },
-      }
-    );
-  } catch (err) {
-    console.error('[getSupabase] Error construyendo cliente Supabase:', err);
-    throw err;
-  }
+function getSupabase() {
+  // createServerActionClient maneja correctamente `cookies` de Next
+  return createServerActionClient({ cookies });
 }
 
 // -----------------------------------------------------------------
-// CRUD productos / órdenes / características (igual que antes)
+// CRUD productos / órdenes / características
 // -----------------------------------------------------------------
 export async function createProduct(formData: FormData) {
   const rawData = {
@@ -109,7 +78,7 @@ export async function createProduct(formData: FormData) {
     throw new Error(`Error en ${String(primerError.path[0])}: ${primerError.message}`);
   }
 
-  const supabase = await getSupabase();
+  const supabase = getSupabase();
 
   const { error, data } = await supabase.from('productos').insert(validation.data).select();
 
@@ -151,7 +120,7 @@ export async function updateProduct(productId: number, formData: FormData) {
     throw new Error(`Error en ${String(primerError.path[0])}: ${primerError.message}`);
   }
 
-  const supabase = await getSupabase();
+  const supabase = getSupabase();
 
   const { error, data } = await supabase.from('productos').update(validation.data).eq('id', productId).select();
 
@@ -166,7 +135,7 @@ export async function updateProduct(productId: number, formData: FormData) {
 }
 
 export async function deleteProduct(productId: number) {
-  const supabase = await getSupabase();
+  const supabase = getSupabase();
 
   const { error } = await supabase.from('productos').delete().eq('id', productId);
 
@@ -181,7 +150,7 @@ export async function deleteProduct(productId: number) {
 }
 
 export async function updateOrderStatus(orderId: number, newStatus: string) {
-  const supabase = await getSupabase();
+  const supabase = getSupabase();
 
   const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', orderId);
 
@@ -219,7 +188,7 @@ export async function createCaracteristica(formData: FormData) {
     throw new Error(`Datos inválidos: ${validation.error.issues[0].message}`);
   }
 
-  const supabase = await getSupabase();
+  const supabase = getSupabase();
 
   const { error } = await supabase.from('caracteristicas').insert(validation.data);
 
@@ -233,7 +202,7 @@ export async function createCaracteristica(formData: FormData) {
 }
 
 export async function deleteCaracteristica(caracteristicaId: number, productoId: number) {
-  const supabase = await getSupabase();
+  const supabase = getSupabase();
 
   const { error } = await supabase.from('caracteristicas').delete().eq('id', caracteristicaId);
 
@@ -245,3 +214,4 @@ export async function deleteCaracteristica(caracteristicaId: number, productoId:
   console.info('Característica eliminada, id:', caracteristicaId, 'producto:', productoId);
   revalidatePath('/admin/products');
 }
+
