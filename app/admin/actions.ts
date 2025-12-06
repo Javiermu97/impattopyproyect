@@ -1,12 +1,13 @@
 'use server';
 
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
+// 1. CAMBIO: Quitamos la librería rota y usamos la estándar
+import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-// --- ZOD SCHEMA (REGLAS DE VALIDACIÓN) ---
+// --- ZOD SCHEMA (TU CÓDIGO INTACTO) ---
 const ProductSchema = z.object({
   name: z.string().min(3),
   price: z.coerce.number().positive(),
@@ -15,12 +16,11 @@ const ProductSchema = z.object({
   imageUrl: z.string().url().nullable().optional(),
   imageUrl2: z.string().url().nullable().optional(),
 
-  // Regla inteligente para oldPrice: Vacío o 0 se convierte en NULL
+  // Tu corrección de oldPrice se mantiene aquí
   oldPrice: z.preprocess(
     (val) => {
       if (val === '' || val === null) return null;
       const numero = Number(val);
-      // Si pone 0 o negativo, lo guardamos como null (sin oferta)
       return numero <= 0 ? null : numero;
     }, 
     z.number().positive().nullable().optional()
@@ -29,10 +29,7 @@ const ProductSchema = z.object({
   categoria: z.string().trim().nullable().optional(),
   es_mas_vendido: z.boolean().nullable().optional(),
   videoUrl: z.string().url().nullable().optional(),
-  
-  // Array de imágenes
   galleryImages: z.array(z.string().url()).nullable().optional(),
-  
   inStock: z.boolean(),
   es_destacado_semana: z.boolean().nullable().optional(),
   es_destacado_hogar: z.boolean().nullable().optional(),
@@ -43,6 +40,29 @@ const getBooleanOrNull = (value: string | null) => {
     if (value === 'false') return false;
     return null;
 };
+
+// 2. NUEVA FUNCIÓN: Conexión manual compatible con Next.js 15
+async function getSupabase() {
+  const cookieStore = await cookies(); // Ahora esperamos la promesa (Next 15)
+  
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+      global: {
+        headers: {
+          // Pasamos las cookies manualmente para que Supabase sepa quién eres
+          cookie: cookieStore.toString(),
+        },
+      },
+    }
+  );
+}
 
 // --- ACCIÓN: CREAR PRODUCTO ---
 export async function createProduct(formData: FormData) {
@@ -68,11 +88,11 @@ export async function createProduct(formData: FormData) {
   if (!validation.success) {
       console.error("ERROR DE VALIDACIÓN DETALLADO:", validation.error.flatten().fieldErrors);
       const primerError = validation.error.issues[0];
-      // ✅ CORRECCIÓN AQUÍ: Usamos String() para evitar el error de TypeScript
       throw new Error(`Error en ${String(primerError.path[0])}: ${primerError.message}`);
   }
 
-  const supabase = createServerActionClient({ cookies });
+  // USAMOS LA NUEVA CONEXIÓN
+  const supabase = await getSupabase();
 
   const { data, error } = await supabase
     .from('productos')
@@ -116,11 +136,12 @@ export async function updateProduct(productId: number, formData: FormData) {
   if (!validation.success) {
     console.error("ERROR DE VALIDACIÓN:", validation.error.flatten().fieldErrors);
     const primerError = validation.error.issues[0];
-    // ✅ CORRECCIÓN AQUÍ TAMBIÉN
     throw new Error(`Error en ${String(primerError.path[0])}: ${primerError.message}`);
   }
 
-  const supabase = createServerActionClient({ cookies });
+  // USAMOS LA NUEVA CONEXIÓN
+  const supabase = await getSupabase();
+  
   const { error } = await supabase.from('productos').update(validation.data).eq('id', productId);
   if (error) {
     console.error("ERROR DE SUPABASE:", error);
@@ -134,7 +155,9 @@ export async function updateProduct(productId: number, formData: FormData) {
 
 // --- ACCIÓN: ELIMINAR PRODUCTO ---
 export async function deleteProduct(productId: number) {
-  const supabase = createServerActionClient({ cookies });
+  // USAMOS LA NUEVA CONEXIÓN
+  const supabase = await getSupabase();
+  
   const { error } = await supabase.from('productos').delete().eq('id', productId);
   if (error) {
     console.error('Error al eliminar producto:', error);
@@ -146,7 +169,9 @@ export async function deleteProduct(productId: number) {
 
 // --- ACCIÓN: ESTADO DE ÓRDENES ---
 export async function updateOrderStatus(orderId: number, newStatus: string) {
-  const supabase = createServerActionClient({ cookies });
+  // USAMOS LA NUEVA CONEXIÓN
+  const supabase = await getSupabase();
+  
   const { error } = await supabase
     .from('orders')
     .update({ status: newStatus })
@@ -186,7 +211,9 @@ export async function createCaracteristica(formData: FormData) {
     throw new Error(`Datos inválidos: ${validation.error.issues[0].message}`);
   }
 
-  const supabase = createServerActionClient({ cookies });
+  // USAMOS LA NUEVA CONEXIÓN
+  const supabase = await getSupabase();
+
   const { error } = await supabase.from('caracteristicas').insert(validation.data);
 
   if (error) {
@@ -198,7 +225,9 @@ export async function createCaracteristica(formData: FormData) {
 }
 
 export async function deleteCaracteristica(caracteristicaId: number, productoId: number) {
-  const supabase = createServerActionClient({ cookies });
+  // USAMOS LA NUEVA CONEXIÓN
+  const supabase = await getSupabase();
+  
   const { error } = await supabase.from('caracteristicas').delete().eq('id', caracteristicaId);
 
   if (error) {
