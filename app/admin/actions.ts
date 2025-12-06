@@ -3,113 +3,84 @@
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 
-// ==========================
+/* =========================================================
+✅ PRODUCTOS
+========================================================= */
+
 // ✅ ACTUALIZAR PRODUCTO
-// ==========================
-export async function updateProduct(productId: number, formData: FormData) {
+export async function updateProduct(id: number, formData: FormData) {
   const supabase = createClient();
 
-  const name = formData.get('name') as string;
-  const price = Number(formData.get('price'));
-  const oldPrice = Number(formData.get('oldPrice')) || null;
-  const imageUrl = formData.get('imageUrl') as string;
-  const imageUrl2 = formData.get('imageUrl2') as string;
-  const videoUrl = formData.get('videoUrl') as string;
-  const galleryImages = (formData.get('galleryImages') as string)
-    ?.split(',')
-    .map((i) => i.trim());
+  const data = {
+    name: formData.get('name'),
+    price: Number(formData.get('price')),
+    oldPrice: Number(formData.get('oldPrice')) || null,
+    imageUrl: formData.get('imageUrl'),
+    imageUrl2: formData.get('imageUrl2'),
+    videoUrl: formData.get('videoUrl'),
+    galleryImages: String(formData.get('galleryImages') || '')
+      .split(',')
+      .map((img) => img.trim()),
+    inStock: formData.get('inStock') === 'on',
+    es_mas_vendido: formData.get('es_mas_vendido') === 'true',
+    es_destacado_semana: formData.get('es_destacado_semana') === 'true',
+    es_destacado_hogar: formData.get('es_destacado_hogar') === 'true',
+  };
 
-  const inStock = formData.get('inStock') === 'on';
-
-  const es_mas_vendido =
-    formData.get('es_mas_vendido') === 'true'
-      ? true
-      : formData.get('es_mas_vendido') === 'false'
-      ? false
-      : null;
-
-  const es_destacado_semana =
-    formData.get('es_destacado_semana') === 'true'
-      ? true
-      : formData.get('es_destacado_semana') === 'false'
-      ? false
-      : null;
-
-  const es_destacado_hogar =
-    formData.get('es_destacado_hogar') === 'true'
-      ? true
-      : formData.get('es_destacado_hogar') === 'false'
-      ? false
-      : null;
-
-  await supabase
-    .from('productos')
-    .update({
-      name,
-      price,
-      oldPrice,
-      imageUrl,
-      imageUrl2,
-      videoUrl,
-      galleryImages,
-      inStock,
-      es_mas_vendido,
-      es_destacado_semana,
-      es_destacado_hogar,
-    })
-    .eq('id', productId);
+  await supabase.from('productos').update(data).eq('id', id);
 
   revalidatePath('/admin/products');
 }
 
-// ==========================
+// ✅ BORRAR PRODUCTO (🔥 ESTA ERA LA QUE FALTABA)
+export async function deleteProduct(id: number) {
+  const supabase = createClient();
+
+  await supabase.from('productos').delete().eq('id', id);
+
+  revalidatePath('/admin/products');
+}
+
+/* =========================================================
+✅ CARACTERÍSTICAS
+========================================================= */
+
 // ✅ CREAR CARACTERÍSTICA
-// ==========================
 export async function createCaracteristica(formData: FormData) {
   const supabase = createClient();
 
-  const producto_id = Number(formData.get('producto_id'));
-  const titulo = formData.get('titulo') as string;
-  const descripcion = formData.get('descripcion') as string;
-  const imagen = formData.get('imagen') as string;
-  const orden = Number(formData.get('orden'));
+  const data = {
+    producto_id: Number(formData.get('producto_id')),
+    titulo: String(formData.get('titulo')),
+    descripcion: String(formData.get('descripcion') || ''),
+    imagen: String(formData.get('imagen') || ''),
+    orden: Number(formData.get('orden')) || 0,
+  };
 
-  await supabase.from('caracteristicas').insert({
-    producto_id,
-    titulo,
-    descripcion,
-    imagen,
-    orden,
-  });
+  await supabase.from('caracteristicas').insert(data);
 
-  revalidatePath(`/admin/products/edit/${producto_id}`);
+  revalidatePath('/admin/products');
 }
 
-// ==========================
-// ✅ ELIMINAR CARACTERÍSTICA (✅ 2 ARGUMENTOS)
-// ==========================
-export async function deleteCaracteristica(
-  caracteristicaId: number,
-  productoId: number
-) {
+// ✅ BORRAR CARACTERÍSTICA
+export async function deleteCaracteristica(id: number) {
   const supabase = createClient();
 
-  await supabase
-    .from('caracteristicas')
-    .delete()
-    .eq('id', caracteristicaId);
+  await supabase.from('caracteristicas').delete().eq('id', id);
 
-  revalidatePath(`/admin/products/edit/${productoId}`);
+  revalidatePath('/admin/products');
 }
 
-// ==========================
+/* =========================================================
+✅ ÓRDENES
+========================================================= */
+
 // ✅ ACTUALIZAR ESTADO DE ORDEN
-// ==========================
-export async function updateOrderStatus(orderId: number, status: string) {
+export async function updateOrderStatus(id: number, status: string) {
   const supabase = createClient();
 
-  await supabase.from('orders').update({ status }).eq('id', orderId);
+  await supabase.from('orders').update({ status }).eq('id', id);
 
-  revalidatePath('/admin');
+  revalidatePath('/admin/orders');
 }
 

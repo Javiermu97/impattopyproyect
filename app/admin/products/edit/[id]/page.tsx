@@ -132,11 +132,7 @@ export default async function EditProductPage({
             )}
             <strong>{c.titulo}</strong>
 
-            ✅✅✅ AQUÍ YA VA CORREGIDO ✅✅✅
-            <DeleteCaracteristicaButton
-              id={c.id}
-              productoId={product.id}
-            />
+            <DeleteCaracteristicaButton id={c.id} />
           </li>
         ))}
       </ul>
