@@ -1,8 +1,11 @@
+'use client';
+
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import Image from 'next/image';
-import { notFound } from 'next/navigation'; // ✅ CORREGIDO: 'redirect' eliminado
+import { notFound } from 'next/navigation';
 import { updateProduct, createCaracteristica, deleteCaracteristica } from '../../../actions';
+import { useTransition } from 'react';
 
 // --- Interface para definir la forma de una Característica ---
 interface Caracteristica {
@@ -11,7 +14,6 @@ interface Caracteristica {
   descripcion: string;
   imagen: string;
   orden: number;
-  // Añade aquí cualquier otra propiedad que falte de tu tabla
 }
 
 // --- Función para obtener el producto y sus características ORDENADAS ---
@@ -21,7 +23,6 @@ async function getProduct(id: number) {
     .from('productos')
     .select('*, caracteristicas (*)')
     .eq('id', id)
-    // CORRECCIÓN: Añadimos el ordenamiento de las características
     .order('orden', { referencedTable: 'caracteristicas', ascending: true })
     .single();
   return data;
@@ -47,9 +48,30 @@ const BooleanSelectEdit = ({ name, label, defaultValue }: { name: string, label:
     );
 };
 
+// --- BOTÓN CLIENTE PARA ELIMINAR UNA CARACTERÍSTICA ---
+function DeleteCaracteristicaButton({ id }: { id: number }) {
+  const [isPending, startTransition] = useTransition();
+
+  const handleClick = () => {
+    const ok = confirm("¿Eliminar esta característica?");
+    if (!ok) return;
+
+    startTransition(async () => {
+      await deleteCaracteristica(id);
+      location.reload();
+    });
+  };
+
+  return (
+    <button onClick={handleClick} disabled={isPending} className="delete-btn small">
+      {isPending ? "Eliminando..." : "Eliminar"}
+    </button>
+  );
+}
+
 // --- Componente Principal de la Página de Edición ---
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params; // <-- Volvemos a 'esperar' los params
+  const { id } = await params;
   const productId = Number(id);
   const product = await getProduct(productId);
 
@@ -58,12 +80,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
   }
 
   const updateProductWithId = updateProduct.bind(null, product.id);
-  
+
   return (
     <div className="admin-container">
       <h1>Editar Producto: {product.name}</h1>
-      
-      {/* ===== FORMULARIO PRINCIPAL DEL PRODUCTO (RESTAURADO) ===== */}
+
+      {/* ===== FORMULARIO PRINCIPAL DEL PRODUCTO ===== */}
       <form action={updateProductWithId} className="admin-form">
         <div className="form-group">
           <label htmlFor="name" className="form-label">name:</label>
@@ -126,9 +148,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
       <hr className="admin-divider" />
 
-      
-
-      {/* ===== SECCIÓN PARA GESTIONAR CARACTERÍSTICAS ===== */}
+      {/* ===== GESTIONAR CARACTERÍSTICAS ===== */}
       <div className="admin-section">
         <h2>Gestionar Características</h2>
 
@@ -171,9 +191,9 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                       <p className="item-description">{caracteristica.descripcion}</p>
                     </div>
                   </div>
-                  <form action={deleteCaracteristica.bind(null, caracteristica.id, product.id)}>
-                    <button type="submit" className="delete-btn small">Eliminar</button>
-                  </form>
+
+                  {/* NUEVO BOTÓN QUE NO ROMPE EL BUILD */}
+                  <DeleteCaracteristicaButton id={caracteristica.id} />
                 </li>
               ))}
             </ul>
