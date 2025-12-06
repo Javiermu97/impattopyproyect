@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-// Zod Schema basado en la lista de columnas que me proporcionast
+// Zod Schema corregido solo en oldPrice
 const ProductSchema = z.object({
   name: z.string().min(3),
   price: z.coerce.number().positive(),
@@ -14,7 +14,13 @@ const ProductSchema = z.object({
   description: z.string().trim().nullable().optional(),
   imageUrl: z.string().url().nullable().optional(),
   imageUrl2: z.string().url().nullable().optional(),
-  oldPrice: z.coerce.number().positive().nullable().optional(),
+  
+  // ✅ CORRECCIÓN: Convierte cadena vacía "" a null para evitar el error de validación
+  oldPrice: z.preprocess(
+    (val) => (val === '' || val === null ? null : Number(val)), 
+    z.number().positive().nullable().optional()
+  ),
+  
   categoria: z.string().trim().nullable().optional(),
   es_mas_vendido: z.boolean().nullable().optional(),
   videoUrl: z.string().url().nullable().optional(),
@@ -57,31 +63,25 @@ export async function createProduct(formData: FormData) {
 
   const supabase = createServerActionClient({ cookies });
 
-
-  // ===== INICIA EL CAMBIO CLAVE AQUÍ =====
-  // Ahora le pedimos a Supabase que nos devuelva los datos del producto que acaba de crear
   const { data, error } = await supabase
     .from('productos')
     .insert(validation.data)
-    .select() // <-- AÑADIMOS ESTO
-    .single(); // <-- Y ESTO
+    .select()
+    .single();
 
   if (error) {
       console.error("ERROR DE SUPABASE:", error);
       throw new Error(`No se pudo guardar el producto.`);
   }
 
-  // Si no hay datos, lanzamos un error para seguridad
   if (!data) {
     throw new Error('No se pudo obtener el producto recién creado.');
   }
 
-  // Refrescamos la caché de la lista de productos
   revalidatePath('/admin/products');
   
-  // ¡Redirigimos a la página de EDICIÓN del nuevo producto!
+  // Redirigimos a la edición
   redirect(`/admin/products/edit/${data.id}`); 
-  // ===== TERMINA EL CAMBIO CLAVE AQUÍ =====
 }
 
 export async function updateProduct(productId: number, formData: FormData) {
@@ -120,7 +120,6 @@ export async function updateProduct(productId: number, formData: FormData) {
   redirect('/admin/products');
 }
 
-// ✅ FUNCIÓN RESTAURADA
 export async function deleteProduct(productId: number) {
   const supabase = createServerActionClient({ cookies });
   const { error } = await supabase.from('productos').delete().eq('id', productId);
@@ -134,7 +133,6 @@ export async function deleteProduct(productId: number) {
 
 
 // --- ACCIÓN PARA ÓRDENES ---
-// ✅ FUNCIÓN RESTAURADA
 export async function updateOrderStatus(orderId: number, newStatus: string) {
   const supabase = createServerActionClient({ cookies });
   const { error } = await supabase
@@ -152,9 +150,7 @@ export async function updateOrderStatus(orderId: number, newStatus: string) {
 }
 
 
-
-// --- ZOD SCHEMA PARA CARACTERISTICAS (CORREGIDO) ---
-// Define las reglas para una característica válida, coincidiendo con tu tabla
+// --- ZOD SCHEMA PARA CARACTERISTICAS ---
 const CaracteristicaSchema = z.object({
   titulo: z.string().min(3, { message: 'El título es requerido.' }),
   orden: z.coerce.number().nullable().optional(),
@@ -164,10 +160,9 @@ const CaracteristicaSchema = z.object({
 });
 
 
-// --- ACCIONES PARA CARACTERISTICAS (CORREGIDO) ---
+// --- ACCIONES PARA CARACTERISTICAS ---
 
 export async function createCaracteristica(formData: FormData) {
-  // Mapeo directo de los campos del formulario a los nombres de la base de datos
   const rawData = {
     titulo: formData.get('titulo'),
     orden: formData.get('orden'),
@@ -191,7 +186,6 @@ export async function createCaracteristica(formData: FormData) {
     throw new Error('No se pudo guardar la característica.');
   }
 
-  // Refresca la página de edición para mostrar la nueva característica
   revalidatePath(`/admin/products/edit/${validation.data.producto_id}`);
 }
 
