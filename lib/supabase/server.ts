@@ -1,20 +1,25 @@
 // lib/supabase/server.ts
 import { createClient as createSupabaseClient, SupabaseClient } from '@supabase/supabase-js';
 
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-  throw new Error('NEXT_PUBLIC_SUPABASE_URL no definida en .env');
-}
-if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error('SUPABASE_SERVICE_ROLE_KEY no definida en .env');
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+/**
+ * IMPORTANTE:
+ * ❌ NUNCA lanzar throw en build
+ * ✅ Solo advertir en desarrollo
+ */
+if (!supabaseUrl || !serviceRoleKey) {
+  console.warn('⚠️ Variables de entorno de Supabase no definidas todavía (build safe)');
 }
 
 /**
- * Cliente global del server (usando SERVICE ROLE KEY).
- * Úsalo solo en código server-side.
+ * Cliente server con Service Role
+ * ⚠️ SOLO para server actions, routes, server components
  */
 export const supabaseServer: SupabaseClient = createSupabaseClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY,
+  supabaseUrl || '',
+  serviceRoleKey || '',
   {
     auth: {
       persistSession: false,
@@ -25,8 +30,7 @@ export const supabaseServer: SupabaseClient = createSupabaseClient(
 );
 
 /**
- * Función compatibilidad: devuelve el cliente server.
- * Mantiene la API esperada por tu código (import { createClient } ...).
+ * Compatibilidad con tu código existente
  */
 export function createClient(): SupabaseClient {
   return supabaseServer;
