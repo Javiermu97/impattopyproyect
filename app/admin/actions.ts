@@ -7,6 +7,33 @@ import { createClient } from '@/lib/supabase/server';
 ✅ PRODUCTOS
 ========================================================= */
 
+// ✅ CREAR PRODUCTO ✅✅✅ (ESTE FALTABA)
+export async function createProduct(formData: FormData) {
+  const supabase = createClient();
+
+  const data = {
+    name: String(formData.get('name')),
+    price: Number(formData.get('price')),
+    oldPrice: Number(formData.get('oldPrice')) || null,
+    imageUrl: String(formData.get('imageUrl') || ''),
+    imageUrl2: String(formData.get('imageUrl2') || ''),
+    videoUrl: String(formData.get('videoUrl') || ''),
+    galleryImages: String(formData.get('galleryImages') || '')
+      .split(',')
+      .map((img) => img.trim()),
+    categoria: String(formData.get('categoria') || ''),
+    texto_oferta: String(formData.get('texto_oferta') || ''),
+    inStock: formData.get('inStock') === 'on',
+    es_mas_vendido: formData.get('es_mas_vendido') === 'true',
+    es_destacado_semana: formData.get('es_destacado_semana') === 'true',
+    es_destacado_hogar: formData.get('es_destacado_hogar') === 'true',
+  };
+
+  await supabase.from('productos').insert([data]);
+
+  revalidatePath('/admin/products');
+}
+
 // ✅ ACTUALIZAR PRODUCTO
 export async function updateProduct(id: number, formData: FormData) {
   const supabase = createClient();
@@ -32,7 +59,7 @@ export async function updateProduct(id: number, formData: FormData) {
   revalidatePath('/admin/products');
 }
 
-// ✅ BORRAR PRODUCTO (🔥 ESTA ERA LA QUE FALTABA)
+// ✅ BORRAR PRODUCTO
 export async function deleteProduct(id: number) {
   const supabase = createClient();
 
@@ -83,4 +110,3 @@ export async function updateOrderStatus(id: number, status: string) {
 
   revalidatePath('/admin/orders');
 }
-
