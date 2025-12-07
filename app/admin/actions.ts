@@ -7,29 +7,33 @@ import { createClient } from '@/lib/supabase/server';
 ✅ PRODUCTOS
 ========================================================= */
 
-// ✅ CREAR PRODUCTO ✅✅✅ (ESTE FALTABA)
+// ✅ CREAR PRODUCTO (ESTE FALTABA Y TE ROMPÍA EL BUILD)
 export async function createProduct(formData: FormData) {
   const supabase = createClient();
 
+  const galleryRaw = formData.get('galleryImages');
+
   const data = {
     name: String(formData.get('name')),
+    description: String(formData.get('description') || ''),
     price: Number(formData.get('price')),
     oldPrice: Number(formData.get('oldPrice')) || null,
     imageUrl: String(formData.get('imageUrl') || ''),
     imageUrl2: String(formData.get('imageUrl2') || ''),
     videoUrl: String(formData.get('videoUrl') || ''),
-    galleryImages: String(formData.get('galleryImages') || '')
-      .split(',')
-      .map((img) => img.trim()),
     categoria: String(formData.get('categoria') || ''),
     texto_oferta: String(formData.get('texto_oferta') || ''),
+    galleryImages:
+      typeof galleryRaw === 'string' && galleryRaw.length > 0
+        ? galleryRaw.split(',').map((img: string) => img.trim())
+        : [],
     inStock: formData.get('inStock') === 'on',
     es_mas_vendido: formData.get('es_mas_vendido') === 'true',
     es_destacado_semana: formData.get('es_destacado_semana') === 'true',
     es_destacado_hogar: formData.get('es_destacado_hogar') === 'true',
   };
 
-  await supabase.from('productos').insert([data]);
+  await supabase.from('productos').insert(data);
 
   revalidatePath('/admin/products');
 }
@@ -38,16 +42,19 @@ export async function createProduct(formData: FormData) {
 export async function updateProduct(id: number, formData: FormData) {
   const supabase = createClient();
 
+  const galleryRaw = formData.get('galleryImages');
+
   const data = {
-    name: formData.get('name'),
+    name: String(formData.get('name')),
     price: Number(formData.get('price')),
     oldPrice: Number(formData.get('oldPrice')) || null,
-    imageUrl: formData.get('imageUrl'),
-    imageUrl2: formData.get('imageUrl2'),
-    videoUrl: formData.get('videoUrl'),
-    galleryImages: String(formData.get('galleryImages') || '')
-      .split(',')
-      .map((img) => img.trim()),
+    imageUrl: String(formData.get('imageUrl') || ''),
+    imageUrl2: String(formData.get('imageUrl2') || ''),
+    videoUrl: String(formData.get('videoUrl') || ''),
+    galleryImages:
+      typeof galleryRaw === 'string' && galleryRaw.length > 0
+        ? galleryRaw.split(',').map((img: string) => img.trim())
+        : [],
     inStock: formData.get('inStock') === 'on',
     es_mas_vendido: formData.get('es_mas_vendido') === 'true',
     es_destacado_semana: formData.get('es_destacado_semana') === 'true',
@@ -110,3 +117,4 @@ export async function updateOrderStatus(id: number, status: string) {
 
   revalidatePath('/admin/orders');
 }
+

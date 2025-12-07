@@ -186,7 +186,9 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const galleryImages = product.galleryImages || [];
+  const galleryImages = Array.isArray(product.galleryImages)
+  ? product.galleryImages
+  : [];
 
   useEffect(() => {
     setCurrentImageIndex(0);
@@ -378,43 +380,39 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               )}
             </div>
             {product.caracteristicas && product.caracteristicas.map((feature: Feature) => (
-              <div key={feature.id} className="info-promo-block-2">
-                <h2>{feature.titulo}</h2>
-                {/* INICIA EL CAMBIO */}
+  <div key={feature.id} className="info-promo-block-2">
+    <h2>{feature.titulo}</h2>
+
     <div className="ventajas-list">
-  {feature.descripcion.split('\n').map((linea, index) => {
-    // Revisa si la línea contiene el patrón de negrita (*texto*)
-    if (linea.includes('*')) {
-      // Divide la línea en partes usando los asteriscos como separadores
-      const parts = linea.split(/\*(.*?)\*/);
-      
-      // parts[0] = texto antes de la negrita (si lo hay)
-      // parts[1] = el texto que debe ir en negrita
-      // parts[2] = texto después de la negrita (si lo hay)
-      
-      return (
-        <p key={index}>
-          <span>{parts[0]}</span>
-          <strong>{parts[1]}</strong>
-          <span>{parts[2]}</span>
-        </p>
-      );
-    }
-    
-    // Si no hay asteriscos en la línea, la muestra de forma normal
-    return <p key={index}>{linea}</p>;
-  })}
-</div>
-    {/* TERMINA EL CAMBIO */}
-                <Image
-                  src={feature.imagen}
-                  alt={feature.titulo}
-                  className="promo-image"
-                  width={800}
-                  height={600}
-                />
-              </div>
-            ))}
+      {(feature.descripcion || '').split('\n').map((linea: string, index: number) => {
+        if (linea.includes('*')) {
+          const parts = linea.split(/\*(.*?)\*/);
+
+          return (
+            <p key={index}>
+              <span>{parts[0]}</span>
+              <strong>{parts[1]}</strong>
+              <span>{parts[2]}</span>
+            </p>
+          );
+        }
+
+        return <p key={index}>{linea}</p>;
+      })}
+    </div>
+
+    {feature.imagen && (
+      <Image
+        src={feature.imagen}
+        alt={feature.titulo}
+        className="promo-image"
+        width={800}
+        height={600}
+      />
+    )}
+  </div>
+))}
+
             <div className="pdp-final-accordion">
               {accordionData.map((item, index) => (<AccordionItem key={index} item={item} isOpen={openAccordion === index} onClick={() => setOpenAccordion(openAccordion === index ? null : index)} />))}
             </div>
