@@ -52,7 +52,7 @@ const Navbar = () => {
     <>
       <div className={styles.navbar}>
         
-        {/* === IZQUIERDA === */}
+        {/* === IZQUIERDA == */}
         <div className={styles.left}>
           {/* 1. Botón Hamburguesa (Solo Móvil) */}
           <button
