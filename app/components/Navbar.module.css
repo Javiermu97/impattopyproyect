@@ -8,7 +8,7 @@
   background-color: #ffffff;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #e5e5e5;
-  color: #000000; /* Color negro base */
+  color: #000000;
   position: relative;
   z-index: 50;
 }
@@ -19,6 +19,7 @@
   gap: 1rem;
   flex: 1;
 }
+
 .right {
   justify-content: flex-end;
 }
@@ -27,11 +28,11 @@
 .logo {
   text-align: center;
   line-height: 1.1;
-  /* En móvil, para que quede centrado absolutamente si hay iconos a los lados */
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
 }
+
 .logo a {
   font-family: "Times New Roman", Times, serif;
   font-size: 1.2rem;
@@ -42,18 +43,20 @@
   text-decoration: none;
 }
 
-/* Botones e Iconos */
+/* Botones */
 .iconBtn { 
   background: transparent; 
   border: none; 
   padding: 0; 
   cursor: pointer; 
-  color: #000000; /* Aseguramos negro */
+  color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .cartIconContainer { position: relative; }
+
 .cartBadge {
   position: absolute;
   top: -5px; right: -8px;
@@ -62,19 +65,18 @@
   font-size: 0.7rem; font-weight: bold;
 }
 
-/* Botón Hamburguesa (Móvil) */
+/* Botón hamburguesa */
 .menuBtn {
   background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
-  color: #000000; /* NEGRO EXPLICITO */
+  color: #000000;
   display: flex;
   align-items: center;
   font-size: 1.5rem;
 }
 
-/* Botón Lupa Móvil (El que va al lado de la hamburguesa) */
 .searchIconMobile {
   background: transparent;
   border: none;
@@ -83,12 +85,12 @@
   color: #000000;
   display: flex;
   align-items: center;
-  margin-left: 0.5rem; /* Un pequeño espacio entre hamburguesa y lupa */
+  margin-left: 0.5rem;
 }
 
-/* ========================================= */
-/* MENÚ MÓVIL (DRAWER) ESTILOS               */
-/* ========================================= */
+/* ========================= */
+/* OVERLAY MÓVIL */
+/* ========================= */
 
 .overlay {
   position: fixed;
@@ -100,12 +102,17 @@
   visibility: hidden;
   transition: opacity 0.3s ease;
 }
+
 .overlay.open {
   opacity: 1;
   visibility: visible;
 }
 
-.mobileNavLinks {
+/* ========================= */
+/* DRAWER MÓVIL (CORRECTO) */
+/* ========================= */
+
+.mobileDrawer {
   position: fixed;
   top: 0; left: -100%;
   width: 85%;
@@ -116,81 +123,216 @@
   transition: left 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
   overflow-y: auto;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
-.mobileNavLinks.open { left: 0; }
 
-.menuHeader {
+.mobileDrawer.open {
+  left: 0;
+}
+
+/* Drawer header */
+.drawerHeader {
   display: flex;
-  justify-content: flex-end; /* X a la derecha */
+  justify-content: space-between;
+  align-items: center;
   padding: 1.5rem;
 }
-/* La X para cerrar */
+
 .closeBtn {
   background: none;
   border: none;
-  font-size: 2rem; /* Tamaño grande */
+  font-size: 2rem;
   cursor: pointer;
-  color: #000000 !important; /* NEGRO FORZADO */
+  color: #000000 !important;
 }
 
-.menuList {
+.drawerList {
   display: flex;
   flex-direction: column;
   padding: 0 1.5rem;
 }
-.mobileNavLink {
+
+.drawerItemRow {
   padding: 1rem 0;
   border-bottom: 1px solid #f0f0f0;
-  color: #000000;
+}
+
+.drawerBtnTrigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #000;
+}
+
+.drawerLinkMain {
+  display: block;
+  padding: 1rem 0;
+  color: #000;
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
   text-transform: uppercase;
 }
 
-.menuFooter {
+.drawerLinkSub {
+  padding: 0.75rem 0;
+  color: #000;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.drawerFooter {
   margin-top: 2rem;
-  padding: 0 1.5rem 2rem 1.5rem;
+  padding: 0 1.5rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-.contactItem, .authLink {
-  display: flex; align-items: center; gap: 10px;
-  color: #333; font-size: 0.9rem; text-decoration: none;
-}
-.authLink {
-  margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #f0f0f0;
+
+.drawerAuthLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #333;
+  text-decoration: none;
 }
 
-/* ========================================= */
-/* RESPONSIVE (OCULTAR/MOSTRAR SEGÚN PANTALLA) */
-/* ========================================= */
+.contactInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-/* MÓVIL Y TABLET (Hasta 1024px) */
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+
+/* Móvil y tablets */
 @media (max-width: 1024px) {
-  .navLinks { display: none; } /* Ocultar links de escritorio */
-  .menuBtn { display: flex; }  /* Mostrar Hamburguesa */
-  
-  /* MOSTRAR LUPA MÓVIL, OCULTAR DE ESCRITORIO */
+  .navLinks {
+    display: none !important;
+  }
+  .navItemWrapper {
+    display: none !important;
+  }
   .searchIconDesktop { display: none; }
   .searchIconMobile { display: flex; }
 }
 
-/* ESCRITORIO (Más de 1024px) */
+/* Escritorio */
 @media (min-width: 1025px) {
-  .logo { position: static; transform: none; } /* Resetear posición logo */
-  .menuBtn { display: none; } /* Ocultar hamburguesa */
+  .logo { position: static; transform: none; }
+  .menuBtn { display: none; }
   .navLinks { display: flex; gap: 1.5rem; }
-  
-  /* MOSTRAR LUPA ESCRITORIO, OCULTAR MÓVIL */
   .searchIconDesktop { display: flex; }
   .searchIconMobile { display: none; }
-  
-  .navLink {
-    text-decoration: none; color: #000; font-size: 0.9em;
-    position: relative; padding-bottom: 5px; transition: color 0.3s;
-  }
+
+  .mobileDrawer { display: none !important; }
+}
+
+/* ========================= */
+/* SUBMENÚ ESCRITORIO */
+/* ========================= */
+
+.navItemWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 180px;
+  background: white;
+  border: 1px solid #eee;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  padding: 0.4rem 0;
+  display: none;
+  flex-direction: column;
+  z-index: 60;
+  border-radius: 4px;
+}
+
+.dropdownMenu.open {
+  display: flex;
+}
+
+.dropdownLink {
+  padding: 0.55rem 1rem;
+  text-decoration: none;
+  color: #000;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.dropdownLink:hover {
+  background: #f7f7f7;
+}
+
+
+
+/* ========================================= */
+/* FIX COMPLETO PARA SUBMENÚ MÓVIL           */
+/* ========================================= */
+
+.submenuContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 1rem 0;
+}
+
+.drawerLinkMain {
+  display: block;
+  padding: 1rem 0;
+  font-weight: 700;
+  font-size: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.drawerLinkSub {
+  display: block;                 /* ← ESTE ES EL FIX MÁS IMPORTANTE */
+  padding: 0.9rem 0;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #f5f5f5;
+  line-height: 1.4;               /* ← Evita que se peguen visualmente */
+}
+
+/* Evita que el contenedor colapse y pegue los textos */
+.submenuContainer a {
+  display: block;
+  width: 100%;
+}
+
+
+/* Botón volver (submenú móvil) */
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  cursor: pointer;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #000; /* ← negro */
+}
+
+.backBtn span {
+  color: #000 !important;
+}
+
+.backBtn svg {
+  color: #000 !important;
 }

@@ -1,5 +1,4 @@
-'use client';
-
+"use client"; // <--- ESTA ES LA LÍNEA QUE FALTABA
 import { useState, useMemo, useEffect } from 'react';
 import * as Slider from '@radix-ui/react-slider';
 import Image from 'next/image';

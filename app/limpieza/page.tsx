@@ -1,44 +1,17 @@
-// Importamos las herramientas necesarias
-import { supabase } from '@/lib/supabaseClient';
-
-import ShopPageClient from '@/app/components/ShopPageClient';
-
-// Metadata de la página
 export const metadata = {
-  title: 'Limpieza - Impatto Py',
-  description: 'Artículos y soluciones para mantener tu hogar y espacios impecables.',
+  title: "Limpieza | Hogar | Impatto",
+  description: "Productos de limpieza para el hogar disponibles en Impatto.",
 };
 
-export default async function LimpiezaPage() {
-  
-  const { data: limpiezaProducts, error } = await supabase
-    .from('productos')
-    .select('*')
-    .ilike('categoria', '%Limpieza%');
-
-  if (error) {
-    console.error('Error al cargar productos de la categoría Limpieza:', error);
-  }
-
+export default function LimpiezaPage() {
   return (
-    <div className="shop-container">
-        <header className="shop-header">
-            <h1>Limpieza</h1>
-        </header>
+    <div className="p-4">
+      <h1 className="text-3xl font-semibold mb-4">Limpieza</h1>
 
-        {/* Muestra un mensaje si la consulta no devuelve productos */}
-        {(!limpiezaProducts || limpiezaProducts.length === 0) && (
-          <div className="product-grid-area">
-            <p className="no-products-message">
-              No se encontraron productos para esta categoría.
-            </p>
-          </div>
-        )}
-
-        {/* Solo muestra el componente de la tienda si hay productos */}
-        {limpiezaProducts && limpiezaProducts.length > 0 && (
-          <ShopPageClient products={limpiezaProducts} />
-        )}
+      <p className="text-gray-700">
+        Explora nuestra selección de productos de limpieza como herramientas,
+        accesorios y soluciones para mantener tu hogar impecable.
+      </p>
     </div>
   );
 }
