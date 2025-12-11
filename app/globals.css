@@ -132,7 +132,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   justify-content: center;
 }
 
-.product-card { background-color: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; text-align: center; position: relative; transition: transform 0.2s ease-in-out; }
+.product-card { background-color: white; border-radius: 8px; box-shadow: 0 4px 8px rgb(0, 0, 0, 0.1); padding: 20px; text-align: center; position: relative; transition: transform 0.2s ease-in-out; }
 .product-card:hover { transform: translateY(-5px); }
 .product-card img { max-width: 100%; height: auto; margin-bottom: 15px; }
 .product-card h4 { font-size: 1.1em; margin-bottom: 5px; color: #333; }
@@ -366,18 +366,89 @@ body {
 .shop-header { margin-bottom: 2rem; padding-top: 2rem; }
 .shop-header h1 { font-size: 2.5rem; font-weight: bold; text-align: center; margin-bottom: 3rem; }
 
-.filters-sidebar {padding-right: 2.5rem; }
-.filter-group { margin-bottom: 1rem; padding-bottom: 1rem }
-.filter-title-main { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
-.filter-title { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 0; font-size: 1.1rem; font-weight: 600; text-transform: uppercase; background: none; border: none; cursor: pointer; text-align: left; }
-.filter-chevron { transition: transform 0.2s ease-in-out; }
-.filter-chevron.open { transform: rotate(90deg); }
+
+
+
+
+
+
+
+/* ===== FILTROS TIENDA – TODO EN NEGRO ===== */
+.filters-sidebar {
+  padding-right: 2.5rem;
+  color: #000000;            /* color base negro dentro de la barra de filtros */
+}
+
+.filter-group {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+.filter-title-main {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  color: #000000;            /* “TODO” en negro */
+}
+
+/* Botón cabecera del filtro (Availability, Price) */
+.filter-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: #000000;            /* <- AQUÍ forzamos negro, adiós azul de iOS */
+}
+
+/* Aseguramos que cualquier texto dentro conserve el negro */
+.filter-title span {
+  color: inherit;
+}
+
+/* Contenedor de la flechita */
+.filter-chevron {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease-in-out;
+  color: #000000;            /* la flecha usa currentColor, así que negro */
+}
+
+/* SVG de la flecha también hereda negro */
+.filter-chevron svg {
+  color: inherit;
+}
+
+/* Rotación cuando está abierto */
+.filter-chevron.open {
+  transform: rotate(90deg);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 .filter-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out, padding-top 0.3s ease-in-out; padding-top: 0; }
 .filter-content.open { max-height: 500px; padding-top: 1rem; }
 .active-filters-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem; }
 .active-filter-badge { display: inline-flex; align-items: center; gap: 6px; background-color: #f0f0f0; border: 1px solid #e0e0e0; border-radius: 5px; padding: 4px 8px; font-size: 0.85rem; }
 .remove-filter-btn { background: none; border: none; padding: 0; display: flex; align-items: center; cursor: pointer; color: #555; }
-.remove-filter-btn:hover { color: #000; }
+.remove-filter-btn:hover { color: #333; }
 .filter-option { display: flex; align-items: center; margin-bottom: 0.75rem; }
 .filter-option label { margin-left: 0.5rem; cursor: pointer; color: #333; }
 .SliderRoot { position: relative; display: flex; align-items: center; user-select: none; touch-action: none; width: 100%; height: 20px; }
@@ -710,7 +781,7 @@ body {
 .pdp-price {
   font-size: 1.5rem;
   font-weight: bold;
-  color: black;
+  color: #A78D5A;
 }
 .pdp-old-price {
   font-size: 1.1rem;
@@ -854,7 +925,7 @@ body {
 
 .pdp-guarantee-banner span { 
   font-size: 0.8rem;
-  color: black;
+  color: #333;
   font-weight: 500;
   line-height: 1.4;
   white-space: nowrap; /* Mantiene el texto en una línea en escritorio */
@@ -1113,7 +1184,7 @@ body {
 /* ——— Título sobre el carrusel “Te puede interesar” ——— */
 .related-products-title {
   font-family: 'Poppins', sans-serif; /* o tu fuente preferida   */
-  color: #0c3c64;                     /* azul de la paleta       */
+  color: #333;                     /* azul de la paleta       */
   font-size: 4rem;                    /* un poco más grande      */
   font-weight: 700;                   /* grueso medio‑alto       */
   letter-spacing: -0.5px;             /* sutilemente más compacto*/
@@ -1337,7 +1408,7 @@ body {
   font-family: Georgia, 'Times New Roman', Times, serif; /* Fuente elegante */
   font-weight: 600;
   font-size: 1.1rem;
-  color: #000;
+  color: #A78D5A;
 }
 
 /* Precio antiguo (tachado) */
@@ -2625,7 +2696,7 @@ body {
   border:1px solid #e5e7eb;
   border-radius:16px;
   padding:24px;
-  box-shadow:0 8px 24px rgba(0,0,0,.06);
+  box-shadow:0 8px 24px rgba(14, 14, 19, 0.06);
 }
 .auth-title{
   text-align:center;
@@ -2650,7 +2721,7 @@ body {
   border-radius:10px;
   outline:none;
 }
-.auth-input:focus{ border-color:#0d47a1; box-shadow:0 0 0 3px rgba(13,71,161,.12); }
+.auth-input:focus{ border-color:black; box-shadow:0 0 0 3px rgba(13,71,161,.12); }
 .auth-actions{
   display:flex; align-items:center; justify-content:space-between; margin-top:.5rem;
 }
@@ -2684,6 +2755,71 @@ body {
 
 
 
+
+
+/* =============================== */
+/*   CORRECCIÓN DE COLORES SHOP    */
+/* =============================== */
+
+/* Títulos de filtros */
+.filter-title-main,
+.filter-title span,
+.filter-title,
+.filter-group h3 {
+  color: #000 !important;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Flecha del accordion */
+.filter-chevron svg {
+  color: #000 !important;
+  stroke: #000 !important;
+}
+
+/* Opciones de checkbox */
+.filter-option label,
+.filter-option span,F
+.filter-option {
+  color: #000 !important;
+  font-size: 0.95rem;
+}
+
+/* Checkbox */
+.filter-option input[type="checkbox"] {
+  accent-color: #000 !important;
+}
+
+/* Inputs del rango */
+.price-input-container span,
+.price-input {
+  color: #A78D5A !important;
+}
+
+.price-input {
+  border: 1px solid #cfcfcf !important;
+}
+
+/* Slider del precio */
+.SliderTrack {
+  background-color: #d9c08b !important;
+}
+
+.SliderRange {
+  background-color: #b89650 !important;
+}
+
+.SliderThumb {
+  background-color: white !important;
+  border: 2px solid #b89650 !important;
+}
+
+/* Flecha activa del accordion */
+.filter-chevron.open svg {
+  transform: rotate(90deg);
+  transition: transform 0.2s ease-in-out;
+  color: #000 !important;
+}
 
 
 
