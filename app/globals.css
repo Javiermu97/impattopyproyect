@@ -2923,15 +2923,20 @@ body {
 .shop-product-old-price {
   color: #888 !important;
 }
+
+
+
 /* ELIMINAR LAS LÍNEAS HORIZONTALES DEL MENÚ MÓVIL */
 .drawerItemRow {
   border-bottom: none !important;
 }
+
 /* FORMATO CORRECTO: Solo primera letra de cada palabra en mayúscula */
 .drawerBtnTrigger,
 .drawerLinkMain {
   text-transform: capitalize !important;
 }
+
 
 
 
