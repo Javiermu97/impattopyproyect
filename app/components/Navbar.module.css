@@ -249,7 +249,7 @@
 
 .dropdownMenu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: 100% !important;   /* SE PEGA AL NAV */
   left: 0;
   min-width: 180px;
   background: white;
@@ -265,6 +265,12 @@
 .dropdownMenu.open {
   display: flex;
 }
+
+
+.navItemWrapper:hover .dropdownMenu {
+  display: flex !important;
+}
+
 
 .dropdownLink {
   padding: 0.55rem 1rem;
