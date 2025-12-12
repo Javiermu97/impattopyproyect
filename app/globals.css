@@ -3190,10 +3190,54 @@ body {
   margin-top: 1rem;
 }
 
-/* CORRECCIÓN DEFINITIVA — Unificar color del botón "+" en selector de cantidad */
-.quantity-selector button {
-  color: #555 !important;        /* gris oscuro igual al "-" */
-  -webkit-text-fill-color: #555 !important; /* Corrige el azul de Safari iOS */
+
+
+
+/* Fuerza que el número del input sea gris claro como el + y - */
+input[type="number"] {
+  color: #9b9b9b !important;                 /* mismo gris */
+  -webkit-text-fill-color: #9b9b9b !important; /* corrige iPhone */
+  font-weight: 400 !important;               /* sin negrita */
+  appearance: none !important;
+  -moz-appearance: textfield !important;     /* quita estilo de Firefox */
+  text-align: center !important;
+}
+
+/* Quitar flechas internas en navegadores */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+/* FORZAR COLOR UNIFORME PARA + - y NÚMERO */
+button,
+button span,
+.quantity-controls button,
+.quantity-controls span,
+.quantity-controls input,
+input.qty,
+.qty-input,
+.qty-input input {
+  color: #9b9b9b !important;
+  -webkit-text-fill-color: #9b9b9b !important;
+  font-weight: 400 !important; /* NO negrita */
+}
+
+/* Estilo específico para el número */
+input[type="number"],
+input[type="text"].qty,
+.qty-input input {
+  color: #9b9b9b !important;
+  -webkit-text-fill-color: #9b9b9b !important;
+  font-weight: 400 !important;
+  text-align: center !important;
+}
+
+/* Quitar estilos por defecto del input */
+input[type="number"] {
+  appearance: none !important;
+  -moz-appearance: textfield !important;
 }
 
 
