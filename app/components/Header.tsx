@@ -23,7 +23,7 @@ const Header = () => {
       <div className={styles.headerCenter}>
         <span className={styles.shippingInfo}>Envíos gratis en todos tus pedidos 🚛 📦</span>
         <div className={styles.offersLink}>
-          <Link href="/ofertas">Ver ofertas</Link>
+          <Link href="/mas-vendidos">Ver ofertas</Link>
         </div>
       </div>
       

@@ -3190,6 +3190,12 @@ body {
   margin-top: 1rem;
 }
 
+/* CORRECCIÓN DEFINITIVA — Unificar color del botón "+" en selector de cantidad */
+.quantity-selector button {
+  color: #555 !important;        /* gris oscuro igual al "-" */
+  -webkit-text-fill-color: #555 !important; /* Corrige el azul de Safari iOS */
+}
+
 
 
 

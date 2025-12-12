@@ -42,7 +42,7 @@ export default async function HomePage() {
           <h1>Miles de productos seleccionados para vos</h1>
           <p>Elegí entre productos modernos, prácticos y funcionales</p>
           <Link href="/tienda">
-            <button className="btn-primary">EXPLORAR</button>
+            <button className="btn-primary">mas-vendidos</button>
           </Link>
         </div>
       </section>
