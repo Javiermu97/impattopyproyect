@@ -464,7 +464,7 @@ body {
   border: none !important;
   outline: none !important;
   background: transparent;
-  width: 80px;
+  width: 95px;
   text-align: center;            /* CENTRAR NÚMEROS */
   font-size: 0.95rem;
   color: #000;
@@ -2875,6 +2875,7 @@ body {
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
+  
 }
 
 /* Cada caja Gs. + input */
@@ -2894,17 +2895,21 @@ body {
   color: #000;
 }
 
+
+
+
 /* INPUT DE PRECIO */
 .price-input {
   border: none !important;
   outline: none !important;
   background: transparent;
-  width: 80px;
+  width: 100% !important;  /* Se adapta al wrapper */
   text-align: center;            /* CENTRAR NÚMEROS */
   font-size: 0.95rem;
   color: #000;
   padding: 0;
   appearance: none;              /* QUITAR estilo de iOS */
+  overflow: visible !important;
 }
 
 /* Quitar borde azul de Safari al presionar */
@@ -2925,8 +2930,265 @@ body {
 }
 
 
+/* Evitar que la columna izquierda sea demasiado estrecha en escritorio */
+.filters-sidebar {
+  padding-right: 1rem !important; /* Antes 2.5rem → demasiado estrecho */
+  min-width: 260px !important;    /* Garantiza espacio suficiente */
+}
+.price-input-wrapper {
+  min-width: 100px !important;
+  max-width: 140px !important;
+}
 
 
+
+
+/* Forzar separación entre filtros y grilla de productos */
+.filters-sidebar {
+  margin-bottom: 2.5rem !important;  /* separa toda la sección de filtros */
+}
+
+/* Forzar espacio debajo de PRICE */
+.filter-group:last-of-type {
+  margin-bottom: 2.5rem !important;  /* afecta específicamente a PRICE */
+}
+
+/* Asegurar espacio debajo del contenedor de inputs */
+.price-input-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 2.5rem !important;  
+}
+
+
+
+/* BAJAR LA GRILLA DE PRODUCTOS PARA QUE NO CHOQUE CON EL FILTRO DE PRECIO */
+.product-grid-area {
+  margin-top: 1.5rem !important;
+}
+
+
+
+
+
+
+
+
+/* ============================================
+   ESTILO COMPLETO PARA /cuenta – IGUAL A NISSEI
+   ============================================ */
+
+.account-container {
+  max-width: 1500px;
+  margin: 2rem auto;
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+/* === SIDEBAR === */
+.account-sidebar {
+  width: 280px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 1rem 0;
+  height: fit-content;
+  position: sticky;
+  top: 90px;
+}
+
+.account-sidebar h3 {
+  margin: 0 0 1rem 1.3rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.account-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-sidebar li {
+  padding: 0.8rem 1.3rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  color: #444;
+}
+
+.account-sidebar li:hover {
+  background: #f7f7f7;
+}
+
+.account-sidebar li.active {
+  background: #fff7e6;
+  border-left: 3px solid #A78D5A;
+  color: #A78D5A;
+  font-weight: 600;
+}
+
+.logout-btn {
+  width: 90%;
+  margin: 1.2rem auto 0 auto;
+  display: block;
+  padding: 0.8rem;
+  background: #ffe5e5;
+  border: 1px solid #ffb3b3;
+  border-radius: 6px;
+  color: #d9534f;
+  font-weight: bold;
+  cursor: pointer;
+}
+.logout-btn:hover {
+  background: #ffd6d6;
+}
+
+/* === CONTENIDO === */
+.account-main {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 2rem;
+  border-radius: 6px;
+}
+
+.account-main h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.panel {
+  padding-bottom: 2rem;
+}
+
+.info-box {
+  background: #fafafa;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e5e5e5;
+  line-height: 1.6;
+}
+
+.placeholder {
+  color: #777;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+
+
+
+
+
+/* ============================================
+   ESTILO COMPLETO PARA /cuenta – IGUAL A NISSEI
+   ============================================ */
+
+.account-container {
+  max-width: 1500px;
+  margin: 2rem auto;
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+/* === SIDEBAR === */
+.account-sidebar {
+  width: 280px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 1rem 0;
+  height: fit-content;
+  position: sticky;
+  top: 90px;
+}
+
+.account-sidebar h3 {
+  margin: 0 0 1rem 1.3rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.account-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-sidebar li {
+  padding: 0.8rem 1.3rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  color: #444;
+}
+
+.account-sidebar li:hover {
+  background: #f7f7f7;
+}
+
+.account-sidebar li.active {
+  background: #fff7e6;
+  border-left: 3px solid #A78D5A;
+  color: #A78D5A;
+  font-weight: 600;
+}
+
+.logout-btn {
+  width: 90%;
+  margin: 1.2rem auto 0 auto;
+  display: block;
+  padding: 0.8rem;
+  background: #ffe5e5;
+  border: 1px solid #ffb3b3;
+  border-radius: 6px;
+  color: #d9534f;
+  font-weight: bold;
+  cursor: pointer;
+}
+.logout-btn:hover {
+  background: #ffd6d6;
+}
+
+/* === CONTENIDO === */
+.account-main {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 2rem;
+  border-radius: 6px;
+}
+
+.account-main h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.panel {
+  padding-bottom: 2rem;
+}
+
+.info-box {
+  background: #fafafa;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e5e5e5;
+  line-height: 1.6;
+}
+
+.placeholder {
+  color: #777;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
 
 
 
