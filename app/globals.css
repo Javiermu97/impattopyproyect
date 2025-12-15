@@ -3216,8 +3216,8 @@ input[type="number"]::-webkit-outer-spin-button {
 .quantity-selector span,
 .qty-input,
 .qty-input input {
-  color: #9b9b9b !important;
-  -webkit-text-fill-color: #9b9b9b !important;
+  color: #333131 !important;
+  -webkit-text-fill-color: #333131 !important;
   font-weight: 400 !important; /* sin negrita */
 }
 
@@ -3232,6 +3232,31 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
+/* ========================================= */
+/* ANIMACIÓN SLIDE-UP GLOBAL COMPATIBLE      */
+/* ========================================= */
+
+.info-banner-section {
+  opacity: 0;
+  transform: translateY(40px);
+  will-change: opacity, transform;     /* Optimización para móviles */
+  transition: opacity 0.85s ease-out, 
+              transform 0.85s ease-out;
+}
+
+/* Cuando entra al viewport */
+.info-banner-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Ajustes extra para máxima compatibilidad móvil --- */
+@supports (-webkit-touch-callout: none) {
+  /* Safari iOS: mejora el suavizado */
+  .info-banner-section {
+    transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+  }
+}
 
 
 

@@ -117,4 +117,3 @@ export async function updateOrderStatus(id: number, status: string) {
 
   revalidatePath('/admin/orders');
 }
-

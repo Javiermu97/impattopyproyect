@@ -1,17 +1,44 @@
+import { supabase } from '@/lib/supabaseClient';
+import ShopPageClient from '@/app/components/ShopPageClient';
+
 export const metadata = {
-  title: "Limpieza | Hogar | Impatto",
-  description: "Productos de limpieza para el hogar disponibles en Impatto.",
+  title: "Limpieza - Impatto Py",
+  description: "Productos de limpieza para tu hogar.",
 };
 
-export default function LimpiezaPage() {
-  return (
-    <div className="p-4">
-      <h1 className="text-3xl font-semibold mb-4">Limpieza</h1>
+export default async function LimpiezaPage() {
+  
+  // Obtener productos de la categoría Limpieza
+  const { data: products, error } = await supabase
+    .from('productos')
+    .select('*')
+    .ilike('categoria', '%Limpieza%');
 
-      <p className="text-gray-700">
-        Explora nuestra selección de productos de limpieza como herramientas,
-        accesorios y soluciones para mantener tu hogar impecable.
-      </p>
+  if (error) {
+    console.error('Error al cargar productos de Limpieza:', error);
+  }
+
+  return (
+    <div className="shop-container">
+        
+        {/* Título igual que en las otras secciones */}
+        <header className="shop-header">
+            <h1>Limpieza</h1>
+        </header>
+
+        {/* Si no hay productos */}
+        {(!products || products.length === 0) && (
+          <div className="product-grid-area">
+            <p className="no-products-message">
+              No se encontraron productos para esta categoría.
+            </p>
+          </div>
+        )}
+
+        {/* Si existen productos */}
+        {products && products.length > 0 && (
+          <ShopPageClient products={products} />
+        )}
     </div>
   );
 }
