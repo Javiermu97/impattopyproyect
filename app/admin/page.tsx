@@ -1,7 +1,8 @@
-export const dynamic = 'force-dynamic'
+'use client'
 
-import { redirect } from 'next/navigation'
-import { createAuthServerClient } from '@/lib/supabase/auth-server'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import OrdersTable from './OrdersTable'
 
 type Order = {
@@ -12,37 +13,51 @@ type Order = {
   status: string
 }
 
-export default async function AdminDashboard() {
-  const supabase = createAuthServerClient()
+export default function AdminDashboard() {
+  const supabase = createClientComponentClient()
+  const router = useRouter()
+  const [orders, setOrders] = useState<Order[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  useEffect(() => {
+    const checkSessionAndLoad = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
 
-  if (!session) {
-    redirect('/admin/login')
+      if (!session) {
+        router.replace('/admin/login')
+        return
+      }
+
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (!error && data) {
+        setOrders(data as Order[])
+      }
+
+      setLoading(false)
+    }
+
+    checkSessionAndLoad()
+  }, [router, supabase])
+
+  if (loading) {
+    return <p style={{ padding: 20 }}>Cargando panel…</p>
   }
-
-  const { data: orders, error } = await supabase
-    .from('orders')
-    .select('*')
-    .order('created_at', { ascending: false })
-
-  if (error) {
-    console.error('Error fetching orders:', error.message)
-  }
-
-  const ordersData: Order[] = (orders as Order[]) || []
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: 20 }}>
       <h1>Panel de Administración</h1>
       <h2>Historial de Pedidos</h2>
-
-      <OrdersTable initialOrders={ordersData} />
+      <OrdersTable initialOrders={orders} />
     </div>
   )
 }
+
 
 
 
