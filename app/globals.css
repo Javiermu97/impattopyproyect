@@ -3261,3 +3261,26 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
+/* ===== FIX INPUT NUMBER ADMIN ===== */
+.admin-form input[type="number"] {
+  text-align: left !important;
+  color: #000 !important;
+  font-weight: 400;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.admin-form input[type="number"]::placeholder {
+  color: #999;
+}
+
+.admin-form input[type="number"]::-webkit-inner-spin-button,
+.admin-form input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+
+
+
