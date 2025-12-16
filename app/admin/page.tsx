@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { redirect } from 'next/navigation'
 import { createAuthServerClient } from '@/lib/supabase/auth-server'
 import OrdersTable from './OrdersTable'
