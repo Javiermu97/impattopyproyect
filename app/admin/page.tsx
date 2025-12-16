@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createAuthServerClient } from '@/lib/supabase/auth-server'
 import OrdersTable from './OrdersTable'
 
 type Order = {
@@ -11,7 +11,7 @@ type Order = {
 }
 
 export default async function AdminDashboard() {
-  const supabase = await createClient()
+  const supabase = createAuthServerClient()
 
   const {
     data: { session },
@@ -30,7 +30,7 @@ export default async function AdminDashboard() {
     console.error('Error fetching orders:', error.message)
   }
 
-  const ordersData: Order[] = orders || []
+  const ordersData: Order[] = (orders as Order[]) || []
 
   return (
     <div style={{ padding: '20px' }}>
@@ -41,3 +41,6 @@ export default async function AdminDashboard() {
     </div>
   )
 }
+
+
+
