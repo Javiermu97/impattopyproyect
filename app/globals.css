@@ -3295,28 +3295,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
-@media (max-width: 480px) {
-  body {
-    overflow-x: hidden;
-  }
 
-  .home-products-section {
-    width: 100%;
-    left: auto;
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-.cinta {
-  display: flex;
-  width: max-content;
-  will-change: transform;
-  animation: scroll-left 45s linear infinite;
-}
-
-.scroll-text span {
-  white-space: nowrap;
-}
 
 
 
