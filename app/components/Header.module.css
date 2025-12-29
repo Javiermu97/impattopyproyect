@@ -56,53 +56,36 @@
 
 
 
-/* ===============================
-   FIX REAL PARA MÓVILES FINOS
-   =============================== */
-
-/* Tablets y abajo */
-@media (max-width: 1024px) {
-  .headerLeft,
-  .headerRightPlaceholder {
-    display: none;
-  }
-
-  .headerCenter {
-    flex: 1;
-    justify-content: center;
-    text-align: center;
-  }
-}
-
-/* Móviles normales */
+/* --- Media Queries para Responsividad --- */
 @media (max-width: 768px) {
   .headerBar {
-    padding: 0.6rem 0.75rem;
-    flex-direction: column;
-    gap: 0.35rem;
+    flex-direction: column; /* Apila los elementos verticalmente */
+    gap: 0.5rem; /* Reduce el espacio entre ellos */
+    padding: 0.75rem 1rem; /* Menos padding en móviles */
+    font-size: 0.8rem; /* Letra un poco más pequeña */
+  }
+
+  .headerLeft,
+  .headerRightPlaceholder {
+    display: none; /* Ocultamos los iconos de redes sociales y el espacio vacío para simplificar */
   }
 
   .headerCenter {
+    flex-direction: column; /* Apila "Envíos gratis" y "Ver ofertas" */
     gap: 0.25rem;
-    font-size: 0.8rem;
+    text-align: center;
   }
 }
 
-/* 🔴 MÓVILES FINOS (Xiaomi, Redmi, Samsung A) */
-@media (max-width: 380px) {
-  .headerBar {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+/* --- Para Tablets (hasta 1024px) --- */
+/* En esta vista, se mantiene horizontal pero ocultamos las redes para dar más espacio */
+@media (max-width: 1024px) {
+  .headerLeft, .headerRightPlaceholder {
+    display: none;
   }
-
   .headerCenter {
-    gap: 0.15rem;
-  }
-
-  .shippingInfo {
-    white-space: normal;   /* ⬅️ CLAVE */
-    line-height: 1.2;
-    text-align: center;
+    flex-grow: 1;
+    justify-content: center;
   }
 }
 
