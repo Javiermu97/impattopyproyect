@@ -3284,57 +3284,28 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
-/* =========================================
-   FIX PARA MÓVILES FINOS (≤ 380px)
-   Xiaomi / Android
-   ========================================= */
-@media (max-width: 380px) {
-
-  /* Header en dos filas limpias */
-  .header-container,
-  .header-inner,
-  .navbar-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    row-gap: 6px;
-    text-align: center;
-  }
-
-  /* Logo centrado SOLO */
-  .logo,
-  .site-logo {
-    grid-row: 1;
-    justify-self: center;
-    font-size: 1.1rem;
-  }
-
-  /* Íconos abajo, bien alineados */
-  .header-icons,
-  .navbar-icons {
-    grid-row: 2;
-    justify-content: center;
-    gap: 14px;
-  }
-
-  /* Menú hamburguesa */
-  .menu-toggle {
-    position: absolute;
-    left: 12px;
-    top: 12px;
-  }
-}
-
-@media (max-width: 380px) {
+@media (max-width: 480px) {
   body {
-    overflow-x: hidden !important;
+    overflow-x: hidden;
   }
 
-  * {
-    max-width: 100vw;
-    box-sizing: border-box;
+  .home-products-section {
+    width: 100%;
+    left: auto;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
+.cinta {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: scroll-left 45s linear infinite;
+}
 
+.scroll-text span {
+  white-space: nowrap;
+}
 
 
 
