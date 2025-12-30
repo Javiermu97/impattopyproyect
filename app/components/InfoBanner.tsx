@@ -12,9 +12,11 @@ const InfoBanner = () => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsBannerVisible(true);
-          observer.unobserve(entry.target);
-        }
+  requestAnimationFrame(() => {
+    setIsBannerVisible(true);
+  });
+  observer.unobserve(entry.target);
+}
       },
       {
         threshold: 0.1, // La animación empieza cuando el 10% del elemento es visible
