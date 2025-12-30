@@ -3290,6 +3290,30 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
+/* ==========================================
+   FIX TEXTO QUE SE SALE DE LOS RECUADROS
+   (Entrega / Garantía / Pago / Asesoramiento)
+   ========================================== */
+@media (max-width: 480px) {
+
+  .info-box {
+    overflow: hidden;
+  }
+
+  .info-box * {
+    white-space: normal !important;
+    word-break: break-word;
+    line-height: 1.3;
+  }
+}
+
+
+
+
+
+
+
+
 
 
 
