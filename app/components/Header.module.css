@@ -94,30 +94,3 @@
 
 
 
-/* =================================================
-   AJUSTE SOLO PARA MÓVILES FINOS (≤ 380px)
-   NO afecta iPhone grandes
-   ================================================= */
-@media (max-width: 380px) {
-
-  .headerBar {
-    padding: 0.5rem 0.75rem; /* ↓ menos padding lateral */
-  }
-
-  .headerCenter {
-    gap: 0.5rem; /* ↓ reduce separación interna */
-  }
-
-  /* Evita que el texto empuje a los íconos */
-  .shippingInfo {
-    font-size: 0.78rem;
-    white-space: nowrap;
-  }
-
-  /* Ajuste fino del balance flex */
-  .headerLeft,
-  .headerCenter,
-  .headerRightPlaceholder {
-    flex: 0 1 auto;
-  }
-}

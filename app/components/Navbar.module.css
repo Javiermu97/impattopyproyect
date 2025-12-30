@@ -386,3 +386,51 @@
     letter-spacing: 0.28em;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+/* ===================================================
+   FIX HEADER SOLO PARA MÓVILES FINOS (≤ 380px)
+   NO afecta iPhone grandes
+   =================================================== */
+@media (max-width: 380px) {
+
+  .navbar {
+    padding: 0.75rem 0.75rem; /* menos padding lateral */
+  }
+
+  /* Reducimos el “peso” de los laterales */
+  .left,
+  .right {
+    flex: 0 0 auto;     /* ← CLAVE */
+    gap: 0.5rem;       /* iconos más juntos */
+  }
+
+  /* Logo realmente centrado */
+  .logo {
+    max-width: 65%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .logo a {
+    font-size: 1.2rem;
+    letter-spacing: 0.22em; /* ↓ un poco menos */
+  }
+
+  /* Íconos */
+  .iconBtn svg,
+  .menuBtn svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+

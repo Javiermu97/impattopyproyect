@@ -3312,6 +3312,33 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
+/* ===================================================
+   FIX DEFINITIVO – RECUADRO BENEFICIOS (MÓVIL FINO)
+   =================================================== */
+@media (max-width: 380px) {
+
+  .info-box {
+    display: grid !important;
+    grid-template-columns: 1fr !important; /* UNA sola columna */
+    gap: 12px;
+  }
+
+  .info-box > div {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .info-box svg {
+    flex-shrink: 0;
+  }
+}
+
+
+
+
+
+
 
 
 
