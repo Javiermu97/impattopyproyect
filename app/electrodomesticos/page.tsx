@@ -21,7 +21,7 @@ export default async function ElectrodomesticosPage() {
   return (
     <div className="shop-container">
         <header className="shop-header">
-            <h1>Electrodomésticos Pequeños</h1>
+            <h1>Electrodomésticos</h1>
         </header>
 
         {(!products || products.length === 0) && (
