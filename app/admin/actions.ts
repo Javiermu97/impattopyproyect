@@ -5,9 +5,10 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 
 /* =========================================================
-✅ PRODUCTOS (Basado en tus campos de NewProductPage)
+✅ PRODUCTOS
 ========================================================= */
 
+// Crear producto
 export async function createProduct(formData: FormData) {
   const supabase = createClient();
   const galleryRaw = formData.get('galleryImages');
@@ -42,6 +43,7 @@ export async function createProduct(formData: FormData) {
   redirect(`/admin/products/edit/${newProduct.id}`);
 }
 
+// Actualizar producto
 export async function updateProduct(id: number, formData: FormData) {
   const supabase = createClient();
   const galleryRaw = formData.get('galleryImages');
@@ -53,8 +55,8 @@ export async function updateProduct(id: number, formData: FormData) {
     imageUrl: String(formData.get('imageUrl') || ''),
     imageUrl2: String(formData.get('imageUrl2') || ''),
     videoUrl: String(formData.get('videoUrl') || ''),
-    categoria: String(formData.get('categoria') || ''), // Añadido
-    texto_oferta: String(formData.get('texto_oferta') || ''), // Añadido
+    categoria: String(formData.get('categoria') || ''),
+    texto_oferta: String(formData.get('texto_oferta') || ''),
     galleryImages: typeof galleryRaw === 'string' && galleryRaw.length > 0
         ? galleryRaw.split(',').map((img: string) => img.trim())
         : [],
@@ -64,14 +66,25 @@ export async function updateProduct(id: number, formData: FormData) {
     es_destacado_hogar: formData.get('es_destacado_hogar') === 'true',
   };
 
-  await supabase.from('productos').update(data).eq('id', id);
+  const { error } = await supabase.from('productos').update(data).eq('id', id);
+  if (error) throw new Error(error.message);
 
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/edit/${id}`);
 }
 
+// ✅ FUNCIÓN FALTANTE: Borrar producto (La que causó el error de build)
+export async function deleteProduct(id: number) {
+  const supabase = createClient();
+
+  const { error } = await supabase.from('productos').delete().eq('id', id);
+  if (error) throw new Error(error.message);
+
+  revalidatePath('/admin/products');
+}
+
 /* =========================================================
-✅ CARACTERÍSTICAS (Sincronizado con Imagen 2 y 4 de Supabase)
+✅ CARACTERÍSTICAS (Sincronizado con tus capturas)
 ========================================================= */
 
 export async function createCaracteristica(formData: FormData) {
@@ -79,27 +92,46 @@ export async function createCaracteristica(formData: FormData) {
   const producto_id = Number(formData.get('producto_id'));
 
   const data = {
-    producto_id: producto_id, // Nombre exacto en Supabase
-    titulo: String(formData.get('titulo')), // Nombre exacto en Supabase
-    descripcion: String(formData.get('descripcion') || ''), // Nombre exacto en Supabase
-    imagen: String(formData.get('imagen') || ''), // Nombre exacto en Supabase
-    orden: Number(formData.get('orden')) || 0, // Nombre exacto en Supabase
+    producto_id: producto_id,
+    titulo: String(formData.get('titulo')),
+    descripcion: String(formData.get('descripcion') || ''),
+    imagen: String(formData.get('imagen') || ''),
+    orden: Number(formData.get('orden')) || 0,
   };
 
-  await supabase.from('caracteristicas').insert(data);
+  const { error } = await supabase.from('caracteristicas').insert(data);
+  if (error) throw new Error(error.message);
+
   revalidatePath(`/admin/products/edit/${producto_id}`);
 }
 
 export async function deleteCaracteristica(id: number) {
   const supabase = createClient();
   
+  // Obtenemos el producto_id antes de borrar para revalidar la página correcta
   const { data } = await supabase
     .from('caracteristicas')
     .select('producto_id')
     .eq('id', id)
     .single();
 
-  await supabase.from('caracteristicas').delete().eq('id', id);
+  const { error } = await supabase.from('caracteristicas').delete().eq('id', id);
+  if (error) throw new Error(error.message);
 
-  if (data) revalidatePath(`/admin/products/edit/${data.producto_id}`);
+  if (data) {
+    revalidatePath(`/admin/products/edit/${data.producto_id}`);
+  }
+}
+
+/* =========================================================
+✅ ÓRDENES
+========================================================= */
+
+export async function updateOrderStatus(id: number, status: string) {
+  const supabase = createClient();
+
+  const { error } = await supabase.from('orders').update({ status }).eq('id', id);
+  if (error) throw new Error(error.message);
+
+  revalidatePath('/admin/orders');
 }
