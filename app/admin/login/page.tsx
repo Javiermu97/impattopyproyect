@@ -17,6 +17,8 @@ export default function LoginPage() {
     });
 
     if (!error) {
+      // ✅ ARREGLO CLAVE: refresh() obliga al servidor a reconocer que ya entraste
+      router.refresh(); 
       router.push('/admin');
     } else {
       alert('Error al iniciar sesión: ' + error.message);
