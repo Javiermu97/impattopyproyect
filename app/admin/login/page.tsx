@@ -6,21 +6,27 @@ import { useState } from 'react';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const router = useRouter();
   const supabase = createClientComponentClient();
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoggingIn(true);
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (!error) {
-      // ✅ ARREGLO CLAVE: refresh() obliga al servidor a reconocer que ya entraste
-      router.refresh(); 
-      router.push('/admin');
+      // ✅ Forzamos la actualización de cookies y esperamos un instante
+      router.refresh();
+      setTimeout(() => {
+        window.location.href = '/admin'; // Redirección completa para limpiar el estado
+      }, 500);
     } else {
+      setIsLoggingIn(false);
       alert('Error al iniciar sesión: ' + error.message);
     }
   };
@@ -30,31 +36,31 @@ export default function LoginPage() {
       <h1>Admin Login</h1>
       <form onSubmit={handleSignIn} className="admin-form">
         <div className="form-group">
-          <label className="form-label" htmlFor="email">Email</label>
+          <label className="form-label">Email</label>
           <input 
-            id="email"
             type="email" 
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
             placeholder="Email" 
             required 
             className="form-input"
+            disabled={isLoggingIn}
           />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="password">Contraseña</label>
+          <label className="form-label">Contraseña</label>
           <input 
-            id="password"
             type="password" 
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
             placeholder="Contraseña" 
             required 
             className="form-input"
+            disabled={isLoggingIn}
           />
         </div>
-        <button type="submit" className="admin-submit-btn">
-          Iniciar Sesión
+        <button type="submit" className="admin-submit-btn" disabled={isLoggingIn}>
+          {isLoggingIn ? 'Cargando...' : 'Iniciar Sesión'}
         </button>
       </form>
     </div>
