@@ -1,25 +1,25 @@
 // lib/supabase/server.ts
-import { createClient as createSupabaseClient, SupabaseClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { createClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
 
 /**
- * IMPORTANTE:
- * ❌ NUNCA lanzar throw en build
- * ✅ Solo advertir en desarrollo
+ * ✅ CLIENTE PARA AUTH (usa cookies del usuario)
+ * 👉 ESTE es el que se usa en pages protegidas
  */
-if (!supabaseUrl || !serviceRoleKey) {
-  console.warn('⚠️ Variables de entorno de Supabase no definidas todavía (build safe)');
+export async function createAuthClient() {
+  return createServerComponentClient({ cookies })
 }
 
 /**
- * Cliente server con Service Role
- * ⚠️ SOLO para server actions, routes, server components
+ * ⚠️ CLIENTE SERVICE ROLE
+ * 👉 SOLO para operaciones administrativas
+ * 👉 NO sirve para auth
  */
-export const supabaseServer: SupabaseClient = createSupabaseClient(
-  supabaseUrl || '',
-  serviceRoleKey || '',
+export const supabaseServiceRole: SupabaseClient = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
   {
     auth: {
       persistSession: false,
@@ -27,13 +27,6 @@ export const supabaseServer: SupabaseClient = createSupabaseClient(
       detectSessionInUrl: false,
     },
   }
-);
-
-/**
- * Compatibilidad con tu código existente
- */
-export function createClient(): SupabaseClient {
-  return supabaseServer;
-}
+)
 
 
