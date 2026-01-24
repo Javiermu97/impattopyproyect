@@ -2,17 +2,14 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createAuthServerClient } from '@/lib/supabase/auth-server'
-
-
+import { createAuthServerClient } from '@/lib/supabase/auth-server';
 
 /* =========================================================
 ✅ PRODUCTOS
 ========================================================= */
 
 export async function createProduct(formData: FormData) {
-  const supabase = createAuthServerClient()
-;
+  const supabase = createAuthServerClient();
   const galleryRaw = formData.get('galleryImages');
 
   const data = {
