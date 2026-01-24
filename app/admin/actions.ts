@@ -31,11 +31,9 @@ export async function createProduct(formData: FormData) {
   };
 
   const { error } = await supabase.from('productos').insert(data);
-
   if (error) throw new Error(error.message);
 
   revalidatePath('/admin/products');
-  // ✅ Redirige a la lista para limpiar la pantalla
   redirect('/admin/products?success=true');
 }
 
@@ -65,7 +63,6 @@ export async function updateProduct(id: number, formData: FormData) {
   if (error) throw new Error(error.message);
 
   revalidatePath('/admin/products');
-  // ✅ Redirige a la lista tras actualizar
   redirect('/admin/products?updated=true');
 }
 
@@ -104,4 +101,22 @@ export async function deleteCaracteristica(id: number) {
   const { error } = await supabase.from('caracteristicas').delete().eq('id', id);
   if (error) throw new Error(error.message);
   if (data) revalidatePath(`/admin/products/edit/${data.producto_id}`);
+}
+
+/* =========================================================
+✅ ÓRDENES (ESTO ES LO QUE CAUSABA EL ERROR)
+========================================================= */
+
+export async function updateOrderStatus(id: number, status: string) {
+  const supabase = createClient();
+
+  const { error } = await supabase
+    .from('orders') 
+    .update({ status })
+    .eq('id', id);
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath('/admin');
+  revalidatePath('/admin/orders');
 }
