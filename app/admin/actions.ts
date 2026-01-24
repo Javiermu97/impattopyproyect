@@ -8,7 +8,6 @@ import { createClient } from '@/lib/supabase/server';
 ✅ PRODUCTOS
 ========================================================= */
 
-// Crear producto
 export async function createProduct(formData: FormData) {
   const supabase = createClient();
   const galleryRaw = formData.get('galleryImages');
@@ -31,19 +30,15 @@ export async function createProduct(formData: FormData) {
     es_destacado_hogar: formData.get('es_destacado_hogar') === 'true',
   };
 
-  const { data: newProduct, error } = await supabase
-    .from('productos')
-    .insert(data)
-    .select()
-    .single();
+  const { error } = await supabase.from('productos').insert(data);
 
   if (error) throw new Error(error.message);
 
   revalidatePath('/admin/products');
-  redirect(`/admin/products/edit/${newProduct.id}`);
+  // ✅ Redirige a la lista para limpiar la pantalla
+  redirect('/admin/products?success=true');
 }
 
-// Actualizar producto
 export async function updateProduct(id: number, formData: FormData) {
   const supabase = createClient();
   const galleryRaw = formData.get('galleryImages');
@@ -70,21 +65,19 @@ export async function updateProduct(id: number, formData: FormData) {
   if (error) throw new Error(error.message);
 
   revalidatePath('/admin/products');
-  revalidatePath(`/admin/products/edit/${id}`);
+  // ✅ Redirige a la lista tras actualizar
+  redirect('/admin/products?updated=true');
 }
 
-// ✅ FUNCIÓN FALTANTE: Borrar producto (La que causó el error de build)
 export async function deleteProduct(id: number) {
   const supabase = createClient();
-
   const { error } = await supabase.from('productos').delete().eq('id', id);
   if (error) throw new Error(error.message);
-
   revalidatePath('/admin/products');
 }
 
 /* =========================================================
-✅ CARACTERÍSTICAS (Sincronizado con tus capturas)
+✅ CARACTERÍSTICAS
 ========================================================= */
 
 export async function createCaracteristica(formData: FormData) {
@@ -107,31 +100,8 @@ export async function createCaracteristica(formData: FormData) {
 
 export async function deleteCaracteristica(id: number) {
   const supabase = createClient();
-  
-  // Obtenemos el producto_id antes de borrar para revalidar la página correcta
-  const { data } = await supabase
-    .from('caracteristicas')
-    .select('producto_id')
-    .eq('id', id)
-    .single();
-
+  const { data } = await supabase.from('caracteristicas').select('producto_id').eq('id', id).single();
   const { error } = await supabase.from('caracteristicas').delete().eq('id', id);
   if (error) throw new Error(error.message);
-
-  if (data) {
-    revalidatePath(`/admin/products/edit/${data.producto_id}`);
-  }
-}
-
-/* =========================================================
-✅ ÓRDENES
-========================================================= */
-
-export async function updateOrderStatus(id: number, status: string) {
-  const supabase = createClient();
-
-  const { error } = await supabase.from('orders').update({ status }).eq('id', id);
-  if (error) throw new Error(error.message);
-
-  revalidatePath('/admin/orders');
+  if (data) revalidatePath(`/admin/products/edit/${data.producto_id}`);
 }
