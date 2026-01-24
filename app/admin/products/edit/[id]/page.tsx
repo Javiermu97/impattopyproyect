@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { createAuthClient } from '@/lib/supabase/server'
+import { createAuthServerClient } from '@/lib/supabase/auth-server'
+
 
 import { updateProduct, createCaracteristica } from '@/app/admin/actions';
 import DeleteCaracteristicaButton from './DeleteCaracteristicaButton';
@@ -14,7 +15,7 @@ interface Caracteristica {
 }
 
 async function getProduct(id: number) {
-  const supabase = await createAuthClient()
+  const supabase = createAuthServerClient()
 ;
   const { data } = await supabase
     .from('productos')

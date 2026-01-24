@@ -1,19 +1,16 @@
-import { createAuthClient } from '@/lib/supabase/server'
+// app/admin/page.tsx
+import { createAuthServerClient } from '@/lib/supabase/auth-server'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import OrdersTable from './OrdersTable'
 
 export default async function AdminDashboard() {
-  const supabase = await createAuthClient()
+  const supabase = createAuthServerClient()
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  // ✅ Verificar sesión
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) redirect('/admin/login')
 
-  if (!session) {
-    redirect('/admin/login')
-  }
-
+  // ✅ Cargar órdenes
   const { data: orders } = await supabase
     .from('orders')
     .select('*')
@@ -21,47 +18,47 @@ export default async function AdminDashboard() {
 
   return (
     <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'sans-serif' }}>
-      <h1 style={{ fontSize: '28px', marginBottom: '10px' }}>
-        Panel de Administración
-      </h1>
+      <h1 style={{ fontSize: '28px', marginBottom: '10px' }}>Panel de Administración</h1>
+      <p style={{ color: '#666', marginBottom: '30px' }}>Bienvenido al centro de control de tu tienda.</p>
 
-      <p style={{ color: '#666', marginBottom: '30px' }}>
-        Bienvenido al centro de control de tu tienda.
-      </p>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '40px' }}>
-        <Link
-          href="/admin/products"
-          style={{
-            padding: '25px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            borderRadius: '12px',
-            textDecoration: 'none',
-            textAlign: 'center',
-            fontWeight: 'bold',
-          }}
-        >
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '20px',
+        marginBottom: '40px'
+      }}>
+        <a href="/admin/products" style={{
+          padding: '25px',
+          backgroundColor: '#007bff',
+          color: 'white',
+          borderRadius: '12px',
+          textDecoration: 'none',
+          textAlign: 'center',
+          fontWeight: 'bold',
+          boxShadow: '0 4px 6px rgba(0,123,255,0.2)'
+        }}>
           📦 VER LISTA DE PRODUCTOS
-        </Link>
-
-        <Link
-          href="/admin/products/new"
-          style={{
-            padding: '25px',
-            backgroundColor: '#28a745',
-            color: 'white',
-            borderRadius: '12px',
-            textDecoration: 'none',
-            textAlign: 'center',
-            fontWeight: 'bold',
-          }}
-        >
+        </a>
+        <a href="/admin/products/new" style={{
+          padding: '25px',
+          backgroundColor: '#28a745',
+          color: 'white',
+          borderRadius: '12px',
+          textDecoration: 'none',
+          textAlign: 'center',
+          fontWeight: 'bold',
+          boxShadow: '0 4px 6px rgba(40,167,69,0.2)'
+        }}>
           ➕ AÑADIR NUEVO PRODUCTO
-        </Link>
+        </a>
       </div>
 
-      <OrdersTable initialOrders={orders || []} />
+      <hr style={{ border: '0', borderTop: '1px solid #eee', marginBottom: '40px' }} />
+
+      <h2 style={{ marginBottom: '20px' }}>Historial de Pedidos</h2>
+      <div style={{ backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
+        <OrdersTable initialOrders={orders || []} />
+      </div>
     </div>
   )
 }
