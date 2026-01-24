@@ -2,14 +2,16 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
+import { createAuthClient } from '@/lib/supabase/server'
+
 
 /* =========================================================
 ✅ PRODUCTOS
 ========================================================= */
 
 export async function createProduct(formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createAuthClient()
+;
   const galleryRaw = formData.get('galleryImages');
 
   const data = {
@@ -38,7 +40,8 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(id: number, formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createAuthClient()
+;
   const galleryRaw = formData.get('galleryImages');
 
   const data = {
@@ -67,7 +70,8 @@ export async function updateProduct(id: number, formData: FormData) {
 }
 
 export async function deleteProduct(id: number) {
-  const supabase = createClient();
+  const supabase = await createAuthClient()
+;
   const { error } = await supabase.from('productos').delete().eq('id', id);
   if (error) throw new Error(error.message);
   revalidatePath('/admin/products');
@@ -78,7 +82,8 @@ export async function deleteProduct(id: number) {
 ========================================================= */
 
 export async function createCaracteristica(formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createAuthClient()
+;
   const producto_id = Number(formData.get('producto_id'));
 
   const data = {
@@ -96,7 +101,8 @@ export async function createCaracteristica(formData: FormData) {
 }
 
 export async function deleteCaracteristica(id: number) {
-  const supabase = createClient();
+  const supabase = await createAuthClient()
+;
   const { data } = await supabase.from('caracteristicas').select('producto_id').eq('id', id).single();
   const { error } = await supabase.from('caracteristicas').delete().eq('id', id);
   if (error) throw new Error(error.message);
@@ -108,7 +114,8 @@ export async function deleteCaracteristica(id: number) {
 ========================================================= */
 
 export async function updateOrderStatus(id: number, status: string) {
-  const supabase = createClient();
+  const supabase = await createAuthClient()
+;
 
   const { error } = await supabase
     .from('orders') 

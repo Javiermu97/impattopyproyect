@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { createClient } from '@/lib/supabase/server';
+import { createAuthClient } from '@/lib/supabase/server'
+
 import { updateProduct, createCaracteristica } from '@/app/admin/actions';
 import DeleteCaracteristicaButton from './DeleteCaracteristicaButton';
 
@@ -13,7 +14,8 @@ interface Caracteristica {
 }
 
 async function getProduct(id: number) {
-  const supabase = createClient();
+  const supabase = await createAuthClient()
+;
   const { data } = await supabase
     .from('productos')
     .select('*, caracteristicas (*)')
