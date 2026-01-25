@@ -20,7 +20,7 @@ export const metadata = {
   icons: { icon: '/logo.png' },
   // Verificación de Google Search Console
   verification: {
-    google: 'google-site-verification: googlea6213aca70b7fbe0.html', 
+    google: '<meta name="google-site-verification" content="V3SWLCYX76L7yvjDHyf186S4dE2YNoMjnXyZ02VtF2w" />', 
   },
   // Esto es lo que hace que se vea bien en WhatsApp y Facebook
   openGraph: {
