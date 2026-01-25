@@ -2,26 +2,25 @@ import { supabase } from '@/lib/supabaseClient';
 import ShopPageClient from '@/app/components/ShopPageClient';
 
 export const metadata = {
-  title: 'Hogar Inteligente - Impatto Py',
-  description: 'Tecnología y domótica para tu hogar.',
+  title: 'Iluminación - Impatto Py',
+  description: 'Ilumina tus espacios con la mejor tecnología.',
 };
 
 export default async function HogarInteligentePage() {
-  
-  // Buscamos "Inteligente" para abarcar "Hogar Inteligente" o "Casa Inteligente"
+  // Ahora buscamos "Iluminación" en la base de datos
   const { data: products, error } = await supabase
     .from('productos')
     .select('*')
-    .ilike('categoria', '%Inteligente%');
+    .ilike('categoria', '%Iluminación%');
 
   if (error) {
-    console.error('Error al cargar productos de Hogar Inteligente:', error);
+    console.error('Error al cargar productos de Iluminación:', error);
   }
 
   return (
     <div className="shop-container">
         <header className="shop-header">
-            <h1>Hogar Inteligente</h1>
+            <h1>Iluminación</h1>
         </header>
 
         {(!products || products.length === 0) && (

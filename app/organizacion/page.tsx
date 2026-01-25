@@ -2,26 +2,25 @@ import { supabase } from '@/lib/supabaseClient';
 import ShopPageClient from '@/app/components/ShopPageClient';
 
 export const metadata = {
-  title: 'Organización y Decoración - Impatto Py',
-  description: 'Soluciones para ordenar y decorar tus espacios.',
+  title: 'Hogar - Impatto Py',
+  description: 'Soluciones y artículos para tu hogar.',
 };
 
 export default async function OrganizacionPage() {
-  
-  // Buscamos "Organización"
+  // Ahora buscamos "Hogar" en lugar de Organización
   const { data: products, error } = await supabase
     .from('productos')
     .select('*')
-    .ilike('categoria', '%Organización%');
+    .ilike('categoria', '%Hogar%');
 
   if (error) {
-    console.error('Error al cargar productos de Organización:', error);
+    console.error('Error al cargar productos de Hogar:', error);
   }
 
   return (
     <div className="shop-container">
         <header className="shop-header">
-            <h1>Organización y Decoración</h1>
+            <h1>Hogar</h1>
         </header>
 
         {(!products || products.length === 0) && (
