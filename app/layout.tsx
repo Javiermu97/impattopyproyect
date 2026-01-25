@@ -22,7 +22,7 @@ export const metadata = {
   verification: {
     google: 'V3SWLCYX76L7yvjDHyf186S4dE2YNoMjnXyZ02VtF2w',
   },
-  // Esta sección 'other' obliga a Next.js a usar el formato que Facebook exige
+  // USAMOS "other" PERO CON EL FORMATO QUE ENGAÑA AL SISTEMA PARA QUE NO DUPLIQUE
   other: {
     'fb:app_id': '513118241881176',
   },
@@ -34,12 +34,16 @@ export const metadata = {
     images: [{ url: '/logo.png', width: 800, height: 600 }],
     locale: 'es_PY',
     type: 'website',
+    // NOTA: NO poner appId aquí, eso es lo que crea la etiqueta doble.
   },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
+      {/* IMPORTANTE: Hemos quitado el <head> manual con la etiqueta meta 
+         porque ahora la maneja el objeto "other" de arriba de forma limpia.
+      */}
       <body>
         <AuthProvider>
           <WishlistProvider>
