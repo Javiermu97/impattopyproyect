@@ -8,12 +8,16 @@ export default async function StatsPage() {
   // 1. Obtener Ventas Mensuales
   const { data: salesData } = await supabase.rpc('get_monthly_sales');
   
-  // 2. EXTRAER VENTAS REALES DESDE EL JSONB
+  // 2. RECUPERAR FAVORITOS (RESTAURADO)
+  const { count: wishlistCount } = await supabase
+    .from('wishlist')
+    .select('*', { count: 'exact', head: true });
+
+  // 3. EXTRAER VENTAS REALES DESDE EL JSONB
   const { data: orders } = await supabase
     .from('orders')
     .select('order_details');
 
-  // Procesamos los datos del JSON para el ranking
   const productCounts: Record<string, { name: string, quantity: number, price: number }> = {};
   
   orders?.forEach(order => {
@@ -33,7 +37,7 @@ export default async function StatsPage() {
 
   const topSold = Object.values(productCounts).sort((a, b) => b.quantity - a.quantity);
 
-  // 3. Visitantes Únicos (Detección por Dispositivo)
+  // 4. Visitantes Únicos (Detección por Dispositivo)
   const { data: viewsData } = await supabase.from('page_views').select('session_id');
   const totalUniqueVisitors = new Set(viewsData?.map(v => v.session_id)).size;
 
@@ -45,10 +49,15 @@ export default async function StatsPage() {
     <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'sans-serif' }}>
       <h1 style={{ fontSize: '28px', fontWeight: '800', marginBottom: '30px' }}>Dashboard Profesional</h1>
       
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '40px' }}>
+      {/* Seccion superior con 3 columnas: Ingresos, Favoritos y Personas */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '40px' }}>
         <div style={cardStyle}>
           <span style={labelStyle}>Ingresos Totales</span>
           <p style={valueStyle}>Gs. {salesData?.[0]?.total?.toLocaleString('es-PY') || 0}</p>
+        </div>
+        <div style={cardStyle}>
+          <span style={labelStyle}>Interés de Clientes (❤️)</span>
+          <p style={valueStyle}>{wishlistCount || 0} Favoritos</p>
         </div>
         <div style={cardStyle}>
           <span style={labelStyle}>Personas Reales</span>
