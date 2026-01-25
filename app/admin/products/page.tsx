@@ -19,10 +19,22 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
 
   return (
     <div style={{ padding: '40px 20px', maxWidth: '1100px', margin: '0 auto', fontFamily: 'sans-serif' }}>
-      {/* Alertas */}
+      
+      {/* Alerta: CORTA Y CENTRADA */}
       {(params.success || params.updated) && (
-        <div style={{ backgroundColor: '#d4edda', color: '#155724', padding: '15px', borderRadius: '8px', marginBottom: '20px', textAlign: 'center', fontWeight: 'bold' }}>
-          {params.success ? '✅ Producto creado con éxito' : '✅ Producto actualizado correctamente'}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+          <div style={{ 
+            backgroundColor: '#d4edda', 
+            color: '#155724', 
+            padding: '12px 30px', 
+            borderRadius: '30px', 
+            fontSize: '14px',
+            fontWeight: '700',
+            border: '1px solid #c3e6cb',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.05)'
+          }}>
+            {params.success ? '✅ ¡Producto creado con éxito!' : '✅ ¡Producto actualizado correctamente!'}
+          </div>
         </div>
       )}
 

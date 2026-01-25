@@ -6,50 +6,116 @@ import { redirect } from 'next/navigation'
 import { createProduct } from '@/app/admin/actions'
 
 export default async function NewProductPage() {
-  // ✅ CAMBIO CLAVE: Esperar al cliente de Supabase
   const supabase = await createAuthServerClient()
 
   const { data: { session } } = await supabase.auth.getSession()
   if (!session) redirect('/admin/login')
 
+  const inputStyle = { 
+    width: '100%', 
+    padding: '12px', 
+    borderRadius: '8px', 
+    border: '1px solid #ccc', 
+    boxSizing: 'border-box' as const,
+    color: '#000000', 
+    fontSize: '14px',
+    backgroundColor: '#fff',
+    WebkitTextFillColor: '#000000', // Fuerza negro en Chrome/Safari
+    opacity: 1
+  };
+
+  const labelStyle = { 
+    display: 'block', 
+    marginBottom: '6px', 
+    fontSize: '13px', 
+    fontWeight: '700', 
+    color: '#333' 
+  };
+
   return (
-    <div className="admin-container" style={{ padding: '40px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ marginBottom: '30px' }}>Añadir Nuevo Producto</h1>
+    <div style={{ padding: '40px 20px', maxWidth: '900px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+      <h1 style={{ marginBottom: '30px', fontSize: '24px', fontWeight: '700' }}>Añadir Nuevo Producto</h1>
 
-      <form action={createProduct} className="admin-form" style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '15px', marginBottom: '15px' }}>
-          <input name="name" placeholder="Nombre del Producto" required style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
-          <input name="price" type="number" placeholder="Precio Actual" required style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
-          <input name="oldPrice" type="number" placeholder="Precio Anterior (Opcional)" style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
+      <form action={createProduct} style={{ 
+        backgroundColor: '#fff', 
+        padding: '30px', 
+        borderRadius: '16px', 
+        boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+        border: '1px solid #eee' 
+      }}>
+        {/* Fila 1: Nombre y Precios */}
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '15px', marginBottom: '20px' }}>
+          <div>
+            <label style={labelStyle}>Nombre del Producto</label>
+            <input name="name" required style={inputStyle} placeholder="Ej: Humidificador..." />
+          </div>
+          <div>
+            <label style={labelStyle}>Precio Actual (Gs.)</label>
+            <input name="price" type="number" required style={inputStyle} placeholder="0" />
+          </div>
+          <div>
+            <label style={labelStyle}>Precio Anterior</label>
+            <input name="oldPrice" type="number" style={inputStyle} placeholder="0" />
+          </div>
         </div>
 
-        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
-          <input name="categoria" placeholder="Categoría" style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
-          <input name="texto_oferta" placeholder="Texto de Oferta (ej: 20% OFF)" style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
+        {/* Fila 2: Categoría y Oferta */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '20px' }}>
+          <div>
+            <label style={labelStyle}>Categoría</label>
+            <input name="categoria" style={inputStyle} placeholder="Salud, Hogar..." />
+          </div>
+          <div>
+            <label style={labelStyle}>Texto de Oferta</label>
+            <input name="texto_oferta" style={inputStyle} placeholder="Ej: 20% OFF" />
+          </div>
         </div>
 
-        <div style={{ marginBottom: '15px' }}>
-          <input name="imageUrl" placeholder="Imagen Principal URL" required style={{ width: '100%', padding: '12px', borderRadius: '6px', border: '1px solid #ddd', marginBottom: '10px' }} />
-          <input name="imageUrl2" placeholder="Imagen Secundaria URL (Opcional)" style={{ width: '100%', padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
-        </div>
-
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ fontSize: '12px', color: '#007bff', fontWeight: 'bold' }}>Video del Producto</label>
-          <input name="videoUrl" placeholder="URL del Video (YouTube o Directo)" style={{ width: '100%', padding: '12px', borderRadius: '6px', border: '2px solid #007bff' }} />
-        </div>
-
-        <textarea name="galleryImages" placeholder="Galería de imágenes (separa las URLs con comas)" style={{ width: '100%', padding: '12px', borderRadius: '6px', border: '1px solid #ddd', minHeight: '80px', marginBottom: '20px' }} />
-
+        {/* Imágenes */}
         <div style={{ marginBottom: '20px' }}>
-           <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-             <input type="checkbox" name="inStock" defaultChecked />
-             <span>¿Hay stock disponible?</span>
-           </label>
+          <label style={labelStyle}>URLs de Imágenes</label>
+          <input name="imageUrl" required placeholder="Imagen Principal URL" style={{ ...inputStyle, marginBottom: '10px' }} />
+          <input name="imageUrl2" placeholder="Imagen Secundaria URL (Opcional)" style={inputStyle} />
         </div>
 
-        <button type="submit" className="admin-submit-btn" style={{ width: '100%', padding: '15px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px' }}>
-          CREAR PRODUCTO
-        </button>
+        {/* Video: YA NO ES AZUL */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={labelStyle}>Video del Producto</label>
+          <input 
+            name="videoUrl" 
+            placeholder="URL del Video (MP4 o YouTube)" 
+            style={{ ...inputStyle, border: '1px solid #ccc' }} // Borde normal
+          />
+        </div>
+
+        <div style={{ marginBottom: '30px' }}>
+          <label style={labelStyle}>Galería de imágenes (Separar con coma)</label>
+          <textarea name="galleryImages" style={{ ...inputStyle, height: '80px', fontFamily: 'inherit' }} placeholder="url1, url2, url3..." />
+        </div>
+
+        <div style={{ marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <input type="checkbox" name="inStock" id="inStock" defaultChecked style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+          <label htmlFor="inStock" style={{ fontSize: '14px', fontWeight: '600', cursor: 'pointer' }}>¿Hay stock disponible?</label>
+        </div>
+
+        {/* Botón: CORTO Y PROFESIONAL */}
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <button type="submit" style={{ 
+            width: '280px', 
+            padding: '16px', 
+            backgroundColor: '#28a745', 
+            color: '#fff', 
+            border: 'none', 
+            borderRadius: '8px', 
+            fontWeight: '800', 
+            cursor: 'pointer',
+            fontSize: '14px',
+            textTransform: 'uppercase',
+            letterSpacing: '1px'
+          }}>
+            CREAR PRODUCTO
+          </button>
+        </div>
       </form>
     </div>
   )
