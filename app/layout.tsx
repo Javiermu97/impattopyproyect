@@ -10,12 +10,24 @@ import Copyright from '@/app/components/Copyright';
 import { CartProvider } from '@/app/context/CartContext';
 import { AuthProvider } from '@/app/context/AuthContext';
 import { WishlistProvider } from '@/app/context/WishlistContext';
-import AnalyticsTracker from '@/app/components/AnalyticsTracker'; // Crear este componente aparte para no romper el layout
+import AnalyticsTracker from '@/app/components/AnalyticsTracker';
 
 export const metadata = {
-  title: 'Impatto Py| Sentí la diferencia',
-  description: 'Tienda Online Impatto Py',
+  metadataBase: new URL('https://impatto.com.py'),
+  title: 'Impatto Py | Sentí la diferencia',
+  description: 'Tu tienda online de confianza en Paraguay. Productos para el hogar, salud y bienestar con envíos a todo el país.',
+  keywords: ['Impatto Py', 'Tienda Online Paraguay', 'Hogar y Cocina', 'Compras Asunción'],
   icons: { icon: '/logo.png' },
+  // Esto es lo que hace que se vea bien en WhatsApp y Facebook
+  openGraph: {
+    title: 'Impatto Py | Sentí la diferencia',
+    description: 'Calidad y confianza en cada pedido. Envíos a todo Paraguay.',
+    url: 'https://impatto.com.py',
+    siteName: 'Impatto Py',
+    images: [{ url: '/logo.png', width: 800, height: 600 }],
+    locale: 'es_PY',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

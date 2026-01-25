@@ -4,12 +4,10 @@ import ProductDetailPageClient from '@/app/components/ProductDetailPageClient';
 import type { Metadata } from 'next';
 import { Product } from '@/lib/types';
 
-// La definición del tipo para las props ahora refleja que params es una promesa
 type Props = {
   params: Promise<{ id: string }>;
 };
 
-// Generación de parámetros estáticos
 export async function generateStaticParams() {
   const products: Product[] = await getProducts();
   if (!Array.isArray(products)) {
@@ -20,39 +18,55 @@ export async function generateStaticParams() {
   }));
 }
 
-// Generación de metadata dinámica
+// METADATA OPTIMIZADA PARA GOOGLE Y WHATSAPP
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const productId = Number(id);
 
-  if (isNaN(productId)) {
-    return { title: 'Producto no encontrado' };
-  }
+  if (isNaN(productId)) return { title: 'Producto no encontrado' };
 
   const product = await getProductById(productId);
-  if (!product) {
-    return { title: 'Producto no encontrado' };
-  }
+  if (!product) return { title: 'Producto no encontrado' };
+
+  const fullTitle = `${product.name} | Impatto Py`;
+  const fullDescription = product.description?.substring(0, 160) || `Compra ${product.name} al mejor precio en Impatto Py. Envíos a todo el país.`;
 
   return {
-    title: `${product.name} - Impatto Py`,
-    description: product.description.substring(0, 150),
+    title: fullTitle,
+    description: fullDescription,
+    openGraph: {
+      title: fullTitle,
+      description: fullDescription,
+      url: `https://impatto.com.py/product/${id}`,
+      siteName: 'Impatto Py Store',
+      images: [
+        {
+          url: product.imageUrl || '/logo.png', // Muestra la foto real del producto al compartir
+          width: 800,
+          height: 800,
+          alt: product.name,
+        },
+      ],
+      locale: 'es_PY',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: fullTitle,
+      description: fullDescription,
+      images: [product.imageUrl || '/logo.png'],
+    },
   };
 }
 
-// Componente de página
 export default async function ProductPage({ params }: Props) {
   const { id } = await params;
   const productId = Number(id);
 
-  if (isNaN(productId)) {
-    notFound();
-  }
+  if (isNaN(productId)) notFound();
 
   const product = await getProductById(productId);
-  if (!product) {
-    notFound();
-  }
+  if (!product) notFound();
 
   const allProducts: Product[] = await getProducts();
   const relatedProducts = allProducts.filter((p) => p.id !== product.id);
