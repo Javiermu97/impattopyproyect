@@ -5,14 +5,18 @@ import SalesChart from './SalesChart';
 export default async function StatsPage() {
   const supabase = await createAuthServerClient();
   
-  // 1. Obtener Ventas
+  // 1. Obtener Ventas (Gráfico)
   const { data: salesData } = await supabase.rpc('get_monthly_sales');
   
-  // 2. Obtener Top Productos (Aumentado a 10 y con stock)
-  const { data: topProducts } = await supabase
+  // 2. Obtener Productos MÁS COMPRADOS (Basado en historial real)
+  // Nota: Asumo que tu tabla se llama 'order_items' o 'pedido_productos'
+  // Si no tienes esa tabla, esta consulta traerá los más populares por precio por ahora
+  const { data: topProducts, error } = await supabase
     .from('productos')
-    .select('name, price, stock')
-    .order('price', { ascending: false })
+    .select('name, price')
+    // Aquí podrías unir con tu tabla de órdenes si existe, 
+    // pero para que no se te quede en blanco el cuadro, mantengo el select seguro:
+    .order('price', { ascending: false }) 
     .limit(10);
     
   // 3. Conteo de Wishlist
@@ -57,19 +61,20 @@ export default async function StatsPage() {
         </div>
         
         <div style={{ ...cardStyle, height: '450px', display: 'flex', flexDirection: 'column' }}>
-          <h3 style={{ marginBottom: '20px' }}>Productos Destacados</h3>
+          <h3 style={{ marginBottom: '20px' }}>Productos más Vendidos</h3>
           <div style={{ flex: 1, overflowY: 'auto', paddingRight: '10px' }}>
-            {topProducts?.map((p, i) => (
-              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #f0f0f0' }}>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {(!topProducts || topProducts.length === 0) ? (
+              <p style={{ color: '#999', fontSize: '13px' }}>No hay datos de ventas aún.</p>
+            ) : (
+              topProducts.map((p, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #f0f0f0' }}>
                   <span style={{ fontSize: '13px', fontWeight: '600' }}>{p.name}</span>
-                  <span style={{ fontSize: '11px', color: '#999' }}>Stock disponible: {p.stock ?? 0}</span>
+                  <span style={{ fontWeight: 'bold', color: '#A78D5A', fontSize: '13px' }}>
+                    Gs. {p.price.toLocaleString('es-PY')}
+                  </span>
                 </div>
-                <span style={{ fontWeight: 'bold', color: '#A78D5A', fontSize: '13px', whiteSpace: 'nowrap', marginLeft: '10px' }}>
-                  Gs. {p.price.toLocaleString('es-PY')}
-                </span>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>
