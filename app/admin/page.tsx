@@ -4,13 +4,10 @@ import { redirect } from 'next/navigation'
 import OrdersTable from './OrdersTable'
 
 export default async function AdminDashboard() {
-  // ✅ CAMBIO CLAVE: Ahora necesitamos 'await' porque el cliente es asíncrono en Next 16
   const supabase = await createAuthServerClient()
 
   // ✅ Verificar sesión
   const { data: { session } } = await supabase.auth.getSession()
-  
-  // Si no hay sesión, mandamos al login
   if (!session) redirect('/admin/login')
 
   // ✅ Cargar órdenes
@@ -20,47 +17,67 @@ export default async function AdminDashboard() {
     .order('created_at', { ascending: false })
 
   return (
-    <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'sans-serif' }}>
-      <h1 style={{ fontSize: '28px', marginBottom: '10px' }}>Panel de Administración</h1>
-      <p style={{ color: '#666', marginBottom: '30px' }}>Bienvenido al centro de control de tu tienda.</p>
+    <div style={{ padding: '40px 20px', maxWidth: '1000px', margin: '0 auto', fontFamily: 'sans-serif', minHeight: '80vh' }}>
+      <header style={{ marginBottom: '40px' }}>
+        <h1 style={{ fontSize: '26px', fontWeight: '700', color: '#1a1a1a', marginBottom: '8px' }}>Panel de Administración</h1>
+        <p style={{ color: '#666', fontSize: '15px' }}>Bienvenido al centro de control de tu tienda.</p>
+      </header>
 
+      {/* BOTONES DE ACCIÓN REDISEÑADOS */}
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '20px',
-        marginBottom: '40px'
+        display: 'flex',
+        gap: '15px',
+        marginBottom: '50px'
       }}>
         <a href="/admin/products" style={{
-          padding: '25px',
-          backgroundColor: '#007bff',
+          flex: 1,
+          padding: '16px 20px',
+          backgroundColor: '#A78D5A', // Tu color dorado profesional
           color: 'white',
-          borderRadius: '12px',
+          borderRadius: '10px',
           textDecoration: 'none',
           textAlign: 'center',
-          fontWeight: 'bold',
-          boxShadow: '0 4px 6px rgba(0,123,255,0.2)'
+          fontWeight: '600',
+          fontSize: '14px',
+          transition: 'opacity 0.2s',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '10px'
         }}>
           📦 VER LISTA DE PRODUCTOS
         </a>
         <a href="/admin/products/new" style={{
-          padding: '25px',
-          backgroundColor: '#28a745',
+          flex: 1,
+          padding: '16px 20px',
+          backgroundColor: '#28a745', // Verde éxito estándar
           color: 'white',
-          borderRadius: '12px',
+          borderRadius: '10px',
           textDecoration: 'none',
           textAlign: 'center',
-          fontWeight: 'bold',
-          boxShadow: '0 4px 6px rgba(40,167,69,0.2)'
+          fontWeight: '600',
+          fontSize: '14px',
+          transition: 'opacity 0.2s',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '10px'
         }}>
           ➕ AÑADIR NUEVO PRODUCTO
         </a>
       </div>
 
-      <hr style={{ border: '0', borderTop: '1px solid #eee', marginBottom: '40px' }} />
-
-      <h2 style={{ marginBottom: '20px' }}>Historial de Pedidos</h2>
-      <div style={{ backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-        <OrdersTable initialOrders={orders || []} />
+      <div style={{ borderTop: '1px solid #eee', paddingTop: '40px' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '20px', color: '#333' }}>Historial de Pedidos Recientes</h2>
+        <div style={{ 
+          backgroundColor: 'white', 
+          borderRadius: '12px', 
+          boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
+          border: '1px solid #f0f0f0',
+          overflow: 'hidden'
+        }}>
+          <OrdersTable initialOrders={orders || []} />
+        </div>
       </div>
     </div>
   )
