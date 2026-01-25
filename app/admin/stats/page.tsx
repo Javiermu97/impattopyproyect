@@ -5,31 +5,25 @@ import SalesChart from './SalesChart';
 export default async function StatsPage() {
   const supabase = await createAuthServerClient();
   
-  // 1. Obtener Ventas (Gráfico)
+  // 1. Obtener Ventas Mensuales para el gráfico
   const { data: salesData } = await supabase.rpc('get_monthly_sales');
   
-  // 2. Obtener Productos MÁS COMPRADOS (Basado en historial real)
-  // Nota: Asumo que tu tabla se llama 'order_items' o 'pedido_productos'
-  // Si no tienes esa tabla, esta consulta traerá los más populares por precio por ahora
-  const { data: topProducts, error } = await supabase
-    .from('productos')
-    .select('name, price')
-    // Aquí podrías unir con tu tabla de órdenes si existe, 
-    // pero para que no se te quede en blanco el cuadro, mantengo el select seguro:
-    .order('price', { ascending: false }) 
+  // 2. Obtener PRODUCTOS MÁS VENDIDOS (Real)
+  // Nota: Buscamos en la tabla 'order_items' que es la que tiene el historial de Wildo y Maria Ines
+  const { data: topSold } = await supabase
+    .from('order_items')
+    .select('product_name, quantity, price')
+    .order('quantity', { ascending: false })
     .limit(10);
-    
-  // 3. Conteo de Wishlist
+
+  // 3. Conteo de Favoritos
   const { count: wishlistCount } = await supabase
     .from('wishlist')
     .select('*', { count: 'exact', head: true });
 
-  // 4. Lógica de Visitantes Únicos
-  const { data: viewsData } = await supabase
-    .from('page_views')
-    .select('session_id');
-
-  const totalUniqueVisitors = new Set(viewsData?.map(v => v.session_id)).size;
+  // 4. Lógica de Visitantes por Dispositivo
+  const { data: viewsData } = await supabase.from('page_views').select('session_id');
+  const totalUniqueDevices = new Set(viewsData?.map(v => v.session_id)).size;
 
   const cardStyle = { padding: '25px', backgroundColor: '#fff', borderRadius: '16px', border: '1px solid #eee' };
   const labelStyle = { fontSize: '11px', color: '#888', fontWeight: 'bold', textTransform: 'uppercase' as const };
@@ -42,15 +36,15 @@ export default async function StatsPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '40px' }}>
         <div style={cardStyle}>
           <span style={labelStyle}>Ingresos Totales</span>
-          <p style={valueStyle}>Gs. {salesData?.[0]?.total.toLocaleString('es-PY') || 0}</p>
+          <p style={valueStyle}>Gs. {salesData?.[0]?.total?.toLocaleString('es-PY') || 0}</p>
         </div>
         <div style={cardStyle}>
           <span style={labelStyle}>Interés de Clientes (❤️)</span>
           <p style={valueStyle}>{wishlistCount || 0} Favoritos</p>
         </div>
         <div style={cardStyle}>
-          <span style={labelStyle}>Visitantes Únicos</span>
-          <p style={valueStyle}>{totalUniqueVisitors.toLocaleString('es-PY')} Personas</p>
+          <span style={labelStyle}>Visitantes Reales (Dispositivos)</span>
+          <p style={valueStyle}>{totalUniqueDevices} {totalUniqueDevices === 1 ? 'Persona' : 'Personas'}</p>
         </div>
       </div>
 
@@ -61,17 +55,18 @@ export default async function StatsPage() {
         </div>
         
         <div style={{ ...cardStyle, height: '450px', display: 'flex', flexDirection: 'column' }}>
-          <h3 style={{ marginBottom: '20px' }}>Productos más Vendidos</h3>
-          <div style={{ flex: 1, overflowY: 'auto', paddingRight: '10px' }}>
-            {(!topProducts || topProducts.length === 0) ? (
-              <p style={{ color: '#999', fontSize: '13px' }}>No hay datos de ventas aún.</p>
+          <h3 style={{ marginBottom: '20px' }}>Top Ventas Reales</h3>
+          <div style={{ flex: 1, overflowY: 'auto' }}>
+            {(!topSold || topSold.length === 0) ? (
+              <p style={{ color: '#999', fontSize: '13px', textAlign: 'center', marginTop: '40px' }}>No hay ventas registradas aún.</p>
             ) : (
-              topProducts.map((p, i) => (
-                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #f0f0f0' }}>
-                  <span style={{ fontSize: '13px', fontWeight: '600' }}>{p.name}</span>
-                  <span style={{ fontWeight: 'bold', color: '#A78D5A', fontSize: '13px' }}>
-                    Gs. {p.price.toLocaleString('es-PY')}
-                  </span>
+              topSold.map((p, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #f0f0f0' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '13px', fontWeight: '600' }}>{p.product_name}</span>
+                    <span style={{ fontSize: '11px', color: '#A78D5A' }}>Cantidad: {p.quantity}</span>
+                  </div>
+                  <span style={{ fontWeight: 'bold', fontSize: '13px' }}>Gs. {p.price.toLocaleString('es-PY')}</span>
                 </div>
               ))
             )}
