@@ -316,9 +316,51 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 }
 
 
-/* Floating WhatsApp Button */
-.whatsapp-button { position: fixed; bottom: 20px; right: 20px; background-color: #25d366; color: white; padding: 12px 20px; border-radius: 8px; font-size: 1em; font-weight: bold; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); text-decoration: none; z-index: 1000; display: flex; align-items: center; gap: 8px; transition: transform 0.2s ease; }
-.whatsapp-button:hover { background-color: #25d366; text-decoration: none; transform: scale(1.05); }
+
+
+
+/* Floating WhatsApp Button - Actualizado para no chocar con Tidio */
+.whatsapp-button { 
+  position: fixed; 
+  bottom: 20px; 
+  left: 20px; /* Movido a la izquierda */
+  background-color: #25d366; 
+  color: white; 
+  padding: 12px 20px; 
+  border-radius: 50px; /* Más redondeado para un look profesional */
+  font-size: 1em; 
+  font-weight: bold; 
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2); 
+  text-decoration: none; 
+  z-index: 1000; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  transition: transform 0.2s ease, background-color 0.2s ease; 
+}
+
+.whatsapp-button:hover { 
+  background-color: #20ba5a; 
+  text-decoration: none; 
+  transform: scale(1.05); 
+}
+
+/* Ajuste para móviles: a veces los dedos tapan el botón si está muy pegado al borde */
+@media (max-width: 768px) {
+  .whatsapp-button {
+    bottom: 15px;
+    left: 15px;
+    padding: 10px 15px;
+    font-size: 0.9em;
+  }
+}
+
+
+
+
+
+
+
 
 /* ============================================= */
 /* ===== ESTILOS GLOBALES Y DE TIENDA ===== */
