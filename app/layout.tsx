@@ -22,6 +22,10 @@ export const metadata = {
   verification: {
     google: 'V3SWLCYX76L7yvjDHyf186S4dE2YNoMjnXyZ02VtF2w',
   },
+  // Esta sección 'other' obliga a Next.js a usar el formato que Facebook exige
+  other: {
+    'fb:app_id': '513118241881176',
+  },
   openGraph: {
     title: 'Impatto Py | Sentí la diferencia',
     description: 'Calidad y confianza en cada pedido. Envíos a todo Paraguay.',
@@ -36,10 +40,6 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <head>
-        {/* Forzamos la propiedad manualmente para que Facebook no tenga dudas */}
-        <meta property="fb:app_id" content="513118241881176" />
-      </head>
       <body>
         <AuthProvider>
           <WishlistProvider>
@@ -51,11 +51,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <Navbar />
                 </Suspense>
               </header>
+
               <main>
                 <PageWrapper>{children}</PageWrapper>
               </main>
+
               <Footer />
               <Copyright />
+
               <a
                 href="https://wa.me/595983491155"
                 target="_blank"
