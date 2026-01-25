@@ -16,17 +16,9 @@ import AnalyticsTracker from '@/app/components/AnalyticsTracker'
 export const metadata = {
   metadataBase: new URL('https://impatto.com.py'),
   title: 'Impatto Py | Sentí la diferencia',
-  description:
-    'Tu tienda online de confianza en Paraguay. Productos para el hogar, salud y bienestar con envíos a todo el país.',
-  keywords: [
-    'Impatto Py',
-    'Tienda Online Paraguay',
-    'Hogar y Cocina',
-    'Compras Asunción',
-  ],
-  icons: {
-    icon: '/logo.png',
-  },
+  description: 'Tu tienda online de confianza en Paraguay. Productos para el hogar, salud y bienestar con envíos a todo el país.',
+  keywords: ['Impatto Py', 'Tienda Online Paraguay', 'Hogar y Cocina', 'Compras Asunción'],
+  icons: { icon: '/logo.png' },
   verification: {
     google: 'V3SWLCYX76L7yvjDHyf186S4dE2YNoMjnXyZ02VtF2w',
   },
@@ -35,50 +27,35 @@ export const metadata = {
     description: 'Calidad y confianza en cada pedido. Envíos a todo Paraguay.',
     url: 'https://impatto.com.py',
     siteName: 'Impatto Py',
-    images: [
-      {
-        url: '/logo.png',
-        width: 800,
-        height: 600,
-      },
-    ],
+    images: [{ url: '/logo.png', width: 800, height: 600 }],
     locale: 'es_PY',
     type: 'website',
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <head>
-        {/* ✅ META CORRECTO PARA FACEBOOK */}
+        {/* Forzamos la propiedad manualmente para que Facebook no tenga dudas */}
         <meta property="fb:app_id" content="513118241881176" />
       </head>
-
       <body>
         <AuthProvider>
           <WishlistProvider>
             <CartProvider>
               <AnalyticsTracker />
-
               <header className="main-header">
                 <Header />
                 <Suspense fallback={null}>
                   <Navbar />
                 </Suspense>
               </header>
-
               <main>
                 <PageWrapper>{children}</PageWrapper>
               </main>
-
               <Footer />
               <Copyright />
-
               <a
                 href="https://wa.me/595983491155"
                 target="_blank"
