@@ -44,10 +44,9 @@ const Navbar = () => {
     { href: '/', label: 'Inicio' },
     { href: '/mas-vendidos', label: 'Más Vendidos' },
     {
-      href: '/hogar',
+      href: '#', // Cambiado a '#' porque Hogar & Cocina no debe dirigir a una página
       label: 'Hogar & Cocina',
       submenu: [
-        
         { href: '/limpieza', label: 'Limpieza' },
         { href: '/cocina', label: 'Cocina' },
         { href: '/electrodomesticos', label: 'Electrodomésticos' },
@@ -80,25 +79,30 @@ const Navbar = () => {
           <nav className={styles.navLinks}>
             {navLinks.map((link) => (
               <div
-                key={link.href}
+                key={link.label}
                 className={styles.navItemWrapper}
                 onMouseEnter={() => link.submenu && setOpenDropdown(link.label)}
                 onMouseLeave={() => link.submenu && setOpenDropdown(null)}
               >
-                <Link
-                  href={link.href}
-                  className={`${styles.navLink} ${
-                    currentPath === link.href ? styles.active : ''
-                  }`}
-                >
-                  {link.label}
-                  {link.submenu && (
+                {/* Lógica condicional: Si tiene submenú, renderiza un span (texto plano), si no, un Link */}
+                {link.submenu ? (
+                  <span className={`${styles.navLink} ${styles.noLink}`}>
+                    {link.label}
                     <IoChevronDownOutline
                       size={10}
                       style={{ marginLeft: '4px', opacity: 0.6 }}
                     />
-                  )}
-                </Link>
+                  </span>
+                ) : (
+                  <Link
+                    href={link.href}
+                    className={`${styles.navLink} ${
+                      currentPath === link.href ? styles.active : ''
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )}
 
                 {/* SUBMENÚ ESCRITORIO (Dropdown) */}
                 {link.submenu && (
@@ -179,9 +183,6 @@ const Navbar = () => {
         <div className={styles.drawerList}>
           {activeSubmenu && activeSubmenuData ? (
             <div className={styles.submenuContainer}>
-             
-             
-
               {activeSubmenuData.submenu?.map(subItem => (
                 <Link
                   key={subItem.href}
@@ -195,7 +196,7 @@ const Navbar = () => {
             </div>
           ) : (
             navLinks.map((link) => (
-              <div key={link.href} className={styles.drawerItemRow}>
+              <div key={link.label} className={styles.drawerItemRow}>
                 {link.submenu ? (
                   <button
                     className={styles.drawerBtnTrigger}
