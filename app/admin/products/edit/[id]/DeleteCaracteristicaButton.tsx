@@ -11,12 +11,12 @@ export default function DeleteCaracteristicaButton({
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = () => {
-    const ok = confirm('¿Eliminar esta característica?');
-    if (!ok) return;
-
-    startTransition(async () => {
-      await deleteCaracteristica(id); // ✅ SOLO 1 PARAMETRO
-    });
+    // Usamos una confirmación nativa más limpia
+    if (window.confirm('¿Seguro que deseas eliminar esta característica?')) {
+      startTransition(async () => {
+        await deleteCaracteristica(id);
+      });
+    }
   };
 
   return (
@@ -24,16 +24,23 @@ export default function DeleteCaracteristicaButton({
       onClick={handleDelete}
       disabled={isPending}
       style={{
-        background: 'crimson',
+        backgroundColor: isPending ? '#eea3ad' : '#dc3545',
         color: 'white',
-        padding: '4px 10px',
-        borderRadius: '6px',
+        padding: '6px 14px',
+        borderRadius: '4px',
         border: 'none',
-        cursor: 'pointer',
+        cursor: isPending ? 'not-allowed' : 'pointer',
+        fontSize: '12px',
+        fontWeight: '600',
+        transition: 'all 0.2s ease',
         marginLeft: '10px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px'
       }}
+      onMouseOver={(e) => !isPending && (e.currentTarget.style.backgroundColor = '#bb2d3b')}
+      onMouseOut={(e) => !isPending && (e.currentTarget.style.backgroundColor = '#dc3545')}
     >
-      {isPending ? 'Eliminando...' : 'Eliminar'}
+      {isPending ? 'BORRANDO...' : 'ELIMINAR'}
     </button>
   );
 }

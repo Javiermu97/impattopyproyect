@@ -1,6 +1,5 @@
 // app/admin/products/edit/[id]/page.tsx
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import { createAuthServerClient } from '@/lib/supabase/auth-server';
 import { updateProduct, createCaracteristica } from '@/app/admin/actions';
 import DeleteCaracteristicaButton from './DeleteCaracteristicaButton';
@@ -14,7 +13,7 @@ interface Caracteristica {
 }
 
 async function getProduct(id: number) {
-  const supabase = await createAuthServerClient(); // <--- AWAIT
+  const supabase = await createAuthServerClient();
   const { data } = await supabase
     .from('productos')
     .select('*, caracteristicas (*)')
@@ -24,85 +23,153 @@ async function getProduct(id: number) {
   return data;
 }
 
+// Componente para selects de SI/NO con estilo profesional
 function BooleanSelectEdit({ name, label, defaultValue }: { name: string; label: string; defaultValue: any }) {
   const val = defaultValue === true ? 'true' : defaultValue === false ? 'false' : 'null';
   return (
-    <div className="form-group" style={{ marginBottom: '15px' }}>
-      <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold', fontSize: '14px' }}>{label}</label>
-      <select name={name} defaultValue={val} className="form-input" style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ddd' }}>
-        <option value="null">NULO</option>
-        <option value="true">SÍ (TRUE)</option>
-        <option value="false">NO (FALSE)</option>
+    <div style={{ marginBottom: '15px' }}>
+      <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '14px', color: '#444' }}>{label}</label>
+      <select 
+        name={name} 
+        defaultValue={val} 
+        style={{ 
+          width: '100%', 
+          padding: '10px', 
+          borderRadius: '6px', 
+          border: '1px solid #ddd',
+          backgroundColor: '#fff',
+          fontSize: '14px'
+        }}
+      >
+        <option value="true">SÍ</option>
+        <option value="false">NO</option>
       </select>
     </div>
   );
 }
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = await params; // <--- AWAIT para los params en Next 16
+  const resolvedParams = await params;
   const product = await getProduct(Number(resolvedParams.id));
 
   if (!product) notFound();
 
   const updateProductWithId = updateProduct.bind(null, product.id);
 
+  const inputStyle = {
+    padding: '12px',
+    borderRadius: '6px',
+    border: '1px solid #ddd',
+    fontSize: '14px',
+    width: '100%',
+    boxSizing: 'border-box' as const
+  };
+
+  const labelStyle = {
+    display: 'block',
+    marginBottom: '5px',
+    fontSize: '13px',
+    fontWeight: '600',
+    color: '#666'
+  };
+
   return (
-    <div className="admin-container" style={{ padding: '40px', maxWidth: '900px', margin: '0 auto' }}>
-      <h1 style={{ marginBottom: '30px' }}>Editar Producto: {product.name}</h1>
+    <div style={{ padding: '40px', maxWidth: '1000px', margin: '0 auto', fontFamily: 'sans-serif', color: '#333' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+        <h1 style={{ fontSize: '24px', margin: 0 }}>Editar Producto</h1>
+        <span style={{ fontSize: '14px', color: '#888' }}>ID: {product.id}</span>
+      </div>
 
-      <form action={updateProductWithId} className="admin-form" style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '15px', marginBottom: '15px' }}>
-          <input name="name" defaultValue={product.name} placeholder="Nombre del Producto" required style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
-          <input name="price" type="number" defaultValue={product.price} placeholder="Precio Actual" required style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
-          <input name="oldPrice" type="number" defaultValue={product.oldPrice || ''} placeholder="Precio Anterior" style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
+      <form action={updateProductWithId} style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 2px 15px rgba(0,0,0,0.05)', border: '1px solid #eee' }}>
+        
+        {/* Fila 1: Nombre y Precios */}
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+          <div>
+            <label style={labelStyle}>Nombre del Producto</label>
+            <input name="name" defaultValue={product.name} required style={inputStyle} />
+          </div>
+          <div>
+            <label style={labelStyle}>Precio Actual (Gs.)</label>
+            <input name="price" type="number" defaultValue={product.price} required style={inputStyle} />
+          </div>
+          <div>
+            <label style={labelStyle}>Precio Anterior</label>
+            <input name="oldPrice" type="number" defaultValue={product.oldPrice || ''} style={inputStyle} />
+          </div>
         </div>
 
-        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
-          <input name="categoria" defaultValue={product.categoria || ''} placeholder="Categoría" style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
-          <input name="texto_oferta" defaultValue={product.texto_oferta || ''} placeholder="Texto de Oferta" style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
+        {/* Fila 2: Categoría y Oferta */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+          <div>
+            <label style={labelStyle}>Categoría</label>
+            <input name="categoria" defaultValue={product.categoria || ''} style={inputStyle} />
+          </div>
+          <div>
+            <label style={labelStyle}>Texto de Oferta</label>
+            <input name="texto_oferta" defaultValue={product.texto_oferta || ''} style={inputStyle} />
+          </div>
         </div>
 
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ fontSize: '12px', color: '#666' }}>Imágenes del producto</label>
-          <input name="imageUrl" defaultValue={product.imageUrl} placeholder="Imagen Principal URL" style={{ width: '100%', padding: '12px', borderRadius: '6px', border: '1px solid #ddd', marginBottom: '10px' }} />
-          <input name="imageUrl2" defaultValue={product.imageUrl2 || ''} placeholder="Imagen Secundaria URL" style={{ width: '100%', padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
+        {/* Fila 3: Imágenes y Video (Color corregido) */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={labelStyle}>URLs de Imágenes (Principal y Secundaria)</label>
+          <input name="imageUrl" defaultValue={product.imageUrl} placeholder="URL Principal" style={{ ...inputStyle, marginBottom: '10px' }} />
+          <input name="imageUrl2" defaultValue={product.imageUrl2 || ''} placeholder="URL Secundaria" style={inputStyle} />
         </div>
 
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ fontSize: '12px', color: '#007bff', fontWeight: 'bold' }}>Video del Producto</label>
-          <input name="videoUrl" defaultValue={product.videoUrl || ''} placeholder="URL del Video" style={{ width: '100%', padding: '12px', borderRadius: '6px', border: '2px solid #007bff' }} />
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ ...labelStyle, color: '#333' }}>Video del Producto</label>
+          <input 
+            name="videoUrl" 
+            defaultValue={product.videoUrl || ''} 
+            placeholder="URL del Video (YouTube o MP4)" 
+            style={inputStyle} // Removido el borde azul
+          />
         </div>
 
-        <textarea name="galleryImages" defaultValue={product.galleryImages?.join(', ') || ''} placeholder="Galería de imágenes" style={{ width: '100%', padding: '12px', borderRadius: '6px', border: '1px solid #ddd', minHeight: '80px', marginBottom: '20px' }} />
+        {/* Galería y Stock */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={labelStyle}>Galería de Imágenes (Separadas por coma)</label>
+          <textarea name="galleryImages" defaultValue={product.galleryImages?.join(', ') || ''} style={{ ...inputStyle, minHeight: '80px', fontFamily: 'inherit' }} />
+        </div>
 
-        <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '30px' }}>
-          <BooleanSelectEdit name="es_mas_vendido" label="¿Es Más Vendido?" defaultValue={product.es_mas_vendido} />
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '15px', marginBottom: '30px' }}>
+          <BooleanSelectEdit name="inStock" label="¿Hay Stock?" defaultValue={product.inStock} />
+          <BooleanSelectEdit name="es_mas_vendido" label="¿Más Vendido?" defaultValue={product.es_mas_vendido} />
           <BooleanSelectEdit name="es_destacado_semana" label="¿Destacado Semana?" defaultValue={product.es_destacado_semana} />
           <BooleanSelectEdit name="es_destacado_hogar" label="¿Destacado Hogar?" defaultValue={product.es_destacado_hogar} />
         </div>
 
-        <button type="submit" className="admin-submit-btn" style={{ width: '100%', padding: '15px', backgroundColor: '#000', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px' }}>
-          GUARDAR CAMBIOS
+        <button type="submit" style={{ width: '100%', padding: '14px', backgroundColor: '#1a1a1a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '15px', transition: 'background 0.2s' }}>
+          GUARDAR TODOS LOS CAMBIOS
         </button>
       </form>
 
-      <section style={{ marginTop: '50px', backgroundColor: '#f8f9fa', padding: '30px', borderRadius: '12px' }}>
-        <h2>Añadir Características</h2>
-        <form action={createCaracteristica} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+      {/* Sección de Características con estilo mejorado */}
+      <section style={{ marginTop: '50px', backgroundColor: '#fafafa', padding: '30px', borderRadius: '12px', border: '1px solid #eee' }}>
+        <h2 style={{ fontSize: '18px', marginBottom: '20px' }}>Características y Detalles</h2>
+        
+        <form action={createCaracteristica} style={{ display: 'grid', gridTemplateColumns: '1fr 2fr auto', gap: '10px', marginBottom: '30px', alignItems: 'end' }}>
           <input type="hidden" name="producto_id" value={product.id} />
-          <input name="titulo" required placeholder="Título" style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
-          <textarea name="descripcion" placeholder="Descripción" style={{ padding: '12px', borderRadius: '6px', border: '1px solid #ddd' }} />
-          <button type="submit" style={{ padding: '12px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
-            + AÑADIR
+          <div>
+            <label style={labelStyle}>Título</label>
+            <input name="titulo" required style={inputStyle} placeholder="Ej: Material" />
+          </div>
+          <div>
+            <label style={labelStyle}>Descripción</label>
+            <input name="descripcion" style={inputStyle} placeholder="Ej: Plástico ABS de alta resistencia" />
+          </div>
+          <button type="submit" style={{ padding: '12px 25px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>
+            Añadir
           </button>
         </form>
 
-        <div style={{ marginTop: '30px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {product.caracteristicas?.map((c: Caracteristica) => (
-            <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '15px', backgroundColor: '#fff', marginBottom: '10px', borderRadius: '8px', border: '1px solid #eee' }}>
-              <div>
-                <strong>{c.titulo}</strong>
-                <p>{c.descripcion}</p>
+            <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #eee' }}>
+              <div style={{ flex: 1 }}>
+                <span style={{ fontWeight: 'bold', fontSize: '14px', color: '#555' }}>{c.titulo}:</span>
+                <span style={{ marginLeft: '10px', fontSize: '14px' }}>{c.descripcion}</span>
               </div>
               <DeleteCaracteristicaButton id={c.id} />
             </div>
