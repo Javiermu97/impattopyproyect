@@ -1,4 +1,3 @@
-// app/admin/page.tsx
 import { createAuthServerClient } from '@/lib/supabase/auth-server'
 import { redirect } from 'next/navigation'
 import OrdersTable from './OrdersTable'
@@ -21,7 +20,6 @@ export default async function AdminDashboard() {
         <p style={{ color: '#666', fontSize: '15px' }}>Centro de control de IMPATTO</p>
       </header>
 
-      {/* BOTONES REDISEÑADOS: MÁS CORTOS Y PROFESIONALES */}
       <div style={{
         display: 'flex',
         justifyContent: 'center',
@@ -31,28 +29,30 @@ export default async function AdminDashboard() {
         <a href="/admin/products" style={{
           width: '240px',
           padding: '14px',
-          backgroundColor: '#A78D5A', // Tu Dorado
+          backgroundColor: '#A78D5A', 
           color: 'white',
           borderRadius: '8px',
           textDecoration: 'none',
           textAlign: 'center',
           fontWeight: '700',
           fontSize: '13px',
-          letterSpacing: '0.5px'
+          letterSpacing: '0.5px',
+          boxShadow: '0 4px 10px rgba(167, 141, 90, 0.2)'
         }}>
           📦 VER LISTA DE PRODUCTOS
         </a>
         <a href="/admin/products/new" style={{
           width: '240px',
           padding: '14px',
-          backgroundColor: '#28a745', // Verde éxito
+          backgroundColor: '#28a745', 
           color: 'white',
           borderRadius: '8px',
           textDecoration: 'none',
           textAlign: 'center',
           fontWeight: '700',
           fontSize: '13px',
-          letterSpacing: '0.5px'
+          letterSpacing: '0.5px',
+          boxShadow: '0 4px 10px rgba(40, 167, 69, 0.2)'
         }}>
           ➕ AÑADIR NUEVO PRODUCTO
         </a>
