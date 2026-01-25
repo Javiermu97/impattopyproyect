@@ -9,7 +9,7 @@ import { createAuthServerClient } from '@/lib/supabase/auth-server';
 ========================================================= */
 
 export async function createProduct(formData: FormData) {
-  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
+  const supabase = await createAuthServerClient();
   const galleryRaw = formData.get('galleryImages');
 
   const data = {
@@ -24,7 +24,8 @@ export async function createProduct(formData: FormData) {
     galleryImages: typeof galleryRaw === 'string' && galleryRaw.length > 0
         ? galleryRaw.split(',').map((img: string) => img.trim())
         : [],
-    inStock: formData.get('inStock') === 'on',
+    // ✅ CORRECCIÓN: Ahora valida contra la cadena "TRUE"
+    inStock: formData.get('inStock') === 'TRUE', 
     es_mas_vendido: formData.get('es_mas_vendido') === 'true',
     es_destacado_semana: formData.get('es_destacado_semana') === 'true',
     es_destacado_hogar: formData.get('es_destacado_hogar') === 'true',
@@ -38,7 +39,7 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(id: number, formData: FormData) {
-  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
+  const supabase = await createAuthServerClient();
   const galleryRaw = formData.get('galleryImages');
 
   const data = {
@@ -53,7 +54,8 @@ export async function updateProduct(id: number, formData: FormData) {
     galleryImages: typeof galleryRaw === 'string' && galleryRaw.length > 0
         ? galleryRaw.split(',').map((img: string) => img.trim())
         : [],
-    inStock: formData.get('inStock') === 'on',
+    // ✅ CORRECCIÓN: Ahora valida contra la cadena "TRUE"
+    inStock: formData.get('inStock') === 'TRUE',
     es_mas_vendido: formData.get('es_mas_vendido') === 'true',
     es_destacado_semana: formData.get('es_destacado_semana') === 'true',
     es_destacado_hogar: formData.get('es_destacado_hogar') === 'true',
@@ -67,7 +69,7 @@ export async function updateProduct(id: number, formData: FormData) {
 }
 
 export async function deleteProduct(id: number) {
-  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
+  const supabase = await createAuthServerClient();
   const { error } = await supabase.from('productos').delete().eq('id', id);
   if (error) throw new Error(error.message);
   revalidatePath('/admin/products');
@@ -78,7 +80,7 @@ export async function deleteProduct(id: number) {
 ========================================================= */
 
 export async function createCaracteristica(formData: FormData) {
-  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
+  const supabase = await createAuthServerClient();
   const producto_id = Number(formData.get('producto_id'));
 
   const data = {
@@ -96,7 +98,7 @@ export async function createCaracteristica(formData: FormData) {
 }
 
 export async function deleteCaracteristica(id: number) {
-  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
+  const supabase = await createAuthServerClient();
   const { data } = await supabase.from('caracteristicas').select('producto_id').eq('id', id).single();
   const { error } = await supabase.from('caracteristicas').delete().eq('id', id);
   if (error) throw new Error(error.message);
@@ -108,7 +110,7 @@ export async function deleteCaracteristica(id: number) {
 ========================================================= */
 
 export async function updateOrderStatus(id: number, status: string) {
-  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
+  const supabase = await createAuthServerClient();
 
   const { error } = await supabase
     .from('orders') 

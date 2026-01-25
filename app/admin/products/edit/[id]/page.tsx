@@ -30,7 +30,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     backgroundColor: '#ffffff',
     WebkitTextFillColor: '#000000', 
     opacity: 1,
-    outline: 'none' // Evita el borde azul al hacer click
+    outline: 'none'
   };
 
   const labelStyle = { display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '700', color: '#1a1a1a' };
@@ -67,10 +67,10 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           </div>
           <div>
             <label style={labelStyle}>Disponibilidad</label>
-            {/* CORRECCIÓN: Los valores ahora son true/false strings que la Action debe procesar */}
-            <select name="inStock" defaultValue={product.inStock ? "true" : "false"} style={inputStyle}>
-              <option value="true">EN STOCK</option>
-              <option value="false">AGOTADO</option>
+            {/* CORRECCIÓN: Los valores ahora son TRUE/FALSE en mayúsculas */}
+            <select name="inStock" defaultValue={product.inStock ? "TRUE" : "FALSE"} style={inputStyle}>
+              <option value="TRUE">EN STOCK</option>
+              <option value="FALSE">AGOTADO</option>
             </select>
           </div>
         </div>
@@ -91,6 +91,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           <textarea name="galleryImages" defaultValue={product.galleryImages?.join(', ') || ''} style={{ ...inputStyle, height: '80px', fontFamily: 'inherit' }} />
         </div>
 
+        {/* BOTÓN GUARDAR: CENTRADO Y CORTO */}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <button type="submit" style={{ 
             width: '280px', 
