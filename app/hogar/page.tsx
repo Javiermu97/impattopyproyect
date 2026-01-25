@@ -1,34 +1,29 @@
-// Importamos las herramientas necesarias
-import { supabase } from '@/lib/supabaseClient'; 
-
+import { supabase } from '@/lib/supabaseClient';
 import ShopPageClient from '@/app/components/ShopPageClient';
 
-// Metadata de la página
 export const metadata = {
   title: 'Hogar - Impatto Py',
-  description: 'Soluciones prácticas y novedosas para hacer tu vida más fácil.',
+  description: 'Soluciones y artículos para tu hogar.',
 };
 
 export default async function HogarPage() {
-  
-  const { data: hogarProducts, error } = await supabase
+  // Buscamos "Hogar" en la base de datos
+  const { data: products, error } = await supabase
     .from('productos')
-    .select('*') 
-    .ilike('categoria', '%Hogar%'); // <-- ¡AQUÍ ESTÁ LA CORRECCIÓN FINAL!
+    .select('*')
+    .ilike('categoria', '%Hogar%');
 
   if (error) {
-    console.error('Error al cargar productos de la categoría Hogar:', error);
+    console.error('Error al cargar productos de Hogar:', error);
   }
 
   return (
     <div className="shop-container">
         <header className="shop-header">
             <h1>Hogar</h1>
-            
         </header>
 
-        {/* Muestra un mensaje si la consulta no devuelve productos */}
-        {(!hogarProducts || hogarProducts.length === 0) && (
+        {(!products || products.length === 0) && (
           <div className="product-grid-area">
             <p className="no-products-message">
               No se encontraron productos para esta categoría.
@@ -36,9 +31,8 @@ export default async function HogarPage() {
           </div>
         )}
 
-        {/* Solo muestra el componente de la tienda si hay productos */}
-        {hogarProducts && hogarProducts.length > 0 && (
-          <ShopPageClient products={hogarProducts} />
+        {products && products.length > 0 && (
+          <ShopPageClient products={products} />
         )}
     </div>
   );

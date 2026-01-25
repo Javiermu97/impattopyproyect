@@ -6,8 +6,8 @@ export const metadata = {
   description: 'Ilumina tus espacios con la mejor tecnología.',
 };
 
-export default async function HogarInteligentePage() {
-  // Ahora buscamos "Iluminación" en la base de datos
+export default async function IluminacionPage() {
+  // Buscamos "Iluminación" en la base de datos
   const { data: products, error } = await supabase
     .from('productos')
     .select('*')

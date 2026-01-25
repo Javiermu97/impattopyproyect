@@ -48,12 +48,12 @@ const Navbar = () => {
       label: 'Hogar & Cocina',
       submenu: [
         { href: '/limpieza', label: 'Limpieza' },
-  { href: '/cocina', label: 'Cocina' },
-  { href: '/electrodomesticos', label: 'Electrodomésticos' },
-  { href: '/organizacion', label: 'Hogar' }, // Cambio: Organización -> Hogar
-  { href: '/bano', label: 'Baño' },
-  { href: '/hogar-inteligente', label: 'Iluminación' }, // Cambio: Hogar Inteligente -> Iluminación
-]
+        { href: '/cocina', label: 'Cocina' },
+        { href: '/electrodomesticos', label: 'Electrodomésticos' },
+        { href: '/hogar', label: 'Hogar' }, // Actualizado: URL /hogar y Label Hogar
+        { href: '/bano', label: 'Baño' },
+        { href: '/iluminacion', label: 'Iluminación' }, // Actualizado: URL /iluminacion y Label Iluminación
+      ]
     },
     { href: '/bienestar', label: 'Salud & Bienestar' },
     { href: '/mecanica', label: 'Mecánica & Más' },
