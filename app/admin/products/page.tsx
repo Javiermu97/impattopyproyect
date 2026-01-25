@@ -11,9 +11,13 @@ export default async function AdminProductsPage({
 }: { 
   searchParams: Promise<{ success?: string, updated?: string }> 
 }) {
-  const supabase = createAuthServerClient()
+  // ✅ CAMBIO CLAVE 1: Añadir await para crear el cliente
+  const supabase = await createAuthServerClient()
+  
+  // ✅ CAMBIO CLAVE 2: Ya tenías el await para params, esto es correcto para Next 16
   const params = await searchParams
 
+  // ✅ Verificar sesión usando el cliente con await
   const { data: { session } } = await supabase.auth.getSession()
   if (!session) redirect('/admin/login')
 

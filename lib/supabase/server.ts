@@ -3,8 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 
 /**
  * Cliente service role
- * SOLO para server actions o operaciones administrativas
- * NO usar para auth ni para pages protegidas
+ * SOLO para server actions o operaciones administrativas que saltan el RLS
  */
 export const supabaseServer = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -17,5 +16,4 @@ export const supabaseServer = createClient(
     },
   }
 )
-
 

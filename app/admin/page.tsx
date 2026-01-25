@@ -4,10 +4,13 @@ import { redirect } from 'next/navigation'
 import OrdersTable from './OrdersTable'
 
 export default async function AdminDashboard() {
-  const supabase = createAuthServerClient()
+  // ✅ CAMBIO CLAVE: Ahora necesitamos 'await' porque el cliente es asíncrono en Next 16
+  const supabase = await createAuthServerClient()
 
   // ✅ Verificar sesión
   const { data: { session } } = await supabase.auth.getSession()
+  
+  // Si no hay sesión, mandamos al login
   if (!session) redirect('/admin/login')
 
   // ✅ Cargar órdenes
@@ -62,6 +65,4 @@ export default async function AdminDashboard() {
     </div>
   )
 }
-
-
 

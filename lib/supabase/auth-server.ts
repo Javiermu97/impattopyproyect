@@ -1,13 +1,28 @@
 // lib/supabase/auth-server.ts
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
-/**
- * Cliente server para páginas protegidas.
- * Corregido: Se pasa 'cookies' como referencia para evitar el error de "get is not a function"
- */
-export function createAuthServerClient() {
-  return createServerComponentClient({
-    cookies, // <--- SIN PARÉNTESIS. Esto arregla el error.
-  })
+export async function createAuthServerClient() {
+  const cookieStore = await cookies()
+
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            )
+          } catch {
+            // Se ignora en Server Components
+          }
+        },
+      },
+    }
+  )
 }

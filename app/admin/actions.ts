@@ -9,7 +9,7 @@ import { createAuthServerClient } from '@/lib/supabase/auth-server';
 ========================================================= */
 
 export async function createProduct(formData: FormData) {
-  const supabase = createAuthServerClient();
+  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
   const galleryRaw = formData.get('galleryImages');
 
   const data = {
@@ -38,8 +38,7 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function updateProduct(id: number, formData: FormData) {
-  const supabase = createAuthServerClient()
-;
+  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
   const galleryRaw = formData.get('galleryImages');
 
   const data = {
@@ -68,8 +67,7 @@ export async function updateProduct(id: number, formData: FormData) {
 }
 
 export async function deleteProduct(id: number) {
-  const supabase = createAuthServerClient()
-;
+  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
   const { error } = await supabase.from('productos').delete().eq('id', id);
   if (error) throw new Error(error.message);
   revalidatePath('/admin/products');
@@ -80,12 +78,11 @@ export async function deleteProduct(id: number) {
 ========================================================= */
 
 export async function createCaracteristica(formData: FormData) {
-  const supabase = createAuthServerClient()
-;
+  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
   const producto_id = Number(formData.get('producto_id'));
 
   const data = {
-    producto_id: producto_id,
+    producto_id,
     titulo: String(formData.get('titulo')),
     descripcion: String(formData.get('descripcion') || ''),
     imagen: String(formData.get('imagen') || ''),
@@ -99,8 +96,7 @@ export async function createCaracteristica(formData: FormData) {
 }
 
 export async function deleteCaracteristica(id: number) {
-  const supabase = createAuthServerClient()
-;
+  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
   const { data } = await supabase.from('caracteristicas').select('producto_id').eq('id', id).single();
   const { error } = await supabase.from('caracteristicas').delete().eq('id', id);
   if (error) throw new Error(error.message);
@@ -108,12 +104,11 @@ export async function deleteCaracteristica(id: number) {
 }
 
 /* =========================================================
-✅ ÓRDENES (ESTO ES LO QUE CAUSABA EL ERROR)
+✅ ÓRDENES
 ========================================================= */
 
 export async function updateOrderStatus(id: number, status: string) {
-  const supabase = createAuthServerClient()
-;
+  const supabase = await createAuthServerClient(); // <--- Corregido con AWAIT
 
   const { error } = await supabase
     .from('orders') 
