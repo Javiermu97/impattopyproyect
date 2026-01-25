@@ -18,21 +18,23 @@ export const metadata = {
   description: 'Tu tienda online de confianza en Paraguay. Productos para el hogar, salud y bienestar con envíos a todo el país.',
   keywords: ['Impatto Py', 'Tienda Online Paraguay', 'Hogar y Cocina', 'Compras Asunción'],
   icons: { icon: '/logo.png' },
-  // Verificación de Google Search Console
   verification: {
-    google: 'V3SWLCYX76L7yvjDHyf186S4dE2YNoMjnXyZ02VtF2w',
+    // PEGA AQUÍ TU CÓDIGO DE GOOGLE (SOLO LETRAS Y NÚMEROS)
+    google: 'V3SWLCYX76L7yvjDHyf186S4dE2YNoMjnXyZ02VtF2w', 
   },
-  // Esto es lo que hace que se vea bien en WhatsApp y Facebook
   openGraph: {
     title: 'Impatto Py | Sentí la diferencia',
     description: 'Calidad y confianza en cada pedido. Envíos a todo Paraguay.',
     url: 'https://impatto.com.py',
     siteName: 'Impatto Py',
-    // ESTA ES LA FORMA CORRECTA PARA NEXT.JS:
-    appId: '513118241881176',
     images: [{ url: '/logo.png', width: 800, height: 600 }],
     locale: 'es_PY',
     type: 'website',
+  },
+  // Esta sección 'facebook' dentro de metadata es la forma oficial de Next.js
+  // para generar el meta tag con 'property="fb:app_id"'
+  facebook: {
+    appId: '513118241881176', // PEGA AQUÍ TU ID DE FACEBOOK
   },
 };
 
