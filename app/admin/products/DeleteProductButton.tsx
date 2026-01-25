@@ -1,5 +1,4 @@
 'use client';
-
 import { deleteProduct } from '../actions';
 import { useTransition } from 'react';
 
@@ -12,17 +11,31 @@ export default function DeleteProductButton({ productId }: { productId: number }
         try {
           await deleteProduct(productId);
         } catch (error) {
-          // Si la acción del servidor falla, el error se captura aquí
-          console.error('Error al eliminar el producto:', error);
-          alert('Hubo un problema al eliminar el producto.');
+          alert('Error al eliminar.');
         }
       });
     }
   };
 
   return (
-    <button onClick={handleDelete} disabled={isPending} className="delete-btn">
-      {isPending ? 'Eliminando...' : 'Eliminar'}
+    <button 
+      onClick={handleDelete} 
+      disabled={isPending} 
+      style={{
+        backgroundColor: 'transparent',
+        color: '#dc3545',
+        border: '1px solid #dc3545',
+        padding: '5px 12px',
+        borderRadius: '4px',
+        fontSize: '12px',
+        fontWeight: '700',
+        cursor: isPending ? 'not-allowed' : 'pointer',
+        transition: 'all 0.2s'
+      }}
+      onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#dc3545'; e.currentTarget.style.color = '#fff'; }}
+      onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#dc3545'; }}
+    >
+      {isPending ? '...' : 'ELIMINAR'}
     </button>
   );
 }
