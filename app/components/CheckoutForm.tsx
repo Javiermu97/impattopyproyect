@@ -80,7 +80,6 @@ export default function CheckoutForm({
   const [cities, setCities] = useState<string[]>([]);
   const [formVariant, setFormVariant] = useState(selectedVariant);
   
-  // ✅ Estado de carga
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -131,7 +130,6 @@ export default function CheckoutForm({
     return Math.round(product.price * q * (1 - discount));
   };
 
-  // ✅ LÓGICA COMPLETA: GUARDAR EN DB + ENVIAR CORREOS
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -141,7 +139,6 @@ export default function CheckoutForm({
     const generatedOrderId = Math.floor(40000 + Math.random() * 10000);
 
     try {
-        // 1. Preparar detalles JSON
         const detallesDelPedido = {
             product_name: product.name || "Producto sin nombre", 
             variant: formVariant.color,
@@ -151,7 +148,6 @@ export default function CheckoutForm({
             city: formData.city 
         };
 
-        // 2. Guardar en Supabase
         const { error } = await supabase.from('orders').insert([
             {
                 customer_name: formData.name,
@@ -172,7 +168,6 @@ export default function CheckoutForm({
             return;
         }
 
-        // 3. ✅ ENVIAR CORREOS (CLIENTE + ADMIN)
         fetch('/api/notify', {
             method: 'POST',
             body: JSON.stringify({
@@ -184,7 +179,6 @@ export default function CheckoutForm({
             })
         });
 
-        // 4. Confirmar y Cerrar
         onConfirm({
             product,
             formVariant,
@@ -205,10 +199,8 @@ export default function CheckoutForm({
     }
   };
 
-  /* ─────────────── JSX completo ─────────────── */
   const renderForm = () => (
     <form onSubmit={handleSubmit}>
-      {/* ---------- Opciones de cantidad ---------- */}
       <div className="checkout-product-options">
         <label
           className={`quantity-option ${
@@ -275,7 +267,6 @@ export default function CheckoutForm({
         })}
       </div>
 
-      {/* ---------- Selector de color ---------- */}
       {product.variants && product.variants.length > 0 && (
         <div className="checkout-color-selector">
           <label htmlFor="color-select-checkout" className="variant-label">
@@ -296,7 +287,6 @@ export default function CheckoutForm({
         </div>
       )}
 
-      {/* ---------- Resumen ---------- */}
       <div className="checkout-summary">
         <div className="summary-row">
           <span>Subtotal</span>
@@ -314,13 +304,12 @@ export default function CheckoutForm({
             Gs. {calculatePrice(selectedQuantity).toLocaleString('es-PY')}
           </span>
         </div>
-        <p className="summary-note">Envíos y impuestos incluidos</p>
+        <p className="summary-note">Envíos e impuestos incluidos</p>
       </div>
 
-      {/* ---------- Campos del formulario ---------- */}
       <div className="checkout-fields">
-        {/* BLOQUE DE DESCUENTO ELIMINADO SEGÚN SOLICITUD */}
-
+        {/* Código de descuento eliminado */}
+        
         <select
           value={selectedDepartment}
           onChange={(e) => setSelectedDepartment(e.target.value)}
@@ -430,20 +419,11 @@ export default function CheckoutForm({
               : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`
           }
         </button>
-        <small className="payment-note">
-          Efectivo y transferencia bancaria. (Sólo para Asunción y alrededores)
-        </small>
-        <button type="submit" disabled={isSubmitting} className="submit-btn secondary">
-           {isSubmitting 
-              ? 'PROCESANDO...' 
-              : `PAGAR CON TARJETA Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`
-           }
-        </button>
+        {/* Texto aclaratorio y botón de tarjeta eliminados */}
       </div>
     </form>
   );
 
-  /* ─────────────── Render ─────────────── */
   return (
     <div className="checkout-modal-overlay">
       <div className="checkout-modal-content">
@@ -456,5 +436,4 @@ export default function CheckoutForm({
     </div>
   );
 }
-
 
