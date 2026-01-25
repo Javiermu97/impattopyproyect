@@ -18,6 +18,10 @@ export const metadata = {
   description: 'Tu tienda online de confianza en Paraguay. Productos para el hogar, salud y bienestar con envíos a todo el país.',
   keywords: ['Impatto Py', 'Tienda Online Paraguay', 'Hogar y Cocina', 'Compras Asunción'],
   icons: { icon: '/logo.png' },
+  // Verificación de Google Search Console
+  verification: {
+    google: 'google-site-verification: googlea6213aca70b7fbe0.html', 
+  },
   // Esto es lo que hace que se vea bien en WhatsApp y Facebook
   openGraph: {
     title: 'Impatto Py | Sentí la diferencia',
