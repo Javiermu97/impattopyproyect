@@ -4,11 +4,30 @@ import SalesChart from './SalesChart';
 
 export default async function StatsPage() {
   const supabase = await createAuthServerClient();
+  
+  // 1. Obtener Ventas
   const { data: salesData } = await supabase.rpc('get_monthly_sales');
-  const { data: topProducts } = await supabase.from('productos').select('name, price').order('price', { ascending: false }).limit(5);
-  const { count: wishlistCount } = await supabase.from('wishlist').select('*', { count: 'exact', head: true });
-  const { data: viewsData } = await supabase.rpc('get_monthly_views');
-  const totalViews = viewsData?.reduce((acc: number, curr: any) => acc + Number(curr.total_views), 0) || 0;
+  
+  // 2. Obtener Top Productos
+  const { data: topProducts } = await supabase
+    .from('productos')
+    .select('name, price')
+    .order('price', { ascending: false })
+    .limit(5);
+    
+  // 3. Conteo de Wishlist
+  const { count: wishlistCount } = await supabase
+    .from('wishlist')
+    .select('*', { count: 'exact', head: true });
+
+  // 4. Lógica de Visitantes Únicos (Corregida)
+  // Seleccionamos los session_id de la tabla para filtrarlos
+  const { data: viewsData } = await supabase
+    .from('page_views')
+    .select('session_id');
+
+  // Usamos un Set para contar cuántos IDs de sesión diferentes existen (Visitantes Reales)
+  const totalUniqueVisitors = new Set(viewsData?.map(v => v.session_id)).size;
 
   const cardStyle = { padding: '25px', backgroundColor: '#fff', borderRadius: '16px', border: '1px solid #eee' };
   const labelStyle = { fontSize: '11px', color: '#888', fontWeight: 'bold', textTransform: 'uppercase' as const };
@@ -28,8 +47,8 @@ export default async function StatsPage() {
           <p style={valueStyle}>{wishlistCount || 0} Favoritos</p>
         </div>
         <div style={cardStyle}>
-          <span style={labelStyle}>Visitas al Sitio</span>
-          <p style={valueStyle}>{totalViews.toLocaleString('es-PY')} Vistas</p>
+          <span style={labelStyle}>Visitantes Únicos</span>
+          <p style={valueStyle}>{totalUniqueVisitors.toLocaleString('es-PY')} Personas</p>
         </div>
       </div>
 
