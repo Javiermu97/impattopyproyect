@@ -1,28 +1,47 @@
 'use client';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-// El tipo de dato que esperamos de nuestra función RPC
 type SalesData = {
   month: string;
   total: number;
 };
 
 export default function SalesChart({ data }: { data: SalesData[] }) {
-  // Formateamos el total para que se vea bien en el tooltip del gráfico
+  // Formateador para moneda local
   const formatCurrency = (value: number) => `Gs. ${value.toLocaleString('es-PY')}`;
 
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
         data={data}
-        margin={{ top: 5, right: 30, left: 50, bottom: 5 }}
+        margin={{ top: 20, right: 30, left: 60, bottom: 20 }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="month" />
-        <YAxis tickFormatter={(value) => `Gs. ${Number(value).toLocaleString('es-PY', { notation: 'compact' })}`} />
-        <Tooltip formatter={(value) => formatCurrency(Number(value))} />
-        <Legend />
-        <Bar dataKey="total" fill="#8884d8" name="Ventas Totales" />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+        <XAxis 
+          dataKey="month" 
+          axisLine={false}
+          tickLine={false}
+          tick={{ fontSize: 12, fill: '#666' }}
+        />
+        <YAxis 
+          axisLine={false}
+          tickLine={false}
+          tick={{ fontSize: 12, fill: '#666' }}
+          tickFormatter={(value) => `Gs. ${Number(value).toLocaleString('es-PY', { notation: 'compact' })}`} 
+        />
+        <Tooltip 
+          cursor={{ fill: '#f9f9f9' }}
+          contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+          formatter={(value) => [formatCurrency(Number(value)), "Ingresos Total"]} 
+        />
+        <Legend wrapperStyle={{ paddingTop: '20px' }} />
+        <Bar 
+          dataKey="total" 
+          fill="#A78D5A" 
+          name="Ventas Totales" 
+          radius={[4, 4, 0, 0]} 
+          barSize={50}
+        />
       </BarChart>
     </ResponsiveContainer>
   );
