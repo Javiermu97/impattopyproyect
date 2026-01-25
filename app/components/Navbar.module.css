@@ -33,7 +33,6 @@
   transform: translateX(-50%);
 }
 
-/* Botones e Iconos */
 .iconBtn { 
   background: transparent; 
   border: none; 
@@ -55,7 +54,6 @@
   font-size: 0.7rem; font-weight: bold;
 }
 
-/* Botón hamburguesa y búsqueda móvil */
 .menuBtn {
   background: transparent;
   border: none;
@@ -78,11 +76,9 @@
   margin-left: 0.5rem;
 }
 
-/* Clase para elementos que NO son links (Hogar & Cocina) */
+/* LA ÚNICA ADICIÓN: Para que el título no parezca link */
 .noLink {
-  cursor: default !important; /* Muestra flecha, no manito */
-  display: flex;
-  align-items: center;
+  cursor: default !important;
 }
 
 /* ========================= */
@@ -135,11 +131,6 @@
   padding: 1.5rem;
 }
 
-.headerTitleMain {
-  font-weight: 700;
-  letter-spacing: 0.1em;
-}
-
 .closeBtn {
   background: none;
   border: none;
@@ -156,7 +147,6 @@
 
 .drawerItemRow {
   padding: 1rem 0;
-  /* El borde inferior se quita según tu instrucción previa */
   border-bottom: none !important;
 }
 
@@ -169,17 +159,16 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.95rem; /* Restaurado */
   color: #000;
-  text-transform: capitalize !important;
 }
 
 .drawerLinkMain {
   display: block;
   padding: 1rem 0;
   color: #000;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1rem; /* Restaurado a tu original */
+  font-weight: 700;
   text-decoration: none;
   text-transform: capitalize !important;
 }
@@ -188,7 +177,7 @@
   display: block;
   padding: 0.9rem 0;
   color: #000;
-  font-size: 0.95rem;
+  font-size: 0.95rem; /* Restaurado a tu original */
   text-decoration: none;
   border-bottom: 1px solid #f5f5f5;
   line-height: 1.4;
@@ -229,7 +218,7 @@
 @media (min-width: 1025px) {
   .logo { position: static; transform: none; }
   .menuBtn { display: none; }
-  .navLinks { display: flex; gap: 1.5rem; align-items: center; }
+  .navLinks { display: flex; gap: 1.5rem; }
   .searchIconDesktop { display: flex; }
   .searchIconMobile { display: none; }
   .mobileDrawer { display: none !important; }
@@ -245,24 +234,9 @@
   align-items: center;
 }
 
-.navLink {
-  text-decoration: none;
-  color: #000;
-  font-size: 0.9rem;
-  font-weight: 500;
-  padding: 0.5rem 0;
-  display: flex;
-  align-items: center;
-}
-
-.navLink.active {
-  color: #000;
-  font-weight: 700;
-}
-
 .dropdownMenu {
   position: absolute;
-  top: 100%;
+  top: 100% !important;
   left: 0;
   min-width: 180px;
   background: white;
@@ -287,7 +261,7 @@
   padding: 0.55rem 1rem;
   text-decoration: none;
   color: #000;
-  font-size: 0.9rem;
+  font-size: 0.9rem; /* Restaurado */
   font-weight: 400;
 }
 
@@ -295,7 +269,12 @@
   background: #f7f7f7;
 }
 
-/* Submenú móvil Back Button */
+.submenuContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 1rem 0;
+}
+
 .backBtn {
   display: flex;
   align-items: center;
@@ -303,13 +282,19 @@
   background: none;
   border: none;
   padding: 0;
+  margin: 0 0 1rem 0;
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 600;
   color: #000 !important;
 }
 
-/* Logo Animación */
+.drawerBtnTrigger,
+.drawerLinkMain {
+  text-transform: capitalize !important;
+}
+
+/* ===== LOGO ===== */
 .logo a {
   font-family: "Times New Roman", Times, serif;
   font-size: 1.35rem;
@@ -324,21 +309,7 @@
   animation: logoFadeIn 0.7s ease-out forwards;
 }
 
-.logo a:hover {
-  opacity: 0.7;
-  letter-spacing: 0.32em; 
-  transition: all 0.25s ease;
-}
-
 @keyframes logoFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-    letter-spacing: 0.1em;
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    letter-spacing: 0.28em;
-  }
+  from { opacity: 0; transform: translateY(6px); letter-spacing: 0.1em; }
+  to { opacity: 1; transform: translateY(0); letter-spacing: 0.28em; }
 }

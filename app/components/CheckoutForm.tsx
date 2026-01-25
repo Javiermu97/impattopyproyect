@@ -173,13 +173,12 @@ export default function CheckoutForm({
         }
 
         // 3. ✅ ENVIAR CORREOS (CLIENTE + ADMIN)
-        // Esto llama a tu archivo route.ts que configuramos con Zoho
         fetch('/api/notify', {
             method: 'POST',
             body: JSON.stringify({
                 orderId: generatedOrderId,
                 customerName: formData.name,
-                customerEmail: formData.email, // Importante para el correo del cliente
+                customerEmail: formData.email,
                 total: finalPrice.toLocaleString('es-PY'),
                 products: `${product.name} (x${selectedQuantity})`
             })
@@ -320,16 +319,7 @@ export default function CheckoutForm({
 
       {/* ---------- Campos del formulario ---------- */}
       <div className="checkout-fields">
-        <div className="form-group-inline">
-          <input
-            type="text"
-            placeholder="Agregar código de descuento"
-            className="form-input"
-          />
-          <button type="button" className="apply-btn">
-            Aplicar
-          </button>
-        </div>
+        {/* BLOQUE DE DESCUENTO ELIMINADO SEGÚN SOLICITUD */}
 
         <select
           value={selectedDepartment}
@@ -374,7 +364,7 @@ export default function CheckoutForm({
         <p className="shipping-note">
           -PEDIDOS REALIZADOS ANTES DE LAS 14:00H SE ENTREGAN EN EL MISMO
           DÍA- ¡Válido para Asunción y alrededores!{' '}
-          <strong>Obs: Solo Días Útiles</strong>
+          <strong>Obs: Solo Días Hábiles</strong>
         </p>
 
         <input
@@ -436,8 +426,8 @@ export default function CheckoutForm({
 
         <button type="submit" disabled={isSubmitting} className="submit-btn primary">
           {isSubmitting 
-             ? 'PROCESANDO...' 
-             : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`
+              ? 'PROCESANDO...' 
+              : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`
           }
         </button>
         <small className="payment-note">
@@ -445,8 +435,8 @@ export default function CheckoutForm({
         </small>
         <button type="submit" disabled={isSubmitting} className="submit-btn secondary">
            {isSubmitting 
-             ? 'PROCESANDO...' 
-             : `PAGAR CON TARJETA Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`
+              ? 'PROCESANDO...' 
+              : `PAGAR CON TARJETA Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`
            }
         </button>
       </div>
