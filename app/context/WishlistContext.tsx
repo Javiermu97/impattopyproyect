@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthContext';
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient'; // Única línea nueva
 
 type WishlistCtx = {
   wishlist: number[];
@@ -13,26 +13,40 @@ type WishlistCtx = {
 };
 
 const WishlistContext = createContext<WishlistCtx | null>(null);
+const STORAGE_KEY = 'impatto_wishlist_v1';
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { user } = useAuth();
   const [wishlist, setWishlist] = useState<number[]>([]);
 
+  // 1. Cargar de LocalStorage (tu código original)
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as number[];
+        if (Array.isArray(parsed)) setWishlist(parsed);
+      }
+    } catch {}
+  }, []);
+
+  // 2. Sincronizar con Supabase si hay usuario
   useEffect(() => {
     if (user) {
-      const fetchWishlist = async () => {
-        const { data } = await supabase
-          .from('wishlist')
-          .select('product_id')
-          .eq('user_id', user.id);
+      const fetchDB = async () => {
+        const { data } = await supabase.from('wishlist').select('product_id').eq('user_id', user.id);
         if (data) setWishlist(data.map(item => item.product_id));
       };
-      fetchWishlist();
-    } else {
-      setWishlist([]);
+      fetchDB();
     }
   }, [user]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(wishlist));
+    } catch {}
+  }, [wishlist]);
 
   const toggleWishlist = useCallback(
     async (productId: number) => {
@@ -54,9 +68,10 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   );
 
   const clearWishlist = useCallback(async () => {
-    if (!user) return;
+    if (user) {
+      await supabase.from('wishlist').delete().eq('user_id', user.id);
+    }
     setWishlist([]);
-    await supabase.from('wishlist').delete().eq('user_id', user.id);
   }, [user]);
 
   const value: WishlistCtx = useMemo(() => {

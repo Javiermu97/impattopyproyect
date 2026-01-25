@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 import './globals.css';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 import Header from '@/app/components/Header';
 import Navbar from '@/app/components/Navbar';
@@ -10,15 +10,7 @@ import Copyright from '@/app/components/Copyright';
 import { CartProvider } from '@/app/context/CartContext';
 import { AuthProvider } from '@/app/context/AuthContext';
 import { WishlistProvider } from '@/app/context/WishlistContext';
-import { supabase } from '@/lib/supabaseClient';
-
-function AnalyticsTracker() {
-  useEffect(() => {
-    // Registra la visita cada vez que cambia la ruta
-    supabase.from('page_views').insert([{ page_path: window.location.pathname }]).then();
-  }, []);
-  return null;
-}
+import AnalyticsTracker from '@/app/components/AnalyticsTracker'; // Crear este componente aparte para no romper el layout
 
 export const metadata = {
   title: 'Impatto Py| Sentí la diferencia',
@@ -40,13 +32,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <Navbar />
                 </Suspense>
               </header>
+
               <main>
                 <PageWrapper>{children}</PageWrapper>
               </main>
+
               <Footer />
               <Copyright />
-              <a href="https://wa.me/595983491155" target="_blank" rel="noopener noreferrer" className="whatsapp-button">
-                <FaWhatsapp size={22} /> Contáctanos
+
+              <a
+                href="https://wa.me/595983491155"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="whatsapp-button"
+              >
+                <FaWhatsapp size={22} />
+                Contáctanos
               </a>
             </CartProvider>
           </WishlistProvider>
