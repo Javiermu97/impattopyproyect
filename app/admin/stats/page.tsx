@@ -60,7 +60,7 @@ export default async function StatsPage() {
           <p style={valueStyle}>{wishlistCount || 0} Favoritos</p>
         </div>
         <div style={cardStyle}>
-          <span style={labelStyle}>Personas Reales</span>
+          <span style={labelStyle}>Visitas en el sitio web</span>
           <p style={valueStyle}>{totalUniqueVisitors}</p>
         </div>
       </div>
