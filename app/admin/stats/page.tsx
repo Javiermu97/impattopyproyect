@@ -8,25 +8,23 @@ export default async function StatsPage() {
   // 1. Obtener Ventas
   const { data: salesData } = await supabase.rpc('get_monthly_sales');
   
-  // 2. Obtener Top Productos
+  // 2. Obtener Top Productos (Aumentado a 10 y con stock)
   const { data: topProducts } = await supabase
     .from('productos')
-    .select('name, price')
+    .select('name, price, stock')
     .order('price', { ascending: false })
-    .limit(5);
+    .limit(10);
     
   // 3. Conteo de Wishlist
   const { count: wishlistCount } = await supabase
     .from('wishlist')
     .select('*', { count: 'exact', head: true });
 
-  // 4. Lógica de Visitantes Únicos (Corregida)
-  // Seleccionamos los session_id de la tabla para filtrarlos
+  // 4. Lógica de Visitantes Únicos
   const { data: viewsData } = await supabase
     .from('page_views')
     .select('session_id');
 
-  // Usamos un Set para contar cuántos IDs de sesión diferentes existen (Visitantes Reales)
   const totalUniqueVisitors = new Set(viewsData?.map(v => v.session_id)).size;
 
   const cardStyle = { padding: '25px', backgroundColor: '#fff', borderRadius: '16px', border: '1px solid #eee' };
@@ -57,14 +55,22 @@ export default async function StatsPage() {
           <h3 style={{ marginBottom: '20px' }}>Ventas Mensuales</h3>
           <SalesChart data={salesData || []} />
         </div>
-        <div style={cardStyle}>
+        
+        <div style={{ ...cardStyle, height: '450px', display: 'flex', flexDirection: 'column' }}>
           <h3 style={{ marginBottom: '20px' }}>Productos Destacados</h3>
-          {topProducts?.map((p, i) => (
-            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #f0f0f0' }}>
-              <span style={{ fontSize: '13px' }}>{p.name}</span>
-              <span style={{ fontWeight: 'bold', color: '#A78D5A' }}>Gs. {p.price.toLocaleString('es-PY')}</span>
-            </div>
-          ))}
+          <div style={{ flex: 1, overflowY: 'auto', paddingRight: '10px' }}>
+            {topProducts?.map((p, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #f0f0f0' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '13px', fontWeight: '600' }}>{p.name}</span>
+                  <span style={{ fontSize: '11px', color: '#999' }}>Stock disponible: {p.stock ?? 0}</span>
+                </div>
+                <span style={{ fontWeight: 'bold', color: '#A78D5A', fontSize: '13px', whiteSpace: 'nowrap', marginLeft: '10px' }}>
+                  Gs. {p.price.toLocaleString('es-PY')}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
