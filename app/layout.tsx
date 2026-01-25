@@ -1,31 +1,81 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css"; // Asegúrate de que la ruta a tus estilos sea la correcta
-import TidioChat from "./components/TidioChat";
+export const dynamic = 'force-dynamic'
 
-const inter = Inter({ subsets: ["latin"] });
+import './globals.css'
+import React, { Suspense } from 'react'
+import { FaWhatsapp } from 'react-icons/fa'
+import Header from '@/app/components/Header'
+import Navbar from '@/app/components/Navbar'
+import PageWrapper from '@/app/components/PageWrapper'
+import Footer from '@/app/components/Footer'
+import Copyright from '@/app/components/Copyright'
+import { CartProvider } from '@/app/context/CartContext'
+import { AuthProvider } from '@/app/context/AuthContext'
+import { WishlistProvider } from '@/app/context/WishlistContext'
+import AnalyticsTracker from '@/app/components/AnalyticsTracker'
+import TidioChat from '@/app/components/TidioChat' // Única adición de importación
 
-export const metadata: Metadata = {
-  title: "Impatto Py - Hogar e Iluminación",
-  description: "Soluciones exclusivas para tu hogar, cocina e iluminación en Paraguay.",
-};
+export const metadata = {
+  metadataBase: new URL('https://impatto.com.py'),
+  title: 'Impatto Py | Sentí la diferencia',
+  description: 'Tu tienda online de confianza en Paraguay. Productos para el hogar, salud y bienestar con envíos a todo el país.',
+  keywords: ['Impatto Py', 'Tienda Online Paraguay', 'Hogar y Cocina', 'Compras Asunción'],
+  icons: { icon: '/logo.png' },
+  verification: {
+    google: 'V3SWLCYX76L7yvjDHyf186S4dE2YNoMjnXyZ02VtF2w',
+  },
+  other: {
+    'fb:app_id': '513118241881176',
+  },
+  openGraph: {
+    title: 'Impatto Py | Sentí la diferencia',
+    description: 'Calidad y confianza en cada pedido. Envíos a todo Paraguay.',
+    url: 'https://impatto.com.py',
+    siteName: 'Impatto Py',
+    images: [{ url: '/logo.png', width: 800, height: 600 }],
+    locale: 'es_PY',
+    type: 'website',
+  },
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body className={inter.className}>
-        {/* Aquí se renderiza todo el contenido de tus páginas (Navbar, Hero, etc.) */}
-        {children}
+      <body>
+        <AuthProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <AnalyticsTracker />
+              <header className="main-header">
+                <Header />
+                <Suspense fallback={null}>
+                  <Navbar />
+                </Suspense>
+              </header>
 
-        {/* Carga del Chat Profesional de Tidio. 
-            Aparecerá una burbuja en la esquina inferior derecha. 
-        */}
-        <TidioChat />
+              <main>
+                <PageWrapper>{children}</PageWrapper>
+              </main>
+
+              <Footer />
+              <Copyright />
+
+              <a
+                href="https://wa.me/595983491155"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="whatsapp-button"
+              >
+                <FaWhatsapp size={22} />
+                Contáctanos
+              </a>
+
+              {/* Única adición del componente de Chat */}
+              <TidioChat />
+
+            </CartProvider>
+          </WishlistProvider>
+        </AuthProvider>
       </body>
     </html>
-  );
+  )
 }
