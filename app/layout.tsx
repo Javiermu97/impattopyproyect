@@ -23,15 +23,13 @@ export const metadata = {
     google: 'V3SWLCYX76L7yvjDHyf186S4dE2YNoMjnXyZ02VtF2w',
   },
   // Esto es lo que hace que se vea bien en WhatsApp y Facebook
-  // Configuración de Facebook corregida
-  other: {
-    'fb:app_id': '513118241881176', // Reemplaza cuando lo tengas
-  },
   openGraph: {
     title: 'Impatto Py | Sentí la diferencia',
     description: 'Calidad y confianza en cada pedido. Envíos a todo Paraguay.',
     url: 'https://impatto.com.py',
     siteName: 'Impatto Py',
+    // ESTA ES LA FORMA CORRECTA PARA NEXT.JS:
+    appId: '513118241881176',
     images: [{ url: '/logo.png', width: 800, height: 600 }],
     locale: 'es_PY',
     type: 'website',
