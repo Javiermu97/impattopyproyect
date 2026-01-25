@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthContext';
+import { supabase } from '@/lib/supabaseClient';
 
 type WishlistCtx = {
   wishlist: number[];
@@ -12,7 +13,6 @@ type WishlistCtx = {
 };
 
 const WishlistContext = createContext<WishlistCtx | null>(null);
-const STORAGE_KEY = 'impatto_wishlist_v1';
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -20,43 +20,49 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const [wishlist, setWishlist] = useState<number[]>([]);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as number[];
-        if (Array.isArray(parsed)) setWishlist(parsed);
-      }
-    } catch {}
-  }, []);
+    if (user) {
+      const fetchWishlist = async () => {
+        const { data } = await supabase
+          .from('wishlist')
+          .select('product_id')
+          .eq('user_id', user.id);
+        if (data) setWishlist(data.map(item => item.product_id));
+      };
+      fetchWishlist();
+    } else {
+      setWishlist([]);
+    }
+  }, [user]);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(wishlist));
-    } catch {}
-  }, [wishlist]);
-
-  // 👇 useCallback evita que la referencia cambie por cada render
   const toggleWishlist = useCallback(
-    (productId: number) => {
+    async (productId: number) => {
       if (!user) {
         router.push('/cuenta/login?redirected=true');
         return;
       }
 
-      setWishlist(prev =>
-        prev.includes(productId)
-          ? prev.filter(id => id !== productId)
-          : [productId, ...prev]
-      );
+      const isAdded = wishlist.includes(productId);
+      if (isAdded) {
+        setWishlist(prev => prev.filter(id => id !== productId));
+        await supabase.from('wishlist').delete().match({ user_id: user.id, product_id: productId });
+      } else {
+        setWishlist(prev => [productId, ...prev]);
+        await supabase.from('wishlist').insert([{ user_id: user.id, product_id: productId }]);
+      }
     },
-    [user, router] // dependencias necesarias
+    [user, router, wishlist]
   );
+
+  const clearWishlist = useCallback(async () => {
+    if (!user) return;
+    setWishlist([]);
+    await supabase.from('wishlist').delete().eq('user_id', user.id);
+  }, [user]);
 
   const value: WishlistCtx = useMemo(() => {
     const isInWishlist = (productId: number) => wishlist.includes(productId);
-    const clearWishlist = () => setWishlist([]);
     return { wishlist, toggleWishlist, isInWishlist, clearWishlist };
-  }, [wishlist, toggleWishlist]);
+  }, [wishlist, toggleWishlist, clearWishlist]);
 
   return <WishlistContext.Provider value={value}>{children}</WishlistContext.Provider>;
 }

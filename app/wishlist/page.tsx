@@ -1,57 +1,61 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/context/AuthContext';
 import { useWishlist } from '@/app/context/WishlistContext';
+import { supabase } from '@/lib/supabaseClient';
+import { Product } from '@/lib/types';
+import ProductCard from '@/app/components/ProductCard';
 
 export default function WishlistPage() {
   const router = useRouter();
-  const { user } = useAuth();
-  const { wishlist, toggleWishlist, clearWishlist } = useWishlist();
+  const { user, loading: authLoading } = useAuth();
+  const { wishlist, clearWishlist } = useWishlist();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
 
-  // Si no hay sesión, redirige al login (como pediste)
   useEffect(() => {
-    if (!user) {
-      router.replace('/cuenta/login?next=/wishlist');
-    }
-  }, [user, router]);
+    if (!authLoading && !user) router.replace('/cuenta/login?next=/wishlist');
+  }, [user, authLoading, router]);
 
-  if (!user) return null; // evita parpadeo mientras redirige
+  useEffect(() => {
+    const fetchWishlistProducts = async () => {
+      if (wishlist.length === 0) {
+        setProducts([]);
+        return;
+      }
+      setLoadingProducts(true);
+      const { data } = await supabase.from('productos').select('*').in('id', wishlist);
+      if (data) setProducts(data);
+      setLoadingProducts(false);
+    };
+    fetchWishlistProducts();
+  }, [wishlist]);
+
+  if (authLoading || (!user && !authLoading)) {
+    return <div className="w-full flex justify-center py-20"><div className="animate-spin h-10 w-10 border-4 border-[#A78D5A] border-t-transparent rounded-full"></div></div>;
+  }
 
   return (
-    <div className="shop-container">
-      <h1 style={{ textAlign: 'center', marginBottom: '1rem' }}>Mi lista de deseos</h1>
+    <div className="shop-container" style={{ padding: '40px 20px' }}>
+      <h1 style={{ textAlign: 'center', fontWeight: '800', marginBottom: '10px' }}>Mi lista de deseos</h1>
+      <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px' }}>Productos que te encantaron</p>
 
       {wishlist.length === 0 ? (
-        <p style={{ textAlign: 'center' }}>
-          Tu lista está vacía. <Link href="/hogar">Explorar productos</Link>
-        </p>
+        <div style={{ textAlign: 'center' }}>
+          <p>No tienes productos guardados.</p>
+          <Link href="/hogar" className="btn-primary" style={{ display: 'inline-block', marginTop: '20px' }}>Explorar Tienda</Link>
+        </div>
       ) : (
         <>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
-            <button className="btn-secondary" onClick={clearWishlist}>
-              Vaciar lista
-            </button>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
+            <button className="btn-secondary" onClick={clearWishlist}>VACIAR TODO</button>
           </div>
-
           <div className="product-grid-shop columns-3">
-            {wishlist.map((id: number) => (
-              <div key={id} className="shop-product-card" style={{ padding: '1rem' }}>
-                <h4>Producto #{id}</h4>
-                <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 8 }}>
-                  <Link href={`/products/${id}`} className="btn-primary">
-                    Ver producto
-                  </Link>
-                  <button
-                    className="btn-secondary"
-                    onClick={() => toggleWishlist(id)} // quitar = toggle otra vez
-                  >
-                    Quitar
-                  </button>
-                </div>
-              </div>
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </>
