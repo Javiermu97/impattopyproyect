@@ -16,15 +16,17 @@ import AnalyticsTracker from '@/app/components/AnalyticsTracker'
 export const metadata = {
   metadataBase: new URL('https://impatto.com.py'),
   title: 'Impatto Py | Sentí la diferencia',
-  description: 'Tu tienda online de confianza en Paraguay. Productos para el hogar, salud y bienestar con envíos a todo el país.',
-  keywords: ['Impatto Py', 'Tienda Online Paraguay', 'Hogar y Cocina', 'Compras Asunción'],
+  description:
+    'Tu tienda online de confianza en Paraguay. Productos para el hogar, salud y bienestar con envíos a todo el país.',
+  keywords: [
+    'Impatto Py',
+    'Tienda Online Paraguay',
+    'Hogar y Cocina',
+    'Compras Asunción',
+  ],
   icons: { icon: '/logo.png' },
   verification: {
     google: 'V3SWLCYX76L7yvjDHyf186S4dE2YNoMjnXyZ02VtF2w',
-  },
-  // USAMOS "other" PERO CON EL FORMATO QUE ENGAÑA AL SISTEMA PARA QUE NO DUPLIQUE
-  other: {
-    'fb:app_id': '513118241881176',
   },
   openGraph: {
     title: 'Impatto Py | Sentí la diferencia',
@@ -34,21 +36,23 @@ export const metadata = {
     images: [{ url: '/logo.png', width: 800, height: 600 }],
     locale: 'es_PY',
     type: 'website',
-    // NOTA: NO poner appId aquí, eso es lo que crea la etiqueta doble.
   },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      {/* IMPORTANTE: Hemos quitado el <head> manual con la etiqueta meta 
-         porque ahora la maneja el objeto "other" de arriba de forma limpia.
-      */}
+      <head>
+        {/* ✅ ÚNICA FORMA CORRECTA */}
+        <meta property="fb:app_id" content="513118241881176" />
+      </head>
+
       <body>
         <AuthProvider>
           <WishlistProvider>
             <CartProvider>
               <AnalyticsTracker />
+
               <header className="main-header">
                 <Header />
                 <Suspense fallback={null}>
