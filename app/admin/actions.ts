@@ -14,7 +14,7 @@ export async function createProduct(formData: FormData) {
 
   const data = {
     name: String(formData.get('name')),
-    descripcion: String(formData.get('descripcion') || ''),
+    "descripción": String(formData.get('descripcion_oferta') || ''),
     price: Number(formData.get('price')),
     oldPrice: Number(formData.get('oldPrice')) || null,
     imageUrl: String(formData.get('imageUrl') || ''),
@@ -24,17 +24,17 @@ export async function createProduct(formData: FormData) {
     texto_oferta: String(formData.get('texto_oferta') || ''),
     galleryImages:
       typeof galleryRaw === 'string' && galleryRaw.length > 0
-        ? galleryRaw.split(',').map((img: string) => img.trim())
+        ? galleryRaw.split(',').map((img) => img.trim())
         : [],
     inStock: formData.get('inStock') === 'on' || formData.get('inStock') === 'TRUE',
-    es_mas_vendido: formData.get('es_mas_vendido') === 'true' || formData.get('es_mas_vendido') === 'TRUE',
-    es_destacado_semana: formData.get('es_destacado_semana') === 'true' || formData.get('es_destacado_semana') === 'TRUE',
-    es_destacado_hogar: formData.get('es_destacado_hogar') === 'true' || formData.get('es_destacado_hogar') === 'TRUE',
+    es_mas_vendido: formData.get('es_mas_vendido') === 'TRUE',
+    es_destacado_semana: formData.get('es_destacado_semana') === 'TRUE',
+    es_destacado_hogar: formData.get('es_destacado_hogar') === 'TRUE',
   };
 
   await supabase.from('productos').insert(data);
   revalidatePath('/admin/products');
-  redirect('/admin/products?success=true');
+  redirect('/admin/products');
 }
 
 export async function updateProduct(id: number, formData: FormData) {
@@ -43,7 +43,7 @@ export async function updateProduct(id: number, formData: FormData) {
 
   const data = {
     name: String(formData.get('name')),
-    descripcion: String(formData.get('descripcion') || ''),
+    "descripción": String(formData.get('descripcion_oferta') || ''),
     price: Number(formData.get('price')),
     oldPrice: Number(formData.get('oldPrice')) || null,
     imageUrl: String(formData.get('imageUrl') || ''),
@@ -53,18 +53,21 @@ export async function updateProduct(id: number, formData: FormData) {
     texto_oferta: String(formData.get('texto_oferta') || ''),
     galleryImages:
       typeof galleryRaw === 'string' && galleryRaw.length > 0
-        ? galleryRaw.split(',').map((img: string) => img.trim())
+        ? galleryRaw.split(',').map((img) => img.trim())
         : [],
-    inStock: formData.get('inStock') === 'on' || formData.get('inStock') === 'TRUE',
-    es_mas_vendido: formData.get('es_mas_vendido') === 'true' || formData.get('es_mas_vendido') === 'TRUE',
-    es_destacado_semana: formData.get('es_destacado_semana') === 'true' || formData.get('es_destacado_semana') === 'TRUE',
-    es_destacado_hogar: formData.get('es_destacado_hogar') === 'true' || formData.get('es_destacado_hogar') === 'TRUE',
+    inStock: formData.get('inStock') === 'TRUE',
+    es_mas_vendido: formData.get('es_mas_vendido') === 'TRUE',
+    es_destacado_semana: formData.get('es_destacado_semana') === 'TRUE',
+    es_destacado_hogar: formData.get('es_destacado_hogar') === 'TRUE',
   };
 
   await supabase.from('productos').update(data).eq('id', id);
+
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/edit/${id}`);
-  redirect('/admin/products?updated=true');
+
+  // 🔁 VUELVE AL EDITOR (como antes)
+  redirect(`/admin/products/edit/${id}`);
 }
 
 export async function deleteProduct(id: number) {
@@ -82,7 +85,6 @@ export async function createCaracteristica(formData: FormData) {
   const producto_id = Number(formData.get('producto_id'));
 
   const data = {
-    // CAMBIO REALIZADO: Ajustado a "id del producto" para que coincida con tu tabla
     "id del producto": producto_id,
     titulo: String(formData.get('titulo')),
     descripcion: String(formData.get('descripcion') || ''),
@@ -100,7 +102,6 @@ export async function deleteCaracteristica(id: number) {
   revalidatePath('/admin/products');
 }
 
-// ✅ ACTUALIZAR CARACTERÍSTICA
 export async function updateCaracteristica(id: number, formData: FormData) {
   const supabase = await createAuthServerClient();
   const producto_id = formData.get('producto_id');
@@ -115,16 +116,5 @@ export async function updateCaracteristica(id: number, formData: FormData) {
   await supabase.from('caracteristicas').update(data).eq('id', id);
 
   revalidatePath(`/admin/products/edit/${producto_id}`);
-  // Redirige de vuelta al producto para evitar el 404
   redirect(`/admin/products/edit/${producto_id}`);
-}
-
-/* =========================================================
-✅ ÓRDENES
-========================================================= */
-
-export async function updateOrderStatus(id: number, status: string) {
-  const supabase = await createAuthServerClient();
-  await supabase.from('orders').update({ status }).eq('id', id);
-  revalidatePath('/admin/orders');
 }
