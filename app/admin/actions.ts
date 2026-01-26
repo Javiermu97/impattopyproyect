@@ -21,7 +21,8 @@ export async function createProduct(formData: FormData) {
     videoUrl: String(formData.get('videoUrl') || ''),
     categoria: String(formData.get('categoria') || ''),
     texto_oferta: String(formData.get('texto_oferta') || ''),
-    descripcion_oferta: String(formData.get('descripcion_oferta') || ''), // Mantenido
+    // CORRECCIÓN: Nombre exacto de tu columna en Supabase
+    "descripción": String(formData.get('descripcion_oferta') || ''), 
     galleryImages: typeof galleryRaw === 'string' && galleryRaw.length > 0
         ? galleryRaw.split(',').map((img: string) => img.trim())
         : [],
@@ -51,7 +52,8 @@ export async function updateProduct(id: number, formData: FormData) {
     videoUrl: String(formData.get('videoUrl') || ''),
     categoria: String(formData.get('categoria') || ''),
     texto_oferta: String(formData.get('texto_oferta') || ''),
-    descripcion_oferta: String(formData.get('descripcion_oferta') || ''), // Mantenido
+    // CORRECCIÓN: Nombre exacto de tu columna en Supabase
+    "descripción": String(formData.get('descripcion_oferta') || ''),
     galleryImages: typeof galleryRaw === 'string' && galleryRaw.length > 0
         ? galleryRaw.split(',').map((img: string) => img.trim())
         : [],
@@ -85,7 +87,7 @@ export async function createCaracteristica(formData: FormData) {
   const producto_id = Number(formData.get('producto_id'));
 
   const data = {
-    "id del producto": producto_id, // Nombre exacto que confirmaste
+    "id del producto": producto_id,
     titulo: String(formData.get('titulo')),
     descripcion: String(formData.get('descripcion') || ''),
     imagen: String(formData.get('imagen') || ''),
@@ -101,7 +103,6 @@ export async function createCaracteristica(formData: FormData) {
 export async function deleteCaracteristica(id: number) {
   const supabase = await createAuthServerClient();
   
-  // Usamos el nombre de columna con espacios como lo tienes en Supabase
   const { data, error: fetchError } = await supabase
     .from('caracteristicas')
     .select('"id del producto"')
