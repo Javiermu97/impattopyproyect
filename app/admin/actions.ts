@@ -14,7 +14,7 @@ export async function createProduct(formData: FormData) {
 
   const data = {
     name: String(formData.get('name')),
-    "descripción": String(formData.get('descripcion_oferta') || ''),
+    descripción: String(formData.get('descripcion_oferta') || ''),
     price: Number(formData.get('price')),
     oldPrice: Number(formData.get('oldPrice')) || null,
     imageUrl: String(formData.get('imageUrl') || ''),
@@ -26,7 +26,9 @@ export async function createProduct(formData: FormData) {
       typeof galleryRaw === 'string' && galleryRaw.length > 0
         ? galleryRaw.split(',').map((img) => img.trim())
         : [],
-    inStock: formData.get('inStock') === 'on' || formData.get('inStock') === 'TRUE',
+    inStock:
+      formData.get('inStock') === 'on' ||
+      formData.get('inStock') === 'TRUE',
     es_mas_vendido: formData.get('es_mas_vendido') === 'TRUE',
     es_destacado_semana: formData.get('es_destacado_semana') === 'TRUE',
     es_destacado_hogar: formData.get('es_destacado_hogar') === 'TRUE',
@@ -43,7 +45,7 @@ export async function updateProduct(id: number, formData: FormData) {
 
   const data = {
     name: String(formData.get('name')),
-    "descripción": String(formData.get('descripcion_oferta') || ''),
+    descripción: String(formData.get('descripcion_oferta') || ''),
     price: Number(formData.get('price')),
     oldPrice: Number(formData.get('oldPrice')) || null,
     imageUrl: String(formData.get('imageUrl') || ''),
@@ -65,8 +67,6 @@ export async function updateProduct(id: number, formData: FormData) {
 
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/edit/${id}`);
-
-  // 🔁 VUELVE AL EDITOR (como antes)
   redirect(`/admin/products/edit/${id}`);
 }
 
@@ -85,7 +85,7 @@ export async function createCaracteristica(formData: FormData) {
   const producto_id = Number(formData.get('producto_id'));
 
   const data = {
-    "id del producto": producto_id,
+    'id del producto': producto_id,
     titulo: String(formData.get('titulo')),
     descripcion: String(formData.get('descripcion') || ''),
     imagen: String(formData.get('imagen') || ''),
@@ -96,15 +96,9 @@ export async function createCaracteristica(formData: FormData) {
   revalidatePath(`/admin/products/edit/${producto_id}`);
 }
 
-export async function deleteCaracteristica(id: number) {
-  const supabase = await createAuthServerClient();
-  await supabase.from('caracteristicas').delete().eq('id', id);
-  revalidatePath('/admin/products');
-}
-
 export async function updateCaracteristica(id: number, formData: FormData) {
   const supabase = await createAuthServerClient();
-  const producto_id = formData.get('producto_id');
+  const producto_id = Number(formData.get('producto_id'));
 
   const data = {
     titulo: String(formData.get('titulo')),
@@ -117,4 +111,29 @@ export async function updateCaracteristica(id: number, formData: FormData) {
 
   revalidatePath(`/admin/products/edit/${producto_id}`);
   redirect(`/admin/products/edit/${producto_id}`);
+}
+
+export async function deleteCaracteristica(id: number) {
+  const supabase = await createAuthServerClient();
+  await supabase.from('caracteristicas').delete().eq('id', id);
+  revalidatePath('/admin/products');
+}
+
+/* =========================================================
+✅ PEDIDOS (🔥 ESTO FALTABA)
+========================================================= */
+
+export async function UpdateOrderStatus(
+  orderId: number,
+  status: string
+) {
+  const supabase = await createAuthServerClient();
+
+  await supabase
+    .from('orders')
+    .update({ status })
+    .eq('id', orderId);
+
+  revalidatePath('/admin');
+  revalidatePath('/admin/orders');
 }
