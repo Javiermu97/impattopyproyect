@@ -109,8 +109,7 @@ export async function createCaracteristica(formData: FormData) {
   const producto_id = Number(formData.get('producto_id'));
   
   const data = {
-    // Si tu tabla tiene la columna "id del producto" con espacio
-    "id del producto": producto_id,
+    producto_id: Number(formData.get('producto_id')),
     titulo: String(formData.get('titulo')),
     descripcion: String(formData.get('descripcion') || ''),
     imagen: String(formData.get('imagen') || ''),
