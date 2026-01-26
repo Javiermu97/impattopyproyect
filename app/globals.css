@@ -3375,6 +3375,19 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
+/* Forzar el color del botón de suscripción de Impatto */
+.btn-subscribe {
+  background-color: #A78D5A !important;
+  color: #ffffff !important;
+  border: none;
+  transition: filter 0.2s ease;
+}
+
+.btn-subscribe:hover {
+  filter: brightness(1.1);
+}
+
+
 
 
 
