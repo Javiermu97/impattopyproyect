@@ -247,7 +247,7 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
       icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>,
       content: (
         <>
-          <p>Nuestro envío es gratuito para cualquiera de los productos en un plazo de 2 a 3 días hábiles, sin embargo contamos con un Envío Urgente en un plazo de entrega en el día o máximo 24hrs que incluye seguro por solo 10.000 Gs.</p>
+          <p>Nuestro envío es gratuito para cualquiera de los productos en un plazo de 2 días hábiles, sin embargo contamos con un Envío Urgente en un plazo de entrega en el día o máximo 24hrs que incluye seguro por solo 10.000 Gs.</p>
           <p>Todos los plazos propuestos de entrega de los productos son siempre estimativos pudiendo verificarse demoras en la entrega del producto sin que ello acarree responsabilidad alguna a PAP.</p>
           <p>El usuario será informado de los motivos de esta demora si es que ocurre y así lo requiere.</p>
         </>
@@ -363,10 +363,15 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
             </div>
             <div className="info-promo-block">
               <h2 className="promo-title" style={{ whiteSpace: 'pre-line' }}>
-    {product.texto_oferta}
-  </h2>
+                {product.texto_oferta}
+              </h2>
               <h3 className="promo-subtitle">{product.promoSubtitle}</h3>
-              <p>{product.description}</p>
+              {/* CAMBIO 1: Descripción del producto */}
+              <p style={{ whiteSpace: 'pre-line' }} 
+                 dangerouslySetInnerHTML={{
+                   __html: (product.description || '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                 }}
+              />
               {product.videoUrl ? (
                 <video key={product.id} src={product.videoUrl} className="promo-image" autoPlay loop muted playsInline>Tu navegador no soporta el vídeo.</video>
               ) : (
@@ -380,38 +385,29 @@ export default function ProductDetailPageClient({ product, relatedProducts }: { 
               )}
             </div>
             {product.caracteristicas && product.caracteristicas.map((feature: Feature) => (
-  <div key={feature.id} className="info-promo-block-2">
-    <h2>{feature.titulo}</h2>
+              <div key={feature.id} className="info-promo-block-2">
+                <h2>{feature.titulo}</h2>
 
-    <div className="ventajas-list">
-      {(feature.descripcion || '').split('\n').map((linea: string, index: number) => {
-        if (linea.includes('*')) {
-          const parts = linea.split(/\*(.*?)\*/);
+                {/* CAMBIO 2: Descripción de características */}
+                <div 
+                  className="ventajas-list"
+                  style={{ whiteSpace: 'pre-line' }}
+                  dangerouslySetInnerHTML={{
+                    __html: (feature.descripcion || '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                  }}
+                />
 
-          return (
-            <p key={index}>
-              <span>{parts[0]}</span>
-              <strong>{parts[1]}</strong>
-              <span>{parts[2]}</span>
-            </p>
-          );
-        }
-
-        return <p key={index}>{linea}</p>;
-      })}
-    </div>
-
-    {feature.imagen && (
-      <Image
-        src={feature.imagen}
-        alt={feature.titulo}
-        className="promo-image"
-        width={800}
-        height={600}
-      />
-    )}
-  </div>
-))}
+                {feature.imagen && (
+                  <Image
+                    src={feature.imagen}
+                    alt={feature.titulo}
+                    className="promo-image"
+                    width={800}
+                    height={600}
+                  />
+                )}
+              </div>
+            ))}
 
             <div className="pdp-final-accordion">
               {accordionData.map((item, index) => (<AccordionItem key={index} item={item} isOpen={openAccordion === index} onClick={() => setOpenAccordion(openAccordion === index ? null : index)} />))}
