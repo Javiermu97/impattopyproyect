@@ -91,7 +91,7 @@ export default async function NewProductPage() {
 
         <div style={{ marginBottom: '20px' }}>
           <label style={labelStyle}>Descripción Texto Oferta (Detalle)</label>
-          <textarea name="descripcion_oferta" style={{ ...inputStyle, height: '60px', fontFamily: 'inherit' }} placeholder="Escribe el detalle de la oferta aquí..." />
+          <textarea name="descripcion" style={{ ...inputStyle, height: '60px', fontFamily: 'inherit' }} placeholder="Escribe el detalle de la oferta aquí..." />
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '30px' }}>

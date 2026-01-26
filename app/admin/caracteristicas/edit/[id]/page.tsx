@@ -19,8 +19,8 @@ export default async function EditCaracteristicaPage({ params }: { params: Promi
   
   if (!caracteristica) notFound();
 
-  // Obtener el producto_id correctamente - verificando ambas posibilidades
-  const productoIdValue = caracteristica["id del producto"] || caracteristica.producto_id;
+  // Obtener el producto_id correctamente - ahora es producto_id (sin espacio)
+  const productoIdValue = caracteristica.producto_id;
   
   if (!productoIdValue) {
     notFound();
@@ -59,7 +59,7 @@ export default async function EditCaracteristicaPage({ params }: { params: Promi
         Editar Característica
       </h1>
 
-      <form action={updateCaracteristica.bind(null, Number(caracteristica.id))} style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', border: '1px solid #eee' }}>
+      <form action={updateCaracteristica.bind(null, caracteristica.id)} style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', border: '1px solid #eee' }}>
         <input type="hidden" name="producto_id" value={productoIdValue} />
         
         <div style={{ marginBottom: '20px' }}>

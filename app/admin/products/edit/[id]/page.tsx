@@ -103,7 +103,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
         <div style={{ marginBottom: '20px' }}>
           <label style={labelStyle}>Descripción Texto Oferta (Detalle)</label>
-          <textarea name="descripcion" defaultValue={product["descripción"] || product.descripcion || ''} style={{ ...inputStyle, height: '60px', fontFamily: 'inherit' }} />
+          <textarea name="descripcion" defaultValue={product.description || ''} style={{ ...inputStyle, height: '60px', fontFamily: 'inherit' }} />
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '30px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>

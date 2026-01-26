@@ -14,7 +14,7 @@ export async function createProduct(formData: FormData) {
   
   const data = {
     name: String(formData.get('name')),
-    "descripción": String(formData.get('descripcion') || ''),
+    description: String(formData.get('descripcion') || ''),
     price: Number(formData.get('price')),
     oldPrice: Number(formData.get('oldPrice')) || null,
     imageUrl: String(formData.get('imageUrl') || ''),
@@ -50,7 +50,7 @@ export async function updateProduct(id: number, formData: FormData) {
   
   const data: any = {
     name: String(formData.get('name')),
-    "descripción": String(formData.get('descripcion') || ''),
+    description: String(formData.get('descripcion') || ''),
     price: Number(formData.get('price')),
     oldPrice: Number(formData.get('oldPrice')) || null,
     imageUrl: String(formData.get('imageUrl') || ''),
@@ -109,7 +109,7 @@ export async function createCaracteristica(formData: FormData) {
   const producto_id = Number(formData.get('producto_id'));
   
   const data = {
-    "id del producto": producto_id,
+    producto_id: producto_id, // CAMBIÉ: "id del producto" por producto_id
     titulo: String(formData.get('titulo')),
     descripcion: String(formData.get('descripcion') || ''),
     imagen: String(formData.get('imagen') || ''),
