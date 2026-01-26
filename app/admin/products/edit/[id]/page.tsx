@@ -42,6 +42,8 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       <h1 style={{ marginBottom: '30px', fontSize: '22px', fontWeight: '700' }}>Editar Producto: {product.name}</h1>
 
       <form action={updateProduct.bind(null, product.id)} style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', border: '1px solid #eee' }}>
+        
+        {/* FILA 1: DATOS BÁSICOS */}
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '15px', marginBottom: '20px' }}>
           <div>
             <label style={labelStyle}>Nombre del Producto</label>
@@ -57,6 +59,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           </div>
         </div>
 
+        {/* FILA 2: CATEGORÍA Y STOCK */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '20px' }}>
           <div>
             <label style={labelStyle}>Categoría</label>
@@ -75,12 +78,32 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           </div>
         </div>
 
+        {/* IMÁGENES */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={labelStyle}>URLs de Imágenes</label>
+          <input name="imageUrl" defaultValue={product.imageUrl} required style={{ ...inputStyle, marginBottom: '10px' }} />
+          <input name="imageUrl2" defaultValue={product.imageUrl2 || ''} style={inputStyle} />
+        </div>
+
+        {/* VIDEO (RESTAURADO) */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={labelStyle}>URL del Video</label>
+          <input name="videoUrl" defaultValue={product.videoUrl || ''} placeholder="URL Video MP4 o YouTube" style={inputStyle} />
+        </div>
+
+        {/* GALERÍA (RESTAURADA) */}
+        <div style={{ marginBottom: '30px' }}>
+          <label style={labelStyle}>Galería (Separar con coma)</label>
+          <textarea name="galleryImages" defaultValue={product.galleryImages?.join(', ') || ''} style={{ ...inputStyle, height: '80px', fontFamily: 'inherit' }} />
+        </div>
+
+        {/* --- NUEVOS CAMPOS (AL FINAL DEL FORMULARIO PRINCIPAL) --- */}
         <div style={{ marginBottom: '20px' }}>
           <label style={labelStyle}>Descripción Texto Oferta (Detalle)</label>
           <textarea name="descripcion_oferta" defaultValue={product.descripcion_oferta || ''} style={{ ...inputStyle, height: '60px', fontFamily: 'inherit' }} />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '20px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '30px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
           <div>
             <label style={labelStyle}>¿Más Vendido?</label>
             <select name="es_mas_vendidos" defaultValue={boolToValue(product.es_mas_vendidos)} style={inputStyle}>
@@ -107,17 +130,6 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           </div>
         </div>
 
-        <div style={{ marginBottom: '20px' }}>
-          <label style={labelStyle}>URLs de Imágenes</label>
-          <input name="imageUrl" defaultValue={product.imageUrl} required style={{ ...inputStyle, marginBottom: '10px' }} />
-          <input name="imageUrl2" defaultValue={product.imageUrl2 || ''} style={inputStyle} />
-        </div>
-
-        <div style={{ marginBottom: '30px' }}>
-          <label style={labelStyle}>Galería (Separar con coma)</label>
-          <textarea name="galleryImages" defaultValue={product.galleryImages?.join(', ') || ''} style={{ ...inputStyle, height: '80px', fontFamily: 'inherit' }} />
-        </div>
-
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <button type="submit" style={{ width: '280px', padding: '16px', backgroundColor: '#000', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px', textTransform: 'uppercase' }}>
             GUARDAR CAMBIOS
@@ -125,30 +137,38 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         </div>
       </form>
 
+      {/* SECCIÓN CARACTERÍSTICAS TÉCNICAS */}
       <section style={{ marginTop: '50px', borderTop: '2px solid #f0f0f0', paddingTop: '30px' }}>
         <h2 style={{ fontSize: '18px', marginBottom: '20px', fontWeight: '700' }}>Características Técnicas</h2>
         <form action={createCaracteristica} style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px', marginBottom: '25px', backgroundColor: '#fcfcfc', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
           <input type="hidden" name="producto_id" value={product.id} />
+          
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
             <div>
               <label style={labelStyle}>Título</label>
               <input name="titulo" required style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>URL Icono</label>
+              <label style={labelStyle}>URL Imagen</label>
               <input name="imagen" style={inputStyle} />
             </div>
           </div>
+          
           <div>
             <label style={labelStyle}>Descripción (Permite varias líneas)</label>
             <textarea name="descripcion" required style={{ ...inputStyle, height: '80px', fontFamily: 'inherit' }} />
           </div>
-          <div style={{ display: 'flex', gap: '15px', alignItems: 'flex-end' }}>
-            <div style={{ width: '100px' }}>
-              <label style={labelStyle}>Orden</label>
-              <input name="orden" type="number" defaultValue="0" style={inputStyle} />
-            </div>
-            <button type="submit" style={{ flex: 1, height: '47px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>Añadir Característica</button>
+
+          <div style={{ width: '120px' }}>
+            <label style={labelStyle}>Orden</label>
+            <input name="orden" type="number" defaultValue="0" style={inputStyle} />
+          </div>
+
+          {/* BOTÓN AÑADIR (CORREGIDO: ABAJO Y CORTO) */}
+          <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+            <button type="submit" style={{ width: '220px', height: '47px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
+              Añadir Característica
+            </button>
           </div>
         </form>
 
@@ -160,7 +180,9 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 <span style={{ fontSize: '14px' }}><strong>{c.titulo}:</strong> {c.descripcion}</span>
               </div>
               <div style={{ display: 'flex', gap: '10px' }}>
-                <Link href={`/admin/caracteristicas/edit/${c.id}`} style={{ padding: '8px 15px', backgroundColor: '#A78D5A', color: 'white', borderRadius: '6px', textDecoration: 'none', fontSize: '12px', fontWeight: '600' }}>Editar</Link>
+                <Link href={`/admin/caracteristicas/edit/${c.id}`} style={{ padding: '8px 15px', backgroundColor: '#A78D5A', color: 'white', borderRadius: '6px', textDecoration: 'none', fontSize: '12px', fontWeight: '600' }}>
+                  Editar
+                </Link>
                 <DeleteCaracteristicaButton id={c.id} />
               </div>
             </div>

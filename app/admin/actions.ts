@@ -21,14 +21,14 @@ export async function createProduct(formData: FormData) {
     videoUrl: String(formData.get('videoUrl') || ''),
     categoria: String(formData.get('categoria') || ''),
     texto_oferta: String(formData.get('texto_oferta') || ''),
+    descripcion_oferta: String(formData.get('descripcion_oferta') || ''),
     galleryImages: typeof galleryRaw === 'string' && galleryRaw.length > 0
         ? galleryRaw.split(',').map((img: string) => img.trim())
         : [],
-    // ✅ CORRECCIÓN: Ahora valida contra la cadena "TRUE"
-    inStock: formData.get('inStock') === 'TRUE', 
-    es_mas_vendido: formData.get('es_mas_vendido') === 'true',
-    es_destacado_semana: formData.get('es_destacado_semana') === 'true',
-    es_destacado_hogar: formData.get('es_destacado_hogar') === 'true',
+    inStock: formData.get('inStock') === 'TRUE' || formData.get('inStock') === 'on', 
+    es_mas_vendidos: formData.get('es_mas_vendidos') === 'TRUE',
+    es_destacado_semana: formData.get('es_destacado_semana') === 'TRUE',
+    es_destacado_hogar: formData.get('es_destacado_hogar') === 'TRUE',
   };
 
   const { error } = await supabase.from('productos').insert(data);
@@ -51,14 +51,14 @@ export async function updateProduct(id: number, formData: FormData) {
     videoUrl: String(formData.get('videoUrl') || ''),
     categoria: String(formData.get('categoria') || ''),
     texto_oferta: String(formData.get('texto_oferta') || ''),
+    descripcion_oferta: String(formData.get('descripcion_oferta') || ''),
     galleryImages: typeof galleryRaw === 'string' && galleryRaw.length > 0
         ? galleryRaw.split(',').map((img: string) => img.trim())
         : [],
-    // ✅ CORRECCIÓN: Ahora valida contra la cadena "TRUE"
     inStock: formData.get('inStock') === 'TRUE',
-    es_mas_vendido: formData.get('es_mas_vendido') === 'true',
-    es_destacado_semana: formData.get('es_destacado_semana') === 'true',
-    es_destacado_hogar: formData.get('es_destacado_hogar') === 'true',
+    es_mas_vendidos: formData.get('es_mas_vendidos') === 'TRUE',
+    es_destacado_semana: formData.get('es_destacado_semana') === 'TRUE',
+    es_destacado_hogar: formData.get('es_destacado_hogar') === 'TRUE',
   };
 
   const { error } = await supabase.from('productos').update(data).eq('id', id);
@@ -103,6 +103,34 @@ export async function deleteCaracteristica(id: number) {
   const { error } = await supabase.from('caracteristicas').delete().eq('id', id);
   if (error) throw new Error(error.message);
   if (data) revalidatePath(`/admin/products/edit/${data.producto_id}`);
+}
+
+export async function updateCaracteristica(id: number, formData: FormData) {
+  const supabase = await createAuthServerClient();
+
+  const titulo = formData.get('titulo') as string;
+  const descripcion = formData.get('descripcion') as string;
+  const imagen = formData.get('imagen') as string;
+  const orden = parseInt(formData.get('orden') as string) || 0;
+  const producto_id = formData.get('producto_id');
+
+  const { error } = await supabase
+    .from('caracteristicas')
+    .update({
+      titulo,
+      descripcion,
+      imagen,
+      orden
+    })
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error al actualizar característica:', error);
+    throw new Error('No se pudo actualizar la característica');
+  }
+
+  revalidatePath(`/admin/products/edit/${producto_id}`);
+  redirect(`/admin/products/edit/${producto_id}`);
 }
 
 /* =========================================================
