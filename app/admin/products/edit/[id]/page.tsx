@@ -19,17 +19,17 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
   const product = await getProduct(Number(resolvedParams.id));
   if (!product) notFound();
 
-  const inputStyle = { 
-    width: '100%', 
-    padding: '12px', 
-    borderRadius: '8px', 
-    border: '1px solid #ccc', 
+  const inputStyle = {
+    width: '100%',
+    padding: '12px',
+    borderRadius: '8px',
+    border: '1px solid #ccc',
     boxSizing: 'border-box' as const,
-    color: '#000000', 
+    color: '#000000',
     fontSize: '15px',
     fontWeight: '500',
     backgroundColor: '#ffffff',
-    WebkitTextFillColor: '#000000', 
+    WebkitTextFillColor: '#000000',
     opacity: 1,
     outline: 'none'
   };
@@ -43,7 +43,6 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
       <form action={updateProduct.bind(null, product.id)} style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', border: '1px solid #eee' }}>
         
-        {/* FILA 1: DATOS BÁSICOS */}
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '15px', marginBottom: '20px' }}>
           <div>
             <label style={labelStyle}>Nombre del Producto</label>
@@ -59,7 +58,6 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           </div>
         </div>
 
-        {/* FILA 2: CATEGORÍA Y STOCK */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '20px' }}>
           <div>
             <label style={labelStyle}>Categoría</label>
@@ -78,26 +76,22 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           </div>
         </div>
 
-        {/* IMÁGENES */}
         <div style={{ marginBottom: '20px' }}>
           <label style={labelStyle}>URLs de Imágenes</label>
           <input name="imageUrl" defaultValue={product.imageUrl} required style={{ ...inputStyle, marginBottom: '10px' }} />
           <input name="imageUrl2" defaultValue={product.imageUrl2 || ''} style={inputStyle} />
         </div>
 
-        {/* VIDEO (RESTAURADO) */}
         <div style={{ marginBottom: '20px' }}>
           <label style={labelStyle}>URL del Video</label>
           <input name="videoUrl" defaultValue={product.videoUrl || ''} placeholder="URL Video MP4 o YouTube" style={inputStyle} />
         </div>
 
-        {/* GALERÍA (RESTAURADA) */}
         <div style={{ marginBottom: '30px' }}>
           <label style={labelStyle}>Galería (Separar con coma)</label>
           <textarea name="galleryImages" defaultValue={product.galleryImages?.join(', ') || ''} style={{ ...inputStyle, height: '80px', fontFamily: 'inherit' }} />
         </div>
 
-        {/* --- NUEVOS CAMPOS (AL FINAL DEL FORMULARIO PRINCIPAL) --- */}
         <div style={{ marginBottom: '20px' }}>
           <label style={labelStyle}>Descripción Texto Oferta (Detalle)</label>
           <textarea name="descripcion_oferta" defaultValue={product.descripcion_oferta || ''} style={{ ...inputStyle, height: '60px', fontFamily: 'inherit' }} />
@@ -106,7 +100,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '30px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
           <div>
             <label style={labelStyle}>¿Más Vendido?</label>
-            <select name="es_mas_vendidos" defaultValue={boolToValue(product.es_mas_vendidos)} style={inputStyle}>
+            <select name="es_mas_vendido" defaultValue={boolToValue(product.es_mas_vendido)} style={inputStyle}>
               <option value="">NULO</option>
               <option value="TRUE">VERDADERO</option>
               <option value="FALSE">FALSO</option>
@@ -137,7 +131,6 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         </div>
       </form>
 
-      {/* SECCIÓN CARACTERÍSTICAS TÉCNICAS */}
       <section style={{ marginTop: '50px', borderTop: '2px solid #f0f0f0', paddingTop: '30px' }}>
         <h2 style={{ fontSize: '18px', marginBottom: '20px', fontWeight: '700' }}>Características Técnicas</h2>
         <form action={createCaracteristica} style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px', marginBottom: '25px', backgroundColor: '#fcfcfc', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
@@ -164,7 +157,6 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
             <input name="orden" type="number" defaultValue="0" style={inputStyle} />
           </div>
 
-          {/* BOTÓN AÑADIR (CORREGIDO: ABAJO Y CORTO) */}
           <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
             <button type="submit" style={{ width: '220px', height: '47px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
               Añadir Característica
