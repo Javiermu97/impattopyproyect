@@ -2,17 +2,14 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-// Cambiamos a la importación que sí está exportada correctamente
 import { createAuthServerClient } from '@/lib/supabase/auth-server';
 
 /* =========================================================
 ✅ PRODUCTOS
 ========================================================= */
 
-// ✅ CREAR PRODUCTO
 export async function createProduct(formData: FormData) {
   const supabase = await createAuthServerClient();
-
   const galleryRaw = formData.get('galleryImages');
 
   const data = {
@@ -36,15 +33,12 @@ export async function createProduct(formData: FormData) {
   };
 
   await supabase.from('productos').insert(data);
-
   revalidatePath('/admin/products');
   redirect('/admin/products?success=true');
 }
 
-// ✅ ACTUALIZAR PRODUCTO
 export async function updateProduct(id: number, formData: FormData) {
   const supabase = await createAuthServerClient();
-
   const galleryRaw = formData.get('galleryImages');
 
   const data = {
@@ -68,18 +62,14 @@ export async function updateProduct(id: number, formData: FormData) {
   };
 
   await supabase.from('productos').update(data).eq('id', id);
-
   revalidatePath('/admin/products');
   revalidatePath(`/admin/products/edit/${id}`);
   redirect('/admin/products?updated=true');
 }
 
-// ✅ BORRAR PRODUCTO
 export async function deleteProduct(id: number) {
   const supabase = await createAuthServerClient();
-
   await supabase.from('productos').delete().eq('id', id);
-
   revalidatePath('/admin/products');
 }
 
@@ -87,12 +77,12 @@ export async function deleteProduct(id: number) {
 ✅ CARACTERÍSTICAS
 ========================================================= */
 
-// ✅ CREAR CARACTERÍSTICA
 export async function createCaracteristica(formData: FormData) {
   const supabase = await createAuthServerClient();
+  const producto_id = Number(formData.get('producto_id'));
 
   const data = {
-    producto_id: Number(formData.get('producto_id')),
+    producto_id: producto_id,
     titulo: String(formData.get('titulo')),
     descripcion: String(formData.get('descripcion') || ''),
     imagen: String(formData.get('imagen') || ''),
@@ -100,28 +90,39 @@ export async function createCaracteristica(formData: FormData) {
   };
 
   await supabase.from('caracteristicas').insert(data);
+  revalidatePath(`/admin/products/edit/${producto_id}`);
+}
 
+export async function deleteCaracteristica(id: number) {
+  const supabase = await createAuthServerClient();
+  await supabase.from('caracteristicas').delete().eq('id', id);
   revalidatePath('/admin/products');
 }
 
-// ✅ BORRAR CARACTERÍSTICA
-export async function deleteCaracteristica(id: number) {
+// ✅ ESTA ES LA QUE FALTABA
+export async function updateCaracteristica(id: number, formData: FormData) {
   const supabase = await createAuthServerClient();
+  const producto_id = formData.get('producto_id');
 
-  await supabase.from('caracteristicas').delete().eq('id', id);
+  const data = {
+    titulo: String(formData.get('titulo')),
+    descripcion: String(formData.get('descripcion') || ''),
+    imagen: String(formData.get('imagen') || ''),
+    orden: Number(formData.get('orden')) || 0,
+  };
 
-  revalidatePath('/admin/products');
+  await supabase.from('caracteristicas').update(data).eq('id', id);
+
+  revalidatePath(`/admin/products/edit/${producto_id}`);
+  redirect(`/admin/products/edit/${producto_id}`);
 }
 
 /* =========================================================
 ✅ ÓRDENES
 ========================================================= */
 
-// ✅ ACTUALIZAR ESTADO DE ORDEN
 export async function updateOrderStatus(id: number, status: string) {
   const supabase = await createAuthServerClient();
-
   await supabase.from('orders').update({ status }).eq('id', id);
-
   revalidatePath('/admin/orders');
 }
