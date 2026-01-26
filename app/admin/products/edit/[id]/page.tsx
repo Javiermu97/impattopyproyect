@@ -17,6 +17,7 @@ async function getProduct(id: number) {
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const product = await getProduct(Number(resolvedParams.id));
+  
   if (!product) notFound();
 
   const inputStyle = {
@@ -34,17 +35,23 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     outline: 'none'
   };
 
-  const labelStyle = { display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '700', color: '#1a1a1a' };
-  
-  // Ajustamos para que coincida con los strings que espera el actions.ts
+  const labelStyle = {
+    display: 'block',
+    marginBottom: '6px',
+    fontSize: '13px',
+    fontWeight: '700',
+    color: '#1a1a1a'
+  };
+
   const boolToValue = (val: any) => val === true ? "TRUE" : val === false ? "FALSE" : "";
 
   return (
     <div style={{ padding: '40px 20px', maxWidth: '900px', margin: '0 auto', fontFamily: 'sans-serif', minHeight: '90vh' }}>
-      <h1 style={{ marginBottom: '30px', fontSize: '22px', fontWeight: '700' }}>Editar Producto: {product.name}</h1>
+      <h1 style={{ marginBottom: '30px', fontSize: '22px', fontWeight: '700' }}>
+        Editar Producto: {product.name}
+      </h1>
 
       <form action={updateProduct.bind(null, product.id)} style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '16px', boxShadow: '0 4px 15px rgba(0,0,0,0.06)', border: '1px solid #eee' }}>
-        
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '15px', marginBottom: '20px' }}>
           <div>
             <label style={labelStyle}>Nombre del Producto</label>
@@ -71,7 +78,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           </div>
           <div>
             <label style={labelStyle}>Disponibilidad</label>
-            <select name="inStock" defaultValue={boolToValue(product.inStock)} style={inputStyle}>
+            <select name="inStock" defaultValue={product.inStock ? "TRUE" : "FALSE"} style={inputStyle}>
               <option value="TRUE">EN STOCK</option>
               <option value="FALSE">AGOTADO</option>
             </select>
@@ -95,35 +102,33 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         </div>
 
         <div style={{ marginBottom: '20px' }}>
-          <label style={labelStyle}>Descripción del Producto</label>
-          {/* CORRECCIÓN: 'name' debe ser "descripcion" y 'defaultValue' debe ser product.descripcion */}
-          <textarea 
-            name="descripcion" 
-            defaultValue={product.descripcion || ''} 
-            style={{ ...inputStyle, height: '80px', fontFamily: 'inherit' }} 
-          />
+          <label style={labelStyle}>Descripción Texto Oferta (Detalle)</label>
+          <textarea name="descripcion" defaultValue={product["descripción"] || product.descripcion || ''} style={{ ...inputStyle, height: '60px', fontFamily: 'inherit' }} />
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '30px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
           <div>
             <label style={labelStyle}>¿Más Vendido?</label>
             <select name="es_mas_vendido" defaultValue={boolToValue(product.es_mas_vendido)} style={inputStyle}>
-              <option value="FALSE">FALSO</option>
+              <option value="">NULO</option>
               <option value="TRUE">VERDADERO</option>
+              <option value="FALSE">FALSO</option>
             </select>
           </div>
           <div>
             <label style={labelStyle}>¿Destacado Semana?</label>
             <select name="es_destacado_semana" defaultValue={boolToValue(product.es_destacado_semana)} style={inputStyle}>
-              <option value="FALSE">FALSO</option>
+              <option value="">NULO</option>
               <option value="TRUE">VERDADERO</option>
+              <option value="FALSE">FALSO</option>
             </select>
           </div>
           <div>
             <label style={labelStyle}>¿Destacado Hogar?</label>
             <select name="es_destacado_hogar" defaultValue={boolToValue(product.es_destacado_hogar)} style={inputStyle}>
-              <option value="FALSE">FALSO</option>
+              <option value="">NULO</option>
               <option value="TRUE">VERDADERO</option>
+              <option value="FALSE">FALSO</option>
             </select>
           </div>
         </div>
@@ -135,9 +140,9 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         </div>
       </form>
 
-      {/* --- SECCIÓN DE CARACTERÍSTICAS --- */}
       <section style={{ marginTop: '50px', borderTop: '2px solid #f0f0f0', paddingTop: '30px' }}>
         <h2 style={{ fontSize: '18px', marginBottom: '20px', fontWeight: '700' }}>Características Técnicas</h2>
+        
         <form action={createCaracteristica} style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px', marginBottom: '25px', backgroundColor: '#fcfcfc', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
           <input type="hidden" name="producto_id" value={product.id} />
           
@@ -153,15 +158,15 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           </div>
           
           <div>
-            <label style={labelStyle}>Descripción</label>
+            <label style={labelStyle}>Descripción (Permite varias líneas)</label>
             <textarea name="descripcion" required style={{ ...inputStyle, height: '80px', fontFamily: 'inherit' }} />
           </div>
-
+          
           <div style={{ width: '120px' }}>
             <label style={labelStyle}>Orden</label>
             <input name="orden" type="number" defaultValue="0" style={inputStyle} />
           </div>
-
+          
           <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
             <button type="submit" style={{ width: '220px', height: '47px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
               Añadir Característica
