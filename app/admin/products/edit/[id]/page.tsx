@@ -94,12 +94,18 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
         <div style={{ marginBottom: '20px' }}>
           <label style={labelStyle}>Descripción Texto Oferta (Detalle)</label>
-          <textarea name="descripcion_oferta" defaultValue={product.descripcion_oferta || ''} style={{ ...inputStyle, height: '60px', fontFamily: 'inherit' }} />
+          {/* CORRECCIÓN: Usamos product["descripción"] para leer el dato de Supabase */}
+          <textarea 
+            name="descripcion_oferta" 
+            defaultValue={product["descripción"] || ''} 
+            style={{ ...inputStyle, height: '60px', fontFamily: 'inherit' }} 
+          />
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '30px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
           <div>
             <label style={labelStyle}>¿Más Vendido?</label>
+            {/* CORRECCIÓN: Se usa es_mas_vendido en singular */}
             <select name="es_mas_vendido" defaultValue={boolToValue(product.es_mas_vendido)} style={inputStyle}>
               <option value="">NULO</option>
               <option value="TRUE">VERDADERO</option>
