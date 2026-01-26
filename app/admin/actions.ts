@@ -26,7 +26,7 @@ export async function createProduct(formData: FormData) {
         ? galleryRaw.split(',').map((img: string) => img.trim())
         : [],
     inStock: formData.get('inStock') === 'TRUE' || formData.get('inStock') === 'on', 
-    es_mas_vendidos: formData.get('es_mas_vendidos') === 'TRUE',
+    es_mas_vendido: formData.get('es_mas_vendido') === 'TRUE',
     es_destacado_semana: formData.get('es_destacado_semana') === 'TRUE',
     es_destacado_hogar: formData.get('es_destacado_hogar') === 'TRUE',
   };
@@ -56,7 +56,7 @@ export async function updateProduct(id: number, formData: FormData) {
         ? galleryRaw.split(',').map((img: string) => img.trim())
         : [],
     inStock: formData.get('inStock') === 'TRUE',
-    es_mas_vendidos: formData.get('es_mas_vendidos') === 'TRUE',
+    es_mas_vendido: formData.get('es_mas_vendido') === 'TRUE',
     es_destacado_semana: formData.get('es_destacado_semana') === 'TRUE',
     es_destacado_hogar: formData.get('es_destacado_hogar') === 'TRUE',
   };
@@ -65,6 +65,7 @@ export async function updateProduct(id: number, formData: FormData) {
   if (error) throw new Error(error.message);
 
   revalidatePath('/admin/products');
+  revalidatePath(`/admin/products/edit/${id}`);
   redirect('/admin/products?updated=true');
 }
 
@@ -84,7 +85,7 @@ export async function createCaracteristica(formData: FormData) {
   const producto_id = Number(formData.get('producto_id'));
 
   const data = {
-    producto_id,
+    "id del producto": producto_id,
     titulo: String(formData.get('titulo')),
     descripcion: String(formData.get('descripcion') || ''),
     imagen: String(formData.get('imagen') || ''),
@@ -99,10 +100,10 @@ export async function createCaracteristica(formData: FormData) {
 
 export async function deleteCaracteristica(id: number) {
   const supabase = await createAuthServerClient();
-  const { data } = await supabase.from('caracteristicas').select('producto_id').eq('id', id).single();
+  const { data } = await supabase.from('caracteristicas').select('"id del producto"').eq('id', id).single();
   const { error } = await supabase.from('caracteristicas').delete().eq('id', id);
   if (error) throw new Error(error.message);
-  if (data) revalidatePath(`/admin/products/edit/${data.producto_id}`);
+  if (data) revalidatePath(`/admin/products/edit/${data["id del producto"]}`);
 }
 
 export async function updateCaracteristica(id: number, formData: FormData) {
