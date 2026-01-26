@@ -21,7 +21,7 @@ export async function createProduct(formData: FormData) {
     videoUrl: String(formData.get('videoUrl') || ''),
     categoria: String(formData.get('categoria') || ''),
     texto_oferta: String(formData.get('texto_oferta') || ''),
-    descripcion_oferta: String(formData.get('descripcion_oferta') || ''),
+    descripcion_oferta: String(formData.get('descripcion_oferta') || ''), // Mantenido
     galleryImages: typeof galleryRaw === 'string' && galleryRaw.length > 0
         ? galleryRaw.split(',').map((img: string) => img.trim())
         : [],
@@ -51,7 +51,7 @@ export async function updateProduct(id: number, formData: FormData) {
     videoUrl: String(formData.get('videoUrl') || ''),
     categoria: String(formData.get('categoria') || ''),
     texto_oferta: String(formData.get('texto_oferta') || ''),
-    descripcion_oferta: String(formData.get('descripcion_oferta') || ''),
+    descripcion_oferta: String(formData.get('descripcion_oferta') || ''), // Mantenido
     galleryImages: typeof galleryRaw === 'string' && galleryRaw.length > 0
         ? galleryRaw.split(',').map((img: string) => img.trim())
         : [],
@@ -85,7 +85,7 @@ export async function createCaracteristica(formData: FormData) {
   const producto_id = Number(formData.get('producto_id'));
 
   const data = {
-    "id del producto": producto_id,
+    "id del producto": producto_id, // Nombre exacto que confirmaste
     titulo: String(formData.get('titulo')),
     descripcion: String(formData.get('descripcion') || ''),
     imagen: String(formData.get('imagen') || ''),
@@ -100,19 +100,30 @@ export async function createCaracteristica(formData: FormData) {
 
 export async function deleteCaracteristica(id: number) {
   const supabase = await createAuthServerClient();
-  const { data } = await supabase.from('caracteristicas').select('"id del producto"').eq('id', id).single();
-  const { error } = await supabase.from('caracteristicas').delete().eq('id', id);
-  if (error) throw new Error(error.message);
-  if (data) revalidatePath(`/admin/products/edit/${data["id del producto"]}`);
+  
+  // Usamos el nombre de columna con espacios como lo tienes en Supabase
+  const { data, error: fetchError } = await supabase
+    .from('caracteristicas')
+    .select('"id del producto"')
+    .eq('id', id)
+    .single();
+
+  const { error: deleteError } = await supabase.from('caracteristicas').delete().eq('id', id);
+  
+  if (deleteError) throw new Error(deleteError.message);
+  
+  if (data) {
+    revalidatePath(`/admin/products/edit/${data["id del producto"]}`);
+  }
 }
 
 export async function updateCaracteristica(id: number, formData: FormData) {
   const supabase = await createAuthServerClient();
 
-  const titulo = formData.get('titulo') as string;
-  const descripcion = formData.get('descripcion') as string;
-  const imagen = formData.get('imagen') as string;
-  const orden = parseInt(formData.get('orden') as string) || 0;
+  const titulo = String(formData.get('titulo'));
+  const descripcion = String(formData.get('descripcion'));
+  const imagen = String(formData.get('imagen'));
+  const orden = Number(formData.get('orden')) || 0;
   const producto_id = formData.get('producto_id');
 
   const { error } = await supabase
@@ -125,10 +136,7 @@ export async function updateCaracteristica(id: number, formData: FormData) {
     })
     .eq('id', id);
 
-  if (error) {
-    console.error('Error al actualizar característica:', error);
-    throw new Error('No se pudo actualizar la característica');
-  }
+  if (error) throw new Error(error.message);
 
   revalidatePath(`/admin/products/edit/${producto_id}`);
   redirect(`/admin/products/edit/${producto_id}`);
