@@ -35,6 +35,8 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
   };
 
   const labelStyle = { display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '700', color: '#1a1a1a' };
+  
+  // Ajustamos para que coincida con los strings que espera el actions.ts
   const boolToValue = (val: any) => val === true ? "TRUE" : val === false ? "FALSE" : "";
 
   return (
@@ -69,7 +71,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           </div>
           <div>
             <label style={labelStyle}>Disponibilidad</label>
-            <select name="inStock" defaultValue={product.inStock ? "TRUE" : "FALSE"} style={inputStyle}>
+            <select name="inStock" defaultValue={boolToValue(product.inStock)} style={inputStyle}>
               <option value="TRUE">EN STOCK</option>
               <option value="FALSE">AGOTADO</option>
             </select>
@@ -93,39 +95,35 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         </div>
 
         <div style={{ marginBottom: '20px' }}>
-          <label style={labelStyle}>Descripción Texto Oferta (Detalle)</label>
-          {/* CORRECCIÓN: Usamos product["descripción"] para leer el dato de Supabase */}
+          <label style={labelStyle}>Descripción del Producto</label>
+          {/* CORRECCIÓN: 'name' debe ser "descripcion" y 'defaultValue' debe ser product.descripcion */}
           <textarea 
-            name="descripcion_oferta" 
-            defaultValue={product["descripción"] || ''} 
-            style={{ ...inputStyle, height: '60px', fontFamily: 'inherit' }} 
+            name="descripcion" 
+            defaultValue={product.descripcion || ''} 
+            style={{ ...inputStyle, height: '80px', fontFamily: 'inherit' }} 
           />
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '30px', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
           <div>
             <label style={labelStyle}>¿Más Vendido?</label>
-            {/* CORRECCIÓN: Se usa es_mas_vendido en singular */}
             <select name="es_mas_vendido" defaultValue={boolToValue(product.es_mas_vendido)} style={inputStyle}>
-              <option value="">NULO</option>
-              <option value="TRUE">VERDADERO</option>
               <option value="FALSE">FALSO</option>
+              <option value="TRUE">VERDADERO</option>
             </select>
           </div>
           <div>
             <label style={labelStyle}>¿Destacado Semana?</label>
             <select name="es_destacado_semana" defaultValue={boolToValue(product.es_destacado_semana)} style={inputStyle}>
-              <option value="">NULO</option>
-              <option value="TRUE">VERDADERO</option>
               <option value="FALSE">FALSO</option>
+              <option value="TRUE">VERDADERO</option>
             </select>
           </div>
           <div>
             <label style={labelStyle}>¿Destacado Hogar?</label>
             <select name="es_destacado_hogar" defaultValue={boolToValue(product.es_destacado_hogar)} style={inputStyle}>
-              <option value="">NULO</option>
-              <option value="TRUE">VERDADERO</option>
               <option value="FALSE">FALSO</option>
+              <option value="TRUE">VERDADERO</option>
             </select>
           </div>
         </div>
@@ -137,6 +135,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         </div>
       </form>
 
+      {/* --- SECCIÓN DE CARACTERÍSTICAS --- */}
       <section style={{ marginTop: '50px', borderTop: '2px solid #f0f0f0', paddingTop: '30px' }}>
         <h2 style={{ fontSize: '18px', marginBottom: '20px', fontWeight: '700' }}>Características Técnicas</h2>
         <form action={createCaracteristica} style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px', marginBottom: '25px', backgroundColor: '#fcfcfc', padding: '20px', borderRadius: '12px', border: '1px solid #eee' }}>
@@ -154,7 +153,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           </div>
           
           <div>
-            <label style={labelStyle}>Descripción (Permite varias líneas)</label>
+            <label style={labelStyle}>Descripción</label>
             <textarea name="descripcion" required style={{ ...inputStyle, height: '80px', fontFamily: 'inherit' }} />
           </div>
 

@@ -82,7 +82,8 @@ export async function createCaracteristica(formData: FormData) {
   const producto_id = Number(formData.get('producto_id'));
 
   const data = {
-    producto_id: producto_id,
+    // CAMBIO REALIZADO: Ajustado a "id del producto" para que coincida con tu tabla
+    "id del producto": producto_id,
     titulo: String(formData.get('titulo')),
     descripcion: String(formData.get('descripcion') || ''),
     imagen: String(formData.get('imagen') || ''),
@@ -99,7 +100,7 @@ export async function deleteCaracteristica(id: number) {
   revalidatePath('/admin/products');
 }
 
-// ✅ ESTA ES LA QUE FALTABA
+// ✅ ACTUALIZAR CARACTERÍSTICA
 export async function updateCaracteristica(id: number, formData: FormData) {
   const supabase = await createAuthServerClient();
   const producto_id = formData.get('producto_id');
@@ -114,6 +115,7 @@ export async function updateCaracteristica(id: number, formData: FormData) {
   await supabase.from('caracteristicas').update(data).eq('id', id);
 
   revalidatePath(`/admin/products/edit/${producto_id}`);
+  // Redirige de vuelta al producto para evitar el 404
   redirect(`/admin/products/edit/${producto_id}`);
 }
 
