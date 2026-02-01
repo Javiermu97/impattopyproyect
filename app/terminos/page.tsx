@@ -10,9 +10,9 @@ export default function TermsPage() {
       <div className={styles.content}>
         <h2>GENERALIDADES</h2>
         <p>
-          ArcaShop gestiona este sitio web. En todo el sitio, los términos
-          &quot;nosotros&quot;, &quot;nos&quot; y &quot;nuestro&quot; se refieren en lo sucesivo a ArcaShop.
-          ArcaShop ofrece esta página web, incluida toda la información, las
+          Impatto Py gestiona este sitio web. En todo el sitio, los términos
+          &quot;nosotros&quot;, &quot;nos&quot; y &quot;nuestro&quot; se refieren en lo sucesivo a Impatto.
+          Impatto ofrece esta página web, incluida toda la información, las
           herramientas y los servicios que se ponen en este sitio a disposición
           suya, el usuario, siempre y cuando acepte la totalidad de los términos,
           condiciones, políticas y avisos contemplados aquí.
