@@ -44,7 +44,7 @@ const IconChevron = () => (
 export default function ShopPageClient({ products }: { products: Product[] }) {
   const MIN_PRICE = 0;
   const MAX_PRICE = 500000;
-  const PRODUCTS_PER_PAGE = 8;
+  const PRODUCTS_PER_PAGE = 9;
 
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { user } = useAuth();
