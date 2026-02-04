@@ -568,6 +568,44 @@ body {
 .product-grid-shop.columns-3 { grid-template-columns: repeat(3, 1fr); }
 .product-grid-shop.columns-4 { grid-template-columns: repeat(4, 1fr); }
 
+/* --- RESPONSIVO PARA MÓVILES Y TABLETS --- */
+@media (max-width: 1024px) {
+  .products-section-gray .product-grid-shop {
+    padding: 0 2rem; /* Reducimos el padding lateral en tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  .products-section-gray .product-grid-shop {
+    padding: 0 1rem; /* Padding mínimo para móviles */
+  }
+
+  /* Forzamos 2 columnas para que los productos se vean grandes y claros */
+  .product-grid-shop.columns-2,
+  .product-grid-shop.columns-3,
+  .product-grid-shop.columns-4 {
+    grid-template-columns: repeat(2, 1fr) !important; 
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* En pantallas muy angostas, mantenemos 2 columnas pero con menos espacio */
+  .product-grid-shop.columns-2,
+  .product-grid-shop.columns-3,
+  .product-grid-shop.columns-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px;
+  }
+  
+  /* Si prefieres que en celulares muy pequeños se vea 1 solo producto por fila, 
+     cambia el 'repeat(2, 1fr)' de arriba por '1fr' */
+}
+
+
+
+
+
 
 
 
