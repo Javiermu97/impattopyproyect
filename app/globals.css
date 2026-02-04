@@ -577,15 +577,22 @@ body {
 
 @media (max-width: 768px) {
   .products-section-gray .product-grid-shop {
-    padding: 0 1rem; /* Padding mínimo para móviles */
+    padding: 0 1rem; 
   }
 
-  /* Forzamos 2 columnas para que los productos se vean grandes y claros */
-  .product-grid-shop.columns-2,
-  .product-grid-shop.columns-3,
-  .product-grid-shop.columns-4 {
+  /* Ahora cada clase respeta su número, permitiendo que el filtro funcione */
+  .product-grid-shop.columns-2 { 
     grid-template-columns: repeat(2, 1fr) !important; 
-    gap: 12px;
+  }
+  .product-grid-shop.columns-3 { 
+    grid-template-columns: repeat(3, 1fr) !important; 
+  }
+  .product-grid-shop.columns-4 { 
+    grid-template-columns: repeat(4, 1fr) !important; 
+  }
+
+  .product-grid-shop {
+    gap: 8px; /* Reducimos el espacio para que las columnas quepan bien en pantallas angostas */
   }
 }
 

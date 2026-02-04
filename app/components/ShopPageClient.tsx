@@ -125,10 +125,6 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
           (a, b) => new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime()
         );
         break;
-      case 'mas-vendidos':
-        // ✅ Corregido para evitar el error de TypeScript usando 'any'
-        filtered.sort((a: any, b: any) => (b.es_mas_vendido ? 1 : 0) - (a.es_mas_vendido ? 1 : 0));
-        break;
     }
     return filtered;
   }, [products, availability, priceRange, sortBy]);
@@ -301,6 +297,7 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
           </div>
         </div>
 
+        {/* ✅ CAMBIO CLAVE AQUÍ: Se aplicó backticks para que la clase columns-X funcione */}
         <div className={`product-grid-shop columns-${columns}`}>
           {currentProducts.length > 0 ? (
             currentProducts.map(product => {
