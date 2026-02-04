@@ -3553,7 +3553,83 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 
+/* ==================================================================== */
+/* ===== SOLUCIÓN FINAL: SEPARACIÓN TIENDA VS HOME (NO TOCAR) ======= */
+/* ==================================================================== */
 
+/* 1. REGLAS PARA LA TIENDA (ShopPageClient) */
+/* Solo funcionan cuando existe el contenedor .shop-layout */
+.shop-layout .product-grid-shop.columns-2 { grid-template-columns: repeat(2, 1fr) !important; }
+.shop-layout .product-grid-shop.columns-3 { grid-template-columns: repeat(3, 1fr) !important; }
+.shop-layout .product-grid-shop.columns-4 { grid-template-columns: repeat(4, 1fr) !important; }
+
+/* 2. REGLAS PARA LA HOME (Página de Inicio) */
+/* Forzamos 2 columnas en móvil y 3 en PC, ignorando los botones de la tienda */
+@media (max-width: 992px) {
+  /* Forzamos las 2 columnas en la Home */
+  .home-products-section .product-grid-shop {
+    grid-template-columns: repeat(2, 1fr) !important; 
+    display: grid !important;
+    gap: 12px !important;
+    padding: 0 1rem !important;
+    width: 100% !important;
+  }
+
+  /* Eliminamos el desborde lateral (el error del 100vw) */
+  .home-products-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    left: 0 !important;
+    overflow-x: hidden !important;
+  }
+}
+
+@media (min-width: 993px) {
+  /* En computadoras, la Home se queda con sus 3 columnas */
+  .home-products-section .product-grid-shop {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* 3. COMPORTAMIENTO GENERAL DE LA GRILLA (Para que no se rompa) */
+.product-grid-shop {
+  display: grid;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 4. RESPONSIVO PARA LA TIENDA (Botones y Filtros) */
+@media (max-width: 768px) {
+  .shop-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Ajuste de los controles de la tienda para que no se encimen */
+  .product-controls {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .sort-by select {
+    width: 100%;
+    min-width: 100%;
+  }
+}
+
+/* Ajuste de imágenes para que siempre se vean bien */
+.shop-product-card .image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.shop-product-card .image-container img {
+  object-fit: cover !important;
+}
 
 
 
