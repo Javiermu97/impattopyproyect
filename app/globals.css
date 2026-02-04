@@ -2090,14 +2090,21 @@ body {
   background-color: rgba(255, 255, 255, 0.9);
 }
 
+
+
+
+
+
+
+
 .image-nav-button.prev {
-  left: 2.5rem; /* Distancia desde el borde IZQUIERDO */
-  right: auto; /* Anulamos cualquier posicionamiento derecho */
+  left: 1rem; /* Reducido de 2.5rem para que no floten tanto */
+  right: auto;
 }
 
 .image-nav-button.next {
-  right: 2.5rem; /* Misma distancia desde el borde DERECHO */
-  left: auto; /* Anulamos cualquier posicionamiento izquierdo */
+  right: 1rem; /* Reducido de 2.5rem */
+  left: auto;
 }
 
 /* --- Para Tablets y dispositivos medianos (hasta 992px) --- */
@@ -2106,6 +2113,58 @@ body {
     grid-template-columns: 1fr; /* Cambia a una sola columna */
     gap: 2rem;
   }
+  .image-nav-button.prev {
+    left: 0.5rem;
+  }
+  .image-nav-button.next {
+    right: 0.5rem;
+  }
+  @media (max-width: 768px) {
+  /* Forzamos que los botones se vean siempre en móviles (sin necesidad de hover) 
+     ya que en táctil no existe el 'hover' */
+  .image-nav-button {
+    opacity: 1 !important; 
+    width: 35px;  /* Un poco más pequeñas para no tapar tanto */
+    height: 35px;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Pegadas al borde en pantallas angostas (433px, 375px, etc.) */
+  .image-nav-button.prev {
+    left: 5px;
+  }
+  .image-nav-button.next {
+    right: 5px;
+  }
+
+  .pdp-main-image-wrapper {
+    width: 100%;
+    position: relative;
+    /* Asegúrate de que no tenga padding lateral que empuje las flechas */
+    padding: 0 !important; 
+  }
+}
+
+/* Ajuste extremo para pantallas muy pequeñas (menos de 400px) */
+@media (max-width: 400px) {
+  .image-nav-button {
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+  }
+  .image-nav-button.prev {
+    left: 2px;
+  }
+  .image-nav-button.next {
+    right: 2px;
+  }
+}
+
+
+
+
+
+
 
   .pdp-gallery {
     position: static;
@@ -2120,6 +2179,9 @@ body {
     max-width: 600px; /* Limita el ancho del texto */
     margin: 0 auto; /* Centra el bloque de información */
   }
+
+
+
 
   /* --- CÓDIGO AÑADIDO PARA CORREGIR "NUESTRA FILOSOFÍA" --- */
   .philosophy-container {
