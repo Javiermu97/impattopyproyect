@@ -568,10 +568,14 @@ body {
 .product-grid-shop.columns-3 { grid-template-columns: repeat(3, 1fr); }
 .product-grid-shop.columns-4 { grid-template-columns: repeat(4, 1fr); }
 
-/* --- RESPONSIVO PARA MÓVILES Y TABLETS --- */
+/* --- RESPONSIVO PARA MÓVILES Y TABLETS (CORREGIDO) --- */
 @media (max-width: 1024px) {
+  .shop-layout {
+    grid-template-columns: 1fr; /* Los filtros pasan arriba en tablets/móviles */
+  }
+  
   .products-section-gray .product-grid-shop {
-    padding: 0 2rem; /* Reducimos el padding lateral en tablets */
+    padding: 0 2rem;
   }
 }
 
@@ -580,29 +584,46 @@ body {
     padding: 0 1rem; 
   }
 
-  /* Ahora cada clase respeta su número, permitiendo que el filtro funcione */
+  /* Forzamos que el grid se actualice al pulsar los botones */
   .product-grid-shop.columns-2 { 
     grid-template-columns: repeat(2, 1fr) !important; 
+    display: grid !important;
   }
   .product-grid-shop.columns-3 { 
     grid-template-columns: repeat(3, 1fr) !important; 
+    display: grid !important;
   }
   .product-grid-shop.columns-4 { 
     grid-template-columns: repeat(4, 1fr) !important; 
+    display: grid !important;
   }
 
   .product-grid-shop {
-    gap: 8px; /* Reducimos el espacio para que las columnas quepan bien en pantallas angostas */
+    gap: 10px;
+    width: 100%;
+  }
+
+  /* Ajustamos los controles para que no se amontonen */
+  .product-controls {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
   }
 }
 
 @media (max-width: 480px) {
-  /* En pantallas muy angostas, mantenemos 2 columnas pero con menos espacio */
-  .product-grid-shop.columns-2,
-  .product-grid-shop.columns-3,
-  .product-grid-shop.columns-4 {
-    grid-template-columns: repeat(2, 1fr) !important;
+  /* Eliminamos la regla que forzaba 2 columnas y dejamos que los botones manden */
+  .product-grid-shop {
     gap: 8px;
+  }
+
+  .sort-by select {
+    min-width: 100%; /* El selector de orden ocupa todo el ancho en móviles */
+  }
+
+  /* Ajuste visual para que las tarjetas no queden tan pequeñas en 3 o 4 columnas */
+  .shop-product-card h4 {
+    font-size: 0.8rem;
   }
   
   /* Si prefieres que en celulares muy pequeños se vea 1 solo producto por fila, 
