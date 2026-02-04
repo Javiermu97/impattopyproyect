@@ -387,23 +387,60 @@ body {
 
 /* 1. Hacemos que la sección sea de ancho completo Y centramos los títulos */
 .home-products-section {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  width: 100%; /* Cambiado de 100vw para evitar desbordes */
+  max-width: 100%;
   box-sizing: border-box;
-  padding: 50px 0; /* Padding vertical, el horizontal lo controla la grilla de abajo */
-  text-align: center; /* <-- CORRECCIÓN: Centra los títulos como "Especial de la Semana" */
+  padding: 40px 0;
+  text-align: center;
+  overflow-x: hidden; /* Seguridad extra contra scroll horizontal */
 }
 
-/* 2. Limitamos el ancho de la GRILLA DE PRODUCTOS para que no toque los bordes */
+/* Grilla de productos en la Home */
 .home-products-section .product-grid-shop {
-  max-width: 1800px; /* Define el ancho máximo para la grilla de productos */
-  margin: 0 auto;    /* Centra la grilla dentro de la sección de ancho completo */
-  padding: 0 2rem;  /* Crea el espacio a los costados para que no se pegue a los bordes */
+  display: grid;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 4rem; /* Padding para ordenadores */
+  gap: 20px;
 }
+/* --- RESPONSIVO HOME --- */
+
+@media (max-width: 992px) {
+  .home-products-section .product-grid-shop {
+    /* Forzamos 2 columnas en móviles/tablets aunque el HTML diga columns-3 */
+    grid-template-columns: repeat(2, 1fr) !important;
+    padding: 0 1rem; /* Reducimos espacio lateral en móviles */
+    gap: 12px;
+  }
+}
+
+@media (min-width: 993px) {
+  /* En ordenadores respetamos las 3 columnas */
+  .home-products-section .product-grid-shop.columns-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Ajuste de títulos para móvil */
+@media (max-width: 768px) {
+  .home-products-section {
+    padding: 25px 0;
+  }
+  .section-title {
+    font-size: 1.5rem;
+    padding: 0 10px;
+  }
+}
+
+/* --- Títulos y Header --- */
+.shop-header { margin-bottom: 2rem; padding-top: 2rem; }
+.shop-header h1 { font-size: 2.5rem; font-weight: bold; text-align: center; margin-bottom: 3rem; }
+
+
+
+
+
+
 
 .shop-header { margin-bottom: 2rem; padding-top: 2rem; }
 .shop-header h1 { font-size: 2.5rem; font-weight: bold; text-align: center; margin-bottom: 3rem; }
