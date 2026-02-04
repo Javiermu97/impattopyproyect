@@ -44,7 +44,10 @@ const IconChevron = () => (
 export default function ShopPageClient({ products }: { products: Product[] }) {
   const MIN_PRICE = 0;
   const MAX_PRICE = 500000;
-  const PRODUCTS_PER_PAGE = 9;
+  
+  // ✅ CAMBIO 1: Cambiamos 9 por 12. 
+  // 12 es divisible por 2, 3 y 4. Así nunca quedará un producto solo al final.
+  const PRODUCTS_PER_PAGE = 12;
 
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { user } = useAuth();
@@ -53,13 +56,23 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
   const [availability, setAvailability] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([MIN_PRICE, MAX_PRICE]);
   const [sortBy, setSortBy] = useState('caracteristicas');
+  
+  // ✅ CAMBIO 2: Estado de columnas dinámico al cargar
   const [columns, setColumns] = useState(3);
+
   const [priceInputs, setPriceInputs] = useState({
     min: priceRange[0].toLocaleString('es-PY'),
     max: priceRange[1].toLocaleString('es-PY'),
   });
   const [openFilters, setOpenFilters] = useState({ availability: true, price: true });
   const [currentPage, setCurrentPage] = useState(1);
+
+  // ✅ CAMBIO 3: Efecto para detectar el ancho de pantalla al inicio
+  useEffect(() => {
+    if (window.innerWidth <= 992) {
+      setColumns(2);
+    }
+  }, []);
 
   const toggleFilterSection = (name: keyof typeof openFilters) => {
     setOpenFilters(prev => ({ ...prev, [name]: !prev[name] }));
@@ -297,7 +310,6 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
           </div>
         </div>
 
-        {/* ✅ CAMBIO CLAVE AQUÍ: Se aplicó backticks para que la clase columns-X funcione */}
         <div className={`product-grid-shop columns-${columns}`}>
           {currentProducts.length > 0 ? (
             currentProducts.map(product => {
