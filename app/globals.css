@@ -3635,108 +3635,153 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
-/* --- DRAWER DE FILTROS MOBILE --- */
+/* --- DRAWER DE FILTROS MOBILE (MODERNO & BLACK) --- */
 
-/* 1. Esconder el botón de filtros en Desktop */
 .mobile-filter-trigger {
   display: none;
 }
 
 @media (max-width: 992px) {
-  /* Botón disparador con estilo moderno */
+  /* Botón disparador: Negro y sin bordes redondeados (Estilo Minimal) */
   .mobile-filter-trigger {
     display: flex;
     align-items: center;
     gap: 8px;
     background: white;
-    border: 1px solid #ddd;
-    padding: 8px 16px;
-    border-radius: 5px;
+    border: 1.5px solid #000;
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 0; 
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
   }
 
-  /* El Overlay */
+  .mobile-filter-trigger:active {
+    background: #000;
+    color: #fff;
+  }
+
+  /* Ocultar ordenar original en mobile */
+  .desktop-only-filter {
+    display: none !important;
+  }
+
   .filter-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease;
   }
   .filter-overlay.active {
     opacity: 1;
     visibility: visible;
   }
 
-  /* La Sidebar transformada en Drawer (desde la derecha) */
   .filters-sidebar {
     position: fixed;
     top: 0;
-    right: -100%; /* Escondido a la derecha */
+    right: -100%;
     width: 85%;
-    max-width: 350px;
+    max-width: 380px;
     height: 100%;
     background: white;
-    z-index: 1001;
+    z-index: 2001;
     display: flex;
     flex-direction: column;
-    padding: 0 !important; /* Reseteamos padding */
-    transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    padding: 0 !important;
+    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .filters-sidebar.drawer-open {
-    right: 0; /* Entra a la pantalla */
+    right: 0;
   }
 
-  /* Cabecera del Drawer */
   .drawer-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 25px 20px;
     border-bottom: 1px solid #eee;
   }
-  .drawer-header h3 { margin: 0; font-size: 1.2rem; text-transform: uppercase; }
-  .close-drawer { background: none; color: black; padding: 0; }
+  .drawer-header h3 { 
+    margin: 0; 
+    font-size: 1.1rem; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
 
-  /* Contenido con scroll independiente */
   .drawer-content {
     flex: 1;
     overflow-y: auto;
     padding: 20px;
   }
 
-  /* Botón fijo abajo para aplicar */
+  /* Selector de Ordenar dentro del Drawer */
+  .mobile-sort-select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #000;
+    background: #fff;
+    margin-top: 10px;
+    font-size: 0.95rem;
+    border-radius: 0;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='black' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+  }
+
+  /* Forzar color negro en inputs y quitar azul */
+  .price-input, .mobile-sort-select {
+    color: #000;
+    border: 1px solid #000 !important;
+  }
+
+  .price-input:focus, .mobile-sort-select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: #000 !important;
+  }
+
+  /* Checkboxes Negros */
+  input[type="checkbox"] {
+    accent-color: #000;
+  }
+
   .drawer-footer {
     padding: 20px;
     border-top: 1px solid #eee;
   }
+
   .btn-apply {
     width: 100%;
-    background: #A78D5A;
+    background: #000; /* Negro para un look moderno */
     color: white;
-    padding: 15px;
-    border-radius: 5px;
+    padding: 18px;
+    border-radius: 0;
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: 700;
+    letter-spacing: 2px;
+    border: none;
   }
 
-  /* Limpieza: Quitamos la línea horizontal extraña */
   .shop-layout {
-    display: block; /* En mobile ya no necesitamos el grid de 2 columnas para el layout */
+    display: block;
   }
 }
 
-/* En Desktop mantenemos todo igual */
 @media (min-width: 993px) {
-  .drawer-header, .drawer-footer { display: none; }
+  .drawer-header, .drawer-footer, .mobile-only-filter { display: none; }
   .filters-sidebar { position: static; width: auto; opacity: 1; visibility: visible; }
 }
 
