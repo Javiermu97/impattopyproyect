@@ -42,17 +42,14 @@ interface ShopPageClientProps {
 }
 
 export default function ShopPageClient({ products }: ShopPageClientProps) {
-  // Constantes de configuración
   const MIN_PRICE = 0;
   const MAX_PRICE = 500000;
   const PRODUCTS_PER_PAGE = 12;
 
-  // Contextos y Router
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { user } = useAuth();
   const router = useRouter();
 
-  // Estados de Filtros y UI
   const [availability, setAvailability] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([MIN_PRICE, MAX_PRICE]);
   const [sortBy, setSortBy] = useState('caracteristicas');
@@ -61,25 +58,21 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [openFilters, setOpenFilters] = useState({ availability: true, price: true });
 
-  // Estado para inputs de precio (manejo de formato Gs.)
   const [priceInputs, setPriceInputs] = useState({
     min: priceRange[0].toLocaleString('es-PY'),
     max: priceRange[1].toLocaleString('es-PY'),
   });
 
-  // Bloquear scroll cuando el drawer está abierto
   useEffect(() => {
     document.body.style.overflow = isFilterOpen ? 'hidden' : 'unset';
   }, [isFilterOpen]);
 
-  // Ajustar columnas iniciales en móvil
   useEffect(() => {
     if (window.innerWidth <= 992) {
       setColumns(2);
     }
   }, []);
 
-  // Actualizar inputs cuando el slider cambia
   useEffect(() => {
     setPriceInputs({
       min: priceRange[0].toLocaleString('es-PY'),
@@ -87,7 +80,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
     });
   }, [priceRange]);
 
-  // Resetear página al filtrar o cambiar orden
   useEffect(() => {
     setCurrentPage(1);
   }, [availability, priceRange, sortBy]);
@@ -116,7 +108,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
     setPriceRange(min > max ? [max, min] : [min, max]);
   };
 
-  // Lógica de conteo de disponibilidad
   const availabilityCounts = useMemo(() => {
     return {
       inStock: products.filter(p => p.inStock === true).length,
@@ -124,11 +115,9 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
     };
   }, [products]);
 
-  // Lógica principal de Filtrado y Ordenamiento
   const filteredProducts = useMemo(() => {
     let filtered = [...products];
 
-    // Filtro Disponibilidad
     if (availability.length > 0) {
       const inStockSelected = availability.includes('in-stock');
       const outOfStockSelected = availability.includes('out-of-stock');
@@ -139,12 +128,10 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
       }
     }
 
-    // Filtro Precio
     filtered = filtered.filter(
       p => (p.price || 0) >= priceRange[0] && (p.price || 0) <= priceRange[1]
     );
 
-    // Ordenamiento
     switch (sortBy) {
       case 'precio-asc': filtered.sort((a, b) => (a.price || 0) - (b.price || 0)); break;
       case 'precio-desc': filtered.sort((a, b) => (b.price || 0) - (a.price || 0)); break;
@@ -157,7 +144,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
     return filtered;
   }, [products, availability, priceRange, sortBy]);
 
-  // Paginación
   const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
   const currentProducts = filteredProducts.slice(
     (currentPage - 1) * PRODUCTS_PER_PAGE, 
@@ -182,13 +168,11 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
 
   return (
     <div className="shop-layout">
-      {/* Overlay para cerrar drawer */}
       <div 
         className={`filter-overlay ${isFilterOpen ? 'active' : ''}`} 
         onClick={() => setIsFilterOpen(false)} 
       />
 
-      {/* Sidebar / Drawer */}
       <aside className={`filters-sidebar ${isFilterOpen ? 'drawer-open' : ''}`}>
         <div className="drawer-header">
           <div className="header-title-container">
@@ -201,7 +185,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
         </div>
 
         <div className="drawer-content">
-          {/* Ordenar (Solo visible en Mobile dentro del drawer) */}
           <div className="filter-group mobile-only-filter">
             <h3 className="filter-title-main">ORDENAR POR</h3>
             <select 
@@ -218,7 +201,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
             </select>
           </div>
 
-          {/* Sección Disponibilidad */}
           <div className="filter-group">
             <button className="filter-title" onClick={() => toggleFilterSection('availability')}>
               <span>DISPONIBILIDAD</span>
@@ -248,7 +230,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
             </div>
           </div>
 
-          {/* Sección Precio */}
           <div className="filter-group">
             <button className="filter-title" onClick={() => toggleFilterSection('price')}>
               <span>PRECIO</span>
@@ -305,7 +286,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
         </div>
       </aside>
 
-      {/* Contenido Principal */}
       <main className="product-grid-area">
         <div className="product-controls">
           <button className="mobile-filter-trigger" onClick={() => setIsFilterOpen(true)}>
