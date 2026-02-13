@@ -3691,8 +3691,8 @@ input[type="number"]::-webkit-outer-spin-button {
   .filters-sidebar {
   position: fixed;
   top: 0;
-  left: -100%;          /* ⬅️ antes estaba right */
-  right: auto;
+  right: -100%;
+  left: auto;
   width: 85%;
   max-width: 400px;
   height: 100%;
@@ -3700,8 +3700,10 @@ input[type="number"]::-webkit-outer-spin-button {
   z-index: 2001;
   display: flex;
   flex-direction: column;
-  transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+  transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.filters-sidebar.drawer-open {
+  right: 0;
 }
 
 .filters-sidebar.drawer-open {
