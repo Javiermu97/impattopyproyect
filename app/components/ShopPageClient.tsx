@@ -56,6 +56,8 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
   const [columns, setColumns] = useState(3);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  
+  // CORRECCIÓN: Inicia en false para estar cerrados
   const [openFilters, setOpenFilters] = useState({ availability: false, price: false });
 
   const [priceInputs, setPriceInputs] = useState({
@@ -185,8 +187,11 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
         </div>
 
         <div className="drawer-content">
+          {/* ORDENAR POR: Misma tipología y estilo que los otros */}
           <div className="filter-group mobile-only-filter">
-            <h3 className="filter-title-main">ORDENAR POR</h3>
+            <div className="filter-title" style={{ borderTop: 'none', cursor: 'default' }}>
+              <span>ORDENAR POR</span>
+            </div>
             <select 
               className="mobile-sort-select" 
               value={sortBy} 
