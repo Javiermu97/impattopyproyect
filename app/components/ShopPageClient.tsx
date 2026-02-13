@@ -288,10 +288,10 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
 
       <main className="product-grid-area">
         <div className="product-controls">
-  <button className="mobile-filter-trigger" onClick={() => setIsFilterOpen(true)}>
-  <IoOptionsOutline size={18} />
-  <span>Filtrar y ordenar</span>
-</button>
+          <button className="mobile-filter-trigger" onClick={() => setIsFilterOpen(true)}>
+            <IoOptionsOutline size={18} />
+            <span>Filtrar y ordenar</span>
+          </button>
 
           <div className="view-toggles">
             <button onClick={() => setColumns(2)} className={columns === 2 ? 'active' : ''}><IconColumns2 /></button>
