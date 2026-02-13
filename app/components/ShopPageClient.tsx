@@ -9,7 +9,7 @@ import { IoHeartOutline, IoHeart, IoCloseOutline, IoOptionsOutline } from 'react
 import { useWishlist } from '@/app/context/WishlistContext';
 import { useAuth } from '@/app/context/AuthContext';
 
-// Iconos
+// --- ICONOS COMPONENTES ---
 const IconColumns2 = () => (
   <svg viewBox="0 0 16 16" fill="currentColor" height="1.2em" width="1.2em" style={{ display: 'block' }}>
     <rect x="2" y="2" width="5" height="12" rx="1"></rect>
@@ -31,59 +31,55 @@ const IconColumns4 = () => (
     <rect x="12" y="2" width="2.5" height="12" rx="0.5"></rect>
   </svg>
 );
-const IconX = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
-    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708 .708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-  </svg>
-);
 const IconChevron = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
     <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
   </svg>
 );
 
-export default function ShopPageClient({ products }: { products: Product[] }) {
+interface ShopPageClientProps {
+  products: Product[];
+}
+
+export default function ShopPageClient({ products }: ShopPageClientProps) {
+  // Constantes de configuración
   const MIN_PRICE = 0;
   const MAX_PRICE = 500000;
   const PRODUCTS_PER_PAGE = 12;
 
+  // Contextos y Router
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { user } = useAuth();
   const router = useRouter();
 
+  // Estados de Filtros y UI
   const [availability, setAvailability] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([MIN_PRICE, MAX_PRICE]);
   const [sortBy, setSortBy] = useState('caracteristicas');
   const [columns, setColumns] = useState(3);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [openFilters, setOpenFilters] = useState({ availability: true, price: true });
 
+  // Estado para inputs de precio (manejo de formato Gs.)
   const [priceInputs, setPriceInputs] = useState({
     min: priceRange[0].toLocaleString('es-PY'),
     max: priceRange[1].toLocaleString('es-PY'),
   });
-  const [openFilters, setOpenFilters] = useState({ availability: true, price: true });
 
+  // Bloquear scroll cuando el drawer está abierto
   useEffect(() => {
     document.body.style.overflow = isFilterOpen ? 'hidden' : 'unset';
   }, [isFilterOpen]);
 
+  // Ajustar columnas iniciales en móvil
   useEffect(() => {
-    if (window.innerWidth <= 992) setColumns(2);
+    if (window.innerWidth <= 992) {
+      setColumns(2);
+    }
   }, []);
 
-  const toggleFilterSection = (name: keyof typeof openFilters) => {
-    setOpenFilters(prev => ({ ...prev, [name]: !prev[name] }));
-  };
-
-  const availabilityCounts = useMemo(() => {
-    if (!products) return { inStock: 0, outOfStock: 0 };
-    return {
-      inStock: products.filter(p => p.inStock === true).length,
-      outOfStock: products.filter(p => p.inStock !== true).length,
-    };
-  }, [products]);
-
+  // Actualizar inputs cuando el slider cambia
   useEffect(() => {
     setPriceInputs({
       min: priceRange[0].toLocaleString('es-PY'),
@@ -91,14 +87,48 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
     });
   }, [priceRange]);
 
+  // Resetear página al filtrar o cambiar orden
   useEffect(() => {
     setCurrentPage(1);
-  }, [availability, priceRange, sortBy, products]);
+  }, [availability, priceRange, sortBy]);
 
+  const toggleFilterSection = (name: keyof typeof openFilters) => {
+    setOpenFilters(prev => ({ ...prev, [name]: !prev[name] }));
+  };
+
+  const handleAvailabilityChange = (value: string) => {
+    setAvailability(prev => 
+      prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
+    );
+  };
+
+  const handlePriceInputChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
+    const value = e.target.value.replace(/\D/g, '');
+    setPriceInputs(prev => ({ 
+      ...prev, 
+      [type]: value ? parseInt(value, 10).toLocaleString('es-PY') : '' 
+    }));
+  };
+
+  const handlePriceInputBlur = () => {
+    const min = parseInt(priceInputs.min.replace(/\./g, ''), 10) || MIN_PRICE;
+    const max = parseInt(priceInputs.max.replace(/\./g, ''), 10) || MAX_PRICE;
+    setPriceRange(min > max ? [max, min] : [min, max]);
+  };
+
+  // Lógica de conteo de disponibilidad
+  const availabilityCounts = useMemo(() => {
+    return {
+      inStock: products.filter(p => p.inStock === true).length,
+      outOfStock: products.filter(p => p.inStock !== true).length,
+    };
+  }, [products]);
+
+  // Lógica principal de Filtrado y Ordenamiento
   const filteredProducts = useMemo(() => {
-    if (!products) return [];
     let filtered = [...products];
 
+    // Filtro Disponibilidad
     if (availability.length > 0) {
       const inStockSelected = availability.includes('in-stock');
       const outOfStockSelected = availability.includes('out-of-stock');
@@ -109,62 +139,56 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
       }
     }
 
+    // Filtro Precio
     filtered = filtered.filter(
-      p => typeof p.price === 'number' && p.price >= priceRange[0] && p.price <= priceRange[1]
+      p => (p.price || 0) >= priceRange[0] && (p.price || 0) <= priceRange[1]
     );
 
+    // Ordenamiento
     switch (sortBy) {
       case 'precio-asc': filtered.sort((a, b) => (a.price || 0) - (b.price || 0)); break;
       case 'precio-desc': filtered.sort((a, b) => (b.price || 0) - (a.price || 0)); break;
       case 'nombre-asc': filtered.sort((a, b) => (a.name || '').localeCompare(b.name || '')); break;
       case 'nombre-desc': filtered.sort((a, b) => (b.name || '').localeCompare(a.name || '')); break;
-      case 'fecha-desc': filtered.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()); break;
-      case 'fecha-asc': filtered.sort((a, b) => new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime()); break;
+      case 'fecha-desc': 
+        filtered.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()); 
+        break;
     }
     return filtered;
   }, [products, availability, priceRange, sortBy]);
 
+  // Paginación
   const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
-  const currentProducts = filteredProducts.slice((currentPage - 1) * PRODUCTS_PER_PAGE, currentPage * PRODUCTS_PER_PAGE);
-
-  const handleAvailabilityChange = (value: string) => {
-    setAvailability(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]);
-  };
-
-  const handlePriceInputChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
-    const value = e.target.value.replace(/\D/g, '');
-    setPriceInputs(prev => ({ ...prev, [type]: value ? parseInt(value, 10).toLocaleString('es-PY') : '' }));
-  };
-
-  const handlePriceInputBlur = () => {
-    const min = parseInt(priceInputs.min.replace(/\./g, ''), 10) || MIN_PRICE;
-    const max = parseInt(priceInputs.max.replace(/\./g, ''), 10) || MAX_PRICE;
-    setPriceRange(min > max ? [max, min] : [min, max]);
-  };
+  const currentProducts = filteredProducts.slice(
+    (currentPage - 1) * PRODUCTS_PER_PAGE, 
+    currentPage * PRODUCTS_PER_PAGE
+  );
 
   const getPageNumbers = () => {
-    const pageNumbers: number[] = [];
-    if (totalPages <= 3) {
-      for (let i = 1; i <= totalPages; i++) pageNumbers.push(i);
-    } else {
-      if (currentPage <= 2) pageNumbers.push(1, 2, 3);
-      else if (currentPage >= totalPages - 1) pageNumbers.push(totalPages - 2, totalPages - 1, totalPages);
-      else pageNumbers.push(currentPage - 1, currentPage, currentPage + 1);
-    }
-    return pageNumbers;
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+    return pages;
   };
 
   const handleWishlistClick = (e: React.MouseEvent, productId: number) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!user) { router.push('/cuenta/login?redirected=true'); return; }
+    if (!user) {
+      router.push('/cuenta/login?redirected=true');
+      return;
+    }
     toggleWishlist(productId);
   };
 
   return (
     <div className="shop-layout">
-      <div className={`filter-overlay ${isFilterOpen ? 'active' : ''}`} onClick={() => setIsFilterOpen(false)} />
+      {/* Overlay para cerrar drawer */}
+      <div 
+        className={`filter-overlay ${isFilterOpen ? 'active' : ''}`} 
+        onClick={() => setIsFilterOpen(false)} 
+      />
 
+      {/* Sidebar / Drawer */}
       <aside className={`filters-sidebar ${isFilterOpen ? 'drawer-open' : ''}`}>
         <div className="drawer-header">
           <div className="header-title-container">
@@ -172,25 +196,29 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
             <span className="products-count">{filteredProducts.length} productos</span>
           </div>
           <button className="close-drawer" onClick={() => setIsFilterOpen(false)}>
-            <IoCloseOutline size={28} />
+            <IoCloseOutline size={32} />
           </button>
         </div>
 
         <div className="drawer-content">
+          {/* Ordenar (Solo visible en Mobile dentro del drawer) */}
           <div className="filter-group mobile-only-filter">
-             <h3 className="filter-title-main">ORDENAR POR</h3>
-             <select className="mobile-sort-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                <option value="caracteristicas">Características</option>
-                <option value="mas-vendidos">Más vendidos</option>
-                <option value="nombre-asc">Alfabéticamente, A-Z</option>
-                <option value="nombre-desc">Alfabéticamente, Z-A</option>
-                <option value="precio-asc">Precio, menor a mayor</option>
-                <option value="precio-desc">Precio, mayor a menor</option>
-                <option value="fecha-desc">Fecha: reciente a antiguo(a)</option>
-                <option value="fecha-asc">Fecha: antiguo(a) a reciente</option>
-             </select>
+            <h3 className="filter-title-main">ORDENAR POR</h3>
+            <select 
+              className="mobile-sort-select" 
+              value={sortBy} 
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="caracteristicas">Características</option>
+              <option value="nombre-asc">Alfabéticamente, A-Z</option>
+              <option value="nombre-desc">Alfabéticamente, Z-A</option>
+              <option value="precio-asc">Precio, menor a mayor</option>
+              <option value="precio-desc">Precio, mayor a menor</option>
+              <option value="fecha-desc">Más recientes</option>
+            </select>
           </div>
 
+          {/* Sección Disponibilidad */}
           <div className="filter-group">
             <button className="filter-title" onClick={() => toggleFilterSection('availability')}>
               <span>DISPONIBILIDAD</span>
@@ -200,16 +228,27 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
             </button>
             <div className={`filter-content ${openFilters.availability ? 'open' : ''}`}>
               <div className="filter-option">
-                <input type="checkbox" id="in-stock" checked={availability.includes('in-stock')} onChange={() => handleAvailabilityChange('in-stock')} />
+                <input 
+                  type="checkbox" 
+                  id="in-stock" 
+                  checked={availability.includes('in-stock')} 
+                  onChange={() => handleAvailabilityChange('in-stock')} 
+                />
                 <label htmlFor="in-stock">En existencia ({availabilityCounts.inStock})</label>
               </div>
               <div className="filter-option">
-                <input type="checkbox" id="out-of-stock" checked={availability.includes('out-of-stock')} onChange={() => handleAvailabilityChange('out-of-stock')} />
+                <input 
+                  type="checkbox" 
+                  id="out-of-stock" 
+                  checked={availability.includes('out-of-stock')} 
+                  onChange={() => handleAvailabilityChange('out-of-stock')} 
+                />
                 <label htmlFor="out-of-stock">Agotado ({availabilityCounts.outOfStock})</label>
               </div>
             </div>
           </div>
 
+          {/* Sección Precio */}
           <div className="filter-group">
             <button className="filter-title" onClick={() => toggleFilterSection('price')}>
               <span>PRECIO</span>
@@ -218,18 +257,41 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
               </span>
             </button>
             <div className={`filter-content ${openFilters.price ? 'open' : ''}`}>
-              <Slider.Root className="SliderRoot" value={priceRange} min={MIN_PRICE} max={MAX_PRICE} step={10000} onValueChange={(value) => setPriceRange(value as [number, number])}>
-                <Slider.Track className="SliderTrack"><Slider.Range className="SliderRange" /></Slider.Track>
-                <Slider.Thumb className="SliderThumb" /><Slider.Thumb className="SliderThumb" />
+              <Slider.Root 
+                className="SliderRoot" 
+                value={priceRange} 
+                min={MIN_PRICE} 
+                max={MAX_PRICE} 
+                step={10000} 
+                onValueChange={(value) => setPriceRange(value as [number, number])}
+              >
+                <Slider.Track className="SliderTrack">
+                  <Slider.Range className="SliderRange" />
+                </Slider.Track>
+                <Slider.Thumb className="SliderThumb" />
+                <Slider.Thumb className="SliderThumb" />
               </Slider.Root>
+              
               <div className="price-input-container">
                 <div className="price-input-wrapper">
                   <span>Gs.</span>
-                  <input type="text" className="price-input" value={priceInputs.min} onChange={(e) => handlePriceInputChange(e, 'min')} onBlur={handlePriceInputBlur} />
+                  <input 
+                    type="text" 
+                    className="price-input" 
+                    value={priceInputs.min} 
+                    onChange={(e) => handlePriceInputChange(e, 'min')} 
+                    onBlur={handlePriceInputBlur} 
+                  />
                 </div>
                 <div className="price-input-wrapper">
                   <span>Gs.</span>
-                  <input type="text" className="price-input" value={priceInputs.max} onChange={(e) => handlePriceInputChange(e, 'max')} onBlur={handlePriceInputBlur} />
+                  <input 
+                    type="text" 
+                    className="price-input" 
+                    value={priceInputs.max} 
+                    onChange={(e) => handlePriceInputChange(e, 'max')} 
+                    onBlur={handlePriceInputBlur} 
+                  />
                 </div>
               </div>
             </div>
@@ -243,6 +305,7 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
         </div>
       </aside>
 
+      {/* Contenido Principal */}
       <main className="product-grid-area">
         <div className="product-controls">
           <button className="mobile-filter-trigger" onClick={() => setIsFilterOpen(true)}>
@@ -260,13 +323,10 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
             <label htmlFor="sort">Ordenar:</label>
             <select id="sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <option value="caracteristicas">Características</option>
-              <option value="mas-vendidos">Más vendidos</option>
-              <option value="nombre-asc">Alfabéticamente, A-Z</option>
-              <option value="nombre-desc">Alfabéticamente, Z-A</option>
-              <option value="precio-asc">Precio, menor a mayor</option>
-              <option value="precio-desc">Precio, mayor a menor</option>
-              <option value="fecha-desc">Fecha: reciente a antiguo(a)</option>
-              <option value="fecha-asc">Fecha: antiguo(a) a reciente</option>
+              <option value="nombre-asc">A-Z</option>
+              <option value="nombre-desc">Z-A</option>
+              <option value="precio-asc">Menor precio</option>
+              <option value="precio-desc">Mayor precio</option>
             </select>
           </div>
         </div>
@@ -280,25 +340,48 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
                   <div className="shop-product-card">
                     <div className="image-container">
                       {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
-                      <Image src={product.imageUrl} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-primary" />
-                      {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-secondary" />}
+                      <Image 
+                        src={product.imageUrl} 
+                        alt={product.name} 
+                        fill 
+                        sizes="(max-width: 768px) 50vw, 33vw" 
+                        className="shop-product-image-primary" 
+                      />
+                      {product.imageUrl2 && (
+                        <Image 
+                          src={product.imageUrl2} 
+                          alt={product.name} 
+                          fill 
+                          sizes="(max-width: 768px) 50vw, 33vw" 
+                          className="shop-product-image-secondary" 
+                        />
+                      )}
                     </div>
                     <div className="shop-title-row">
                       <h4>{product.name}</h4>
-                      <button onClick={(e) => handleWishlistClick(e, pid)} className={`wishlist-inline-btn ${isInWishlist(pid) ? 'active' : ''}`}>
+                      <button 
+                        onClick={(e) => handleWishlistClick(e, pid)} 
+                        className={`wishlist-inline-btn ${isInWishlist(pid) ? 'active' : ''}`}
+                      >
                         {isInWishlist(pid) ? <IoHeart size={20}/> : <IoHeartOutline size={20}/>}
                       </button>
                     </div>
                     <div className="price-section">
-                      <span className="shop-product-price">Gs. {(product.price || 0).toLocaleString('es-PY')}</span>
-                      {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
+                      <span className="shop-product-price">
+                        Gs. {(product.price || 0).toLocaleString('es-PY')}
+                      </span>
+                      {product.oldPrice && (
+                        <span className="shop-product-old-price">
+                          Gs. {product.oldPrice.toLocaleString('es-PY')}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </Link>
               );
             })
           ) : (
-            <p className="no-products-message">No se encontraron productos con estos filtros.</p>
+            <p className="no-products-message">No se encontraron productos.</p>
           )}
         </div>
 
@@ -306,7 +389,13 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
           <div className="pagination">
             <button onClick={() => setCurrentPage(prev => prev - 1)} disabled={currentPage === 1}>&lt;</button>
             {getPageNumbers().map(number => (
-              <button key={number} onClick={() => setCurrentPage(number)} className={currentPage === number ? 'active' : ''}>{number}</button>
+              <button 
+                key={number} 
+                onClick={() => setCurrentPage(number)} 
+                className={currentPage === number ? 'active' : ''}
+              >
+                {number}
+              </button>
             ))}
             <button onClick={() => setCurrentPage(prev => prev + 1)} disabled={currentPage === totalPages}>&gt;</button>
           </div>
