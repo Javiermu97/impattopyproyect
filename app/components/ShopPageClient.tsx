@@ -9,7 +9,7 @@ import { IoHeartOutline, IoHeart, IoCloseOutline, IoOptionsOutline } from 'react
 import { useWishlist } from '@/app/context/WishlistContext';
 import { useAuth } from '@/app/context/AuthContext';
 
-// Iconos de Columnas
+// Iconos
 const IconColumns2 = () => (
   <svg viewBox="0 0 16 16" fill="currentColor" height="1.2em" width="1.2em" style={{ display: 'block' }}>
     <rect x="2" y="2" width="5" height="12" rx="1"></rect>
@@ -38,7 +38,7 @@ const IconX = () => (
 );
 const IconChevron = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-    <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 1 0 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+    <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
   </svg>
 );
 
@@ -65,17 +65,11 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
   const [openFilters, setOpenFilters] = useState({ availability: true, price: true });
 
   useEffect(() => {
-    if (isFilterOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    document.body.style.overflow = isFilterOpen ? 'hidden' : 'unset';
   }, [isFilterOpen]);
 
   useEffect(() => {
-    if (window.innerWidth <= 992) {
-      setColumns(2);
-    }
+    if (window.innerWidth <= 992) setColumns(2);
   }, []);
 
   const toggleFilterSection = (name: keyof typeof openFilters) => {
@@ -173,28 +167,16 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
 
       <aside className={`filters-sidebar ${isFilterOpen ? 'drawer-open' : ''}`}>
         <div className="drawer-header">
-          <h3>Filtros y Orden</h3>
+          <div className="header-title-container">
+            <h3>FILTROS</h3>
+            <span className="products-count">{filteredProducts.length} productos</span>
+          </div>
           <button className="close-drawer" onClick={() => setIsFilterOpen(false)}>
             <IoCloseOutline size={28} />
           </button>
         </div>
 
         <div className="drawer-content">
-          <div className="filter-group">
-            <h3 className="filter-title-main">TODO</h3>
-            <div className="active-filters-container">
-              {availability.map((filterValue) => (
-                <div key={filterValue} className="active-filter-badge">
-                  <span>{filterValue === 'in-stock' ? 'En existencia' : 'Agotado'}</span>
-                  <button onClick={() => handleAvailabilityChange(filterValue)} className="remove-filter-btn">
-                    <IconX />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ORDENAR (DENTRO DEL DRAWER) */}
           <div className="filter-group mobile-only-filter">
              <h3 className="filter-title-main">ORDENAR POR</h3>
              <select className="mobile-sort-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
@@ -211,7 +193,7 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
 
           <div className="filter-group">
             <button className="filter-title" onClick={() => toggleFilterSection('availability')}>
-              <span>Disponibilidad</span>
+              <span>DISPONIBILIDAD</span>
               <span className={`filter-chevron ${openFilters.availability ? 'open' : ''}`}>
                 <IconChevron />
               </span>
@@ -230,7 +212,7 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
 
           <div className="filter-group">
             <button className="filter-title" onClick={() => toggleFilterSection('price')}>
-              <span>Precio</span>
+              <span>PRECIO</span>
               <span className={`filter-chevron ${openFilters.price ? 'open' : ''}`}>
                 <IconChevron />
               </span>
@@ -256,7 +238,7 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
 
         <div className="drawer-footer">
           <button className="btn-apply" onClick={() => setIsFilterOpen(false)}>
-            Ver resultados ({filteredProducts.length})
+            VER RESULTADOS
           </button>
         </div>
       </aside>
@@ -274,7 +256,6 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
             <button onClick={() => setColumns(4)} className={columns === 4 ? 'active' : ''}><IconColumns4 /></button>
           </div>
 
-          {/* ESTO SOLO SE VE EN DESKTOP */}
           <div className="sort-by desktop-only-filter">
             <label htmlFor="sort">Ordenar:</label>
             <select id="sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>

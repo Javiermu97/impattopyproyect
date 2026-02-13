@@ -3635,89 +3635,76 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
-/* --- DRAWER DE FILTROS MOBILE (MODERNO & BLACK) --- */
+/* --- DRAWER DE FILTROS MOBILE (ESTILO JAREKOPAIT) --- */
 
 .mobile-filter-trigger {
   display: none;
 }
 
 @media (max-width: 992px) {
-  /* Botón disparador: Negro y sin bordes redondeados (Estilo Minimal) */
   .mobile-filter-trigger {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: white;
-    border: 1.5px solid #000;
-    color: #000;
+    background: #000; /* Botón negro */
+    border: none;
+    color: #fff;
     padding: 10px 20px;
     border-radius: 0; 
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.2s ease;
+    letter-spacing: 2px;
   }
 
-  .mobile-filter-trigger:active {
-    background: #000;
-    color: #fff;
-  }
-
-  /* Ocultar ordenar original en mobile */
-  .desktop-only-filter {
-    display: none !important;
-  }
+  .desktop-only-filter { display: none !important; }
 
   .filter-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
     z-index: 2000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
+    opacity: 0; visibility: hidden;
+    transition: 0.3s;
   }
-  .filter-overlay.active {
-    opacity: 1;
-    visibility: visible;
-  }
+  .filter-overlay.active { opacity: 1; visibility: visible; }
 
   .filters-sidebar {
     position: fixed;
-    top: 0;
-    right: -100%;
-    width: 85%;
-    max-width: 380px;
+    top: 0; right: -100%;
+    width: 100%; /* Ancho completo como Jarekopait */
     height: 100%;
     background: white;
     z-index: 2001;
     display: flex;
     flex-direction: column;
     padding: 0 !important;
-    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
-  .filters-sidebar.drawer-open {
-    right: 0;
-  }
+  .filters-sidebar.drawer-open { right: 0; }
 
   .drawer-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 20px;
-    border-bottom: 1px solid #eee;
+    padding: 20px;
+    border-bottom: 1px solid #f1f1f1;
   }
-  .drawer-header h3 { 
+  
+  .header-title-container h3 { 
     margin: 0; 
-    font-size: 1.1rem; 
+    font-size: 14px; 
     text-transform: uppercase; 
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     font-weight: 700;
+  }
+  
+  .products-count {
+    font-size: 11px;
+    color: #999;
+    display: block;
+    margin-top: 2px;
   }
 
   .drawer-content {
@@ -3726,14 +3713,22 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: 20px;
   }
 
-  /* Selector de Ordenar dentro del Drawer */
+  .filter-title-main {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    color: #000;
+    text-transform: uppercase;
+  }
+
   .mobile-sort-select {
     width: 100%;
     padding: 12px;
-    border: 1px solid #000;
+    border: 1px solid #e5e5e5;
     background: #fff;
-    margin-top: 10px;
-    font-size: 0.95rem;
+    margin-bottom: 25px;
+    font-size: 13px;
     border-radius: 0;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='black' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
@@ -3741,50 +3736,97 @@ input[type="number"]::-webkit-outer-spin-button {
     background-position: right 15px center;
   }
 
-  /* Forzar color negro en inputs y quitar azul */
-  .price-input, .mobile-sort-select {
+  /* Títulos de secciones colapsables */
+  .filter-title {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background: none;
+    border: none;
+    padding: 15px 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-top: 1px solid #f1f1f1;
     color: #000;
-    border: 1px solid #000 !important;
   }
 
-  .price-input:focus, .mobile-sort-select:focus {
+  .filter-chevron { transition: 0.3s; }
+  .filter-chevron.open { transform: rotate(180deg); }
+
+  .filter-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.3s ease-out;
+  }
+  .filter-content.open {
+    max-height: 500px;
+    padding-bottom: 20px;
+  }
+
+  .filter-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .filter-option label { font-size: 13px; color: #444; }
+
+  /* Inputs de Precio */
+  .price-input-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  .price-input-wrapper {
+    flex: 1;
+    border: 1px solid #e5e5e5;
+    padding: 10px;
+    display: flex;
+    font-size: 12px;
+    color: #888;
+  }
+  .price-input {
+    border: none !important;
     outline: none !important;
-    box-shadow: none !important;
-    border-color: #000 !important;
-  }
-
-  /* Checkboxes Negros */
-  input[type="checkbox"] {
-    accent-color: #000;
+    width: 100%;
+    margin-left: 5px;
+    font-weight: 500;
+    color: #000;
   }
 
   .drawer-footer {
     padding: 20px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #f1f1f1;
   }
 
   .btn-apply {
     width: 100%;
-    background: #000; /* Negro para un look moderno */
+    background: #000;
     color: white;
     padding: 18px;
     border-radius: 0;
     text-transform: uppercase;
     font-weight: 700;
+    font-size: 12px;
     letter-spacing: 2px;
     border: none;
   }
 
-  .shop-layout {
-    display: block;
-  }
+  .shop-layout { display: block; }
 }
 
-@media (min-width: 993px) {
-  .drawer-header, .drawer-footer, .mobile-only-filter { display: none; }
-  .filters-sidebar { position: static; width: auto; opacity: 1; visibility: visible; }
-}
+/* Matar el celeste de sistema */
+* { -webkit-tap-highlight-color: transparent; }
+input:focus, select:focus, button:focus { outline: none !important; box-shadow: none !important; }
 
+/* Estilo Slider */
+.SliderRoot { position: relative; display: flex; align-items: center; user-select: none; touch-action: none; width: 100%; height: 20px; }
+.SliderTrack { background-color: #e5e5e5; position: relative; flex-grow: 1; height: 2px; }
+.SliderRange { position: absolute; background-color: #000; height: 100%; }
+.SliderThumb { display: block; width: 16px; height: 16px; background-color: #000; border-radius: 50%; }
 
 
 
