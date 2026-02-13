@@ -5,10 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Product } from '@/lib/types';
-import { IoHeartOutline, IoHeart } from 'react-icons/io5';
+import { IoHeartOutline, IoHeart, IoCloseOutline, IoOptionsOutline } from 'react-icons/io5';
 import { useWishlist } from '@/app/context/WishlistContext';
 import { useAuth } from '@/app/context/AuthContext';
 
+// Iconos de Columnas
 const IconColumns2 = () => (
   <svg viewBox="0 0 16 16" fill="currentColor" height="1.2em" width="1.2em" style={{ display: 'block' }}>
     <rect x="2" y="2" width="5" height="12" rx="1"></rect>
@@ -44,30 +45,36 @@ const IconChevron = () => (
 export default function ShopPageClient({ products }: { products: Product[] }) {
   const MIN_PRICE = 0;
   const MAX_PRICE = 500000;
-  
-  // ✅ CAMBIO 1: Cambiamos 9 por 12. 
-  // 12 es divisible por 2, 3 y 4. Así nunca quedará un producto solo al final.
   const PRODUCTS_PER_PAGE = 12;
 
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { user } = useAuth();
   const router = useRouter();
 
+  // Estados de Filtros
   const [availability, setAvailability] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([MIN_PRICE, MAX_PRICE]);
   const [sortBy, setSortBy] = useState('caracteristicas');
-  
-  // ✅ CAMBIO 2: Estado de columnas dinámico al cargar
   const [columns, setColumns] = useState(3);
+  const [isFilterOpen, setIsFilterOpen] = useState(false); // ✅ Nuevo: Estado Drawer
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [priceInputs, setPriceInputs] = useState({
     min: priceRange[0].toLocaleString('es-PY'),
     max: priceRange[1].toLocaleString('es-PY'),
   });
   const [openFilters, setOpenFilters] = useState({ availability: true, price: true });
-  const [currentPage, setCurrentPage] = useState(1);
 
-  // ✅ CAMBIO 3: Efecto para detectar el ancho de pantalla al inicio
+  // ✅ Efecto: Control de scroll del Body al abrir Drawer
+  useEffect(() => {
+    if (isFilterOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isFilterOpen]);
+
+  // Efecto: Columnas responsivas iniciales
   useEffect(() => {
     if (window.innerWidth <= 992) {
       setColumns(2);
@@ -116,50 +123,26 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
     );
 
     switch (sortBy) {
-      case 'precio-asc':
-        filtered.sort((a, b) => (a.price || 0) - (b.price || 0));
-        break;
-      case 'precio-desc':
-        filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
-        break;
-      case 'nombre-asc':
-        filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-        break;
-      case 'nombre-desc':
-        filtered.sort((a, b) => (b.name || '').localeCompare(a.name || ''));
-        break;
-      case 'fecha-desc':
-        filtered.sort(
-          (a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()
-        );
-        break;
-      case 'fecha-asc':
-        filtered.sort(
-          (a, b) => new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime()
-        );
-        break;
+      case 'precio-asc': filtered.sort((a, b) => (a.price || 0) - (b.price || 0)); break;
+      case 'precio-desc': filtered.sort((a, b) => (b.price || 0) - (a.price || 0)); break;
+      case 'nombre-asc': filtered.sort((a, b) => (a.name || '').localeCompare(b.name || '')); break;
+      case 'nombre-desc': filtered.sort((a, b) => (b.name || '').localeCompare(a.name || '')); break;
+      case 'fecha-desc': filtered.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()); break;
+      case 'fecha-asc': filtered.sort((a, b) => new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime()); break;
     }
     return filtered;
   }, [products, availability, priceRange, sortBy]);
 
   const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
-  const currentProducts = filteredProducts.slice(
-    (currentPage - 1) * PRODUCTS_PER_PAGE,
-    currentPage * PRODUCTS_PER_PAGE
-  );
+  const currentProducts = filteredProducts.slice((currentPage - 1) * PRODUCTS_PER_PAGE, currentPage * PRODUCTS_PER_PAGE);
 
   const handleAvailabilityChange = (value: string) => {
-    setAvailability(prev =>
-      prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
-    );
+    setAvailability(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]);
   };
 
   const handlePriceInputChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
     const value = e.target.value.replace(/\D/g, '');
-    setPriceInputs(prev => ({
-      ...prev,
-      [type]: value ? parseInt(value, 10).toLocaleString('es-PY') : '',
-    }));
+    setPriceInputs(prev => ({ ...prev, [type]: value ? parseInt(value, 10).toLocaleString('es-PY') : '' }));
   };
 
   const handlePriceInputBlur = () => {
@@ -173,13 +156,9 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
     if (totalPages <= 3) {
       for (let i = 1; i <= totalPages; i++) pageNumbers.push(i);
     } else {
-      if (currentPage <= 2) {
-        pageNumbers.push(1, 2, 3);
-      } else if (currentPage >= totalPages - 1) {
-        pageNumbers.push(totalPages - 2, totalPages - 1, totalPages);
-      } else {
-        pageNumbers.push(currentPage - 1, currentPage, currentPage + 1);
-      }
+      if (currentPage <= 2) pageNumbers.push(1, 2, 3);
+      else if (currentPage >= totalPages - 1) pageNumbers.push(totalPages - 2, totalPages - 1, totalPages);
+      else pageNumbers.push(currentPage - 1, currentPage, currentPage + 1);
     }
     return pageNumbers;
   };
@@ -187,109 +166,102 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
   const handleWishlistClick = (e: React.MouseEvent, productId: number) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!user) {
-      router.push('/cuenta/login?redirected=true');
-      return;
-    }
+    if (!user) { router.push('/cuenta/login?redirected=true'); return; }
     toggleWishlist(productId);
   };
 
   return (
     <div className="shop-layout">
-      <aside className="filters-sidebar">
-        <div className="filter-group">
-          <h3 className="filter-title-main">TODO</h3>
-          <div className="active-filters-container">
-            {availability.map((filterValue) => (
-              <div key={filterValue} className="active-filter-badge">
-                <span>{filterValue === 'in-stock' ? 'En existencia' : 'Agotado'}</span>
-                <button onClick={() => handleAvailabilityChange(filterValue)} className="remove-filter-btn">
-                  <IconX />
-                </button>
+      {/* OVERLAY MOBILE */}
+      <div 
+        className={`filter-overlay ${isFilterOpen ? 'active' : ''}`} 
+        onClick={() => setIsFilterOpen(false)}
+      />
+
+      {/* ASIDE / DRAWER */}
+      <aside className={`filters-sidebar ${isFilterOpen ? 'drawer-open' : ''}`}>
+        <div className="drawer-header">
+          <h3>Filtros</h3>
+          <button className="close-drawer" onClick={() => setIsFilterOpen(false)}>
+            <IoCloseOutline size={28} />
+          </button>
+        </div>
+
+        <div className="drawer-content">
+          <div className="filter-group">
+            <h3 className="filter-title-main">TODO</h3>
+            <div className="active-filters-container">
+              {availability.map((filterValue) => (
+                <div key={filterValue} className="active-filter-badge">
+                  <span>{filterValue === 'in-stock' ? 'En existencia' : 'Agotado'}</span>
+                  <button onClick={() => handleAvailabilityChange(filterValue)} className="remove-filter-btn">
+                    <IconX />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="filter-group">
+            <button className="filter-title" onClick={() => toggleFilterSection('availability')}>
+              <span>Availability</span>
+              <span className={`filter-chevron ${openFilters.availability ? 'open' : ''}`}>
+                <IconChevron />
+              </span>
+            </button>
+            <div className={`filter-content ${openFilters.availability ? 'open' : ''}`}>
+              <div className="filter-option">
+                <input type="checkbox" id="in-stock" checked={availability.includes('in-stock')} onChange={() => handleAvailabilityChange('in-stock')} />
+                <label htmlFor="in-stock">En existencia ({availabilityCounts.inStock})</label>
               </div>
-            ))}
+              <div className="filter-option">
+                <input type="checkbox" id="out-of-stock" checked={availability.includes('out-of-stock')} onChange={() => handleAvailabilityChange('out-of-stock')} />
+                <label htmlFor="out-of-stock">Agotado ({availabilityCounts.outOfStock})</label>
+              </div>
+            </div>
+          </div>
+
+          <div className="filter-group">
+            <button className="filter-title" onClick={() => toggleFilterSection('price')}>
+              <span>Price</span>
+              <span className={`filter-chevron ${openFilters.price ? 'open' : ''}`}>
+                <IconChevron />
+              </span>
+            </button>
+            <div className={`filter-content ${openFilters.price ? 'open' : ''}`}>
+              <Slider.Root className="SliderRoot" value={priceRange} min={MIN_PRICE} max={MAX_PRICE} step={10000} onValueChange={(value) => setPriceRange(value as [number, number])}>
+                <Slider.Track className="SliderTrack"><Slider.Range className="SliderRange" /></Slider.Track>
+                <Slider.Thumb className="SliderThumb" /><Slider.Thumb className="SliderThumb" />
+              </Slider.Root>
+              <div className="price-input-container">
+                <div className="price-input-wrapper">
+                  <span>Gs.</span>
+                  <input type="text" className="price-input" value={priceInputs.min} onChange={(e) => handlePriceInputChange(e, 'min')} onBlur={handlePriceInputBlur} />
+                </div>
+                <div className="price-input-wrapper">
+                  <span>Gs.</span>
+                  <input type="text" className="price-input" value={priceInputs.max} onChange={(e) => handlePriceInputChange(e, 'max')} onBlur={handlePriceInputBlur} />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="filter-group">
-          <button className="filter-title" onClick={() => toggleFilterSection('availability')}>
-            <span>Availability</span>
-            <span className={`filter-chevron ${openFilters.availability ? 'open' : ''}`}>
-              <IconChevron />
-            </span>
+        <div className="drawer-footer">
+          <button className="btn-apply" onClick={() => setIsFilterOpen(false)}>
+            Ver resultados ({filteredProducts.length})
           </button>
-          <div className={`filter-content ${openFilters.availability ? 'open' : ''}`}>
-            <div className="filter-option">
-              <input
-                type="checkbox"
-                id="in-stock"
-                checked={availability.includes('in-stock')}
-                onChange={() => handleAvailabilityChange('in-stock')}
-              />
-              <label htmlFor="in-stock">En existencia ({availabilityCounts.inStock})</label>
-            </div>
-            <div className="filter-option">
-              <input
-                type="checkbox"
-                id="out-of-stock"
-                checked={availability.includes('out-of-stock')}
-                onChange={() => handleAvailabilityChange('out-of-stock')}
-              />
-              <label htmlFor="out-of-stock">Agotado ({availabilityCounts.outOfStock})</label>
-            </div>
-          </div>
-        </div>
-
-        <div className="filter-group">
-          <button className="filter-title" onClick={() => toggleFilterSection('price')}>
-            <span>Price</span>
-            <span className={`filter-chevron ${openFilters.price ? 'open' : ''}`}>
-              <IconChevron />
-            </span>
-          </button>
-          <div className={`filter-content ${openFilters.price ? 'open' : ''}`}>
-            <Slider.Root
-              className="SliderRoot"
-              value={priceRange}
-              min={MIN_PRICE}
-              max={MAX_PRICE}
-              step={10000}
-              onValueChange={(value) => setPriceRange(value as [number, number])}
-            >
-              <Slider.Track className="SliderTrack">
-                <Slider.Range className="SliderRange" />
-              </Slider.Track>
-              <Slider.Thumb className="SliderThumb" />
-              <Slider.Thumb className="SliderThumb" />
-            </Slider.Root>
-            <div className="price-input-container">
-              <div className="price-input-wrapper">
-                <span>Gs.</span>
-                <input
-                  type="text"
-                  className="price-input"
-                  value={priceInputs.min}
-                  onChange={(e) => handlePriceInputChange(e, 'min')}
-                  onBlur={handlePriceInputBlur}
-                />
-              </div>
-              <div className="price-input-wrapper">
-                <span>Gs.</span>
-                <input
-                  type="text"
-                  className="price-input"
-                  value={priceInputs.max}
-                  onChange={(e) => handlePriceInputChange(e, 'max')}
-                  onBlur={handlePriceInputBlur}
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </aside>
 
       <main className="product-grid-area">
         <div className="product-controls">
+          {/* TRIGGER MOBILE */}
+          <button className="mobile-filter-trigger" onClick={() => setIsFilterOpen(true)}>
+            <IoOptionsOutline size={20} />
+            <span>Filtros</span>
+          </button>
+
           <div className="view-toggles">
             <button onClick={() => setColumns(2)} className={columns === 2 ? 'active' : ''}><IconColumns2 /></button>
             <button onClick={() => setColumns(3)} className={columns === 3 ? 'active' : ''}><IconColumns3 /></button>
@@ -314,50 +286,23 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
           {currentProducts.length > 0 ? (
             currentProducts.map(product => {
               const pid = typeof product.id === 'string' ? Number(product.id) : product.id;
-
               return (
                 <Link key={product.id} href={`/products/${product.id}`} className="shop-product-card-link">
                   <div className="shop-product-card">
                     <div className="image-container">
                       {product.oldPrice && <span className="shop-offer-badge">Oferta</span>}
-                      <Image
-                        src={product.imageUrl}
-                        alt={product.name}
-                        fill
-                        sizes="(max-width: 768px) 50vw, 33vw"
-                        className="shop-product-image-primary"
-                      />
-                      {product.imageUrl2 && (
-                        <Image
-                          src={product.imageUrl2}
-                          alt={product.name}
-                          fill
-                          sizes="(max-width: 768px) 50vw, 33vw"
-                          className="shop-product-image-secondary"
-                        />
-                      )}
+                      <Image src={product.imageUrl} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-primary" />
+                      {product.imageUrl2 && <Image src={product.imageUrl2} alt={product.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="shop-product-image-secondary" />}
                     </div>
-
                     <div className="shop-title-row">
                       <h4>{product.name}</h4>
-                      <button
-                        onClick={(e) => handleWishlistClick(e, pid)}
-                        className={`wishlist-inline-btn ${isInWishlist(pid) ? 'active' : ''}`}
-                        aria-label={isInWishlist(pid) ? 'Quitar de la lista de deseos' : 'Añadir a la lista de deseos'}
-                      >
+                      <button onClick={(e) => handleWishlistClick(e, pid)} className={`wishlist-inline-btn ${isInWishlist(pid) ? 'active' : ''}`}>
                         {isInWishlist(pid) ? <IoHeart size={20}/> : <IoHeartOutline size={20}/>}
                       </button>
                     </div>
-
                     <div className="price-section">
-                      <span className="shop-product-price">
-                        Gs. {(product.price || 0).toLocaleString('es-PY')}
-                      </span>
-                      {product.oldPrice && (
-                        <span className="shop-product-old-price">
-                          Gs. {product.oldPrice.toLocaleString('es-PY')}
-                        </span>
-                      )}
+                      <span className="shop-product-price">Gs. {(product.price || 0).toLocaleString('es-PY')}</span>
+                      {product.oldPrice && <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
                     </div>
                   </div>
                 </Link>
@@ -370,24 +315,11 @@ export default function ShopPageClient({ products }: { products: Product[] }) {
 
         {totalPages > 1 && (
           <div className="pagination">
-            <button onClick={() => setCurrentPage(prev => prev - 1)} disabled={currentPage === 1}>
-              &lt;
-            </button>
+            <button onClick={() => setCurrentPage(prev => prev - 1)} disabled={currentPage === 1}>&lt;</button>
             {getPageNumbers().map(number => (
-              <button
-                key={number}
-                onClick={() => setCurrentPage(number)}
-                className={currentPage === number ? 'active' : ''}
-              >
-                {number}
-              </button>
+              <button key={number} onClick={() => setCurrentPage(number)} className={currentPage === number ? 'active' : ''}>{number}</button>
             ))}
-            <button
-              onClick={() => setCurrentPage(prev => prev + 1)}
-              disabled={currentPage === totalPages}
-            >
-              &gt;
-            </button>
+            <button onClick={() => setCurrentPage(prev => prev + 1)} disabled={currentPage === totalPages}>&gt;</button>
           </div>
         )}
       </main>
