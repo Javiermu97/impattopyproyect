@@ -593,7 +593,6 @@ body {
   width: 100%; 
   margin-bottom: 1.5rem; 
   padding: 1rem 0; 
-  border-bottom: none; 
 }
 .view-toggles { display: flex; gap: 5px; }
 .sort-by { display: flex; align-items: center; gap: 0.5rem; }
@@ -3662,10 +3661,10 @@ input[type="number"]::-webkit-outer-spin-button {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #000;
-    color: #fff;
+    background: #fff;
+    color: #000;
     padding: 12px 24px;
-    border: none;
+    border: 1px solid #000;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 2px;
@@ -3679,7 +3678,7 @@ input[type="number"]::-webkit-outer-spin-button {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0,0,0,0.15); /* antes 0.4 */
     z-index: 2000;
     opacity: 0;
     visibility: hidden;
@@ -3691,22 +3690,24 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
   .filters-sidebar {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 85%; /* Mantenemos el 85% de ancho */
-    max-width: 400px;
-    height: 100%;
-    background: #fff;
-    z-index: 2001;
-    display: flex;
-    flex-direction: column;
-    transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-  }
-  .filters-sidebar.drawer-open {
-    right: 0;
-  }
+  position: fixed;
+  top: 0;
+  left: -100%;          /* ⬅️ antes estaba right */
+  right: auto;
+  width: 85%;
+  max-width: 400px;
+  height: 100%;
+  background: #fff;
+  z-index: 2001;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+}
+
+.filters-sidebar.drawer-open {
+  left: 0;
+}
 
   /* Header del Drawer */
   .drawer-header {
@@ -3717,13 +3718,12 @@ input[type="number"]::-webkit-outer-spin-button {
     border-bottom: 1px solid #eee;
     background: #fff;
   }
-  .header-title-container h3 {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: #000;
-  }
+ .header-title-container h3 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: none;
+}
   .products-count {
     font-size: 11px;
     color: #999;
@@ -3915,14 +3915,10 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #eee;
 }
 
 .view-toggles {
-  display: flex;
-  gap: 15px;
+  margin-left: auto; /* ⬅️ fuerza a la derecha */
 }
 .view-toggles button {
   background: none;
