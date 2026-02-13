@@ -497,7 +497,8 @@ body {
 .filter-chevron {
   display: flex;
   align-items: center;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.3s ease;
+  transform: rotate(0deg); /* Posición inicial (cerrado) */
   color: #000000;            /* la flecha usa currentColor, así que negro */
 }
 
@@ -508,7 +509,7 @@ body {
 
 /* Rotación cuando está abierto */
 .filter-chevron.open {
-  transform: rotate(90deg);
+  transform: rotate(180deg); /* Gira 180 grados al abrirse */
 }
 
 
@@ -3659,7 +3660,7 @@ input[type="number"]::-webkit-outer-spin-button {
   .mobile-filter-trigger {
     background: transparent;
     border: none;
-    padding: 12px 0; /* Quitamos padding horizontal para pegar al borde */
+    padding: 12px 0; 
     display: flex;
     align-items: center;
     gap: 8px;
@@ -3668,7 +3669,7 @@ input[type="number"]::-webkit-outer-spin-button {
     letter-spacing: 0.6px;
     color: #000;
     cursor: pointer;
-    margin-right: auto; /* Asegura el empuje a la izquierda */
+    margin-right: auto; 
   }
 
   .filter-overlay {
@@ -3688,11 +3689,10 @@ input[type="number"]::-webkit-outer-spin-button {
     visibility: visible;
   }
 
-  /* Filters Sidebar desprendiendo desde la DERECHA */
   .filters-sidebar {
     position: fixed;
     top: 0;
-    right: -100%; /* Inicia fuera de pantalla a la derecha */
+    right: -100%;
     width: 85%;
     max-width: 400px;
     height: 100%;
@@ -3704,7 +3704,7 @@ input[type="number"]::-webkit-outer-spin-button {
     box-shadow: -5px 0 15px rgba(0,0,0,0.05);
   }
   .filters-sidebar.drawer-open {
-    right: 0; /* Se desliza hacia la izquierda para mostrarse */
+    right: 0;
   }
 
   .drawer-header {
@@ -3744,6 +3744,7 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: 20px;
   }
 
+  /* ELIMINACIÓN DEL BORDE CELESTE EN MÓVILES */
   .mobile-sort-select {
     width: 100%;
     padding: 14px;
@@ -3753,10 +3754,19 @@ input[type="number"]::-webkit-outer-spin-button {
     font-size: 13px;
     border-radius: 0;
     appearance: none;
+    outline: none !important; /* Quita el borde celeste */
+    box-shadow: none !important; /* Asegura que no haya sombras de enfoque */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='black' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 15px center;
     margin-bottom: 30px;
+  }
+
+  /* Refuerzo para el estado focus */
+  .mobile-sort-select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: #000 !important;
   }
 
   .filter-title {
@@ -3776,10 +3786,11 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
   .filter-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: 0.3s ease-out;
-  }
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, padding 0.3s ease;
+  padding-bottom: 0;
+}
   .filter-content.open {
     max-height: 500px;
     padding-bottom: 20px;
@@ -3799,6 +3810,7 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-left: 5px;
     font-weight: 600;
     color: #000 !important;
+    outline: none !important;
   }
 
   .drawer-footer {
@@ -3846,6 +3858,7 @@ input[type="number"]::-webkit-outer-spin-button {
   height: 18px;
   background-color: #000;
   border-radius: 50%;
+  outline: none !important;
 }
 
 /* --- GRID Y CONTROLES DESKTOP --- */
@@ -3890,7 +3903,6 @@ input[type="number"]::-webkit-outer-spin-button {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
-
 
 
 

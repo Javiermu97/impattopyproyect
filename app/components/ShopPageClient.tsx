@@ -56,7 +56,7 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
   const [columns, setColumns] = useState(3);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [openFilters, setOpenFilters] = useState({ availability: true, price: true });
+  const [openFilters, setOpenFilters] = useState({ availability: false, price: false });
 
   const [priceInputs, setPriceInputs] = useState({
     min: priceRange[0].toLocaleString('es-PY'),
