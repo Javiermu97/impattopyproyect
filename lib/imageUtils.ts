@@ -9,12 +9,27 @@ export function getPublicImageUrl(path: string | null): string {
   // Limpiar el path (eliminar / si existe al inicio)
   const cleanPath = path.startsWith('/') ? path.substring(1) : path;
   
-  // Construir URL pública de Supabase
-  const { data } = supabase.storage
-    .from('imagenes-productos')
-    .getPublicUrl(cleanPath);
+  try {
+    // Construir URL pública de Supabase
+    const { data } = supabase.storage
+      .from('imagenes-productos')
+      .getPublicUrl(cleanPath);
     
-  return data.publicUrl;
+    // Verificar que la URL sea válida
+    if (data && data.publicUrl) {
+      return data.publicUrl;
+    }
+  } catch (error) {
+    console.error('Error generando URL para:', path, error);
+  }
+  
+  // Fallback: construir URL manualmente
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (supabaseUrl) {
+    return `${supabaseUrl}/storage/v1/object/public/imagenes-productos/${cleanPath}`;
+  }
+  
+  return '/placeholder.jpg';
 }
 
 export function transformProduct(product: any): any {
