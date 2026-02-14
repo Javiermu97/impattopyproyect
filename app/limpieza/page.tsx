@@ -18,7 +18,7 @@ export default async function LimpiezaPage() {
     console.error('Error al cargar productos de Limpieza:', error);
   }
 
-  // 🔴 TRANSFORMAR LAS URLs 🔴
+  // 🔴 TRANSFORMAR LAS URLs 🔴//
   const transformedProducts = transformProducts(products || []);
 
   return (
