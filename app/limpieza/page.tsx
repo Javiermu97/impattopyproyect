@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabaseClient';
 import ShopPageClient from '@/app/components/ShopPageClient';
+import { transformProducts } from '@/lib/imageUtils';
 
 export const metadata = {
   title: "Limpieza - Impatto Py",
@@ -18,16 +19,17 @@ export default async function LimpiezaPage() {
     console.error('Error al cargar productos de Limpieza:', error);
   }
 
+  // Transformar los productos para incluir URLs completas
+  const transformedProducts = transformProducts(products || []);
+
   return (
     <div className="shop-container">
         
-        {/* Título igual que en las otras secciones */}
         <header className="shop-header">
             <h1>Limpieza</h1>
         </header>
 
-        {/* Si no hay productos */}
-        {(!products || products.length === 0) && (
+        {(!transformedProducts || transformedProducts.length === 0) && (
           <div className="product-grid-area">
             <p className="no-products-message">
               No se encontraron productos para esta categoría.
@@ -35,9 +37,8 @@ export default async function LimpiezaPage() {
           </div>
         )}
 
-        {/* Si existen productos */}
-        {products && products.length > 0 && (
-          <ShopPageClient products={products} />
+        {transformedProducts && transformedProducts.length > 0 && (
+          <ShopPageClient products={transformedProducts} />
         )}
     </div>
   );

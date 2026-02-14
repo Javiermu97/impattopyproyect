@@ -4,6 +4,7 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import ShopPageClient from '../components/ShopPageClient';
 import { Product } from '@/lib/types';
+import { transformProducts } from '@/lib/imageUtils';
 
 // Función para obtener TODOS los productos
 async function getProducts() {
@@ -18,7 +19,8 @@ async function getProducts() {
     return [];
   }
 
-  return data as Product[];
+  // Transformar URLs antes de devolver
+  return transformProducts(data) as Product[];
 }
 
 export const revalidate = 300; 
@@ -26,8 +28,6 @@ export const revalidate = 300;
 export default async function TiendaPage() {
   const products = await getProducts();
 
-  // Envuelve tu componente cliente en el div con la clase "shop-container"
-  // para aplicar los márgenes laterales y el espacio inferior.
   return (
     <div className="shop-container">
       <ShopPageClient products={products} />
