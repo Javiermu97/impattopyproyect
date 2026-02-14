@@ -3425,7 +3425,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .qty-input input {
   color: #333131 !important;
   -webkit-text-fill-color: #333131 !important;
-  font-weight: 400 !important; /* sin negrita */
+  font-weight: 400 !important; /* si negrita */
 }
 
 /* INPUT del número */
