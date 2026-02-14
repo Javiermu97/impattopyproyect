@@ -1,12 +1,13 @@
-export const revalidate = 50; // Revalida cada 300 segundos (5 minuto)
+export const revalidate = 50; // Revalida cada 50 segundos
 import Link from 'next/link';
 import { FaWhatsapp } from "react-icons/fa";
 import CarruselInferior from './components/CarruselInferior';
 import InfoBanner from './components/InfoBanner';
 import { supabase } from '@/lib/supabaseClient';
 import { Product } from '@/lib/types';
+import { transformProducts } from '@/lib/imageUtils'; // ← IMPORTAR
 
-// IMPORT DEL PRODUCT CARD (usa useWishlist / useAuth y ya tiene el corazón)
+// IMPORT DEL PRODUCT CARD
 import ProductCard from './components/ProductCard';
 
 export default async function HomePage() {
@@ -15,18 +16,22 @@ export default async function HomePage() {
   const { data: destacadosSemana, error: errorSemana } = await supabase
     .from('productos')
     .select('*')
-    .eq('es_destacado_semana', true) // Buscamos los productos que marcaste
+    .eq('es_destacado_semana', true)
     .limit(20);
 
   // 2. Obtenemos los productos destacados para "Hechos para tu hogar"
   const { data: destacadosHogar, error: errorHogar } = await supabase
     .from('productos')
     .select('*')
-    .eq('es_destacado_hogar', true) // Buscamos los productos que marcaste
+    .eq('es_destacado_hogar', true)
     .limit(20);
 
   if (errorSemana) console.error('Error al cargar productos destacados de la semana:', errorSemana);
   if (errorHogar) console.error('Error al cargar productos destacados de hogar:', errorHogar);
+
+  // 🔴 TRANSFORMAR LAS URLs DE LAS IMÁGENES 🔴
+  const transformedDestacadosSemana = transformProducts(destacadosSemana || []);
+  const transformedDestacadosHogar = transformProducts(destacadosHogar || []);
 
   return (
     <>
@@ -48,14 +53,12 @@ export default async function HomePage() {
       </section>
 
       {/* ==================================================================== */}
-      {/* ===== SECCIÓN "ESPECIAL DE LA SEMANA" (ANCHO COMPLETO) ===== */}
+      {/* ===== SECCIÓN "ESPECIAL DE LA SEMANA" ===== */}
       {/* ==================================================================== */}
       <section className="home-products-section">
         <h2 className="section-title"> Especial de la Semana </h2>
-        {/* Usamos 'columns-2' en lugar de 'columns-3' o 'columns-4' para que las imágenes sean más grandes */}
         <div className="product-grid-shop columns-3">
-          {destacadosSemana?.map((product: Product) => (
-            // Usamos ProductCard para asegurar que el corazón y la lógica estén presentes
+          {transformedDestacadosSemana?.map((product: Product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -65,13 +68,13 @@ export default async function HomePage() {
       </section>
 
       {/* ==================================================================== */}
-      {/* ===== SECCIÓN "HECHOS PARA TU HOGAR" (CORREGIDA) ==== */}
+      {/* ===== SECCIÓN "HECHOS PARA TU HOGAR" ===== */}
       {/* ==================================================================== */}
       <section className="home-products-section reducir-espacio-superior">
         <h2 className="section-title">Confort y Diseño</h2>
         <h3 className="section-subtitle">Hechos para tu hogar</h3>
         <div className="product-grid-shop columns-3">
-          {destacadosHogar?.map((product: Product) => (
+          {transformedDestacadosHogar?.map((product: Product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

@@ -18,11 +18,11 @@ export default async function LimpiezaPage() {
     console.error('Error al cargar productos de Limpieza:', error);
   }
 
+  // 🔴 TRANSFORMAR LAS URLs 🔴
   const transformedProducts = transformProducts(products || []);
 
   return (
-    <div className="shop-container limpieza-page"> {/* ← Agregada la clase aquí */}
-        
+    <div className="shop-container limpieza-page">
         <header className="shop-header">
             <h1>Limpieza</h1>
         </header>
