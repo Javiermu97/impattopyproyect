@@ -9,7 +9,6 @@ export const metadata = {
 
 export default async function LimpiezaPage() {
   
-  // Obtener productos de la categoría Limpieza
   const { data: products, error } = await supabase
     .from('productos')
     .select('*')
@@ -19,11 +18,10 @@ export default async function LimpiezaPage() {
     console.error('Error al cargar productos de Limpieza:', error);
   }
 
-  // Transformar los productos para incluir URLs completas
   const transformedProducts = transformProducts(products || []);
 
   return (
-    <div className="shop-container">
+    <div className="shop-container limpieza-page"> {/* ← Agregada la clase aquí */}
         
         <header className="shop-header">
             <h1>Limpieza</h1>
