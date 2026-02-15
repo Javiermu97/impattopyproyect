@@ -58,21 +58,30 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
   const [currentPage, setCurrentPage] = useState(1);
   
   const [openFilters, setOpenFilters] = useState({ availability: false, price: false });
+  const [isMobile, setIsMobile] = useState(false);
 
   const [priceInputs, setPriceInputs] = useState({
     min: priceRange[0].toLocaleString('es-PY'),
     max: priceRange[1].toLocaleString('es-PY'),
   });
 
+  // Detectar si es móvil/tablet
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 992);
+      if (window.innerWidth <= 992) {
+        setColumns(2);
+      }
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   useEffect(() => {
     document.body.style.overflow = isFilterOpen ? 'hidden' : 'unset';
   }, [isFilterOpen]);
-
-  useEffect(() => {
-    if (window.innerWidth <= 992) {
-      setColumns(2);
-    }
-  }, []);
 
   useEffect(() => {
     setPriceInputs({
@@ -169,41 +178,52 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
 
   return (
     <div className="shop-layout">
-      <div 
-        className={`filter-overlay ${isFilterOpen ? 'active' : ''}`} 
-        onClick={() => setIsFilterOpen(false)} 
-      />
+      {/* Overlay solo para móvil */}
+      {isMobile && (
+        <div 
+          className={`filter-overlay ${isFilterOpen ? 'active' : ''}`} 
+          onClick={() => setIsFilterOpen(false)} 
+        />
+      )}
 
-      <aside className={`filters-sidebar ${isFilterOpen ? 'drawer-open' : ''}`}>
-        <div className="drawer-header">
-          <div className="header-title-container">
-            <h3>FILTROS</h3>
-            <span className="products-count">{filteredProducts.length} productos</span>
+      {/* Sidebar de filtros - siempre visible en desktop, drawer en móvil */}
+      <aside className={`filters-sidebar ${isMobile && isFilterOpen ? 'drawer-open' : ''}`}>
+        {/* Header del drawer - SOLO VISIBLE EN MÓVIL */}
+        {isMobile && (
+          <div className="drawer-header">
+            <div className="header-title-container">
+              <h3>FILTROS</h3>
+              <span className="products-count">{filteredProducts.length} productos</span>
+            </div>
+            <button className="close-drawer" onClick={() => setIsFilterOpen(false)}>
+              <IoCloseOutline size={32} />
+            </button>
           </div>
-          <button className="close-drawer" onClick={() => setIsFilterOpen(false)}>
-            <IoCloseOutline size={32} />
-          </button>
-        </div>
+        )}
 
         <div className="drawer-content">
-          <div className="filter-group mobile-only-filter">
-            <div className="filter-title" style={{ borderTop: 'none', cursor: 'default' }}>
-              <span>ORDENAR POR</span>
+          {/* Selector de orden - SOLO VISIBLE EN MÓVIL */}
+          {isMobile && (
+            <div className="filter-group">
+              <div className="filter-title" style={{ borderTop: 'none', cursor: 'default' }}>
+                <span>ORDENAR POR</span>
+              </div>
+              <select 
+                className="mobile-sort-select" 
+                value={sortBy} 
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="caracteristicas">Características</option>
+                <option value="nombre-asc">Alfabéticamente, A-Z</option>
+                <option value="nombre-desc">Alfabéticamente, Z-A</option>
+                <option value="precio-asc">Precio, menor a mayor</option>
+                <option value="precio-desc">Precio, mayor a menor</option>
+                <option value="fecha-desc">Más recientes</option>
+              </select>
             </div>
-            <select 
-              className="mobile-sort-select" 
-              value={sortBy} 
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="caracteristicas">Características</option>
-              <option value="nombre-asc">Alfabéticamente, A-Z</option>
-              <option value="nombre-desc">Alfabéticamente, Z-A</option>
-              <option value="precio-asc">Precio, menor a mayor</option>
-              <option value="precio-desc">Precio, mayor a menor</option>
-              <option value="fecha-desc">Más recientes</option>
-            </select>
-          </div>
+          )}
 
+          {/* Filtro de disponibilidad */}
           <div className="filter-group">
             <button className="filter-title" onClick={() => toggleFilterSection('availability')}>
               <span>DISPONIBILIDAD</span>
@@ -233,6 +253,7 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
             </div>
           </div>
 
+          {/* Filtro de precio */}
           <div className="filter-group">
             <button className="filter-title" onClick={() => toggleFilterSection('price')}>
               <span>PRECIO</span>
@@ -282,36 +303,46 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
           </div>
         </div>
 
-        <div className="drawer-footer">
-          <button className="btn-apply" onClick={() => setIsFilterOpen(false)}>
-            VER RESULTADOS
-          </button>
-        </div>
+        {/* Footer del drawer - SOLO VISIBLE EN MÓVIL */}
+        {isMobile && (
+          <div className="drawer-footer">
+            <button className="btn-apply" onClick={() => setIsFilterOpen(false)}>
+              VER RESULTADOS
+            </button>
+          </div>
+        )}
       </aside>
 
       <main className="product-grid-area">
         <div className="product-controls">
-          <button className="mobile-filter-trigger" onClick={() => setIsFilterOpen(true)}>
-            <IoOptionsOutline size={18} />
-            <span>Filtrar y ordenar</span>
-          </button>
+          {/* Botón para abrir filtros - SOLO VISIBLE EN MÓVIL */}
+          {isMobile && (
+            <button className="mobile-filter-trigger" onClick={() => setIsFilterOpen(true)}>
+              <IoOptionsOutline size={18} />
+              <span>Filtrar y ordenar</span>
+            </button>
+          )}
 
+          {/* Toggles de columnas - visible en todos */}
           <div className="view-toggles">
             <button onClick={() => setColumns(2)} className={columns === 2 ? 'active' : ''}><IconColumns2 /></button>
             <button onClick={() => setColumns(3)} className={columns === 3 ? 'active' : ''}><IconColumns3 /></button>
             <button onClick={() => setColumns(4)} className={columns === 4 ? 'active' : ''}><IconColumns4 /></button>
           </div>
 
-          <div className="sort-by desktop-only-filter">
-            <label htmlFor="sort">Ordenar:</label>
-            <select id="sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-              <option value="caracteristicas">Características</option>
-              <option value="nombre-asc">A-Z</option>
-              <option value="nombre-desc">Z-A</option>
-              <option value="precio-asc">Menor precio</option>
-              <option value="precio-desc">Mayor precio</option>
-            </select>
-          </div>
+          {/* Selector de orden - SOLO VISIBLE EN ESCRITORIO */}
+          {!isMobile && (
+            <div className="sort-by">
+              <label htmlFor="sort">Ordenar:</label>
+              <select id="sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                <option value="caracteristicas">Características</option>
+                <option value="nombre-asc">A-Z</option>
+                <option value="nombre-desc">Z-A</option>
+                <option value="precio-asc">Menor precio</option>
+                <option value="precio-desc">Mayor precio</option>
+              </select>
+            </div>
+          )}
         </div>
 
         <div className={`product-grid-shop columns-${columns}`}>
@@ -330,9 +361,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
                         sizes="(max-width: 768px) 50vw, 33vw" 
                         className="shop-product-image-primary"
                         unoptimized
-                        onError={(e) => {
-                          console.error('Error cargando imagen en ShopPageClient:', product.imageUrl);
-                        }}
                       />
                       {product.imageUrl2 && (
                         <Image 
@@ -342,9 +370,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
                           sizes="(max-width: 768px) 50vw, 33vw" 
                           className="shop-product-image-secondary"
                           unoptimized
-                          onError={(e) => {
-                            console.error('Error cargando imagen secundaria en ShopPageClient:', product.imageUrl2);
-                          }}
                         />
                       )}
                     </div>
