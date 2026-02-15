@@ -6,6 +6,7 @@ import { useWishlist } from '@/app/context/WishlistContext';
 import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { Product } from '@/lib/types';
+import { useState } from 'react';
 
 type Props = { product: Product };
 
@@ -14,21 +15,25 @@ const ProductCard = ({ product }: Props) => {
   const { user } = useAuth();
   const router = useRouter();
   const pid = typeof product.id === 'string' ? Number(product.id) : product.id;
+  
+  // Estado para manejar error de imagen
+  const [imageError, setImageError] = useState(false);
+  const [secondaryImageError, setSecondaryImageError] = useState(false);
 
   const handleWishlistClick = (e: React.MouseEvent) => {
-    // Evitar navegación del Link padre y que el evento burbujee
     e.preventDefault();
     e.stopPropagation();
 
-    // Si no hay usuario, redirigir al login (misma ruta que usás en ShopPageClient)
     if (!user) {
       router.push('/cuenta/login?redirected=true');
       return;
     }
 
-    // Si está logueado, alternar wishlist
     toggleWishlist(pid);
   };
+
+  // Si hay error en la imagen principal, mostrar placeholder
+  const imageUrl = imageError ? '/placeholder.jpg' : product.imageUrl;
 
   return (
     <Link href={`/products/${product.id}`} className="shop-product-card-link">
@@ -38,20 +43,27 @@ const ProductCard = ({ product }: Props) => {
           {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
 
           <Image
-            src={product.imageUrl}
+            src={imageUrl}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, 33vw"
             className="shop-product-image-primary"
+            unoptimized // Importante para Supabase
+            onError={() => {
+              console.error('Error cargando imagen en ProductCard:', product.imageUrl);
+              setImageError(true);
+            }}
           />
 
-          {product.imageUrl2 && (
+          {product.imageUrl2 && !secondaryImageError && (
             <Image
               src={product.imageUrl2}
               alt={product.name}
               fill
               sizes="(max-width: 768px) 50vw, 33vw"
               className="shop-product-image-secondary"
+              unoptimized // Importante para Supabase
+              onError={() => setSecondaryImageError(true)}
             />
           )}
         </div>

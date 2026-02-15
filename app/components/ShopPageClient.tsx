@@ -57,7 +57,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   
-  // CORRECCIÓN: Inicia en false para estar cerrados
   const [openFilters, setOpenFilters] = useState({ availability: false, price: false });
 
   const [priceInputs, setPriceInputs] = useState({
@@ -187,7 +186,6 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
         </div>
 
         <div className="drawer-content">
-          {/* ORDENAR POR: Misma tipología y estilo que los otros */}
           <div className="filter-group mobile-only-filter">
             <div className="filter-title" style={{ borderTop: 'none', cursor: 'default' }}>
               <span>ORDENAR POR</span>
@@ -294,9 +292,9 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
       <main className="product-grid-area">
         <div className="product-controls">
           <button className="mobile-filter-trigger" onClick={() => setIsFilterOpen(true)}>
-  <IoOptionsOutline size={18} />
-  <span>Filtrar y ordenar</span>
-</button>
+            <IoOptionsOutline size={18} />
+            <span>Filtrar y ordenar</span>
+          </button>
 
           <div className="view-toggles">
             <button onClick={() => setColumns(2)} className={columns === 2 ? 'active' : ''}><IconColumns2 /></button>
@@ -330,7 +328,11 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
                         alt={product.name} 
                         fill 
                         sizes="(max-width: 768px) 50vw, 33vw" 
-                        className="shop-product-image-primary" 
+                        className="shop-product-image-primary"
+                        unoptimized
+                        onError={(e) => {
+                          console.error('Error cargando imagen en ShopPageClient:', product.imageUrl);
+                        }}
                       />
                       {product.imageUrl2 && (
                         <Image 
@@ -338,7 +340,11 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
                           alt={product.name} 
                           fill 
                           sizes="(max-width: 768px) 50vw, 33vw" 
-                          className="shop-product-image-secondary" 
+                          className="shop-product-image-secondary"
+                          unoptimized
+                          onError={(e) => {
+                            console.error('Error cargando imagen secundaria en ShopPageClient:', product.imageUrl2);
+                          }}
                         />
                       )}
                     </div>
