@@ -3614,15 +3614,29 @@ input[type="number"]::-webkit-outer-spin-button {
     align-items: flex-start;
   }
   
-  .sort-by select {
+  /* Para el select de escritorio (si no existe, créalo) */
+.sort-by select {
   padding: 8px 12px;
+  border: 1px solid #A78D5A !important;
+  background: #fff;
+  color: #A78D5A !important;
+  font-size: 13px;
   border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: #ffffff;
-  color: #333;
-  cursor: pointer;
-  font-size: 14px;
+  appearance: none;
+  outline: none !important;
+  box-shadow: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23A78D5A' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 30px;
   min-width: 160px;
+}
+
+/* Para el label "Ordenar:" */
+.sort-by label {
+  color: #333;
+  font-size: 14px;
+  margin-right: 8px;
 }
 }
 
@@ -3768,22 +3782,23 @@ input[type="number"]::-webkit-outer-spin-button {
     text-align: left;
   }
 
-  .mobile-sort-select {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid #000 !important;
-    background: #fff;
-    color: #000 !important;
-    font-size: 13px;
-    border-radius: 0;
-    appearance: none;
-    outline: none !important; /* NO CELESTE */
-    box-shadow: none !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='black' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    margin-bottom: 30px;
-  }
+/* Para el select móvil */
+.mobile-sort-select {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #A78D5A !important; /* Cambiado de #000 a #A78D5A */
+  background: #fff;
+  color: #A78D5A !important; /* Cambiado de #000 a #A78D5A */
+  font-size: 13px;
+  border-radius: 0;
+  appearance: none;
+  outline: none !important;
+  box-shadow: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23A78D5A' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); /* Flecha también en dorado */
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  margin-bottom: 30px;
+}
 
   .filter-chevron {
     transition: transform 0.3s ease;
