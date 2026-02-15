@@ -3785,7 +3785,12 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
-
+/* Forzar color en las options */
+.mobile-sort-select option,
+.sort-by select option {
+  color: #A78D5A !important;
+  background: white !important;
+}
 /* Quitar cualquier estilo azul por defecto */
 .mobile-sort-select:focus,
 .sort-by select:focus {
