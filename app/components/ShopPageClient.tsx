@@ -323,24 +323,23 @@ export default function ShopPageClient({ products }: ShopPageClientProps) {
             </button>
           )}
 
-          {/* Toggles de columnas - visible en todos */}
-          <div className="view-toggles">
-            <button onClick={() => setColumns(2)} className={columns === 2 ? 'active' : ''}><IconColumns2 /></button>
-            <button onClick={() => setColumns(3)} className={columns === 3 ? 'active' : ''}><IconColumns3 /></button>
-            <button onClick={() => setColumns(4)} className={columns === 4 ? 'active' : ''}><IconColumns4 /></button>
-          </div>
-
-          {/* Selector de orden - SOLO VISIBLE EN ESCRITORIO */}
+          {/* Toggles de columnas y orden - VISIBLE EN ESCRITORIO */}
           {!isMobile && (
-            <div className="sort-by">
-              <label htmlFor="sort">Ordenar:</label>
-              <select id="sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                <option value="caracteristicas">Características</option>
-                <option value="nombre-asc">A-Z</option>
-                <option value="nombre-desc">Z-A</option>
-                <option value="precio-asc">Menor precio</option>
-                <option value="precio-desc">Mayor precio</option>
-              </select>
+            <div className="desktop-controls">
+              <div className="view-toggles">
+                <button onClick={() => setColumns(2)} className={columns === 2 ? 'active' : ''}><IconColumns2 /></button>
+                <button onClick={() => setColumns(3)} className={columns === 3 ? 'active' : ''}><IconColumns3 /></button>
+                <button onClick={() => setColumns(4)} className={columns === 4 ? 'active' : ''}><IconColumns4 /></button>
+              </div>
+              <div className="sort-by">
+                <select id="sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                  <option value="caracteristicas">Características</option>
+                  <option value="nombre-asc">Alfabéticamente, A-Z</option>
+                  <option value="nombre-desc">Alfabéticamente, Z-A</option>
+                  <option value="precio-asc">Menor precio</option>
+                  <option value="precio-desc">Mayor precio</option>
+                </select>
+              </div>
             </div>
           )}
         </div>
