@@ -3614,22 +3614,15 @@ input[type="number"]::-webkit-outer-spin-button {
     align-items: flex-start;
   }
   
-.sort-by select {
-  padding: 8px 12px;
-  border-radius: 5px;
-  border: 1px solid #A78D5A; /* Borde dorado */
-  background-color: #ffffff;
-  color: #333;
-  cursor: pointer;
-  width: auto;
-  min-width: 200px;
-  outline: none;
-  appearance: none; /* Quita el estilo por defecto del sistema */
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A78D5A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 15px;
-  padding-right: 40px;
+.sort-by select, 
+.mobile-sort-select {
+  border: 1px solid #A78D5A !important;
+  color: #A78D5A !important;
+  outline: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-color: #ffffff !important;
 }
 
 /* Para el label "Ordenar:" */
@@ -3784,25 +3777,32 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
+/* 2. QUITAR EL COLOR AZUL DE SELECCIÓN (FOCUS) */
+/* Esto elimina el resplandor azul que pone Chrome/Safari al hacer clic */
+.sort-by select:focus, 
+.mobile-sort-select:focus {
+  box-shadow: 0 0 0 2px rgba(167, 141, 90, 0.3) !important;
+  border-color: #A78D5A !important;
+}
 
-/* Forzar color en las options */
-.mobile-sort-select option,
-.sort-by select option {
-  background-color: #ffffff;
-  color: #333;
+/* 3. CONTROLAR LAS OPCIONES (DENTRO DEL MENÚ) */
+/* Nota: Muchos navegadores no permiten cambiar el fondo azul del hover nativo, 
+   pero forzamos los colores base aquí */
+.sort-by select option, 
+.mobile-sort-select option {
+  background-color: #ffffff !important;
+  color: #333 !important;
+  padding: 10px !important;
 }
-/* Quitar cualquier estilo azul por defecto */
-.mobile-sort-select:focus,
-.sort-by select:focus {
-  border-color: #A78D5A;
-  box-shadow: 0 0 0 2px rgba(167, 141, 90, 0.2);
-}
-/* Si quieres que al pasar el mouse por las opciones resalte en tu color */
-.sort-by select option:hover,
-.sort-by select option:focus,
-.sort-by select option:active {
-  background-color: #A78D5A !important;
-  color: white !important;
+
+/* 4. RE-INSERTAR LA FLECHA (Porque appearance: none la borra) */
+/* Usamos un SVG codificado que ya tiene el color #A78D5A */
+.sort-by select, 
+.mobile-sort-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23A78D5A' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  padding-right: 35px !important;
 }
 
 
