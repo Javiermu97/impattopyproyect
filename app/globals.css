@@ -3614,22 +3614,22 @@ input[type="number"]::-webkit-outer-spin-button {
     align-items: flex-start;
   }
   
-  /* Para el select de escritorio (si no existe, créalo) */
 .sort-by select {
   padding: 8px 12px;
-  border: 1px solid #A78D5A !important;
-  background: #fff;
-  color: #A78D5A !important;
-  font-size: 13px;
-  border-radius: 4px;
-  appearance: none;
-  outline: none !important;
-  box-shadow: none !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23A78D5A' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  border-radius: 5px;
+  border: 1px solid #A78D5A; /* Borde dorado */
+  background-color: #ffffff;
+  color: #333;
+  cursor: pointer;
+  width: auto;
+  min-width: 200px;
+  outline: none;
+  appearance: none; /* Quita el estilo por defecto del sistema */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A78D5A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 8px center;
-  padding-right: 30px;
-  min-width: 160px;
+  background-position: right 10px center;
+  background-size: 15px;
+  padding-right: 40px;
 }
 
 /* Para el label "Ordenar:" */
@@ -3788,16 +3788,23 @@ input[type="number"]::-webkit-outer-spin-button {
 /* Forzar color en las options */
 .mobile-sort-select option,
 .sort-by select option {
-  color: #A78D5A !important;
-  background: white !important;
+  background-color: #ffffff;
+  color: #333;
 }
 /* Quitar cualquier estilo azul por defecto */
 .mobile-sort-select:focus,
 .sort-by select:focus {
-  outline: none !important;
-  box-shadow: none !important;
-  border-color: #A78D5A !important;
+  border-color: #A78D5A;
+  box-shadow: 0 0 0 2px rgba(167, 141, 90, 0.2);
 }
+/* Si quieres que al pasar el mouse por las opciones resalte en tu color */
+.sort-by select option:hover,
+.sort-by select option:focus,
+.sort-by select option:active {
+  background-color: #A78D5A !important;
+  color: white !important;
+}
+
 
 
 /* Para el select móvil */
