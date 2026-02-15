@@ -3782,6 +3782,19 @@ input[type="number"]::-webkit-outer-spin-button {
     text-align: left;
   }
 
+
+
+
+
+/* Quitar cualquier estilo azul por defecto */
+.mobile-sort-select:focus,
+.sort-by select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #A78D5A !important;
+}
+
+
 /* Para el select móvil */
 .mobile-sort-select {
   width: 100%;
