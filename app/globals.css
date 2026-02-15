@@ -3850,6 +3850,7 @@ input[type="number"]::-webkit-outer-spin-button {
   align-items: center;
   width: 100%;
   height: 20px;
+  margin: 10px 0;
 }
 .SliderTrack {
   background-color: #eee;
@@ -3891,6 +3892,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .view-toggles {
   display: flex;
   gap: 5px;
+  margin-right: auto; /* ← Esto empuja el select hacia la derecha */
 }
 .view-toggles button {
   background: none;
@@ -3994,7 +3996,8 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-left: auto;
+  margin-left: 0; /* ← Esto lo deja a la izquierda */
+  width: 100%;
 }
 
 
