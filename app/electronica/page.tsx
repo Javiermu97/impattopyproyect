@@ -13,11 +13,9 @@ export default async function ElectronicaPage() {
     .select('*')
     .ilike('categoria', '%Electronica%');
 
-  console.log('==== DEBUG ELECTRONICA ====');
-  console.log('Productos encontrados:', electronicaProducts?.length ?? 0);
-  console.log('Primer producto:', electronicaProducts?.[0] ?? 'ninguno');
-  console.log('Error:', error);
-  console.log('===========================');
+  if (error) {
+    console.error('Error al cargar productos de la categoría Electrónica:', error);
+  }
 
   return (
     <div className="shop-container">
