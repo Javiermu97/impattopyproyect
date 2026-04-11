@@ -11,11 +11,13 @@ export default async function ElectronicaPage() {
   const { data: electronicaProducts, error } = await supabase
     .from('productos')
     .select('*')
-    .ilike('categoria', '%lectrónica%')
+    .ilike('categoria', '%Electronica%');
 
-  if (error) {
-    console.error('Error al cargar productos de la categoría Electrónica:', error);
-  }
+  console.log('==== DEBUG ELECTRONICA ====');
+  console.log('Productos encontrados:', electronicaProducts?.length ?? 0);
+  console.log('Primer producto:', electronicaProducts?.[0] ?? 'ninguno');
+  console.log('Error:', error);
+  console.log('===========================');
 
   return (
     <div className="shop-container">
