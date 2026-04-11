@@ -43,7 +43,7 @@ interface ShopPageClientProps {
 
 export default function ShopPageClient({ products }: ShopPageClientProps) {
   const MIN_PRICE = 0;
-  const MAX_PRICE = 500000;
+  const MAX_PRICE = 5000000;
   const PRODUCTS_PER_PAGE = 12;
 
   const { isInWishlist, toggleWishlist } = useWishlist();
