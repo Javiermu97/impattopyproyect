@@ -31,7 +31,14 @@ export const metadata = {
     description: 'Calidad y confianza en cada pedido. Envíos a todo Paraguay.',
     url: 'https://impatto.com.py',
     siteName: 'Impatto Py',
-    images: [{ url: '/logo.png', width: 800, height: 600 }],
+    images: [
+      {
+        url: 'https://impatto.com.py/logo.png', 
+        width: 1200, // Medida estándar para que se vea grande
+        height: 630,
+        alt: 'Logo Impatto Py',
+      },
+    ],
     locale: 'es_PY',
     type: 'website',
   },
