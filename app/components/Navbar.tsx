@@ -56,7 +56,14 @@ const Navbar = () => {
       ]
     },
     { href: '/bienestar', label: 'Salud & Bienestar' },
-    { href: '/mecanica', label: 'Mecánica & Más' },
+    {
+  href: '#',
+  label: 'Electrónica y Mecánica',
+  submenu: [
+    { href: '/electronica', label: 'Electrónica' },
+    { href: '/mecanica', label: 'Mecánica' },
+  ]
+},
   ];
 
   const activeSubmenuData = navLinks.find(link => link.label === activeSubmenu);
