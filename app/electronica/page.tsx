@@ -11,7 +11,7 @@ export default async function ElectronicaPage() {
   const { data: electronicaProducts, error } = await supabase
     .from('productos')
     .select('*')
-    .ilike('categoria', '%Electronica%');
+    .ilike('categoria', '%Electrónica%');
 
   if (error) {
     console.error('Error al cargar productos de la categoría Electrónica:', error);
