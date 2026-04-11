@@ -33,7 +33,7 @@ export const metadata = {
     siteName: 'Impatto Py',
     images: [
       {
-        url: 'https://impatto.com.py/logo.png', 
+        url: 'https://impatto.com.py/logo-og.jpg', 
         width: 1200, // Medida estándar para que se vea grande
         height: 630,
         alt: 'Logo Impatto Py',
