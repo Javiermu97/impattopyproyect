@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { Product, ProductVariant } from '@/lib/types';
-// ✅ Importamos Supabase para poder guardar
 import { supabase } from '@/lib/supabaseClient';
 
 /* ─────────────── Tipos ─────────────── */
@@ -45,20 +44,9 @@ const paraguayLocations = {
   Paraguarí: ['Paraguarí', 'Yaguarón', 'Carapeguá'],
   'Alto Paraná': ['Ciudad del Este', 'Hernandarias', 'Presidente Franco'],
   Central: [
-    'Areguá',
-    'Capiatá',
-    'Fernando de la Mora',
-    'Itá',
-    'Itauguá',
-    'Lambaré',
-    'Limpio',
-    'Luque',
-    'Mariano Roque Alonso',
-    'Ñemby',
-    'San Antonio',
-    'San Lorenzo',
-    'Villa Elisa',
-    'Villeta',
+    'Areguá', 'Capiatá', 'Fernando de la Mora', 'Itá', 'Itauguá',
+    'Lambaré', 'Limpio', 'Luque', 'Mariano Roque Alonso', 'Ñemby',
+    'San Antonio', 'San Lorenzo', 'Villa Elisa', 'Villeta',
   ],
   Ñeembucú: ['Pilar', 'Humaitá', 'Villa Oliva'],
   Amambay: ['Pedro Juan Caballero', 'Capitán Bado', 'Bella Vista'],
@@ -67,6 +55,16 @@ const paraguayLocations = {
   Boquerón: ['Filadelfia', 'Loma Plata', 'Mariscal Estigarribia'],
   'Alto Paraguay': ['Fuerte Olimpo', 'Bahía Negra', 'Carmelo Peralta'],
 } as const;
+
+/* ─────────────── Configuración Pagopar ─────────────── */
+/*
+  ✅ INSTRUCCIONES PARA ACTIVAR PAGOPAR (cuando te habiliten):
+  1. Cambia PAGOPAR_ACTIVO a: true
+  2. Reemplaza el string de PAGOPAR_PUBLIC_KEY con tu clave pública real
+  3. Guardá el archivo — listo, ya funciona sin tocar nada más
+*/
+const PAGOPAR_ACTIVO = false;
+const PAGOPAR_PUBLIC_KEY = 'TU_CLAVE_PUBLICA_PAGOPAR_AQUI';
 
 /* ─────────────── Componente ─────────────── */
 export default function CheckoutForm({
@@ -79,8 +77,9 @@ export default function CheckoutForm({
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const [cities, setCities] = useState<string[]>([]);
   const [formVariant, setFormVariant] = useState(selectedVariant);
-  
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pagoparLoading, setPagoparLoading] = useState(false);
+  const [pagoparError, setPagoparError] = useState('');
 
   const [formData, setFormData] = useState({
     city: '',
@@ -93,15 +92,8 @@ export default function CheckoutForm({
 
   /* ── Actualiza ciudades ── */
   useEffect(() => {
-    if (
-      selectedDepartment &&
-      paraguayLocations[selectedDepartment as keyof typeof paraguayLocations]
-    ) {
-      setCities([
-        ...paraguayLocations[
-          selectedDepartment as keyof typeof paraguayLocations
-        ],
-      ]);
+    if (selectedDepartment && paraguayLocations[selectedDepartment as keyof typeof paraguayLocations]) {
+      setCities([...paraguayLocations[selectedDepartment as keyof typeof paraguayLocations]]);
     } else {
       setCities([]);
     }
@@ -109,9 +101,7 @@ export default function CheckoutForm({
   }, [selectedDepartment]);
 
   /* ── Handlers ── */
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name === 'phone') {
       setFormData((p) => ({ ...p, phone: value.replace(/\D/g, '') }));
@@ -130,102 +120,145 @@ export default function CheckoutForm({
     return Math.round(product.price * q * (1 - discount));
   };
 
+  /* ── Validación de campos requeridos ── */
+  const isFormValid = () => {
+    return (
+      formData.name.trim() !== '' &&
+      formData.phone.trim() !== '' &&
+      formData.address.trim() !== '' &&
+      formData.ruc.trim() !== '' &&
+      formData.email.trim() !== '' &&
+      formData.city !== '' &&
+      selectedDepartment !== ''
+    );
+  };
+
+  /* ── Guardar pedido en Supabase ── */
+  const saveOrder = async (paymentMethod: 'contraentrega' | 'pagopar') => {
+    const finalPrice = calculatePrice(selectedQuantity);
+    const generatedOrderId = Math.floor(40000 + Math.random() * 10000);
+
+    const detallesDelPedido = {
+      product_name: product.name || 'Producto sin nombre',
+      variant: formVariant.color,
+      quantity: selectedQuantity,
+      unit_price: product.price,
+      ruc: formData.ruc,
+      city: formData.city,
+      payment_method: paymentMethod,
+    };
+
+    const { error } = await supabase.from('orders').insert([
+      {
+        customer_name: formData.name,
+        customer_email: formData.email,
+        customer_phone: formData.phone,
+        shipping_address: `${formData.address}, ${formData.city}`,
+        department: selectedDepartment,
+        total_amount: finalPrice,
+        status: paymentMethod === 'pagopar' ? 'Pendiente de pago' : 'Pendiente',
+        order_details: detallesDelPedido,
+      },
+    ]);
+
+    if (error) throw new Error(error.message);
+
+    // Notificación interna
+    fetch('/api/notify', {
+      method: 'POST',
+      body: JSON.stringify({
+        orderId: generatedOrderId,
+        customerName: formData.name,
+        customerEmail: formData.email,
+        total: finalPrice.toLocaleString('es-PY'),
+        products: `${product.name} (x${selectedQuantity})`,
+        paymentMethod,
+      }),
+    });
+
+    return generatedOrderId;
+  };
+
+  /* ── Submit contra entrega ── */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    const finalPrice = calculatePrice(selectedQuantity);
-    const generatedOrderId = Math.floor(40000 + Math.random() * 10000);
+    try {
+      const generatedOrderId = await saveOrder('contraentrega');
+      onConfirm({
+        product,
+        formVariant,
+        selectedQuantity,
+        totalPrice: calculatePrice(selectedQuantity),
+        formData,
+        department: selectedDepartment,
+        orderId: generatedOrderId,
+        orderDate: new Date()
+          .toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
+          .replace('.', ''),
+      });
+    } catch (err) {
+      console.error('Error inesperado:', err);
+      alert('Ocurrió un error inesperado al procesar la compra.');
+      setIsSubmitting(false);
+    }
+  };
+
+  /* ── Pago con Pagopar ── */
+  const handlePagopar = async () => {
+    if (!isFormValid()) {
+      setPagoparError('Por favor completá todos los campos antes de pagar.');
+      return;
+    }
+    setPagoparError('');
+    setPagoparLoading(true);
 
     try {
-        const detallesDelPedido = {
-            product_name: product.name || "Producto sin nombre", 
-            variant: formVariant.color,
-            quantity: selectedQuantity,
-            unit_price: product.price,
-            ruc: formData.ruc, 
-            city: formData.city 
-        };
+      await saveOrder('pagopar');
 
-        const { error } = await supabase.from('orders').insert([
-            {
-                customer_name: formData.name,
-                customer_email: formData.email,
-                customer_phone: formData.phone,
-                shipping_address: `${formData.address}, ${formData.city}`, 
-                department: selectedDepartment,
-                total_amount: finalPrice, 
-                status: 'Pendiente', 
-                order_details: detallesDelPedido 
-            }
-        ]);
+      const res = await fetch('/api/pagopar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          publicKey: PAGOPAR_PUBLIC_KEY,
+          amount: calculatePrice(selectedQuantity),
+          description: `${product.name} x${selectedQuantity}`,
+          buyerName: formData.name,
+          buyerEmail: formData.email,
+          buyerPhone: formData.phone,
+          buyerRuc: formData.ruc,
+          buyerAddress: `${formData.address}, ${formData.city}, ${selectedDepartment}`,
+        }),
+      });
 
-        if (error) {
-            console.error("Error guardando pedido:", error.message);
-            alert("Error al guardar: " + error.message);
-            setIsSubmitting(false);
-            return;
-        }
+      const data = await res.json();
 
-        fetch('/api/notify', {
-            method: 'POST',
-            body: JSON.stringify({
-                orderId: generatedOrderId,
-                customerName: formData.name,
-                customerEmail: formData.email,
-                total: finalPrice.toLocaleString('es-PY'),
-                products: `${product.name} (x${selectedQuantity})`
-            })
-        });
-
-        onConfirm({
-            product,
-            formVariant,
-            selectedQuantity,
-            totalPrice: finalPrice,
-            formData,
-            department: selectedDepartment,
-            orderId: generatedOrderId,
-            orderDate: new Date()
-                .toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
-                .replace('.', ''),
-        });
-
-    } catch (err) {
-        console.error("Error inesperado:", err);
-        alert("Ocurrió un error inesperado al procesar la compra.");
-        setIsSubmitting(false);
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+      } else {
+        setPagoparError('No se pudo iniciar el pago. Intentá de nuevo o pagá al recibir.');
+        setPagoparLoading(false);
+      }
+    } catch {
+      setPagoparError('Error al conectar con Pagopar. Intentá de nuevo.');
+      setPagoparLoading(false);
     }
   };
 
   const renderForm = () => (
     <form onSubmit={handleSubmit}>
+      {/* ── Opciones de cantidad ── */}
       <div className="checkout-product-options">
-        <label
-          className={`quantity-option ${
-            selectedQuantity === 1 ? 'selected' : ''
-          }`}
-        >
-          <input
-            type="radio"
-            name="quantity"
-            value={1}
-            checked={selectedQuantity === 1}
-            onChange={() => setSelectedQuantity(1)}
-          />
+        <label className={`quantity-option ${selectedQuantity === 1 ? 'selected' : ''}`}>
+          <input type="radio" name="quantity" value={1} checked={selectedQuantity === 1} onChange={() => setSelectedQuantity(1)} />
           <div className="quantity-info">
             <span className="quantity-text">1 Unidad</span>
           </div>
           <div className="quantity-price">
-            {product.oldPrice && (
-              <span className="original-price">
-                Gs. {product.oldPrice.toLocaleString('es-PY')}
-              </span>
-            )}
-            <span className="final-price">
-              Gs. {product.price.toLocaleString('es-PY')}
-            </span>
+            {product.oldPrice && <span className="original-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>}
+            <span className="final-price">Gs. {product.price.toLocaleString('es-PY')}</span>
           </div>
         </label>
 
@@ -233,66 +266,39 @@ export default function CheckoutForm({
           const originalTotal = product.price * q;
           const finalPrice = calculatePrice(q);
           const discountPercentage = q === 2 ? 15 : 20;
-
           return (
-            <label
-              key={q}
-              className={`quantity-option ${
-                selectedQuantity === q ? 'selected' : ''
-              }`}
-            >
-              <input
-                type="radio"
-                name="quantity"
-                value={q}
-                checked={selectedQuantity === q}
-                onChange={() => setSelectedQuantity(q)}
-              />
+            <label key={q} className={`quantity-option ${selectedQuantity === q ? 'selected' : ''}`}>
+              <input type="radio" name="quantity" value={q} checked={selectedQuantity === q} onChange={() => setSelectedQuantity(q)} />
               <div className="quantity-info">
                 <span className="quantity-text">{q} Unidades</span>
-                <span className="quantity-discount">
-                  Ahorra {discountPercentage}%
-                </span>
+                <span className="quantity-discount">Ahorra {discountPercentage}%</span>
               </div>
               <div className="quantity-price">
-                <span className="original-price">
-                  Gs. {originalTotal.toLocaleString('es-PY')}
-                </span>
-                <span className="final-price">
-                  Gs. {finalPrice.toLocaleString('es-PY')}
-                </span>
+                <span className="original-price">Gs. {originalTotal.toLocaleString('es-PY')}</span>
+                <span className="final-price">Gs. {finalPrice.toLocaleString('es-PY')}</span>
               </div>
             </label>
           );
         })}
       </div>
 
+      {/* ── Variantes ── */}
       {product.variants && product.variants.length > 0 && (
         <div className="checkout-color-selector">
-          <label htmlFor="color-select-checkout" className="variant-label">
-            Color:
-          </label>
-          <select
-            id="color-select-checkout"
-            value={formVariant.color}
-            onChange={handleVariantChange}
-            className="form-input"
-          >
+          <label htmlFor="color-select-checkout" className="variant-label">Color:</label>
+          <select id="color-select-checkout" value={formVariant.color} onChange={handleVariantChange} className="form-input">
             {product.variants?.map((v) => (
-              <option key={v.color} value={v.color}>
-                {v.color}
-              </option>
+              <option key={v.color} value={v.color}>{v.color}</option>
             ))}
           </select>
         </div>
       )}
 
+      {/* ── Resumen ── */}
       <div className="checkout-summary">
         <div className="summary-row">
           <span>Subtotal</span>
-          <span>
-            Gs. {calculatePrice(selectedQuantity).toLocaleString('es-PY')}
-          </span>
+          <span>Gs. {calculatePrice(selectedQuantity).toLocaleString('es-PY')}</span>
         </div>
         <div className="summary-row">
           <span>Envío</span>
@@ -300,43 +306,24 @@ export default function CheckoutForm({
         </div>
         <div className="summary-row total">
           <span>Total</span>
-          <span>
-            Gs. {calculatePrice(selectedQuantity).toLocaleString('es-PY')}
-          </span>
+          <span>Gs. {calculatePrice(selectedQuantity).toLocaleString('es-PY')}</span>
         </div>
         <p className="summary-note">Envíos e impuestos incluidos</p>
       </div>
 
+      {/* ── Campos de envío ── */}
       <div className="checkout-fields">
-        {/* Código de descuento eliminado */}
-        
-        <select
-          value={selectedDepartment}
-          onChange={(e) => setSelectedDepartment(e.target.value)}
-          className="form-input"
-          required
-        >
-          <option value="">-Selecciona tu departamento aquí-</option>
+        <select value={selectedDepartment} onChange={(e) => setSelectedDepartment(e.target.value)} className="form-input" required>
+          <option value="">-Seleccioná tu departamento aquí-</option>
           {Object.keys(paraguayLocations).map((dep) => (
-            <option key={dep} value={dep}>
-              {dep}
-            </option>
+            <option key={dep} value={dep}>{dep}</option>
           ))}
         </select>
 
-        <select
-          name="city"
-          value={formData.city}
-          onChange={handleInputChange}
-          className="form-input"
-          required
-          disabled={!selectedDepartment || cities.length === 0}
-        >
-          <option value="">-Agrega tu ciudad aquí-</option>
+        <select name="city" value={formData.city} onChange={handleInputChange} className="form-input" required disabled={!selectedDepartment || cities.length === 0}>
+          <option value="">-Agregá tu ciudad aquí-</option>
           {cities.map((city) => (
-            <option key={city} value={city}>
-              {city}
-            </option>
+            <option key={city} value={city}>{city}</option>
           ))}
         </select>
 
@@ -344,82 +331,73 @@ export default function CheckoutForm({
         <label className="shipping-option">
           <input type="radio" name="shipping" defaultChecked />
           <div>
-            <p>
-              Envíos standard (24-72hs) <span>Gratis</span>
-            </p>
+            <p>Envíos standard (24-72hs) <span>Gratis</span></p>
             <small>Válido para todo el país.</small>
           </div>
         </label>
         <p className="shipping-note">
-          -PEDIDOS REALIZADOS ANTES DE LAS 14:00H SE ENTREGAN EN EL MISMO
-          DÍA- ¡Válido para Asunción y alrededores!{' '}
+          -PEDIDOS REALIZADOS ANTES DE LAS 14:00H SE ENTREGAN EN EL MISMO DÍA- ¡Válido para Asunción y alrededores!{' '}
           <strong>Obs: Solo Días Hábiles</strong>
         </p>
 
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          placeholder="Inserte su nombre y apellido aquí"
-          className="form-input"
-          required
-        />
-        <input
-          type="tel"
-          name="phone"
-          value={formData.phone}
-          onChange={handleInputChange}
-          placeholder="Inserte su número con whatsapp"
-          className="form-input"
-          required
-        />
-        <input
-          type="text"
-          name="address"
-          value={formData.address}
-          onChange={handleInputChange}
-          placeholder="Dirección"
-          className="form-input"
-          required
-        />
-        <input
-          type="text"
-          name="ruc"
-          value={formData.ruc}
-          onChange={handleInputChange}
-          placeholder="Insertar CI o RUC para facturación"
-          className="form-input"
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          placeholder="Correo electrónico"
-          className="form-input"
-          required
-        />
+        <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Inserte su nombre y apellido aquí" className="form-input" required />
+        <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="Inserte su número con WhatsApp" className="form-input" required />
+        <input type="text" name="address" value={formData.address} onChange={handleInputChange} placeholder="Dirección" className="form-input" required />
+        <input type="text" name="ruc" value={formData.ruc} onChange={handleInputChange} placeholder="Insertar CI o RUC para facturación" className="form-input" required />
+        <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="Correo electrónico" className="form-input" required />
 
         <label className="confirm-checkbox">
           <input type="checkbox" required />
           CONFIRMO QUE MIS DATOS ESTÁN CORRECTOS Y QUIERO COMPRAR EL PRODUCTO
         </label>
         <p className="attention-note">
-          <strong>ATENCIÓN:</strong> Tu pedido únicamente podrá salir del
-          depósito si tus datos están completos. Por favor, verifica que tu
-          dirección esté correcta antes de continuar. Al finalizar el pedido
-          estás aceptando nuestras políticas.
+          <strong>ATENCIÓN:</strong> Tu pedido únicamente podrá salir del depósito si tus datos están completos. Por favor, verificá que tu dirección esté correcta antes de continuar. Al finalizar el pedido estás aceptando nuestras políticas.
         </p>
 
+        {/* ══════════════════════════════════════════════════════ */}
+        {/* ══  BOTONES DE PAGO                                 ══ */}
+        {/* ══════════════════════════════════════════════════════ */}
+
+        {/* Botón 1: Pagar al recibir — siempre visible */}
         <button type="submit" disabled={isSubmitting} className="submit-btn primary">
-          {isSubmitting 
-              ? 'PROCESANDO...' 
-              : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`
-          }
+          {isSubmitting ? 'PROCESANDO...' : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`}
         </button>
-        {/* Texto aclaratorio y botón de tarjeta eliminados */}
+
+        {/* Botón 2: Pagopar — visible solo cuando PAGOPAR_ACTIVO = true */}
+        {PAGOPAR_ACTIVO && (
+          <div className="pagopar-section">
+            <div className="pagopar-divider">
+              <span>— o pagá online con —</span>
+            </div>
+
+            {pagoparError && (
+              <p className="pagopar-error">{pagoparError}</p>
+            )}
+
+            <button
+              type="button"
+              className="submit-btn pagopar-btn"
+              onClick={handlePagopar}
+              disabled={pagoparLoading}
+            >
+              {pagoparLoading ? (
+                'REDIRIGIENDO A PAGOPAR...'
+              ) : (
+                <>
+                  PAGAR CON PAGOPAR
+                  <span className="pagopar-amount"> Gs. {calculatePrice(selectedQuantity).toLocaleString('es-PY')}</span>
+                </>
+              )}
+            </button>
+
+            <div className="pagopar-metodos">
+              {['Visa', 'Mastercard', 'Tigo Money', 'Personal Pay', 'Claro', 'Wally', 'Zimple', 'QR', 'Wepa', 'Aquí Pago', 'Pago Express', 'PIX'].map((m) => (
+                <span key={m} className="pagopar-badge">{m}</span>
+              ))}
+            </div>
+            <p className="pagopar-nota">Procesado de forma segura por Pagopar</p>
+          </div>
+        )}
       </div>
     </form>
   );
@@ -427,13 +405,10 @@ export default function CheckoutForm({
   return (
     <div className="checkout-modal-overlay">
       <div className="checkout-modal-content">
-        <button onClick={onClose} className="close-btn">
-          &times;
-        </button>
+        <button onClick={onClose} className="close-btn">&times;</button>
         <h2>REALIZAR PEDIDO</h2>
         {renderForm()}
       </div>
     </div>
   );
 }
-

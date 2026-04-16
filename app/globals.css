@@ -4043,5 +4043,226 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
+/* ===== 16/04/2026 ===== */
+/* ===================================================== */
+/* ===== PAGOPAR - SECCIÓN EN CHECKOUT ===== */
+/* ===================================================== */
 
+.pagopar-section {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
 
+.pagopar-divider {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #888;
+  margin: 0.5rem 0;
+}
+
+.pagopar-btn {
+  background-color: #0066CC !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: background 0.2s;
+}
+
+.pagopar-btn:hover:not(:disabled) {
+  background-color: #0052a3 !important;
+}
+
+.pagopar-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.pagopar-amount {
+  font-weight: 400;
+  font-size: 0.9em;
+  opacity: 0.9;
+}
+
+.pagopar-metodos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+
+.pagopar-badge {
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 3px 7px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #444;
+  white-space: nowrap;
+}
+
+.pagopar-nota {
+  text-align: center;
+  font-size: 0.72rem;
+  color: #aaa;
+  margin: 0;
+}
+
+.pagopar-error {
+  background: #fff0f0;
+  border: 1px solid #ffcccc;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.82rem;
+  color: #c0392b;
+  margin: 0;
+}
+
+/* ===================================================== */
+/* ===== PÁGINAS DE RESULTADO DE PAGO ===== */
+/* ===================================================== */
+
+.pago-result-container {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.pago-result-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  border-top: 5px solid #27ae60;
+}
+
+.pago-result-card.cancelled {
+  border-top-color: #e74c3c;
+}
+
+.pago-result-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #27ae60;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.pago-result-icon.cancelled {
+  background: #e74c3c;
+}
+
+.pago-result-card h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #1a1a1a;
+}
+
+.pago-result-card p {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.pago-result-sub {
+  font-size: 0.85rem !important;
+  color: #888 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.pago-result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.pago-result-actions a {
+  text-decoration: none;
+  width: 100%;
+}
+
+.pago-result-actions button {
+  width: 100%;
+}
+
+/* ===================================================== */
+/* ===== BANNER CUOTAS DESPLAZABLE ===== */
+/* ===================================================== */
+
+.banner-cuotas-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 0.75rem 1rem;
+  background: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  margin: 1.5rem 0;
+}
+
+.banner-cuotas-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #333;
+  flex-shrink: 0;
+}
+
+.banner-cuotas-scroll {
+  overflow: hidden;
+  flex: 1;
+}
+
+.banner-cuotas-track {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  will-change: transform;
+}
+
+.banner-cuota-item {
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ===================================================== */
+/* ===== MEDIOS DE PAGO EN FOOTER ===== */
+/* ===================================================== */
+
+.footer-pagos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0.5rem;
+}
+
+.footer-pago-badge {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}

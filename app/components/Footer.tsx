@@ -49,6 +49,14 @@ const Footer = () => {
           <SubscribeForm />
         </FooterAccordionCol>
       </div>
+      <div className="footer-col footer-col-pagos">
+  <h3>Medios de Pago</h3>
+  <div className="footer-pagos-grid">
+    {['Visa', 'Mastercard', 'Tigo Money', 'Personal Pay', 'Claro', 'Wally', 'Zimple', 'QR', 'Wepa', 'Aquí Pago', 'Pago Express', 'PIX'].map((medio) => (
+      <span key={medio} className="footer-pago-badge">{medio}</span>
+    ))}
+  </div>
+</div>
     </footer>
   );
 };
