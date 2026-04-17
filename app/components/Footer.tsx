@@ -74,7 +74,7 @@ const Footer = () => {
               </div>
             ))}
           </div>
-          <p className="footer-copy">Desarrollado por: Elice Digital</p>
+          <p className="footer-copy">© {new Date().getFullYear()} IMPATTO. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>
