@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Product, ProductVariant } from '@/lib/types';
 import { supabase } from '@/lib/supabaseClient';
+// Importamos un ícono de tarjeta elegante
+import { FaCreditCard } from 'react-icons/fa';
 
 /* ─────────────── Tipos ─────────────── */
 interface OrderData {
@@ -57,7 +59,7 @@ const paraguayLocations = {
 } as const;
 
 /* ─────────────── Configuración Pagopar ─────────────── */
-const PAGOPAR_ACTIVO = true; // Cambiado a true para que visualices los cambios
+const PAGOPAR_ACTIVO = true; 
 const PAGOPAR_PUBLIC_KEY = 'TU_CLAVE_PUBLICA_PAGOPAR_AQUI';
 
 /* --- Lista de logos para la pasarela de pago --- */
@@ -74,7 +76,6 @@ const logosPagopar = [
   { src: '/logos-bancos/Cabal_logo.png', alt: 'Cabal' },
 ];
 
-/* ─────────────── Componente ─────────────── */
 export default function CheckoutForm({
   product,
   selectedVariant,
@@ -98,7 +99,6 @@ export default function CheckoutForm({
     email: '',
   });
 
-  /* ── Actualiza ciudades ── */
   useEffect(() => {
     if (selectedDepartment && paraguayLocations[selectedDepartment as keyof typeof paraguayLocations]) {
       setCities([...paraguayLocations[selectedDepartment as keyof typeof paraguayLocations]]);
@@ -108,7 +108,6 @@ export default function CheckoutForm({
     setFormData((prev) => ({ ...prev, city: '' }));
   }, [selectedDepartment]);
 
-  /* ── Handlers ── */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name === 'phone') {
@@ -128,7 +127,6 @@ export default function CheckoutForm({
     return Math.round(product.price * q * (1 - discount));
   };
 
-  /* ── Validación de campos requeridos ── */
   const isFormValid = () => {
     return (
       formData.name.trim() !== '' &&
@@ -141,7 +139,6 @@ export default function CheckoutForm({
     );
   };
 
-  /* ── Guardar pedido en Supabase ── */
   const saveOrder = async (paymentMethod: 'contraentrega' | 'pagopar') => {
     const finalPrice = calculatePrice(selectedQuantity);
     const generatedOrderId = Math.floor(40000 + Math.random() * 10000);
@@ -254,7 +251,6 @@ export default function CheckoutForm({
 
   const renderForm = () => (
     <form onSubmit={handleSubmit}>
-      {/* ── Opciones de cantidad ── */}
       <div className="checkout-product-options">
         <label className={`quantity-option ${selectedQuantity === 1 ? 'selected' : ''}`}>
           <input type="radio" name="quantity" value={1} checked={selectedQuantity === 1} onChange={() => setSelectedQuantity(1)} />
@@ -287,7 +283,6 @@ export default function CheckoutForm({
         })}
       </div>
 
-      {/* ── Variantes ── */}
       {product.variants && product.variants.length > 0 && (
         <div className="checkout-color-selector">
           <label htmlFor="color-select-checkout" className="variant-label">Color:</label>
@@ -299,7 +294,6 @@ export default function CheckoutForm({
         </div>
       )}
 
-      {/* ── Resumen ── */}
       <div className="checkout-summary">
         <div className="summary-row">
           <span>Subtotal</span>
@@ -316,7 +310,6 @@ export default function CheckoutForm({
         <p className="summary-note">Envíos e impuestos incluidos</p>
       </div>
 
-      {/* ── Campos de envío ── */}
       <div className="checkout-fields">
         <select value={selectedDepartment} onChange={(e) => setSelectedDepartment(e.target.value)} className="form-input" required>
           <option value="">-Seleccioná tu departamento aquí-</option>
@@ -355,51 +348,56 @@ export default function CheckoutForm({
           <input type="checkbox" required />
           CONFIRMO QUE MIS DATOS ESTÁN CORRECTOS Y QUIERO COMPRAR EL PRODUCTO
         </label>
-        <p className="attention-note">
-          <strong>ATENCIÓN:</strong> Tu pedido únicamente podrá salir del depósito si tus datos están completos. Por favor, verificá que tu dirección esté correcta antes de continuar. Al finalizar el pedido estás aceptando nuestras políticas.
-        </p>
 
-        <button type="submit" disabled={isSubmitting} className="submit-btn primary">
-          {isSubmitting ? 'PROCESANDO...' : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`}
-        </button>
-
-        {PAGOPAR_ACTIVO && (
-          <div className="pagopar-section">
-            <div className="pagopar-divider">
-              <span>— o pagá online con —</span>
-            </div>
-
-            {pagoparError && (
-              <p className="pagopar-error">{pagoparError}</p>
-            )}
-
-            <button
-              type="button"
-              className="submit-btn pagopar-btn"
-              onClick={handlePagopar}
-              disabled={pagoparLoading}
-            >
-              {pagoparLoading ? (
-                'REDIRIGIENDO A PAGOPAR...'
-              ) : (
-                <>
-                  PAGAR CON PAGOPAR
-                  <span className="pagopar-amount"> Gs. {calculatePrice(selectedQuantity).toLocaleString('es-PY')}</span>
-                </>
-              )}
+        {/* --- BOTONES CON ACTUALIZACIÓN DE TEXTO --- */}
+        
+        <div className="checkout-buttons-container">
+          <div className="btn-wrapper">
+            <button type="submit" disabled={isSubmitting} className="submit-btn primary">
+              {isSubmitting ? 'PROCESANDO...' : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`}
             </button>
-
-            {/* SECCIÓN ACTUALIZADA CON LOGOS DE IMAGEN */}
-            <div className="pagopar-metodos">
-              {logosPagopar.map((logo, index) => (
-                <div key={index} className="pagopar-pago-card-mini">
-                  <img src={logo.src} alt={logo.alt} />
-                </div>
-              ))}
-            </div>
-            <p className="pagopar-nota">Procesado de forma segura por Pagopar</p>
+            <p className="btn-sub-label">Efectivo y transferencia bancaria. (Solo para Asunción y alrededores)</p>
           </div>
-        )}
+
+          {PAGOPAR_ACTIVO && (
+            <div className="pagopar-section">
+              <div className="pagopar-divider">
+                <span>— o pagá online —</span>
+              </div>
+
+              {pagoparError && <p className="pagopar-error">{pagoparError}</p>}
+
+              <div className="btn-wrapper">
+                <button
+                  type="button"
+                  className="submit-btn pagopar-btn"
+                  onClick={handlePagopar}
+                  disabled={pagoparLoading}
+                >
+                  {pagoparLoading ? (
+                    'REDIRIGIENDO...'
+                  ) : (
+                    <>
+                      <FaCreditCard className="btn-icon-chuchi" />
+                      PAGAR CON TARJETA
+                      <span className="pagopar-amount"> Gs. {calculatePrice(selectedQuantity).toLocaleString('es-PY')}</span>
+                    </>
+                  )}
+                </button>
+                <p className="btn-sub-label gold-sub">¡O diferentes vía PAGOPAR!</p>
+              </div>
+
+              <div className="pagopar-metodos">
+                {logosPagopar.map((logo, index) => (
+                  <div key={index} className="pagopar-pago-card-mini">
+                    <img src={logo.src} alt={logo.alt} />
+                  </div>
+                ))}
+              </div>
+              <p className="pagopar-nota">Procesado de forma segura por Pagopar</p>
+            </div>
+          )}
+        </div>
       </div>
     </form>
   );
