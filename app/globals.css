@@ -4336,38 +4336,27 @@ input[type="number"]::-webkit-outer-spin-button {
 @media (max-width: 992px) {
   .bristol-desktop-only { display: none !important; }
   .bristol-mobile-only  { display: block; }
-
+ 
   .bristol-swiper-container {
     width: 100%;
     background: #fff;
-    padding: 10px 0 30px 0;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+    padding: 10px 0 20px 0;
+    border-top: none;
+    border-bottom: none;
   }
-
-  /* Título "Comprá en cuotas sin intereses" */
+ 
+  /* Título oculto en móvil/tablet */
   .bristol-mobile-label {
-    font-size: 0.82rem;
-    color: #333;
-    text-align: center;
-    margin-bottom: 8px;
-    font-weight: 500;
-    padding: 0 12px;
+    display: none;
   }
-
-  .bristol-mobile-label .gold-text {
-    color: #A78D5A;
-    font-weight: 800;
-    text-transform: uppercase;
-  }
-
+ 
   /* Contenedor que agrupa flechas + swiper */
   .bristol-swiper-wrapper {
     position: relative;
     display: flex;
     align-items: center;
   }
-
+ 
   /* Flechas laterales ‹ › */
   .bristol-arrow {
     flex-shrink: 0;
@@ -4385,63 +4374,70 @@ input[type="number"]::-webkit-outer-spin-button {
     transition: opacity 0.2s;
     padding: 0;
   }
-
+ 
   .bristol-arrow:hover { opacity: 0.5; }
   .bristol-arrow-left  { padding-left: 4px; }
   .bristol-arrow-right { padding-right: 4px; }
-
+ 
   /* El Swiper ocupa el espacio entre las flechas */
   .bristol-swiper {
-  flex: 1;
-  width: 100%;
-  overflow: hidden;
-}
-  /* Imagen panorámica — igual que Bristol: 2800px de ancho, 180px de alto */
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+  }
+ 
+  .bristol-swiper .swiper-wrapper {
+    overflow: visible;
+  }
+ 
+  .bristol-swiper .swiper-slide {
+    width: 100% !important;
+    overflow: hidden;
+  }
+ 
+  /* Imagen panorámica — más alta para no recortar logos */
   .bristol-img-panorama {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  object-position: left center;
-  display: block;
-}
-
-  /* Barra de progreso */
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    object-position: left center;
+    display: block;
+  }
+ 
+  /* Barra de progreso oculta por defecto, visible al interactuar */
   .bristol-scrollbar-wrapper {
     padding: 8px 10% 0;
   }
-
+ 
   .bristol-scrollbar {
     height: 4px;
     background: #e0e0e0;
     border-radius: 10px;
   }
-
-  /* Estilos internos de Swiper para la scrollbar */
+ 
   .swiper-scrollbar {
+    opacity: 0 !important;
+    transition: opacity 0.3s !important;
     background: #e0e0e0 !important;
     height: 4px !important;
     border-radius: 10px !important;
   }
-
+ 
   .swiper-scrollbar-drag {
     background: #333 !important;
     border-radius: 10px !important;
   }
-
+ 
+  /* Mostrar scrollbar al arrastrar */
+  .swiper-scrollbar-drag:active {
+    opacity: 1 !important;
+  }
+ 
   /* Ocultar flechas nativas de Swiper (usamos las nuestras) */
   .swiper-button-prev,
   .swiper-button-next {
     display: none !important;
   }
-}
-
-.bristol-swiper .swiper-wrapper {
-  overflow: visible;
-}
-
-.bristol-swiper .swiper-slide {
-  width: 100% !important;
-  overflow: hidden;
 }
 /* ===================================================== */
 /* ===== MEDIOS DE PAGO EN FOOTER ===== */
