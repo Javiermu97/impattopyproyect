@@ -4200,128 +4200,122 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 100%;
 }
 
-/* ===================================================== */
-/* ===== REPLICA EXACTA BANNER - SIN PISAR ===== */
-/* ===================================================== */
-
-.bristol-banner-container {
+.banner-bristol-final {
   width: 100%;
-  background-color: #f2f4f7; /* Gris  */
-  border-top: 1px solid #e0e4e9;
-  border-bottom: 1px solid #e0e4e9;
-  padding: 12px 0;
-  /* Espaciado para NO pisar Confort y Diseño */
-  margin-top: 20px;
-  margin-bottom: 40px; 
+  background-color: #ffffff; /* Fondo blanco para mezclarse con el sitio */
+  padding: 30px 0; /* Más ancho verticalmente */
+  margin: 10px 0 40px 0; /* Margen inferior para no pisar Confort y Diseño */
   position: relative;
-  display: block; /* Asegura que ocupe su propio bloque */
 }
 
-.bristol-banner-wrapper {
-  max-width: 1250px;
+.banner-bristol-wrapper {
+  max-width: 1400px; /* Más ancho horizontalmente */
   margin: 0 auto;
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 20px;
 }
 
-/* Etiqueta izquierda */
-.bristol-label {
-  padding-right: 20px;
+.banner-bristol-label {
+  padding-right: 25px;
   margin-right: 20px;
-  border-right: 1px solid #d1d7de;
+  border-right: 2px solid #eeeeee;
   flex-shrink: 0;
   text-align: right;
 }
 
-.bristol-label p {
+.banner-bristol-label p {
   margin: 0;
-  font-size: 0.8rem;
-  line-height: 1.1;
-  color: #444;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  color: #333;
   font-weight: 500;
 }
 
-.bristol-label p.highlight {
-  color: #d31212; /* Rojo Bristol */
+.banner-bristol-label .red-text {
+  color: #e31a1a;
   font-weight: 800;
   text-transform: uppercase;
+  font-size: 0.9rem;
 }
 
-/* Slider */
-.bristol-slider-main {
+.banner-bristol-slider {
   flex: 1;
   position: relative;
   display: flex;
   align-items: center;
-  overflow: hidden;
 }
 
-.bristol-scroll-viewport {
-  overflow-x: hidden;
+.bristol-scroll-container {
+  overflow-x: hidden; /* Oculta barra de scroll */
   scroll-behavior: smooth;
-  display: flex;
   width: 100%;
-  padding: 5px 0;
 }
 
-.bristol-logos-track {
+.bristol-track {
   display: flex;
   align-items: center;
-  gap: 30px; /* Espacio entre logos */
+  gap: 40px; /* Espacio generoso entre logos */
+  padding: 10px 40px;
 }
 
-.bristol-logo-box {
+.bristol-logo-item {
   flex-shrink: 0;
-  height: 35px; /* Altura controlada para que no sea gigante */
+  height: 55px; /* Logos más grandes */
   display: flex;
   align-items: center;
 }
 
-.bristol-logo-box img {
+.bristol-logo-item img {
   height: 100%;
   width: auto;
   object-fit: contain;
-  /* Bristol usa logos un poco desaturados hasta el hover */
-  filter: grayscale(100%) opacity(0.7);
-  transition: all 0.3s ease;
+  /* Eliminado el efecto gris, ahora siempre a color */
 }
 
-.bristol-logo-box img:hover {
-  filter: grayscale(0%) opacity(1);
-}
-
-/* Botones de navegación flotantes */
-.bristol-nav-btn {
+/* FLECHAS GRIS OSCURO, FONDO BLANCO, TAMAÑO 16 */
+.bristol-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: white;
-  border: 1px solid #ccc;
-  width: 28px;
-  height: 28px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  color: #555555; /* Gris oscuro */
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   cursor: pointer;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-size: 16px; /* Tamaño solicitado */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.2s;
 }
 
-.bristol-nav-btn.left { left: 5px; }
-.bristol-nav-btn.right { right: 5px; }
+.bristol-arrow:hover {
+  background: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
 
-/* Móvil: Se oculta el texto largo y se permite scroll táctil */
-@media (max-width: 768px) {
-  .bristol-label {
+.bristol-arrow.left {
+  left: -10px;
+}
+
+.bristol-arrow.right {
+  right: -10px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .banner-bristol-label {
     display: none;
   }
-  .bristol-scroll-viewport {
-    overflow-x: auto; /* Permite deslizar con el dedo en celular */
+  .bristol-scroll-container {
+    overflow-x: auto;
   }
-  .bristol-nav-btn {
+  .bristol-arrow {
     display: none;
   }
 }

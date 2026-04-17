@@ -24,27 +24,10 @@ const listaLogos = [
 
 export default function BannerCuotas() {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-
-  const checkScroll = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 10);
-      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
-    }
-  };
-
-  useEffect(() => {
-    checkScroll();
-    window.addEventListener('resize', checkScroll);
-    return () => window.removeEventListener('resize', checkScroll);
-  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const { clientWidth } = scrollRef.current;
-      const scrollAmount = clientWidth * 0.7;
+      const scrollAmount = 300; // Ajuste de desplazamiento
       const scrollTo = direction === 'left' 
         ? scrollRef.current.scrollLeft - scrollAmount 
         : scrollRef.current.scrollLeft + scrollAmount;
@@ -54,35 +37,34 @@ export default function BannerCuotas() {
   };
 
   return (
-    <section className="bristol-banner-container">
-      <div className="bristol-banner-wrapper">
+    <section className="banner-bristol-final">
+      <div className="banner-bristol-wrapper">
         
-        <div className="bristol-label">
+        {/* Etiqueta de texto */}
+        <div className="banner-bristol-label">
           <p>Comprá</p>
           <p>en cuotas</p>
-          <p className="highlight">sin intereses</p>
+          <p className="red-text">sin intereses</p>
         </div>
 
-        <div className="bristol-slider-main">
-          {canScrollLeft && (
-            <button className="bristol-nav-btn left" onClick={() => scroll('left')}>‹</button>
-          )}
+        {/* Contenedor del Carrusel */}
+        <div className="banner-bristol-slider">
+          
+          <button className="bristol-arrow left" onClick={() => scroll('left')}>‹</button>
 
-          <div className="bristol-scroll-viewport" ref={scrollRef} onScroll={checkScroll}>
-            <div className="bristol-logos-track">
+          <div className="bristol-scroll-container" ref={scrollRef}>
+            <div className="bristol-track">
               {listaLogos.map((logo, i) => (
-                <div key={i} className="bristol-logo-box">
-                  <img src={logo.src} alt={logo.alt} title={logo.alt} />
+                <div key={i} className="bristol-logo-item">
+                  <img src={logo.src} alt={logo.alt} />
                 </div>
               ))}
             </div>
           </div>
 
-          {canScrollRight && (
-            <button className="bristol-nav-btn right" onClick={() => scroll('right')}>›</button>
-          )}
+          <button className="bristol-arrow right" onClick={() => scroll('right')}>›</button>
+          
         </div>
-
       </div>
     </section>
   );
