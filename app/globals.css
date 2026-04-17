@@ -4435,6 +4435,14 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 
+.bristol-swiper .swiper-wrapper {
+  overflow: visible;
+}
+
+.bristol-swiper .swiper-slide {
+  overflow: hidden;
+  width: 100% !important;
+}
 /* ===================================================== */
 /* ===== MEDIOS DE PAGO EN FOOTER ===== */
 /* ===================================================== */
