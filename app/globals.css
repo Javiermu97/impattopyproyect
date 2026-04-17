@@ -4274,10 +4274,11 @@ input[type="number"]::-webkit-outer-spin-button {
 /* ===================================================== */
 
 .footer-bottom-logos-integrated {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #e0e0e0; /* Línea divisoria sutil */
+  /* ELIMINADA: La línea horizontal superior (border-top: none) */
+  margin-top: 1.5rem; /* Margen superior para separarlo del contenido del footer */
+  padding-top: 1rem;
   width: 100%;
+  border-top: none; /* Asegura que no haya borde superior */
 }
 .footer-pagos-container {
   max-width: 1200px;
@@ -4288,25 +4289,44 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .footer-pagos-grid {
   display: flex;
-  flex-wrap: wrap;
+  /* FORZADO UNA FILA: Evita que los logos bajen a la siguiente línea */
+  flex-wrap: nowrap; 
   justify-content: center;
-  gap: 10px;
+  align-items: center;
+  /* COMPACTADO: Gap reducido para que quepan todos */
+  gap: 8px; 
+  margin-bottom: 1.5rem;
+  /* Importante para no desbordar en pantallas que no quepan todos */
+  overflow-x: auto; 
+  padding: 0 10px; /* Padding lateral para que no toquen los bordes */
+}
+/* Ocultar barra de desplazamiento para que se vea limpio */
+.footer-pagos-grid::-webkit-scrollbar {
+  display: none;
+}
+.footer-pagos-grid {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .footer-pago-card {
+  flex: 0 0 auto; /* No permite que las tarjetas se estiren o encojan */
   background: #ffffff;
   border: 1px solid #dcdcdc;
   border-radius: 4px;
-  width: 85px;   /* Tamaño grande solicitado */
-  height: 52px;  
+  /* CUADRO MÁS CHICO: Dimensiones compactas solicitadas */
+  width: 60px;   
+  height: 40px;  
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px;
+  /* ESPACIO INTERNO MÍNIMO: Para que el logo resalte */
+  padding: 2px; 
 }
 .footer-pago-card img {
-  max-width: 90%;
-  max-height: 90%;
+  /* TAMAÑO DEL LOGO: Mantenemos el logo grande ocupando casi todo el cuadro */
+  max-width: 95%;
+  max-height: 95%;
   object-fit: contain;
 }
 
@@ -4317,10 +4337,15 @@ input[type="number"]::-webkit-outer-spin-button {
   opacity: 0.9;
 }
 
-/* Ajuste móvil */
+/* Ajuste para pantallas pequeñas */
 @media (max-width: 768px) {
+  .footer-pagos-grid {
+    gap: 6px;
+    padding: 0 5px;
+  }
   .footer-pago-card {
-    width: 48px;
-    height: 32px;
+    /* Un poco más pequeños en móvil */
+    width: 50px;
+    height: 35px;
   }
 }
