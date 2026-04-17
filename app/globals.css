@@ -4062,28 +4062,74 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0.5rem 0;
 }
 
-.pagopar-btn {
+/* Contenedor general de los botones */
+.checkout-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+/* Configuración para permitir múltiples líneas y centrado */
+.btn-multi-line {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 12px 10px !important;
+  line-height: 1.2 !important;
+  height: auto !important;
+  width: 100%;
+  border-radius: 8px; /* Un toque más suave a las esquinas */
+}
+
+/* Texto Principal (El nombre del pago) */
+.btn-main-text {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Letras blancas pequeñas para los letreros internos */
+.btn-sub-text-white {
+  font-size: 0.65rem; 
+  color: #ffffff !important;
+  font-weight: 400;
+  margin-top: 4px;
+  text-transform: none;
+}
+
+/* Estilo específico para el botón de Pagopar Dorado */
+.pagopar-btn-gold {
+  background-color: #A78D5A !important; /* El dorado solicitado */
+  border: none !important;
+  transition: opacity 0.2s;
+}
+
+.pagopar-btn-gold:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* ÍCONO CHUCHI EN NEGRO */
+.btn-icon-chuchi-black {
+  color: #000000 !important;
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+
+.btn-main-row {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-
-.pagopar-btn:hover:not(:disabled) {
-  background-color: #0052a3 !important;
+.btn-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.pagopar-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.pagopar-amount {
-  font-weight: 400;
-  font-size: 0.9em;
-  opacity: 0.9;
-}
-
+/* MÉTODOS DE PAGO (GRILLA DE LOGOS) */
 .pagopar-metodos {
   display: flex;
   flex-wrap: wrap;
@@ -4103,6 +4149,7 @@ input[type="number"]::-webkit-outer-spin-button {
   justify-content: center;
   padding: 2px;
 }
+
 .pagopar-pago-card-mini img {
   max-width: 90%;
   max-height: 90%;
@@ -4113,7 +4160,7 @@ input[type="number"]::-webkit-outer-spin-button {
   text-align: center;
   font-size: 0.72rem;
   color: #aaa;
-  margin: 0;
+  margin-top: 5px;
 }
 
 .pagopar-error {
@@ -4123,41 +4170,50 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 0.5rem 0.75rem;
   font-size: 0.82rem;
   color: #c0392b;
-  margin: 0;
 }
 
-.checkout-buttons-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 10px;
-}
-.btn-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  width: 100%;
-}
-/* LETREROS CHICOS DEBAJO DE BOTONES */
-.btn-sub-label {
-  font-size: 0.75rem;
-  color: #666;
-  text-align: center;
-  margin: 0;
-  font-weight: 500;
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
-.gold-sub {
-  color: #A78D5A; /* Color dorado para el de Pagopar para que resalte */
-  font-weight: 700;
+/* ===== RESPONSIVIDAD PARA EL CHECKOUT ===== */
+
+/* Para móviles muy angostos (menos de 380px) */
+@media (max-width: 380px) {
+  .btn-main-text {
+    font-size: 0.9rem; /* Achicamos un pelín el texto principal */
+  }
+  
+  .btn-sub-text-white {
+    font-size: 0.6rem; /* Ajuste fino para que entre en una línea */
+    padding: 0 5px;
+  }
+
+  .pagopar-pago-card-mini {
+    width: 42px; /* Logos un poco más pequeños para que entren más por fila */
+    height: 26px;
+  }
 }
 
-/* ÍCONO CHUCHI */
-.btn-icon-chuchi {
-  margin-right: 10px;
-  font-size: 1.1rem;
-  vertical-align: middle;
+/* Para Tablets y Desktops */
+@media (min-width: 768px) {
+  .checkout-modal-content {
+    max-width: 500px; /* Evita que el formulario se estire demasiado a lo ancho */
+    margin: 2rem auto;
+    border-radius: 12px;
+  }
+
+  .checkout-buttons-container {
+    padding: 0 20px; /* Un poco de aire a los costados en pantallas grandes */
+  }
+}
+
+/* Ajuste para que los botones se sientan bien al tacto en móviles */
+@media (pointer: coarse) {
+  .submit-btn {
+    min-height: 60px; /* Asegura un buen área de clic para el dedo */
+  }
 }
 /* ===================================================== */
 /* ===== PÁGINAS DE RESULTADO DE PAGO Banner===== */

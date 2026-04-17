@@ -351,53 +351,59 @@ export default function CheckoutForm({
 
         {/* --- BOTONES CON ACTUALIZACIÓN DE TEXTO --- */}
         
-        <div className="checkout-buttons-container">
-          <div className="btn-wrapper">
-            <button type="submit" disabled={isSubmitting} className="submit-btn primary">
-              {isSubmitting ? 'PROCESANDO...' : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`}
-            </button>
-            <p className="btn-sub-label">Efectivo y transferencia bancaria. (Solo para Asunción y alrededores)</p>
+        {/* --- SECCIÓN DE BOTONES ACTUALIZADA --- */}
+<div className="checkout-buttons-container">
+  
+  {/* Botón 1: Pagar al recibir */}
+  <button type="submit" disabled={isSubmitting} className="submit-btn primary btn-multi-line">
+    <span className="btn-main-text">
+      {isSubmitting ? 'PROCESANDO...' : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`}
+    </span>
+    <span className="btn-sub-text-white">
+      Efectivo y transferencia bancaria. (Solo para Asunción y alrededores)
+    </span>
+  </button>
+
+  {PAGOPAR_ACTIVO && (
+    <div className="pagopar-section">
+      <div className="pagopar-divider">
+        <span>— o pagá online —</span>
+      </div>
+
+      {pagoparError && <p className="pagopar-error">{pagoparError}</p>}
+
+      {/* Botón 2: Pagar con Tarjeta (Dorado #A78D5A) */}
+      <button
+        type="button"
+        className="submit-btn pagopar-btn-gold btn-multi-line"
+        onClick={handlePagopar}
+        disabled={pagoparLoading}
+      >
+        <div className="btn-content-wrapper">
+          <div className="btn-main-row">
+            <FaCreditCard className="btn-icon-chuchi-black" />
+            <span className="btn-main-text">
+              {pagoparLoading ? 'REDIRIGIENDO...' : `PAGAR CON TARJETA Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`}
+            </span>
           </div>
-
-          {PAGOPAR_ACTIVO && (
-            <div className="pagopar-section">
-              <div className="pagopar-divider">
-                <span>— o pagá online —</span>
-              </div>
-
-              {pagoparError && <p className="pagopar-error">{pagoparError}</p>}
-
-              <div className="btn-wrapper">
-                <button
-                  type="button"
-                  className="submit-btn pagopar-btn"
-                  onClick={handlePagopar}
-                  disabled={pagoparLoading}
-                >
-                  {pagoparLoading ? (
-                    'REDIRIGIENDO...'
-                  ) : (
-                    <>
-                      <FaCreditCard className="btn-icon-chuchi" />
-                      PAGAR CON TARJETA
-                      <span className="pagopar-amount"> Gs. {calculatePrice(selectedQuantity).toLocaleString('es-PY')}</span>
-                    </>
-                  )}
-                </button>
-                <p className="btn-sub-label gold-sub">¡O diferentes vía PAGOPAR!</p>
-              </div>
-
-              <div className="pagopar-metodos">
-                {logosPagopar.map((logo, index) => (
-                  <div key={index} className="pagopar-pago-card-mini">
-                    <img src={logo.src} alt={logo.alt} />
-                  </div>
-                ))}
-              </div>
-              <p className="pagopar-nota">Procesado de forma segura por Pagopar</p>
-            </div>
-          )}
+          <span className="btn-sub-text-white">
+            ¡O diferentes vía PAGOPAR!
+          </span>
         </div>
+      </button>
+
+      {/* Grilla de logos (se mantiene igual) */}
+      <div className="pagopar-metodos">
+        {logosPagopar.map((logo, index) => (
+          <div key={index} className="pagopar-pago-card-mini">
+            <img src={logo.src} alt={logo.alt} />
+          </div>
+        ))}
+      </div>
+      <p className="pagopar-nota">Procesado de forma segura por Pagopar</p>
+    </div>
+  )}
+</div>
       </div>
     </form>
   );
