@@ -2,9 +2,10 @@
 
 import { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Scrollbar } from 'swiper/modules';
+import { Autoplay, Scrollbar, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/scrollbar';
+import 'swiper/css/navigation';
 
 const listaLogos = [
   { src: '/logos-bancos/americanexpress.png', alt: 'American Express' },
@@ -26,15 +27,18 @@ const listaLogos = [
   { src: '/logos-bancos/Cabal_logo.png', alt: 'Cabal' },
 ];
 
+const rutaImagenPanorama = '/banner-cuotas-panorama.png';
+
 export default function BannerCuotas() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollEscritorio = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const cellWidth = 110;
-      const scrollTo = direction === 'left'
-        ? scrollRef.current.scrollLeft - cellWidth * 3
-        : scrollRef.current.scrollLeft + cellWidth * 3;
+      const scrollTo =
+        direction === 'left'
+          ? scrollRef.current.scrollLeft - cellWidth * 3
+          : scrollRef.current.scrollLeft + cellWidth * 3;
       scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
     }
   };
@@ -42,7 +46,9 @@ export default function BannerCuotas() {
   return (
     <section className="bristol-fix-container">
 
-      {/* ── ESCRITORIO (sin cambios) ── */}
+      {/* ══════════════════════════════════════════════ */}
+      {/* ══  ESCRITORIO — sin cambios                ══ */}
+      {/* ══════════════════════════════════════════════ */}
       <div className="bristol-fix-wrapper bristol-desktop-only">
         <div className="bristol-fix-label">
           <p>Comprá en cuotas</p>
@@ -63,35 +69,61 @@ export default function BannerCuotas() {
         </div>
       </div>
 
-      {/* ── MÓVIL/TABLET (logos individuales con Swiper) ── */}
+      {/* ══════════════════════════════════════════════ */}
+      {/* ══  MÓVIL/TABLET — imagen panorámica Bristol ══ */}
+      {/* ══════════════════════════════════════════════ */}
       <div className="bristol-mobile-only">
         <div className="bristol-swiper-container">
+
           <div className="bristol-mobile-label">
             <span>Comprá en cuotas</span>
             <span className="gold-text"> sin intereses</span>
           </div>
-          <Swiper
-            modules={[Autoplay, Scrollbar]}
-            slidesPerView={3}
-            spaceBetween={10}
-            loop={true}
-            autoplay={{
-              delay: 12000,
-              disableOnInteraction: false,
-            }}
-            scrollbar={{
-              draggable: true,
-            }}
-            className="mySwiper"
-          >
-            {listaLogos.map((logo, i) => (
-              <SwiperSlide key={i}>
-                <div className="bristol-mobile-logo-card">
-                  <img src={logo.src} alt={logo.alt} />
-                </div>
+
+          <div className="bristol-swiper-wrapper">
+            <button className="bristol-arrow bristol-arrow-left">‹</button>
+
+            <Swiper
+              modules={[Autoplay, Scrollbar, Navigation]}
+              loop={true}
+              speed={800}
+              autoplay={{
+                delay: 12000,
+                disableOnInteraction: false,
+              }}
+              navigation={{
+                prevEl: '.bristol-arrow-left',
+                nextEl: '.bristol-arrow-right',
+              }}
+              scrollbar={{
+                draggable: true,
+                el: '.bristol-scrollbar',
+              }}
+              className="bristol-swiper"
+            >
+              <SwiperSlide>
+                <img
+                  src={rutaImagenPanorama}
+                  alt="Medios de pago y cuotas"
+                  className="bristol-img-panorama"
+                />
               </SwiperSlide>
-            ))}
-          </Swiper>
+              <SwiperSlide>
+                <img
+                  src={rutaImagenPanorama}
+                  alt="Medios de pago y cuotas"
+                  className="bristol-img-panorama"
+                />
+              </SwiperSlide>
+            </Swiper>
+
+            <button className="bristol-arrow bristol-arrow-right">›</button>
+          </div>
+
+          <div className="bristol-scrollbar-wrapper">
+            <div className="bristol-scrollbar"></div>
+          </div>
+
         </div>
       </div>
 

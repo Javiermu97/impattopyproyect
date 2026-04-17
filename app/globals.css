@@ -4238,6 +4238,7 @@ input[type="number"]::-webkit-outer-spin-button {
   padding-top: 10px !important;
 }
 
+/* ── ESCRITORIO ── */
 .bristol-fix-wrapper {
   max-width: 1350px;
   margin: 0 auto;
@@ -4324,7 +4325,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .fix-nav-btn.left  { left: 10px; }
 .fix-nav-btn.right { right: 10px; }
 
-/* ── ESCRITORIO: visible / MÓVIL: oculto ── */
+/* ── Visibilidad escritorio/móvil ── */
 .bristol-desktop-only { display: flex; }
 .bristol-mobile-only  { display: none; }
 
@@ -4339,17 +4340,19 @@ input[type="number"]::-webkit-outer-spin-button {
   .bristol-swiper-container {
     width: 100%;
     background: #fff;
-    padding: 10px 12px 30px 12px;
+    padding: 10px 0 30px 0;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
   }
 
+  /* Título "Comprá en cuotas sin intereses" */
   .bristol-mobile-label {
     font-size: 0.82rem;
     color: #333;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-weight: 500;
+    padding: 0 12px;
   }
 
   .bristol-mobile-label .gold-text {
@@ -4358,41 +4361,77 @@ input[type="number"]::-webkit-outer-spin-button {
     text-transform: uppercase;
   }
 
-  .bristol-mobile-logo-card {
-    background: #fff;
-    border: 1px solid #dcdcdc;
-    border-radius: 6px;
+  /* Contenedor que agrupa flechas + swiper */
+  .bristol-swiper-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Flechas laterales ‹ › */
+  .bristol-arrow {
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    color: #333;
+    font-size: 28px;
+    width: 32px;
     height: 60px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 6px;
+    z-index: 10;
+    transition: opacity 0.2s;
+    padding: 0;
   }
 
-  .bristol-mobile-logo-card img {
-    max-width: 100%;
-    max-height: 100%;
-    width: 100%;
-    height: 100%;
+  .bristol-arrow:hover { opacity: 0.5; }
+  .bristol-arrow-left  { padding-left: 4px; }
+  .bristol-arrow-right { padding-right: 4px; }
+
+  /* El Swiper ocupa el espacio entre las flechas */
+  .bristol-swiper {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Imagen panorámica — igual que Bristol: 2800px de ancho, 180px de alto */
+  .bristol-img-panorama {
+    width: 2800px !important;
+    max-width: none !important;
+    height: 180px;
     object-fit: contain;
+    display: block;
   }
 
-  .mySwiper {
-    padding-bottom: 20px !important;
+  /* Barra de progreso */
+  .bristol-scrollbar-wrapper {
+    padding: 8px 10% 0;
   }
 
+  .bristol-scrollbar {
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 10px;
+  }
+
+  /* Estilos internos de Swiper para la scrollbar */
   .swiper-scrollbar {
     background: #e0e0e0 !important;
     height: 4px !important;
-    bottom: 4px !important;
-    width: 80% !important;
-    left: 10% !important;
     border-radius: 10px !important;
   }
 
   .swiper-scrollbar-drag {
     background: #333 !important;
     border-radius: 10px !important;
+  }
+
+  /* Ocultar flechas nativas de Swiper (usamos las nuestras) */
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none !important;
   }
 }
 
