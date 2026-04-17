@@ -4127,20 +4127,21 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .bristol-fix-container {
   width: 100%;
-  background: #ffffff; /* Fondo blanco para mezclarse con el sitio */
-  padding: 40px 0; /* Más alto verticalmente para dar presencia */
+  background: #ffffff;
+  padding: 30px 0; /* Un poco menos de aire vertical para balancear */
   margin: 10px 0 40px 0;
   overflow: hidden;
 }
 
 .bristol-fix-wrapper {
-  max-width: 1450px; /* Ocupa casi todo el ancho de la pantalla */
+  /* Reducimos de 1450px a 1350px para "acortar" el banner lateralmente */
+  max-width: 1350px; 
   margin: 0 auto;
   display: flex;
   align-items: center;
-  padding: 0 5px;
+  /* Añadimos padding lateral para alejarlo de los bordes del sitio */
+  padding: 0 40px; 
 }
-
 .bristol-fix-label {
   flex-shrink: 0;
   border-right: 1px solid #eee;
@@ -4182,13 +4183,15 @@ input[type="number"]::-webkit-outer-spin-button {
 .fix-track {
   display: flex;
   align-items: center;
-  gap: 50px; /* Espacio generoso entre logos */
-  padding: 10px 45px; /* Espacio para que las flechas no tapen logos */
+  /* REDUCIDO: De 50px a 20px para que los logos estén bien pegados */
+  gap: 20px; 
+  padding: 10px 30px;
 }
 
 .fix-logo-item {
   flex-shrink: 0;
-  height: 65px; /* Logos grandes y visibles */
+  /* Mantenemos el tamaño para que resalten */
+  height: 60px; 
 }
 
 .fix-logo-item img {
@@ -4220,8 +4223,8 @@ input[type="number"]::-webkit-outer-spin-button {
   opacity: 0.5;
 }
 
-.fix-nav-btn.left { left: 0; }
-.fix-nav-btn.right { right: 0; }
+.fix-nav-btn.left { left: 10px; }
+.fix-nav-btn.right { right: 10px; }
 
 /* ADAPTACIÓN PARA CELULARES Y TABLETS */
 @media (max-width: 768px) {
