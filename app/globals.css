@@ -4089,19 +4089,27 @@ input[type="number"]::-webkit-outer-spin-button {
 .pagopar-metodos {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 6px;
   justify-content: center;
+  margin-top: 5px;
 }
 
-.pagopar-badge {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 3px 7px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: #444;
-  white-space: nowrap;
+.pagopar-pago-card-mini {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  width: 50px;   /* Tamaño compacto para el checkout */
+  height: 32px;  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.pagopar-pago-card-mini img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
 }
 
 .pagopar-nota {

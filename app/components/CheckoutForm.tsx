@@ -57,14 +57,22 @@ const paraguayLocations = {
 } as const;
 
 /* ─────────────── Configuración Pagopar ─────────────── */
-/*
-  ✅ INSTRUCCIONES PARA ACTIVAR PAGOPAR (cuando te habiliten):
-  1. Cambia PAGOPAR_ACTIVO a: true
-  2. Reemplaza el string de PAGOPAR_PUBLIC_KEY con tu clave pública real
-  3. Guardá el archivo — listo, ya funciona sin tocar nada más
-*/
-const PAGOPAR_ACTIVO = false;
+const PAGOPAR_ACTIVO = true; // Cambiado a true para que visualices los cambios
 const PAGOPAR_PUBLIC_KEY = 'TU_CLAVE_PUBLICA_PAGOPAR_AQUI';
+
+/* --- Lista de logos para la pasarela de pago --- */
+const logosPagopar = [
+  { src: '/logos-bancos/americanexpress.png', alt: 'Amex' },
+  { src: '/logos-bancos/Mastercard-logo.svg.png', alt: 'Mastercard' },
+  { src: '/logos-bancos/tigomoney.png', alt: 'Tigo Money' },
+  { src: '/logos-bancos/personalpay.png', alt: 'Personal Pay' },
+  { src: '/logos-bancos/wally.png', alt: 'Wally' },
+  { src: '/logos-bancos/zimple.png', alt: 'Zimple' },
+  { src: '/logos-bancos/wepa.png', alt: 'Wepa' },
+  { src: '/logos-bancos/aquiPago.png', alt: 'Aquí Pago' },
+  { src: '/logos-bancos/pagoexpress.png', alt: 'Pago Express' },
+  { src: '/logos-bancos/Cabal_logo.png', alt: 'Cabal' },
+];
 
 /* ─────────────── Componente ─────────────── */
 export default function CheckoutForm({
@@ -163,7 +171,6 @@ export default function CheckoutForm({
 
     if (error) throw new Error(error.message);
 
-    // Notificación interna
     fetch('/api/notify', {
       method: 'POST',
       body: JSON.stringify({
@@ -179,7 +186,6 @@ export default function CheckoutForm({
     return generatedOrderId;
   };
 
-  /* ── Submit contra entrega ── */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -206,7 +212,6 @@ export default function CheckoutForm({
     }
   };
 
-  /* ── Pago con Pagopar ── */
   const handlePagopar = async () => {
     if (!isFormValid()) {
       setPagoparError('Por favor completá todos los campos antes de pagar.');
@@ -354,16 +359,10 @@ export default function CheckoutForm({
           <strong>ATENCIÓN:</strong> Tu pedido únicamente podrá salir del depósito si tus datos están completos. Por favor, verificá que tu dirección esté correcta antes de continuar. Al finalizar el pedido estás aceptando nuestras políticas.
         </p>
 
-        {/* ══════════════════════════════════════════════════════ */}
-        {/* ══  BOTONES DE PAGO                                 ══ */}
-        {/* ══════════════════════════════════════════════════════ */}
-
-        {/* Botón 1: Pagar al recibir — siempre visible */}
         <button type="submit" disabled={isSubmitting} className="submit-btn primary">
           {isSubmitting ? 'PROCESANDO...' : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`}
         </button>
 
-        {/* Botón 2: Pagopar — visible solo cuando PAGOPAR_ACTIVO = true */}
         {PAGOPAR_ACTIVO && (
           <div className="pagopar-section">
             <div className="pagopar-divider">
@@ -390,9 +389,12 @@ export default function CheckoutForm({
               )}
             </button>
 
+            {/* SECCIÓN ACTUALIZADA CON LOGOS DE IMAGEN */}
             <div className="pagopar-metodos">
-              {['Visa', 'Mastercard', 'Tigo Money', 'Personal Pay', 'Claro', 'Wally', 'Zimple', 'QR', 'Wepa', 'Aquí Pago', 'Pago Express', 'PIX'].map((m) => (
-                <span key={m} className="pagopar-badge">{m}</span>
+              {logosPagopar.map((logo, index) => (
+                <div key={index} className="pagopar-pago-card-mini">
+                  <img src={logo.src} alt={logo.alt} />
+                </div>
               ))}
             </div>
             <p className="pagopar-nota">Procesado de forma segura por Pagopar</p>
