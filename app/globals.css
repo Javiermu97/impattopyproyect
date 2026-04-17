@@ -4128,11 +4128,17 @@ input[type="number"]::-webkit-outer-spin-button {
 .bristol-fix-container {
   width: 100%;
   background: #ffffff;
-  /* REDUCIDO: Bajamos el padding de 40px a 10px para quitar el espacio rojo que marcaste */
-  padding: 10px 0; 
-  /* REDUCIDO: Bajamos el margen para que las secciones se acerquen más */
-  margin: 5px 0 15px 0; 
+  padding-top: 10px;    /* Espacio arriba del banner */
+  padding-bottom: 5px;  /* Reducimos al mínimo el espacio abajo del banner */
+  margin-top: 5px;
+  margin-bottom: 0px;   /* ELIMINADO: Cero espacio entre el banner y lo que sigue */
   overflow: hidden;
+  display: block;
+}
+/* Agrega esta regla para quitarle el espacio a la sección de productos que viene después */
+.home-products-section {
+  margin-top: 0px !important; 
+  padding-top: 10px !important;
 }
 .bristol-fix-wrapper {
   /* Reducimos de 1450px a 1350px para "acortar" el banner lateralmente */
