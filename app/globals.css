@@ -4364,6 +4364,36 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 
+/* ── AUTO-SCROLL MÓVIL/TABLET ── */
+@media (max-width: 992px) {
+  .fix-track-mobile {
+    gap: 30px;
+  }
+
+  .fix-track-mobile .fix-logo-item {
+    height: 55px;
+  }
+
+  .fix-nav-btn {
+    display: flex !important; /* flechas visibles en móvil */
+    background: rgba(255,255,255,0.85);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+
+  .fix-scroll-area {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .fix-scroll-area::-webkit-scrollbar {
+    display: none;
+  }
+}
 /* ===================================================== */
 /* ===== MEDIOS DE PAGO EN FOOTER ===== */
 /* ===================================================== */
