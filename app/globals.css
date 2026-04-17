@@ -4401,79 +4401,100 @@ input[type="number"]::-webkit-outer-spin-button {
 .bristol-mobile-only  { display: none; }
 
 @media (max-width: 992px) {
-  .bristol-desktop-only { display: none; }
+  .bristol-desktop-only { display: none !important; }
   .bristol-mobile-only  { display: block; }
 
-  .bristol-mobile-header {
-    text-align: center;
-    padding: 10px 0 6px;
-    font-size: 0.85rem;
-    color: #333;
-    line-height: 1.3;
+  .bristol-mobile-band {
+    display: flex;
+    align-items: stretch;
+    height: 90px;
+    overflow: hidden;
+    position: relative;
+    background: #fff;
   }
 
-  .bristol-mobile-header .gold-text {
+  /* Celda de texto fija a la izquierda */
+  .bristol-mobile-text-cell {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 10px;
+    font-size: 0.72rem;
+    color: #333;
+    line-height: 1.3;
+    border-right: 1px dashed #ccc;
+    min-width: 85px;
+    text-align: center;
+  }
+
+  .bristol-mobile-text-cell p { margin: 0; }
+
+  .bristol-mobile-text-cell .gold-text {
     color: #A78D5A;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: 0.95rem;
+    font-size: 0.78rem;
   }
 
-  .bristol-mobile-track-wrapper {
-    position: relative;
-    border-top: 1px dashed #ccc;
-    border-bottom: 1px dashed #ccc;
-    padding: 8px 0;
-  }
-
+  /* Área scrolleable de logos */
   .bristol-mobile-scroll {
+    display: flex;
+    align-items: stretch;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding: 0 36px;
+    flex: 1;
   }
 
   .bristol-mobile-scroll::-webkit-scrollbar { display: none; }
 
-  .bristol-mobile-grid {
-    display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    grid-auto-flow: column;
-    grid-auto-columns: 70px;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .bristol-mobile-logo {
-    height: 38px;
+  /* Cada celda tiene 2 logos apilados + divisor derecho */
+  .bristol-mobile-cell {
+    flex-shrink: 0;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    position: relative;
+    border-right: 1px dashed #ccc;
+    min-width: 80px;
   }
 
-  .bristol-mobile-logo img {
-    max-width: 100%;
-    max-height: 100%;
+  .bristol-mobile-logo-img {
+    width: 60px;
+    height: 28px;
     object-fit: contain;
   }
 
-  .bristol-mobile-arrow {
+  /* divisor interno (ya lo maneja el border-right de .bristol-mobile-cell) */
+  .bristol-mobile-divider-inner { display: none; }
+
+  /* Flechas transparentes sin borde */
+  .bristol-mobile-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 5;
-    background: rgba(255,255,255,0.9);
-    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: #555;
+    font-size: 22px;
     width: 28px;
-    height: 28px;
-    font-size: 18px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-    border: none;
     cursor: pointer;
+    z-index: 10;
+    padding: 0;
   }
+
+  .bristol-mobile-btn.left  { left: 0; }
+  .bristol-mobile-btn.right { right: 0; }
+
+  .bristol-mobile-divider { display: none; }
 }
 /* ===================================================== */
 /* ===== MEDIOS DE PAGO EN FOOTER ===== */

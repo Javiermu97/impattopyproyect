@@ -22,7 +22,12 @@ const listaLogos = [
   { src: '/logos-bancos/Cabal_logo.png', alt: 'Cabal' },
 ];
 
-const logosLoop = [...listaLogos, ...listaLogos];
+// Agrupamos logos de a 2 para formar las "celdas" del carrusel móvil
+const celdas = [];
+for (let i = 0; i < listaLogos.length; i += 2) {
+  celdas.push(listaLogos.slice(i, i + 2));
+}
+const celdasLoop = [...celdas, ...celdas];
 
 export default function BannerCuotas() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -31,11 +36,10 @@ export default function BannerCuotas() {
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const { clientWidth } = scrollRef.current;
-      const scrollAmount = clientWidth * 0.6;
+      const cellWidth = 110;
       const scrollTo = direction === 'left'
-        ? scrollRef.current.scrollLeft - scrollAmount
-        : scrollRef.current.scrollLeft + scrollAmount;
+        ? scrollRef.current.scrollLeft - cellWidth * 3
+        : scrollRef.current.scrollLeft + cellWidth * 3;
       scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
       isPausedRef.current = true;
       setTimeout(() => { isPausedRef.current = false; }, 3000);
@@ -46,11 +50,11 @@ export default function BannerCuotas() {
     const el = scrollRef.current;
     if (!el || window.innerWidth > 992) return;
 
-    let lastTime = 0;
-    const speed = 0.6; // px por ms ajustable
+    let lastTime: number | null = null;
+    const speed = 0.03; // muy lento, similar a Bristol
 
     const animate = (timestamp: number) => {
-      if (!isPausedRef.current && el) {
+      if (lastTime !== null && !isPausedRef.current && el) {
         const delta = timestamp - lastTime;
         el.scrollLeft += speed * delta;
         if (el.scrollLeft >= el.scrollWidth / 2) {
@@ -70,7 +74,8 @@ export default function BannerCuotas() {
 
   return (
     <section className="bristol-fix-container">
-      {/* Vista ESCRITORIO — sin cambios */}
+
+      {/* ── ESCRITORIO: sin cambios ── */}
       <div className="bristol-fix-wrapper bristol-desktop-only">
         <div className="bristol-fix-label">
           <p>Comprá en cuotas</p>
@@ -78,7 +83,7 @@ export default function BannerCuotas() {
         </div>
         <div className="bristol-fix-slider">
           <button className="fix-nav-btn left" onClick={() => scroll('left')}>‹</button>
-          <div className="fix-scroll-area" ref={scrollRef}>
+          <div className="fix-scroll-area">
             <div className="fix-track">
               {listaLogos.map((logo, i) => (
                 <div key={i} className="fix-logo-item">
@@ -91,31 +96,46 @@ export default function BannerCuotas() {
         </div>
       </div>
 
-      {/* Vista MÓVIL/TABLET */}
+      {/* ── MÓVIL/TABLET ── */}
       <div className="bristol-mobile-only">
-        <div className="bristol-mobile-header">
-          <p>Comprá en cuotas</p>
-          <p className="gold-text">sin intereses</p>
-        </div>
-        <div className="bristol-mobile-track-wrapper">
-          <button className="fix-nav-btn left bristol-mobile-arrow" onClick={() => scroll('left')}>‹</button>
+        <div className="bristol-mobile-band">
+
+          {/* Flecha izquierda */}
+          <button className="bristol-mobile-btn left" onClick={() => scroll('left')}>‹</button>
+
+          {/* Celda fija: texto */}
+          <div className="bristol-mobile-cell bristol-mobile-text-cell">
+            <p>Comprá<br />en cuotas</p>
+            <p className="gold-text">sin intereses</p>
+          </div>
+
+          {/* Divisor */}
+          <div className="bristol-mobile-divider" />
+
+          {/* Celdas de logos con scroll */}
           <div
             className="bristol-mobile-scroll"
             ref={scrollRef}
             onTouchStart={() => { isPausedRef.current = true; }}
             onTouchEnd={() => { setTimeout(() => { isPausedRef.current = false; }, 3000); }}
           >
-            <div className="bristol-mobile-grid">
-              {logosLoop.map((logo, i) => (
-                <div key={i} className="bristol-mobile-logo">
-                  <img src={logo.src} alt={logo.alt} />
-                </div>
-              ))}
-            </div>
+            {celdasLoop.map((celda, ci) => (
+              <div key={ci} className="bristol-mobile-cell">
+                {celda.map((logo, li) => (
+                  <img key={li} src={logo.src} alt={logo.alt} className="bristol-mobile-logo-img" />
+                ))}
+                {/* divisor entre celdas */}
+                <div className="bristol-mobile-divider-inner" />
+              </div>
+            ))}
           </div>
-          <button className="fix-nav-btn right bristol-mobile-arrow" onClick={() => scroll('right')}>›</button>
+
+          {/* Flecha derecha */}
+          <button className="bristol-mobile-btn right" onClick={() => scroll('right')}>›</button>
+
         </div>
       </div>
+
     </section>
   );
 }
