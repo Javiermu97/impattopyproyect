@@ -4454,6 +4454,7 @@ input[type="number"]::-webkit-outer-spin-button {
   .footer-pagos-grid {
     gap: 5px;
     padding: 0 6px;
+    justify-content: center;   /* ← este cambio */
   }
 
   .footer-pago-card {
