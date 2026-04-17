@@ -4273,13 +4273,12 @@ input[type="number"]::-webkit-outer-spin-button {
 /* ===== MEDIOS DE PAGO EN FOOTER (AJUSTE FINAL) ===== */
 /* ===================================================== */
 
-.footer-bottom-logos {
-  border-top: 1px solid #777;
-  padding: 25px 0;
-  background-color: #888; /* Color de fondo solicitado */
+.footer-bottom-logos-integrated {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0; /* Línea divisoria sutil */
   width: 100%;
 }
-
 .footer-pagos-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -4291,22 +4290,20 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px; 
-  margin-bottom: 15px;
+  gap: 10px;
 }
 
 .footer-pago-card {
-  background: #ffffff; /* Los cuadros se mantienen blancos para resaltar */
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  width: 55px;   
-  height: 35px;  
+  background: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  width: 85px;   /* Tamaño grande solicitado */
+  height: 52px;  
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: 5px;
 }
-
 .footer-pago-card img {
   max-width: 90%;
   max-height: 90%;

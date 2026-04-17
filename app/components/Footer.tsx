@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import SubscribeForm from './SubscribeForm';
 
+// Sub-componente para las columnas desplegables en móvil
 const FooterAccordionCol = ({ title, children }: { title: string; children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -20,16 +21,18 @@ const FooterAccordionCol = ({ title, children }: { title: string; children: Reac
 };
 
 const Footer = () => {
-  // Lista vinculada a tus archivos en public/logos-bancos
+  // Lista de logos basada en tus archivos reales
   const logosFooter = [
-    { src: '/logos-bancos/americanexpress.png', alt: 'Visa' }, // Usando Amex como ejemplo, ajusta según necesites
+    { src: '/logos-bancos/americanexpress.png', alt: 'American Express' },
     { src: '/logos-bancos/Mastercard-logo.svg.png', alt: 'Mastercard' },
     { src: '/logos-bancos/bancoatlas.png', alt: 'Banco Atlas' },
     { src: '/logos-bancos/bancobasa.png', alt: 'Banco Basa' },
-    { src: '/logos-bancos/bancoGNB.png', alt: 'GNB' },
+    { src: '/logos-bancos/bancoGNB.png', alt: 'Banco GNB' },
+    { src: '/logos-bancos/cooperativauniversitaria.png', alt: 'Cooperativa Universitaria' },
+    { src: '/logos-bancos/familiar.png', alt: 'Banco Familiar' },
     { src: '/logos-bancos/tigomoney.png', alt: 'Tigo Money' },
     { src: '/logos-bancos/personalpay.png', alt: 'Personal Pay' },
-    { src: '/logos-bancos/girosclaro.png', alt: 'Claro' },
+    { src: '/logos-bancos/girosclaro.png', alt: 'Giros Claro' },
     { src: '/logos-bancos/wally.png', alt: 'Wally' },
     { src: '/logos-bancos/zimple.png', alt: 'Zimple' },
     { src: '/logos-bancos/wepa.png', alt: 'Wepa' },
@@ -42,7 +45,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         <FooterAccordionCol title="Sobre Nosotros">
-          <p>Bienvenido a nuestra tienda, tu destino para encontrar una amplia gama de productos que se adaptan a tu estilo de vida.</p>
+          <p>Bienvenido a nuestra tienda, tu destino para encontrar una amplia gama de productos que se adaptan a tu estilo de vida. Nos enorgullecemos de ofrecer una cuidadosa selección de artículos.</p>
         </FooterAccordionCol>
         
         <FooterAccordionCol title="Enlaces de Interés">
@@ -65,16 +68,14 @@ const Footer = () => {
         </FooterAccordionCol>
       </div>
 
-      <div className="footer-bottom-logos">
-        <div className="footer-pagos-container">
-          <div className="footer-pagos-grid">
-            {logosFooter.map((logo, index) => (
-              <div key={index} className="footer-pago-card">
-                <img src={logo.src} alt={logo.alt} />
-              </div>
-            ))}
-          </div>
-          <p className="footer-copy">© {new Date().getFullYear()} IMPATTO. Todos los derechos reservados.</p>
+      {/* SECCIÓN DE LOGOS DE PAGO INTEGRADA */}
+      <div className="footer-bottom-logos-integrated">
+        <div className="footer-pagos-grid">
+          {logosFooter.map((logo, index) => (
+            <div key={index} className="footer-pago-card">
+              <img src={logo.src} alt={logo.alt} />
+            </div>
+          ))}
         </div>
       </div>
     </footer>
