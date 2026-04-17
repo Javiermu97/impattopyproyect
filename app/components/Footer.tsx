@@ -4,10 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import SubscribeForm from './SubscribeForm';
 
-// Sub-componente para cada columna que se puede desplegar
 const FooterAccordionCol = ({ title, children }: { title: string; children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
-
   return (
     <div className="footer-col">
       <div className="footer-accordion-title" onClick={() => setIsOpen(!isOpen)}>
@@ -21,13 +19,30 @@ const FooterAccordionCol = ({ title, children }: { title: string; children: Reac
   );
 };
 
-// Componente principal del Footer
 const Footer = () => {
+  // Lista vinculada a tus archivos en public/logos-bancos
+  const logosFooter = [
+    { src: '/logos-bancos/americanexpress.png', alt: 'Visa' }, // Usando Amex como ejemplo, ajusta según necesites
+    { src: '/logos-bancos/Mastercard-logo.svg.png', alt: 'Mastercard' },
+    { src: '/logos-bancos/bancoatlas.png', alt: 'Banco Atlas' },
+    { src: '/logos-bancos/bancobasa.png', alt: 'Banco Basa' },
+    { src: '/logos-bancos/bancoGNB.png', alt: 'GNB' },
+    { src: '/logos-bancos/tigomoney.png', alt: 'Tigo Money' },
+    { src: '/logos-bancos/personalpay.png', alt: 'Personal Pay' },
+    { src: '/logos-bancos/girosclaro.png', alt: 'Claro' },
+    { src: '/logos-bancos/wally.png', alt: 'Wally' },
+    { src: '/logos-bancos/zimple.png', alt: 'Zimple' },
+    { src: '/logos-bancos/wepa.png', alt: 'Wepa' },
+    { src: '/logos-bancos/aquiPago.png', alt: 'Aquí Pago' },
+    { src: '/logos-bancos/pagoexpress.png', alt: 'Pago Express' },
+    { src: '/logos-bancos/Cabal_logo.png', alt: 'Cabal' },
+  ];
+
   return (
     <footer className="footer">
       <div className="footer-content">
         <FooterAccordionCol title="Sobre Nosotros">
-          <p>Bienvenido a nuestra tienda, tu destino para encontrar una amplia gama de productos que se adaptan a tu estilo de vida. Nos enorgullecemos de ofrecer una cuidadosa selección de artículos para satisfacer tus necesidades diarias.</p>
+          <p>Bienvenido a nuestra tienda, tu destino para encontrar una amplia gama de productos que se adaptan a tu estilo de vida.</p>
         </FooterAccordionCol>
         
         <FooterAccordionCol title="Enlaces de Interés">
@@ -49,14 +64,19 @@ const Footer = () => {
           <SubscribeForm />
         </FooterAccordionCol>
       </div>
-      <div className="footer-col footer-col-pagos">
-  <h3>Medios de Pago</h3>
-  <div className="footer-pagos-grid">
-    {['Visa', 'Mastercard', 'Tigo Money', 'Personal Pay', 'Claro', 'Wally', 'Zimple', 'QR', 'Wepa', 'Aquí Pago', 'Pago Express', 'PIX'].map((medio) => (
-      <span key={medio} className="footer-pago-badge">{medio}</span>
-    ))}
-  </div>
-</div>
+
+      <div className="footer-bottom-logos">
+        <div className="footer-pagos-container">
+          <div className="footer-pagos-grid">
+            {logosFooter.map((logo, index) => (
+              <div key={index} className="footer-pago-card">
+                <img src={logo.src} alt={logo.alt} />
+              </div>
+            ))}
+          </div>
+          <p className="footer-copy">Desarrollado por: Elice Digital</p>
+        </div>
+      </div>
     </footer>
   );
 };
