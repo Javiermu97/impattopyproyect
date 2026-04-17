@@ -4204,45 +4204,95 @@ input[type="number"]::-webkit-outer-spin-button {
 /* ===== BANNER CUOTAS DESPLAZABLE ===== */
 /* ===================================================== */
 
-.banner-cuotas-wrapper {
+.banner-cuotas-container {
+  width: 100%;
+  background: #ffffff;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  margin: 2.5rem 0; /* Espacio extra para separar de las grillas de productos */
+  padding: 12px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-cuotas-content {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  overflow: hidden;
-  padding: 0.75rem 1rem;
-  background: #f9f9f9;
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-  margin: 1.5rem 0;
+  position: relative;
+  padding: 0 45px; /* Espacio para que las flechas no pisen el texto */
 }
 
 .banner-cuotas-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  white-space: nowrap;
+  font-size: 0.7rem;
+  font-weight: 800;
   color: #333;
-  flex-shrink: 0;
+  margin-right: 15px;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
 }
 
 .banner-cuotas-scroll {
-  overflow: hidden;
-  flex: 1;
+  overflow-x: hidden; /* Oculta la barra pero permite el scroll via ref */
+  scroll-behavior: smooth;
+  display: flex;
+  width: 100%;
 }
 
 .banner-cuotas-track {
   display: flex;
-  gap: 12px;
-  width: max-content;
-  will-change: transform;
+  gap: 10px;
+  padding: 4px 0;
 }
 
 .banner-cuota-item {
-  padding: 6px 16px;
-  border-radius: 6px;
-  font-size: 0.78rem;
-  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
   white-space: nowrap;
   flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* FLECHAS DE NAVEGACIÓN */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: 1px solid #ddd;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  line-height: 1;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 5;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+  background: #f0f0f0;
+  border-color: #999;
+}
+
+.nav-btn.left { left: 10px; }
+.nav-btn.right { right: 10px; }
+
+/* AJUSTES MÓVIL */
+@media (max-width: 768px) {
+  .banner-cuotas-label {
+    display: none; /* Quitamos el label en móvil para dar espacio a los bancos */
+  }
+  .banner-cuotas-container {
+    margin: 1.5rem 0; /* Reducimos margen un poco en móviles */
+  }
 }
 
 /* ===================================================== */

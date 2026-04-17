@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 const bancos = [
   { nombre: 'Visa', color: '#1A1F71', texto: '#FFFFFF' },
@@ -21,41 +21,49 @@ const bancos = [
 ];
 
 export default function BannerCuotas() {
-  const trackRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    let pos = 0;
-    const speed = 0.5;
-    const half = track.scrollWidth / 2;
-    const animate = () => {
-      pos += speed;
-      if (pos >= half) pos = 0;
-      track.style.transform = `translateX(-${pos}px)`;
-      requestAnimationFrame(animate);
-    };
-    const raf = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  const items = [...bancos, ...bancos]; // duplicamos para loop infinito
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      // Desplaza la mitad del ancho visible por cada clic
+      const scrollAmount = clientWidth * 0.5; 
+      const scrollTo = direction === 'left' 
+        ? scrollLeft - scrollAmount 
+        : scrollLeft + scrollAmount;
+      
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
 
   return (
-    <div className="banner-cuotas-wrapper">
-      <span className="banner-cuotas-label">Comprá en cuotas sin intereses</span>
-      <div className="banner-cuotas-scroll">
-        <div className="banner-cuotas-track" ref={trackRef}>
-          {items.map((banco, i) => (
-            <div
-              key={i}
-              className="banner-cuota-item"
-              style={{ backgroundColor: banco.color, color: banco.texto }}
-            >
-              {banco.nombre}
-            </div>
-          ))}
+    <div className="banner-cuotas-container">
+      <div className="banner-cuotas-content">
+        <span className="banner-cuotas-label">COMPRÁ EN CUOTAS:</span>
+        
+        {/* Botón Izquierda */}
+        <button className="nav-btn left" onClick={() => scroll('left')} aria-label="Desplazar izquierda">
+          ‹
+        </button>
+        
+        <div className="banner-cuotas-scroll" ref={scrollRef}>
+          <div className="banner-cuotas-track">
+            {bancos.map((banco, i) => (
+              <div
+                key={i}
+                className="banner-cuota-item"
+                style={{ backgroundColor: banco.color, color: banco.texto }}
+              >
+                {banco.nombre}
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* Botón Derecha */}
+        <button className="nav-btn right" onClick={() => scroll('right')} aria-label="Desplazar derecha">
+          ›
+        </button>
       </div>
     </div>
   );
