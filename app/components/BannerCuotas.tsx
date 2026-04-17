@@ -84,23 +84,24 @@ export default function BannerCuotas() {
             <button className="bristol-arrow bristol-arrow-left">‹</button>
 
             <Swiper
-              modules={[Autoplay, Scrollbar, Navigation]}
-              loop={true}
-              speed={800}
-              autoplay={{
-                delay: 12000,
-                disableOnInteraction: false,
-              }}
-              navigation={{
-                prevEl: '.bristol-arrow-left',
-                nextEl: '.bristol-arrow-right',
-              }}
-              scrollbar={{
-                draggable: true,
-                el: '.bristol-scrollbar',
-              }}
-              className="bristol-swiper"
-            >
+  modules={[Autoplay, Scrollbar, Navigation]}
+  loop={true}
+  speed={800}
+  slidesPerView="auto"
+  autoplay={{
+    delay: 12000,
+    disableOnInteraction: false,
+  }}
+  navigation={{
+    prevEl: '.bristol-arrow-left',
+    nextEl: '.bristol-arrow-right',
+  }}
+  scrollbar={{
+    draggable: true,
+    el: '.bristol-scrollbar',
+  }}
+  className="bristol-swiper"
+>
               <SwiperSlide>
                 <img
                   src={rutaImagenPanorama}

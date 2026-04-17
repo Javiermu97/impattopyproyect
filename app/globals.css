@@ -4392,18 +4392,18 @@ input[type="number"]::-webkit-outer-spin-button {
 
   /* El Swiper ocupa el espacio entre las flechas */
   .bristol-swiper {
-    flex: 1;
-    overflow: hidden;
-  }
-
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+}
   /* Imagen panorámica — igual que Bristol: 2800px de ancho, 180px de alto */
   .bristol-img-panorama {
-    width: 2800px !important;
-    max-width: none !important;
-    height: 180px;
-    object-fit: contain;
-    display: block;
-  }
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  object-position: left center;
+  display: block;
+}
 
   /* Barra de progreso */
   .bristol-scrollbar-wrapper {
@@ -4440,8 +4440,8 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .bristol-swiper .swiper-slide {
-  overflow: hidden;
   width: 100% !important;
+  overflow: hidden;
 }
 /* ===================================================== */
 /* ===== MEDIOS DE PAGO EN FOOTER ===== */
