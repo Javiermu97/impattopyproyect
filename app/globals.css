@@ -173,6 +173,7 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
   /* Hacemos que ambos bloques tengan bordes laterales en móvil */
   .footer, .copyright-section {
     max-width: 90%;
+    overflow: hidden; /* ← agregá esto */
   }
 
   /* ... (código del acordeón que no cambia) ... */
@@ -4412,8 +4413,8 @@ input[type="number"]::-webkit-outer-spin-button {
 /* ── TABLT y MÓVIL (max 992px) ── */
 @media (max-width: 992px) {
   .footer-bottom-logos-integrated {
-    margin-left: -2rem;
-    margin-right: -2rem;
+    margin-left: 0;
+    margin-right: 0;
     padding-left: 0;
     padding-right: 0;
   }
@@ -4421,9 +4422,9 @@ input[type="number"]::-webkit-outer-spin-button {
   .footer-pagos-grid {
     flex-wrap: wrap;
     overflow-x: visible;
-    justify-content: center;   /* ← este cambio */
+    justify-content: center;
     gap: 6px;
-    padding: 0 8px;
+    padding: 0;
     margin-bottom: 1.5rem;
   }
 
@@ -4444,17 +4445,16 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 
-/* ── MÓVIL (max 480px) ── */
 @media (max-width: 480px) {
   .footer-bottom-logos-integrated {
-    margin-left: -2rem;
-    margin-right: -2rem;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .footer-pagos-grid {
     gap: 5px;
-    padding: 0 6px;
-    justify-content: center;   /* ← este cambio */
+    padding: 0;
+    justify-content: center;
   }
 
   .footer-pago-card {
