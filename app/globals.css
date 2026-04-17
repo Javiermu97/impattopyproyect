@@ -4216,6 +4216,8 @@ input[type="number"]::-webkit-outer-spin-button {
     min-height: 60px; /* Asegura un buen área de clic para el dedo */
   }
 }
+
+
 /* ===================================================== */
 /* ===== PÁGINAS DE RESULTADO DE PAGO Banner===== */
 /* ===================================================== */
@@ -4223,27 +4225,27 @@ input[type="number"]::-webkit-outer-spin-button {
 .bristol-fix-container {
   width: 100%;
   background: #ffffff;
-  padding-top: 10px;    /* Espacio arriba del banner */
-  padding-bottom: 5px;  /* Reducimos al mínimo el espacio abajo del banner */
+  padding-top: 10px;
+  padding-bottom: 5px;
   margin-top: 5px;
-  margin-bottom: 0px;   /* ELIMINADO: Cero espacio entre el banner y lo que sigue */
+  margin-bottom: 0px;
   overflow: hidden;
   display: block;
 }
-/* Agrega esta regla para quitarle el espacio a la sección de productos que viene después */
+
 .home-products-section {
   margin-top: 0px !important; 
   padding-top: 10px !important;
 }
+
 .bristol-fix-wrapper {
-  /* Reducimos de 1450px a 1350px para "acortar" el banner lateralmente */
   max-width: 1350px; 
   margin: 0 auto;
   display: flex;
   align-items: center;
-  /* Añadimos padding lateral para alejarlo de los bordes del sitio */
   padding: 0 40px; 
 }
+
 .bristol-fix-label {
   flex-shrink: 0;
   border-right: 1px solid #eee;
@@ -4259,7 +4261,6 @@ input[type="number"]::-webkit-outer-spin-button {
   line-height: 1.2;
 }
 
-/* Color dorado solicitado para "sin intereses" */
 .bristol-fix-label .gold-text {
   color: #A78D5A; 
   font-weight: 800;
@@ -4286,13 +4287,11 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   gap: 20px; 
-  /* REDUCIDO: Quitamos el padding vertical interno del track */
   padding: 5px 35px; 
 }
 
 .fix-logo-item {
   flex-shrink: 0;
-  /* Ajustamos levemente la altura para que el banner sea más fino */
   height: 50px; 
 }
 
@@ -4302,7 +4301,6 @@ input[type="number"]::-webkit-outer-spin-button {
   object-fit: contain;
 }
 
-/* FLECHAS MINIMALISTAS (SIN FONDO, SIN BORDE) */
 .fix-nav-btn {
   position: absolute;
   top: 50%;
@@ -4317,86 +4315,16 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* AUMENTADO: Tamaño solicitado de 24 */
   font-size: 24px; 
   transition: opacity 0.2s;
-  /* Quitamos cualquier sombra que pudiera tener */
   box-shadow: none; 
 }
 
-.fix-nav-btn:hover {
-  opacity: 0.5;
-}
-
+.fix-nav-btn:hover { opacity: 0.5; }
 .fix-nav-btn.left { left: 10px; }
 .fix-nav-btn.right { right: 10px; }
 
-/* ADAPTACIÓN PARA CELULARES Y TABLETS */
-@media (max-width: 768px) {
-  .bristol-fix-wrapper {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .bristol-fix-label {
-    border-right: none;
-    border-bottom: 1px solid #eee;
-    padding: 0 0 10px 0;
-    text-align: center;
-    width: 100%;
-  }
-
-  .fix-scroll-area {
-    overflow-x: auto; /* Permite scroll con el dedo */
-  }
-
-  .fix-nav-btn {
-    display: none; /* Se quitan flechas en celular */
-  }
-
-  .fix-track {
-    padding: 10px 0;
-    gap: 25px;
-  }
-  
-  .fix-logo-item {
-    height: 40px; /* Logos ajustados para móvil */
-  }
-}
-
-/* ── AUTO-SCROLL MÓVIL/TABLET ── */
-@media (max-width: 992px) {
-  .fix-track-mobile {
-    gap: 30px;
-  }
-
-  .fix-track-mobile .fix-logo-item {
-    height: 55px;
-  }
-
-  .fix-nav-btn {
-    display: flex !important; /* flechas visibles en móvil */
-    background: rgba(255,255,255,0.85);
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    font-size: 20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-  }
-
-  .fix-scroll-area {
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .fix-scroll-area::-webkit-scrollbar {
-    display: none;
-  }
-}
-/* ... todo tu CSS existente arriba sin tocar ... */
-
-/* ── MÓVIL/TABLET: mostrar/ocultar ── */
+/* ── MÓVIL/TABLET: ESTILO BRISTOL IMAGEN ÚNICA ── */
 .bristol-desktop-only { display: flex; }
 .bristol-mobile-only  { display: none; }
 
@@ -4404,98 +4332,77 @@ input[type="number"]::-webkit-outer-spin-button {
   .bristol-desktop-only { display: none !important; }
   .bristol-mobile-only  { display: block; }
 
-  .bristol-mobile-band {
-    display: flex;
-    align-items: stretch;
-    height: 90px;
-    overflow: hidden;
+  .bristol-mobile-slider-container {
     position: relative;
+    width: 100%;
     background: #fff;
-  }
-
-  /* Celda de texto fija a la izquierda */
-  .bristol-mobile-text-cell {
-    flex-shrink: 0;
+    height: 130px; /* Altura suficiente para que la imagen se vea grande */
+    overflow: hidden;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 10px;
-    font-size: 0.72rem;
-    color: #333;
-    line-height: 1.3;
-    border-right: 1px dashed #ccc;
-    min-width: 85px;
-    text-align: center;
   }
 
-  .bristol-mobile-text-cell p { margin: 0; }
-
-  .bristol-mobile-text-cell .gold-text {
-    color: #A78D5A;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: 0.78rem;
-  }
-
-  /* Área scrolleable de logos */
   .bristol-mobile-scroll {
     display: flex;
-    align-items: stretch;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    flex: 1;
+    overflow: hidden; /* El movimiento es automático */
+    width: 100%;
+    height: 85%;
   }
 
-  .bristol-mobile-scroll::-webkit-scrollbar { display: none; }
-
-  /* Cada celda tiene 2 logos apilados + divisor derecho */
-  .bristol-mobile-cell {
-    flex-shrink: 0;
+  .bristol-panorama-flex {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    padding: 6px 10px;
-    position: relative;
-    border-right: 1px dashed #ccc;
-    min-width: 80px;
+    height: 100%;
+    will-change: transform;
   }
 
-  .bristol-mobile-logo-img {
-    width: 60px;
-    height: 28px;
+  .bristol-panorama-img {
+    height: 100%;
+    width: auto;
+    min-width: 800px; /* Asegura que la imagen sea ancha para ver logos grandes */
     object-fit: contain;
+    flex-shrink: 0;
   }
 
-  /* divisor interno (ya lo maneja el border-right de .bristol-mobile-cell) */
-  .bristol-mobile-divider-inner { display: none; }
+  /* Barra de progreso inferior (Línea Bristol) */
+  .bristol-progress-container {
+    position: absolute;
+    bottom: 8px;
+    left: 15%;
+    width: 70%;
+    height: 3px;
+    background: #e5e5e5;
+    border-radius: 5px;
+    overflow: hidden;
+  }
 
-  /* Flechas transparentes sin borde */
+  .bristol-progress-bar {
+    height: 100%;
+    background: #444;
+    transition: width 0.1s linear;
+  }
+
   .bristol-mobile-btn {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    z-index: 20;
     background: transparent;
     border: none;
-    color: #555;
-    font-size: 22px;
-    width: 28px;
-    height: 40px;
+    font-size: 32px;
+    color: #ccc;
+    height: 100%;
+    width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    padding: 0;
   }
 
   .bristol-mobile-btn.left  { left: 0; }
   .bristol-mobile-btn.right { right: 0; }
-
-  .bristol-mobile-divider { display: none; }
 }
+
+
 /* ===================================================== */
 /* ===== MEDIOS DE PAGO EN FOOTER ===== */
 /* ===================================================== */

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 const listaLogos = [
   { src: '/logos-bancos/americanexpress.png', alt: 'American Express' },
@@ -22,18 +22,16 @@ const listaLogos = [
   { src: '/logos-bancos/Cabal_logo.png', alt: 'Cabal' },
 ];
 
-// Agrupamos logos de a 2 para formar las "celdas" del carrusel móvil
-const celdas = [];
-for (let i = 0; i < listaLogos.length; i += 2) {
-  celdas.push(listaLogos.slice(i, i + 2));
-}
-const celdasLoop = [...celdas, ...celdas];
+const rutaImagenPanorama = '/banner-cuotas-panorama.png'; 
 
 export default function BannerCuotas() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRefMundo = useRef<HTMLDivElement>(null);
   const isPausedRef = useRef(false);
   const animFrameRef = useRef<number | null>(null);
+  const [progreso, setProgreso] = useState(0);
 
+  // --- LÓGICA DE ESCRITORIO (Original) ---
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const cellWidth = 110;
@@ -46,27 +44,34 @@ export default function BannerCuotas() {
     }
   };
 
+  // --- LÓGICA DE MÓVIL (Auto-scroll estilo Bristol) ---
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el || window.innerWidth > 992) return;
+    const el = scrollRefMundo.current;
+    if (!el || typeof window === 'undefined' || window.innerWidth > 992) return;
 
     let lastTime: number | null = null;
-    const speed = 0.03; // muy lento, similar a Bristol
+    const speed = 0.04; // Velocidad constante
 
     const animate = (timestamp: number) => {
       if (lastTime !== null && !isPausedRef.current && el) {
         const delta = timestamp - lastTime;
         el.scrollLeft += speed * delta;
+
+        // Reset para loop infinito (cuando llega a la mitad del scrollWidth)
         if (el.scrollLeft >= el.scrollWidth / 2) {
           el.scrollLeft = 0;
         }
+
+        // Cálculo de la barra de progreso
+        const maxScroll = el.scrollWidth / 2 - el.clientWidth;
+        const currentScroll = el.scrollLeft % (el.scrollWidth / 2);
+        setProgreso((currentScroll / maxScroll) * 100);
       }
       lastTime = timestamp;
       animFrameRef.current = requestAnimationFrame(animate);
     };
 
     animFrameRef.current = requestAnimationFrame(animate);
-
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
@@ -75,7 +80,7 @@ export default function BannerCuotas() {
   return (
     <section className="bristol-fix-container">
 
-      {/* ── ESCRITORIO: sin cambios ── */}
+      {/* ── ESCRITORIO: Manteniendo tu código intacto ── */}
       <div className="bristol-fix-wrapper bristol-desktop-only">
         <div className="bristol-fix-label">
           <p>Comprá en cuotas</p>
@@ -83,7 +88,7 @@ export default function BannerCuotas() {
         </div>
         <div className="bristol-fix-slider">
           <button className="fix-nav-btn left" onClick={() => scroll('left')}>‹</button>
-          <div className="fix-scroll-area">
+          <div className="fix-scroll-area" ref={scrollRef}>
             <div className="fix-track">
               {listaLogos.map((logo, i) => (
                 <div key={i} className="fix-logo-item">
@@ -96,43 +101,29 @@ export default function BannerCuotas() {
         </div>
       </div>
 
-      {/* ── MÓVIL/TABLET ── */}
+      {/* ── MÓVIL: Estilo Bristol con Imagen Única y Barra de Progreso ── */}
       <div className="bristol-mobile-only">
-        <div className="bristol-mobile-band">
-
-          {/* Flecha izquierda */}
-          <button className="bristol-mobile-btn left" onClick={() => scroll('left')}>‹</button>
-
-          {/* Celda fija: texto */}
-          <div className="bristol-mobile-cell bristol-mobile-text-cell">
-            <p>Comprá<br />en cuotas</p>
-            <p className="gold-text">sin intereses</p>
+        <div className="bristol-mobile-slider-container">
+          
+          <button className="bristol-mobile-btn left">‹</button>
+          
+          <div className="bristol-mobile-scroll" ref={scrollRefMundo}>
+            <div className="bristol-panorama-flex">
+              {/* Duplicamos la imagen para el loop infinito sin saltos */}
+              <img src={rutaImagenPanorama} alt="Banner Cuotas" className="bristol-panorama-img" />
+              <img src={rutaImagenPanorama} alt="Banner Cuotas" className="bristol-panorama-img" />
+            </div>
           </div>
 
-          {/* Divisor */}
-          <div className="bristol-mobile-divider" />
+          <button className="bristol-mobile-btn right">›</button>
 
-          {/* Celdas de logos con scroll */}
-          <div
-            className="bristol-mobile-scroll"
-            ref={scrollRef}
-            onTouchStart={() => { isPausedRef.current = true; }}
-            onTouchEnd={() => { setTimeout(() => { isPausedRef.current = false; }, 3000); }}
-          >
-            {celdasLoop.map((celda, ci) => (
-              <div key={ci} className="bristol-mobile-cell">
-                {celda.map((logo, li) => (
-                  <img key={li} src={logo.src} alt={logo.alt} className="bristol-mobile-logo-img" />
-                ))}
-                {/* divisor entre celdas */}
-                <div className="bristol-mobile-divider-inner" />
-              </div>
-            ))}
+          {/* Barra de progreso inferior */}
+          <div className="bristol-progress-container">
+            <div 
+              className="bristol-progress-bar" 
+              style={{ width: `${Math.min(progreso, 100)}%` }}
+            ></div>
           </div>
-
-          {/* Flecha derecha */}
-          <button className="bristol-mobile-btn right" onClick={() => scroll('right')}>›</button>
-
         </div>
       </div>
 
