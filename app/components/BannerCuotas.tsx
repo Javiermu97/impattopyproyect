@@ -43,7 +43,7 @@ export default function BannerCuotas() {
         
         <div className="bristol-fix-label">
           <p>Comprá en cuotas</p>
-          <p className="highlight">sin intereses</p>
+          <p className="gold-text">sin intereses</p>
         </div>
 
         <div className="bristol-fix-slider">

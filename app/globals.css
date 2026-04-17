@@ -4122,31 +4122,30 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* ===================================================== */
-/* ===== PÁGINAS DE RESULTADO DE PAGO ===== */
+/* ===== PÁGINAS DE RESULTADO DE PAGO Banner===== */
 /* ===================================================== */
 
 .bristol-fix-container {
   width: 100%;
-  max-width: 100vw; /* Evita que sobrepase el borde de la pantalla */
-  background: #ffffff;
-  padding: 20px 0;
-  margin: 20px 0 40px 0;
-  overflow: hidden; /* Importante para que no cree scroll en la página */
+  background: #ffffff; /* Fondo blanco para mezclarse con el sitio */
+  padding: 40px 0; /* Más alto verticalmente para dar presencia */
+  margin: 10px 0 40px 0;
+  overflow: hidden;
 }
 
 .bristol-fix-wrapper {
-  max-width: 1200px; /* Alineado con el ancho estándar de tu web */
+  max-width: 1450px; /* Ocupa casi todo el ancho de la pantalla */
   margin: 0 auto;
   display: flex;
   align-items: center;
-  padding: 0 15px;
-  gap: 15px;
+  padding: 0 5px;
 }
 
 .bristol-fix-label {
   flex-shrink: 0;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #eee;
   padding-right: 15px;
+  margin-right: 10px;
   text-align: right;
 }
 
@@ -4157,10 +4156,12 @@ input[type="number"]::-webkit-outer-spin-button {
   line-height: 1.2;
 }
 
-.bristol-fix-label .highlight {
-  color: #e31a1a;
+/* Color dorado solicitado para "sin intereses" */
+.bristol-fix-label .gold-text {
+  color: #A78D5A; 
   font-weight: 800;
   text-transform: uppercase;
+  font-size: 0.95rem;
 }
 
 .bristol-fix-slider {
@@ -4168,26 +4169,26 @@ input[type="number"]::-webkit-outer-spin-button {
   position: relative;
   display: flex;
   align-items: center;
-  min-width: 0; /* Permite que el flex-item se encoja en móviles */
+  min-width: 0;
 }
 
 .fix-scroll-area {
-  overflow-x: hidden; /* Flechas controlan el scroll */
+  overflow-x: hidden;
   scroll-behavior: smooth;
   width: 100%;
-  -webkit-overflow-scrolling: touch; /* Suavidad en iPhone */
+  -webkit-overflow-scrolling: touch;
 }
 
 .fix-track {
   display: flex;
   align-items: center;
-  gap: 30px;
-  padding: 10px 40px; /* Espacio para que los logos no choquen con las flechas */
+  gap: 50px; /* Espacio generoso entre logos */
+  padding: 10px 45px; /* Espacio para que las flechas no tapen logos */
 }
 
 .fix-logo-item {
   flex-shrink: 0;
-  height: 45px; /* Tamaño profesional equilibrado */
+  height: 65px; /* Logos grandes y visibles */
 }
 
 .fix-logo-item img {
@@ -4196,34 +4197,37 @@ input[type="number"]::-webkit-outer-spin-button {
   object-fit: contain;
 }
 
-/* FLECHAS DENTRO DEL CONTENEDOR */
+/* FLECHAS MINIMALISTAS (SIN FONDO, SIN BORDE) */
 .fix-nav-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: #ffffff;
-  border: 1px solid #eeeeee;
-  color: #555555;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: #333333; /* Gris oscuro */
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-  z-index: 5;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-size: 18px; /* Tamaño solicitado */
+  transition: opacity 0.2s;
+}
+
+.fix-nav-btn:hover {
+  opacity: 0.5;
 }
 
 .fix-nav-btn.left { left: 0; }
 .fix-nav-btn.right { right: 0; }
 
-/* ADAPTACIÓN PARA CELULARES (ANDROID/IPHONE) */
+/* ADAPTACIÓN PARA CELULARES Y TABLETS */
 @media (max-width: 768px) {
   .bristol-fix-wrapper {
-    flex-direction: column; /* Texto arriba, logos abajo */
-    gap: 10px;
+    flex-direction: column;
+    gap: 15px;
   }
   
   .bristol-fix-label {
@@ -4235,20 +4239,20 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
   .fix-scroll-area {
-    overflow-x: auto; /* Permite usar el dedo en celulares */
+    overflow-x: auto; /* Permite scroll con el dedo */
   }
 
   .fix-nav-btn {
-    display: none; /* En pantallas táctiles las flechas suelen estorbar */
+    display: none; /* Se quitan flechas en celular */
   }
 
   .fix-track {
     padding: 10px 0;
-    gap: 20px;
+    gap: 25px;
   }
   
   .fix-logo-item {
-    height: 35px; /* Logos un poco más pequeños en celular */
+    height: 40px; /* Logos ajustados para móvil */
   }
 }
 
