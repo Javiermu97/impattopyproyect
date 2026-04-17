@@ -22,13 +22,12 @@ const listaLogos = [
   { src: '/logos-bancos/Cabal_logo.png', alt: 'Cabal' },
 ];
 
-// Duplicamos los logos para el efecto de loop infinito
 const logosLoop = [...listaLogos, ...listaLogos];
 
 export default function BannerCuotas() {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const autoScrollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isPausedRef = useRef(false);
+  const animFrameRef = useRef<number | null>(null);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -38,8 +37,6 @@ export default function BannerCuotas() {
         ? scrollRef.current.scrollLeft - scrollAmount
         : scrollRef.current.scrollLeft + scrollAmount;
       scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-
-      // Pausa el auto-scroll 3 segundos después de interacción manual
       isPausedRef.current = true;
       setTimeout(() => { isPausedRef.current = false; }, 3000);
     }
@@ -47,57 +44,77 @@ export default function BannerCuotas() {
 
   useEffect(() => {
     const el = scrollRef.current;
-    if (!el) return;
+    if (!el || window.innerWidth > 992) return;
 
-    // Solo activamos auto-scroll en móvil/tablet
-    if (window.innerWidth > 992) return;
+    let lastTime = 0;
+    const speed = 0.6; // px por ms ajustable
 
-    autoScrollRef.current = setInterval(() => {
-      if (isPausedRef.current || !el) return;
-
-      // Si llegó al final (segunda mitad), volvemos al inicio sin animación
-      if (el.scrollLeft >= el.scrollWidth / 2) {
-        el.scrollLeft = 0;
-      } else {
-        el.scrollLeft += 1.5;
+    const animate = (timestamp: number) => {
+      if (!isPausedRef.current && el) {
+        const delta = timestamp - lastTime;
+        el.scrollLeft += speed * delta;
+        if (el.scrollLeft >= el.scrollWidth / 2) {
+          el.scrollLeft = 0;
+        }
       }
-    }, 16); // ~60fps
+      lastTime = timestamp;
+      animFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animFrameRef.current = requestAnimationFrame(animate);
 
     return () => {
-      if (autoScrollRef.current) clearInterval(autoScrollRef.current);
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
   }, []);
 
   return (
     <section className="bristol-fix-container">
-      <div className="bristol-fix-wrapper">
-
+      {/* Vista ESCRITORIO — sin cambios */}
+      <div className="bristol-fix-wrapper bristol-desktop-only">
         <div className="bristol-fix-label">
           <p>Comprá en cuotas</p>
           <p className="gold-text">sin intereses</p>
         </div>
-
         <div className="bristol-fix-slider">
           <button className="fix-nav-btn left" onClick={() => scroll('left')}>‹</button>
-
-          <div
-            className="fix-scroll-area"
-            ref={scrollRef}
-            onTouchStart={() => { isPausedRef.current = true; }}
-            onTouchEnd={() => { setTimeout(() => { isPausedRef.current = false; }, 3000); }}
-          >
-            <div className="fix-track fix-track-mobile">
-              {logosLoop.map((logo, i) => (
+          <div className="fix-scroll-area" ref={scrollRef}>
+            <div className="fix-track">
+              {listaLogos.map((logo, i) => (
                 <div key={i} className="fix-logo-item">
                   <img src={logo.src} alt={logo.alt} />
                 </div>
               ))}
             </div>
           </div>
-
           <button className="fix-nav-btn right" onClick={() => scroll('right')}>›</button>
         </div>
+      </div>
 
+      {/* Vista MÓVIL/TABLET */}
+      <div className="bristol-mobile-only">
+        <div className="bristol-mobile-header">
+          <p>Comprá en cuotas</p>
+          <p className="gold-text">sin intereses</p>
+        </div>
+        <div className="bristol-mobile-track-wrapper">
+          <button className="fix-nav-btn left bristol-mobile-arrow" onClick={() => scroll('left')}>‹</button>
+          <div
+            className="bristol-mobile-scroll"
+            ref={scrollRef}
+            onTouchStart={() => { isPausedRef.current = true; }}
+            onTouchEnd={() => { setTimeout(() => { isPausedRef.current = false; }, 3000); }}
+          >
+            <div className="bristol-mobile-grid">
+              {logosLoop.map((logo, i) => (
+                <div key={i} className="bristol-mobile-logo">
+                  <img src={logo.src} alt={logo.alt} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <button className="fix-nav-btn right bristol-mobile-arrow" onClick={() => scroll('right')}>›</button>
+        </div>
       </div>
     </section>
   );
