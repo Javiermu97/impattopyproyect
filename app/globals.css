@@ -4416,17 +4416,8 @@ input[type="number"]::-webkit-outer-spin-button {
   }
  
   .swiper-scrollbar {
-    opacity: 0 !important;
-    transition: opacity 0.3s !important;
-    background: #e0e0e0 !important;
-    height: 4px !important;
-    border-radius: 10px !important;
-  }
- 
-  .swiper-scrollbar-drag {
-    background: #333 !important;
-    border-radius: 10px !important;
-  }
+  display: none !important;
+}
  
   /* Mostrar scrollbar al arrastrar */
   .swiper-scrollbar-drag:active {
