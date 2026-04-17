@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 
 const listaLogos = [
   { src: '/logos-bancos/americanexpress.png', alt: 'American Express' },
@@ -27,7 +27,8 @@ export default function BannerCuotas() {
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const scrollAmount = 300; // Ajuste de desplazamiento
+      const { clientWidth } = scrollRef.current;
+      const scrollAmount = clientWidth * 0.6; // Desplaza el 60% del área visible
       const scrollTo = direction === 'left' 
         ? scrollRef.current.scrollLeft - scrollAmount 
         : scrollRef.current.scrollLeft + scrollAmount;
@@ -37,34 +38,30 @@ export default function BannerCuotas() {
   };
 
   return (
-    <section className="banner-bristol-final">
-      <div className="banner-bristol-wrapper">
+    <section className="bristol-fix-container">
+      <div className="bristol-fix-wrapper">
         
-        {/* Etiqueta de texto */}
-        <div className="banner-bristol-label">
-          <p>Comprá</p>
-          <p>en cuotas</p>
-          <p className="red-text">sin intereses</p>
+        <div className="bristol-fix-label">
+          <p>Comprá en cuotas</p>
+          <p className="highlight">sin intereses</p>
         </div>
 
-        {/* Contenedor del Carrusel */}
-        <div className="banner-bristol-slider">
-          
-          <button className="bristol-arrow left" onClick={() => scroll('left')}>‹</button>
+        <div className="bristol-fix-slider">
+          <button className="fix-nav-btn left" onClick={() => scroll('left')}>‹</button>
 
-          <div className="bristol-scroll-container" ref={scrollRef}>
-            <div className="bristol-track">
+          <div className="fix-scroll-area" ref={scrollRef}>
+            <div className="fix-track">
               {listaLogos.map((logo, i) => (
-                <div key={i} className="bristol-logo-item">
+                <div key={i} className="fix-logo-item">
                   <img src={logo.src} alt={logo.alt} />
                 </div>
               ))}
             </div>
           </div>
 
-          <button className="bristol-arrow right" onClick={() => scroll('right')}>›</button>
-          
+          <button className="fix-nav-btn right" onClick={() => scroll('right')}>›</button>
         </div>
+
       </div>
     </section>
   );
