@@ -48,9 +48,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ==================================================================== */}
-      {/* ===== SECCIÓN "ESPECIAL DE LA SEMANA" ===== */}
-      {/* ==================================================================== */}
+      {/* ===== ESPECIAL DE LA SEMANA ===== */}
       <section className="home-products-section">
         <h2 className="section-title"> Especial de la Semana </h2>
         <div className="product-grid-shop columns-3">
@@ -63,15 +61,12 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      {/* ==================================================================== */}
-      {/* ===== BANNER DESPLAZABLE DE MEDIOS DE PAGO Y CUOTAS ===== */}
-      {/* ==================================================================== */}
+      {/* ===== BANNER ESTILO BRISTOL (AHORA AQUÍ) ===== */}
       <BannerCuotas />
 
-      {/* ==================================================================== */}
       {/* ===== SECCIÓN "HECHOS PARA TU HOGAR" ===== */}
-      {/* ==================================================================== */}
-      <section className="home-products-section reducir-espacio-superior">
+      {/* SE ELIMINÓ 'reducir-espacio-superior' PARA EVITAR QUE PISE EL BANNER */}
+      <section className="home-products-section"> 
         <h2 className="section-title">Confort y Diseño</h2>
         <h3 className="section-subtitle">Hechos para tu hogar</h3>
         <div className="product-grid-shop columns-3">

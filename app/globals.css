@@ -4201,97 +4201,128 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* ===================================================== */
-/* ===== BANNER CUOTAS DESPLAZABLE ===== */
+/* ===== REPLICA EXACTA BANNER - SIN PISAR ===== */
 /* ===================================================== */
 
-.banner-cuotas-container {
+.bristol-banner-container {
   width: 100%;
-  background: #ffffff;
-  border-top: 1px solid #e5e5e5;
-  border-bottom: 1px solid #e5e5e5;
-  margin: 2.5rem 0; /* Espacio extra para separar de las grillas de productos */
+  background-color: #f2f4f7; /* Gris  */
+  border-top: 1px solid #e0e4e9;
+  border-bottom: 1px solid #e0e4e9;
   padding: 12px 0;
+  /* Espaciado para NO pisar Confort y Diseño */
+  margin-top: 20px;
+  margin-bottom: 40px; 
   position: relative;
-  overflow: hidden;
+  display: block; /* Asegura que ocupe su propio bloque */
 }
 
-.banner-cuotas-content {
-  max-width: 1200px;
+.bristol-banner-wrapper {
+  max-width: 1250px;
   margin: 0 auto;
   display: flex;
   align-items: center;
-  position: relative;
-  padding: 0 45px; /* Espacio para que las flechas no pisen el texto */
+  padding: 0 10px;
 }
 
-.banner-cuotas-label {
-  font-size: 0.7rem;
+/* Etiqueta izquierda */
+.bristol-label {
+  padding-right: 20px;
+  margin-right: 20px;
+  border-right: 1px solid #d1d7de;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.bristol-label p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.1;
+  color: #444;
+  font-weight: 500;
+}
+
+.bristol-label p.highlight {
+  color: #d31212; /* Rojo Bristol */
   font-weight: 800;
-  color: #333;
-  margin-right: 15px;
-  white-space: nowrap;
-  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.banner-cuotas-scroll {
-  overflow-x: hidden; /* Oculta la barra pero permite el scroll via ref */
+/* Slider */
+.bristol-slider-main {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.bristol-scroll-viewport {
+  overflow-x: hidden;
   scroll-behavior: smooth;
   display: flex;
   width: 100%;
+  padding: 5px 0;
 }
 
-.banner-cuotas-track {
+.bristol-logos-track {
   display: flex;
-  gap: 10px;
-  padding: 4px 0;
+  align-items: center;
+  gap: 30px; /* Espacio entre logos */
 }
 
-.banner-cuota-item {
-  padding: 6px 14px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  white-space: nowrap;
+.bristol-logo-box {
   flex-shrink: 0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  height: 35px; /* Altura controlada para que no sea gigante */
+  display: flex;
+  align-items: center;
 }
 
-/* FLECHAS DE NAVEGACIÓN */
-.nav-btn {
+.bristol-logo-box img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  /* Bristol usa logos un poco desaturados hasta el hover */
+  filter: grayscale(100%) opacity(0.7);
+  transition: all 0.3s ease;
+}
+
+.bristol-logo-box img:hover {
+  filter: grayscale(0%) opacity(1);
+}
+
+/* Botones de navegación flotantes */
+.bristol-nav-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: #fff;
-  border: 1px solid #ddd;
-  width: 32px;
-  height: 32px;
+  background: white;
+  border: 1px solid #ccc;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   cursor: pointer;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
-  line-height: 1;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  z-index: 5;
-  transition: all 0.2s ease;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.nav-btn:hover {
-  background: #f0f0f0;
-  border-color: #999;
-}
+.bristol-nav-btn.left { left: 5px; }
+.bristol-nav-btn.right { right: 5px; }
 
-.nav-btn.left { left: 10px; }
-.nav-btn.right { right: 10px; }
-
-/* AJUSTES MÓVIL */
+/* Móvil: Se oculta el texto largo y se permite scroll táctil */
 @media (max-width: 768px) {
-  .banner-cuotas-label {
-    display: none; /* Quitamos el label en móvil para dar espacio a los bancos */
+  .bristol-label {
+    display: none;
   }
-  .banner-cuotas-container {
-    margin: 1.5rem 0; /* Reducimos margen un poco en móviles */
+  .bristol-scroll-viewport {
+    overflow-x: auto; /* Permite deslizar con el dedo en celular */
+  }
+  .bristol-nav-btn {
+    display: none;
   }
 }
 

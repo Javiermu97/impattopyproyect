@@ -1,70 +1,89 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
-const bancos = [
-  { nombre: 'Visa', color: '#1A1F71', texto: '#FFFFFF' },
-  { nombre: 'Mastercard', color: '#EB001B', texto: '#FFFFFF' },
-  { nombre: 'Tigo Money', color: '#00377A', texto: '#FFFFFF' },
-  { nombre: 'Personal Pay', color: '#E4002B', texto: '#FFFFFF' },
-  { nombre: 'Giros Claro', color: '#DA291C', texto: '#FFFFFF' },
-  { nombre: 'Wally', color: '#6C3CE1', texto: '#FFFFFF' },
-  { nombre: 'Zimple', color: '#00B140', texto: '#FFFFFF' },
-  { nombre: 'Pago QR', color: '#003087', texto: '#FFFFFF' },
-  { nombre: 'Wepa', color: '#F5A623', texto: '#FFFFFF' },
-  { nombre: 'Aquí Pago', color: '#E31837', texto: '#FFFFFF' },
-  { nombre: 'Pago Express', color: '#FF6600', texto: '#FFFFFF' },
-  { nombre: 'Banco GNB', color: '#004A97', texto: '#FFFFFF' },
-  { nombre: 'Banco Familiar', color: '#00843D', texto: '#FFFFFF' },
-  { nombre: 'BNF', color: '#003087', texto: '#FFFFFF' },
-  { nombre: 'Banco Atlas', color: '#C8102E', texto: '#FFFFFF' },
+const listaLogos = [
+  { src: '/logos-bancos/americanexpress.png', alt: 'American Express' },
+  { src: '/logos-bancos/Mastercard-logo.svg.png', alt: 'Mastercard' },
+  { src: '/logos-bancos/bancoatlas.png', alt: 'Banco Atlas' },
+  { src: '/logos-bancos/bancobasa.png', alt: 'Banco Basa' },
+  { src: '/logos-bancos/bancoGNB.png', alt: 'Banco GNB' },
+  { src: '/logos-bancos/familiar.png', alt: 'Banco Familiar' },
+  { src: '/logos-bancos/cooperativauniversitaria.png', alt: 'Cooperativa Universitaria' },
+  { src: '/logos-bancos/paraguayojaponesa.png', alt: 'Paraguayo Japonesa' },
+  { src: '/logos-bancos/tigomoney.png', alt: 'Tigo Money' },
+  { src: '/logos-bancos/personalpay.png', alt: 'Personal Pay' },
+  { src: '/logos-bancos/girosclaro.png', alt: 'Giros Claro' },
+  { src: '/logos-bancos/wally.png', alt: 'Wally' },
+  { src: '/logos-bancos/zimple.png', alt: 'Zimple' },
+  { src: '/logos-bancos/wepa.png', alt: 'Wepa' },
+  { src: '/logos-bancos/aquiPago.png', alt: 'Aquí Pago' },
+  { src: '/logos-bancos/pagoexpress.png', alt: 'Pago Express' },
+  { src: '/logos-bancos/Cabal_logo.png', alt: 'Cabal' },
 ];
 
 export default function BannerCuotas() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
-      // Desplaza la mitad del ancho visible por cada clic
-      const scrollAmount = clientWidth * 0.5; 
+      const { clientWidth } = scrollRef.current;
+      const scrollAmount = clientWidth * 0.7;
       const scrollTo = direction === 'left' 
-        ? scrollLeft - scrollAmount 
-        : scrollLeft + scrollAmount;
+        ? scrollRef.current.scrollLeft - scrollAmount 
+        : scrollRef.current.scrollLeft + scrollAmount;
       
       scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
     }
   };
 
   return (
-    <div className="banner-cuotas-container">
-      <div className="banner-cuotas-content">
-        <span className="banner-cuotas-label">COMPRÁ EN CUOTAS:</span>
+    <section className="bristol-banner-container">
+      <div className="bristol-banner-wrapper">
         
-        {/* Botón Izquierda */}
-        <button className="nav-btn left" onClick={() => scroll('left')} aria-label="Desplazar izquierda">
-          ‹
-        </button>
-        
-        <div className="banner-cuotas-scroll" ref={scrollRef}>
-          <div className="banner-cuotas-track">
-            {bancos.map((banco, i) => (
-              <div
-                key={i}
-                className="banner-cuota-item"
-                style={{ backgroundColor: banco.color, color: banco.texto }}
-              >
-                {banco.nombre}
-              </div>
-            ))}
-          </div>
+        <div className="bristol-label">
+          <p>Comprá</p>
+          <p>en cuotas</p>
+          <p className="highlight">sin intereses</p>
         </div>
 
-        {/* Botón Derecha */}
-        <button className="nav-btn right" onClick={() => scroll('right')} aria-label="Desplazar derecha">
-          ›
-        </button>
+        <div className="bristol-slider-main">
+          {canScrollLeft && (
+            <button className="bristol-nav-btn left" onClick={() => scroll('left')}>‹</button>
+          )}
+
+          <div className="bristol-scroll-viewport" ref={scrollRef} onScroll={checkScroll}>
+            <div className="bristol-logos-track">
+              {listaLogos.map((logo, i) => (
+                <div key={i} className="bristol-logo-box">
+                  <img src={logo.src} alt={logo.alt} title={logo.alt} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {canScrollRight && (
+            <button className="bristol-nav-btn right" onClick={() => scroll('right')}>›</button>
+          )}
+        </div>
+
       </div>
-    </div>
+    </section>
   );
 }
