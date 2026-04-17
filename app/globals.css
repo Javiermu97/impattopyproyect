@@ -4219,7 +4219,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 /* ===================================================== */
-/* ===== PÁGINAS DE RESULTADO DE PAGO Banner===== */
+/* ===== BANNER CUOTAS ===== */
 /* ===================================================== */
 
 .bristol-fix-container {
@@ -4234,16 +4234,16 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .home-products-section {
-  margin-top: 0px !important; 
+  margin-top: 0px !important;
   padding-top: 10px !important;
 }
 
 .bristol-fix-wrapper {
-  max-width: 1350px; 
+  max-width: 1350px;
   margin: 0 auto;
   display: flex;
   align-items: center;
-  padding: 0 40px; 
+  padding: 0 40px;
 }
 
 .bristol-fix-label {
@@ -4262,7 +4262,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .bristol-fix-label .gold-text {
-  color: #A78D5A; 
+  color: #A78D5A;
   font-weight: 800;
   text-transform: uppercase;
   font-size: 0.95rem;
@@ -4286,13 +4286,13 @@ input[type="number"]::-webkit-outer-spin-button {
 .fix-track {
   display: flex;
   align-items: center;
-  gap: 20px; 
-  padding: 5px 35px; 
+  gap: 20px;
+  padding: 5px 35px;
 }
 
 .fix-logo-item {
   flex-shrink: 0;
-  height: 50px; 
+  height: 50px;
 }
 
 .fix-logo-item img {
@@ -4315,93 +4315,86 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px; 
+  font-size: 24px;
   transition: opacity 0.2s;
-  box-shadow: none; 
+  box-shadow: none;
 }
 
 .fix-nav-btn:hover { opacity: 0.5; }
-.fix-nav-btn.left { left: 10px; }
+.fix-nav-btn.left  { left: 10px; }
 .fix-nav-btn.right { right: 10px; }
 
-/* ── MÓVIL/TABLET: ESTILO BRISTOL IMAGEN ÚNICA ── */
+/* ── ESCRITORIO: visible / MÓVIL: oculto ── */
 .bristol-desktop-only { display: flex; }
 .bristol-mobile-only  { display: none; }
+
+/* ===================================================== */
+/* ===== MÓVIL Y TABLET (max 992px) ===== */
+/* ===================================================== */
 
 @media (max-width: 992px) {
   .bristol-desktop-only { display: none !important; }
   .bristol-mobile-only  { display: block; }
 
-  .bristol-mobile-slider-container {
-    position: relative;
+  .bristol-swiper-container {
     width: 100%;
     background: #fff;
-    height: 130px; /* Altura suficiente para que la imagen se vea grande */
-    overflow: hidden;
-    border-top: 1px solid #f0f0f0;
-    border-bottom: 1px solid #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    padding: 10px 12px 30px 12px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
   }
 
-  .bristol-mobile-scroll {
-    display: flex;
-    overflow: hidden; /* El movimiento es automático */
-    width: 100%;
-    height: 85%;
+  .bristol-mobile-label {
+    font-size: 0.82rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 500;
   }
 
-  .bristol-panorama-flex {
-    display: flex;
-    height: 100%;
-    will-change: transform;
+  .bristol-mobile-label .gold-text {
+    color: #A78D5A;
+    font-weight: 800;
+    text-transform: uppercase;
   }
 
-  .bristol-panorama-img {
-    height: 100%;
-    width: auto;
-    min-width: 800px; /* Asegura que la imagen sea ancha para ver logos grandes */
-    object-fit: contain;
-    flex-shrink: 0;
-  }
-
-  /* Barra de progreso inferior (Línea Bristol) */
-  .bristol-progress-container {
-    position: absolute;
-    bottom: 8px;
-    left: 15%;
-    width: 70%;
-    height: 3px;
-    background: #e5e5e5;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-
-  .bristol-progress-bar {
-    height: 100%;
-    background: #444;
-    transition: width 0.1s linear;
-  }
-
-  .bristol-mobile-btn {
-    position: absolute;
-    z-index: 20;
-    background: transparent;
-    border: none;
-    font-size: 32px;
-    color: #ccc;
-    height: 100%;
-    width: 40px;
+  .bristol-mobile-logo-card {
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 6px;
   }
 
-  .bristol-mobile-btn.left  { left: 0; }
-  .bristol-mobile-btn.right { right: 0; }
-}
+  .bristol-mobile-logo-card img {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 
+  .mySwiper {
+    padding-bottom: 20px !important;
+  }
+
+  .swiper-scrollbar {
+    background: #e0e0e0 !important;
+    height: 4px !important;
+    bottom: 4px !important;
+    width: 80% !important;
+    left: 10% !important;
+    border-radius: 10px !important;
+  }
+
+  .swiper-scrollbar-drag {
+    background: #333 !important;
+    border-radius: 10px !important;
+  }
+}
 
 /* ===================================================== */
 /* ===== MEDIOS DE PAGO EN FOOTER ===== */
