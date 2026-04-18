@@ -4431,6 +4431,37 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 
+/* ── ESCRITORIO: Swiper de logos ── */
+.bristol-swiper-desk {
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+}
+
+.bristol-swiper-desk .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bristol-swiper-desk .fix-logo-item {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bristol-swiper-desk .fix-logo-item img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Ocultar flechas nativas de Swiper en escritorio */
+.bristol-swiper-desk .swiper-button-prev,
+.bristol-swiper-desk .swiper-button-next {
+  display: none !important;
+}
 /* ===================================================== */
 /* ===== MEDIOS DE PAGO EN FOOTER ===== */
 /* ===================================================== */

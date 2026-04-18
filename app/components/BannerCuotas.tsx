@@ -28,62 +28,69 @@ const listaLogos = [
 
 const rutaImagenPanorama = '/banner-cuotas-panorama.png';
 
+// Agrupamos logos de a 4 para cada "slide" de escritorio
+const slides = [];
+for (let i = 0; i < listaLogos.length; i += 4) {
+  slides.push(listaLogos.slice(i, i + 4));
+}
+
 export default function BannerCuotas() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollbarVisible, setScrollbarVisible] = useState(false);
   const scrollbarTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Muestra la barra 1.5s y la oculta
   const mostrarScrollbar = () => {
     setScrollbarVisible(true);
     if (scrollbarTimer.current) clearTimeout(scrollbarTimer.current);
     scrollbarTimer.current = setTimeout(() => setScrollbarVisible(false), 1500);
   };
 
-  // Lógica flechas escritorio
-  const scrollEscritorio = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const cellWidth = 110;
-      const scrollTo =
-        direction === 'left'
-          ? scrollRef.current.scrollLeft - cellWidth * 3
-          : scrollRef.current.scrollLeft + cellWidth * 3;
-      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-    }
-  };
-
   return (
     <section className="bristol-fix-container">
 
-      {/* ══════════════════════════════════════════════ */}
-      {/* ══  ESCRITORIO — sin cambios                ══ */}
-      {/* ══════════════════════════════════════════════ */}
+      {/* ══ ESCRITORIO ══ */}
       <div className="bristol-fix-wrapper bristol-desktop-only">
         <div className="bristol-fix-label">
-          <p>Comprá en cuotas</p>
-          <p className="gold-text">sin intereses</p>
+          <p>Pagá como</p>
+          <p className="gold-text">más desees</p>
         </div>
+
         <div className="bristol-fix-slider">
-          <button className="fix-nav-btn left" onClick={() => scrollEscritorio('left')}>‹</button>
-          <div className="fix-scroll-area" ref={scrollRef}>
-            <div className="fix-track">
-              {listaLogos.map((logo, i) => (
-                <div key={i} className="fix-logo-item">
+          <button className="fix-nav-btn left bristol-arrow-left-desk">‹</button>
+
+          <Swiper
+            modules={[Autoplay, Navigation]}
+            loop={true}
+            speed={600}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            slidesPerView={5}
+            spaceBetween={20}
+            navigation={{
+              prevEl: '.bristol-arrow-left-desk',
+              nextEl: '.bristol-arrow-right-desk',
+            }}
+            onSlideChange={mostrarScrollbar}
+            className="bristol-swiper-desk"
+          >
+            {[...listaLogos, ...listaLogos].map((logo, i) => (
+              <SwiperSlide key={i}>
+                <div className="fix-logo-item">
                   <img src={logo.src} alt={logo.alt} />
                 </div>
-              ))}
-            </div>
-          </div>
-          <button className="fix-nav-btn right" onClick={() => scrollEscritorio('right')}>›</button>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          <button className="fix-nav-btn right bristol-arrow-right-desk">›</button>
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════════ */}
-      {/* ══  MÓVIL/TABLET — imagen panorámica        ══ */}
-      {/* ══════════════════════════════════════════════ */}
+      {/* ══ MÓVIL/TABLET ══ */}
       <div className="bristol-mobile-only">
         <div className="bristol-swiper-container">
-
           <div className="bristol-swiper-wrapper">
             <button className="bristol-arrow bristol-arrow-left">‹</button>
 
@@ -121,13 +128,11 @@ export default function BannerCuotas() {
             <button className="bristol-arrow bristol-arrow-right">›</button>
           </div>
 
-          {/* Barra de progreso manual — visible solo al cambiar slide */}
           <div className={`bristol-scrollbar-wrapper ${scrollbarVisible ? 'visible' : ''}`}>
             <div className="bristol-scrollbar-track">
               <div className="bristol-scrollbar-indicator"></div>
             </div>
           </div>
-
         </div>
       </div>
 
