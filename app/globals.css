@@ -4439,12 +4439,13 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 4px;
+  padding: 0;
+  width: 120px !important;
 }
 
 .bristol-swiper-desk .fix-logo-item {
   height: 70px;
-  width: 100%;
+  width: 110px;
   display: flex;
   align-items: center;
   justify-content: center;
