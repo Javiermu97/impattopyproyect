@@ -56,8 +56,8 @@ export default function BannerCuotas() {
             modules={[Navigation]}
             loop={true}
             speed={600}
-            slidesPerView={7}
-            spaceBetween={0}
+            slidesPerView={6}
+            spaceBetween={-10}
             navigation={{
               prevEl: '.bristol-arrow-left-desk',
               nextEl: '.bristol-arrow-right-desk',
