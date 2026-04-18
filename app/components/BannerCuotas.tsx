@@ -1,10 +1,9 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Scrollbar, Navigation } from 'swiper/modules';
+import { Autoplay, Navigation } from 'swiper/modules';
 import 'swiper/css';
-import 'swiper/css/scrollbar';
 import 'swiper/css/navigation';
 
 const listaLogos = [
@@ -31,7 +30,17 @@ const rutaImagenPanorama = '/banner-cuotas-panorama.png';
 
 export default function BannerCuotas() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollbarVisible, setScrollbarVisible] = useState(false);
+  const scrollbarTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Muestra la barra 1.5s y la oculta
+  const mostrarScrollbar = () => {
+    setScrollbarVisible(true);
+    if (scrollbarTimer.current) clearTimeout(scrollbarTimer.current);
+    scrollbarTimer.current = setTimeout(() => setScrollbarVisible(false), 1500);
+  };
+
+  // Lógica flechas escritorio
   const scrollEscritorio = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const cellWidth = 110;
@@ -70,38 +79,29 @@ export default function BannerCuotas() {
       </div>
 
       {/* ══════════════════════════════════════════════ */}
-      {/* ══  MÓVIL/TABLET — imagen panorámica Bristol ══ */}
+      {/* ══  MÓVIL/TABLET — imagen panorámica        ══ */}
       {/* ══════════════════════════════════════════════ */}
       <div className="bristol-mobile-only">
         <div className="bristol-swiper-container">
-
-          <div className="bristol-mobile-label">
-            <span>Comprá en cuotas</span>
-            <span className="gold-text"> sin intereses</span>
-          </div>
 
           <div className="bristol-swiper-wrapper">
             <button className="bristol-arrow bristol-arrow-left">‹</button>
 
             <Swiper
-  modules={[Autoplay, Scrollbar, Navigation]}
-  loop={true}
-  speed={800}
-  slidesPerView="auto"
-  autoplay={{
-    delay: 12000,
-    disableOnInteraction: false,
-  }}
-  navigation={{
-    prevEl: '.bristol-arrow-left',
-    nextEl: '.bristol-arrow-right',
-  }}
-  scrollbar={{
-    draggable: true,
-    el: '.bristol-scrollbar',
-  }}
-  className="bristol-swiper"
->
+              modules={[Autoplay, Navigation]}
+              loop={true}
+              speed={800}
+              autoplay={{
+                delay: 12000,
+                disableOnInteraction: false,
+              }}
+              navigation={{
+                prevEl: '.bristol-arrow-left',
+                nextEl: '.bristol-arrow-right',
+              }}
+              onSlideChange={mostrarScrollbar}
+              className="bristol-swiper"
+            >
               <SwiperSlide>
                 <img
                   src={rutaImagenPanorama}
@@ -121,8 +121,11 @@ export default function BannerCuotas() {
             <button className="bristol-arrow bristol-arrow-right">›</button>
           </div>
 
-          <div className="bristol-scrollbar-wrapper">
-            <div className="bristol-scrollbar"></div>
+          {/* Barra de progreso manual — visible solo al cambiar slide */}
+          <div className={`bristol-scrollbar-wrapper ${scrollbarVisible ? 'visible' : ''}`}>
+            <div className="bristol-scrollbar-track">
+              <div className="bristol-scrollbar-indicator"></div>
+            </div>
           </div>
 
         </div>
@@ -131,3 +134,5 @@ export default function BannerCuotas() {
     </section>
   );
 }
+
+
