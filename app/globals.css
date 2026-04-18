@@ -145,8 +145,20 @@ button { cursor: pointer; border: none; padding: 10px 20px; border-radius: 5px; 
 /* Boton de oferta que está sobre cada imagen */
 .offer-badge { position: absolute; top: 10px; left: 10px; background-color: #ff4500; color: white; padding: 5px 10px; border-radius: 3px; font-size: 0.8em; font-weight: bold; }
 
-
-
+/* ========================================================= */
+/* ===== Especifica si hay stock o no de los productos y bloquea la compra si no tiene 18/04/2026===== */
+/* ========================================================= */
+.product-sin-stock {
+  color: #A78D5A;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: underline;
+  margin-left: 10px;
+}
+.shop-product-card--sin-stock {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 /* ========================================================= */
 /* ===== CÓDIGO FINAL Y CORRECTO PARA FOOTER Y COPYRIGHT ===== */
 /* ========================================================= */

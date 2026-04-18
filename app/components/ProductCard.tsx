@@ -16,7 +16,6 @@ const ProductCard = ({ product }: Props) => {
   const router = useRouter();
   const pid = typeof product.id === 'string' ? Number(product.id) : product.id;
   
-  // Estado para manejar error de imagen
   const [imageError, setImageError] = useState(false);
   const [secondaryImageError, setSecondaryImageError] = useState(false);
 
@@ -32,12 +31,19 @@ const ProductCard = ({ product }: Props) => {
     toggleWishlist(pid);
   };
 
-  // Si hay error en la imagen principal, mostrar placeholder
   const imageUrl = imageError ? '/placeholder.jpg' : product.imageUrl;
+  const sinStock = product.inStock === false;
 
   return (
-    <Link href={`/products/${product.id}`} className="shop-product-card-link">
-      <div className="shop-product-card">
+    <Link
+      href={sinStock ? '#' : `/products/${product.id}`}
+      className="shop-product-card-link"
+      onClick={sinStock ? (e) => {
+        e.preventDefault();
+        alert('Este producto no tiene stock disponible por el momento.');
+      } : undefined}
+    >
+      <div className={`shop-product-card ${sinStock ? 'shop-product-card--sin-stock' : ''}`}>
         {/* IMAGEN */}
         <div className="image-container">
           {product.oldPrice && <div className="shop-offer-badge">Oferta</div>}
@@ -48,7 +54,7 @@ const ProductCard = ({ product }: Props) => {
             fill
             sizes="(max-width: 768px) 50vw, 33vw"
             className="shop-product-image-primary"
-            unoptimized // Importante para Supabase
+            unoptimized
             onError={() => {
               console.error('Error cargando imagen en ProductCard:', product.imageUrl);
               setImageError(true);
@@ -62,7 +68,7 @@ const ProductCard = ({ product }: Props) => {
               fill
               sizes="(max-width: 768px) 50vw, 33vw"
               className="shop-product-image-secondary"
-              unoptimized // Importante para Supabase
+              unoptimized
               onError={() => setSecondaryImageError(true)}
             />
           )}
@@ -86,6 +92,9 @@ const ProductCard = ({ product }: Props) => {
           <span className="shop-product-price">Gs. {product.price.toLocaleString('es-PY')}</span>
           {product.oldPrice && (
             <span className="shop-product-old-price">Gs. {product.oldPrice.toLocaleString('es-PY')}</span>
+          )}
+          {sinStock && (
+            <span className="product-sin-stock">Sin stock</span>
           )}
         </div>
       </div>
