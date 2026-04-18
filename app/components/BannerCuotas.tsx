@@ -28,12 +28,6 @@ const listaLogos = [
 
 const rutaImagenPanorama = '/banner-cuotas-panorama.png';
 
-// Agrupamos logos de a 4 para cada "slide" de escritorio
-const slides = [];
-for (let i = 0; i < listaLogos.length; i += 4) {
-  slides.push(listaLogos.slice(i, i + 4));
-}
-
 export default function BannerCuotas() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollbarVisible, setScrollbarVisible] = useState(false);
@@ -59,15 +53,11 @@ export default function BannerCuotas() {
           <button className="fix-nav-btn left bristol-arrow-left-desk">‹</button>
 
           <Swiper
-            modules={[Autoplay, Navigation]}
+            modules={[Navigation]}
             loop={true}
             speed={600}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            slidesPerView={5}
-            spaceBetween={20}
+            slidesPerView={7}
+            spaceBetween={0}
             navigation={{
               prevEl: '.bristol-arrow-left-desk',
               nextEl: '.bristol-arrow-right-desk',

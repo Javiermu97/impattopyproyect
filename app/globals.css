@@ -4322,8 +4322,8 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .fix-nav-btn:hover { opacity: 0.5; }
-.fix-nav-btn.left  { left: 10px; }
-.fix-nav-btn.right { right: 10px; }
+.fix-nav-btn.left  { left: -5px; }
+.fix-nav-btn.right { right: 0px; }
 
 /* ── Visibilidad escritorio/móvil ── */
 .bristol-desktop-only { display: flex; }
@@ -4395,12 +4395,10 @@ input[type="number"]::-webkit-outer-spin-button {
     display: block;
   }
 
-  /* Scrollbar nativa de Swiper — completamente oculta */
   .swiper-scrollbar {
     display: none !important;
   }
 
-  /* Scrollbar manual — oculta por defecto, visible al cambiar slide */
   .bristol-scrollbar-wrapper {
     padding: 8px 10% 0;
     opacity: 0;
@@ -4424,7 +4422,6 @@ input[type="number"]::-webkit-outer-spin-button {
     border-radius: 10px;
   }
 
-  /* Ocultar flechas nativas de Swiper */
   .swiper-button-prev,
   .swiper-button-next {
     display: none !important;
@@ -4446,6 +4443,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .bristol-swiper-desk .fix-logo-item {
   height: 50px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4453,15 +4451,15 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .bristol-swiper-desk .fix-logo-item img {
   height: 100%;
-  width: auto;
+  max-width: 100%;
   object-fit: contain;
 }
 
-/* Ocultar flechas nativas de Swiper en escritorio */
 .bristol-swiper-desk .swiper-button-prev,
 .bristol-swiper-desk .swiper-button-next {
   display: none !important;
 }
+
 /* ===================================================== */
 /* ===== MEDIOS DE PAGO EN FOOTER ===== */
 /* ===================================================== */
