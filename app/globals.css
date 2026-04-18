@@ -4219,10 +4219,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 /* ===================================================== */
-/* ===== BANNER CUOTAS ===== */
+/* ===== BANNER MEDIOS DE PAGO ===== */
 /* ===================================================== */
 
-.bristol-fix-container {
+.banner-pagos-container {
   width: 100%;
   background: #ffffff;
   padding-top: 18px;
@@ -4239,7 +4239,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* ── ESCRITORIO ── */
-.bristol-fix-wrapper {
+.banner-pagos-wrapper {
   max-width: 1350px;
   margin: 0 auto;
   display: flex;
@@ -4247,7 +4247,7 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 0 40px;
 }
 
-.bristol-fix-label {
+.banner-pagos-label {
   flex-shrink: 0;
   border-right: 1px solid #eee;
   padding-right: 15px;
@@ -4255,21 +4255,21 @@ input[type="number"]::-webkit-outer-spin-button {
   text-align: right;
 }
 
-.bristol-fix-label p {
+.banner-pagos-label p {
   margin: 0;
   font-size: 0.85rem;
   color: #333;
   line-height: 1.2;
 }
 
-.bristol-fix-label .gold-text {
+.banner-pagos-destacado {
   color: #A78D5A;
   font-weight: 800;
   text-transform: uppercase;
   font-size: 0.95rem;
 }
 
-.bristol-fix-slider {
+.banner-pagos-slider {
   flex: 1;
   position: relative;
   display: flex;
@@ -4277,32 +4277,7 @@ input[type="number"]::-webkit-outer-spin-button {
   min-width: 0;
 }
 
-.fix-scroll-area {
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  width: 100%;
-  -webkit-overflow-scrolling: touch;
-}
-
-.fix-track {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 5px 35px;
-}
-
-.fix-logo-item {
-  flex-shrink: 0;
-  height: 50px;
-}
-
-.fix-logo-item img {
-  height: 100%;
-  width: auto;
-  object-fit: contain;
-}
-
-.fix-nav-btn {
+.banner-pagos-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -4321,41 +4296,35 @@ input[type="number"]::-webkit-outer-spin-button {
   box-shadow: none;
 }
 
-.fix-nav-btn:hover { opacity: 0.5; }
-.fix-nav-btn.left  { left: -5px; }
-.fix-nav-btn.right { right: 0px; }
+.banner-pagos-btn:hover { opacity: 0.5; }
+.banner-pagos-btn--left  { left: -5px; }
+.banner-pagos-btn--right { right: 0px; }
 
 /* ── Visibilidad escritorio/móvil ── */
-.bristol-desktop-only { display: flex; }
-.bristol-mobile-only  { display: none; }
+.banner-pagos-desktop { display: flex; }
+.banner-pagos-mobile  { display: none; }
 
 /* ===================================================== */
 /* ===== MÓVIL Y TABLET (max 992px) ===== */
 /* ===================================================== */
 
 @media (max-width: 992px) {
-  .bristol-desktop-only { display: none !important; }
-  .bristol-mobile-only  { display: block; }
+  .banner-pagos-desktop { display: none !important; }
+  .banner-pagos-mobile  { display: block; }
 
-  .bristol-swiper-container {
+  .banner-pagos-swiper-container {
     width: 100%;
     background: #fff;
     padding: 10px 0 20px 0;
-    border-top: none;
-    border-bottom: none;
   }
 
-  .bristol-mobile-label {
-    display: none;
-  }
-
-  .bristol-swiper-wrapper {
+  .banner-pagos-swiper-wrapper {
     position: relative;
     display: flex;
     align-items: center;
   }
 
-  .bristol-arrow {
+  .banner-pagos-arrow {
     flex-shrink: 0;
     background: transparent;
     border: none;
@@ -4372,22 +4341,22 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: 0;
   }
 
-  .bristol-arrow:hover { opacity: 0.5; }
-  .bristol-arrow-left  { padding-left: 4px; }
-  .bristol-arrow-right { padding-right: 4px; }
+  .banner-pagos-arrow:hover { opacity: 0.5; }
+  .banner-pagos-arrow--left  { padding-left: 4px; }
+  .banner-pagos-arrow--right { padding-right: 4px; }
 
-  .bristol-swiper {
+  .banner-pagos-swiper {
     flex: 1;
     width: 100%;
     overflow: hidden;
   }
 
-  .bristol-swiper .swiper-slide {
+  .banner-pagos-swiper .swiper-slide {
     width: 100% !important;
     overflow: hidden;
   }
 
-  .bristol-img-panorama {
+  .banner-pagos-img {
     width: 100%;
     height: 220px;
     object-fit: cover;
@@ -4395,27 +4364,23 @@ input[type="number"]::-webkit-outer-spin-button {
     display: block;
   }
 
-  .swiper-scrollbar {
-    display: none !important;
-  }
+  .swiper-scrollbar { display: none !important; }
 
-  .bristol-scrollbar-wrapper {
+  .banner-pagos-scrollbar {
     padding: 8px 10% 0;
     opacity: 0;
     transition: opacity 0.4s;
   }
 
-  .bristol-scrollbar-wrapper.visible {
-    opacity: 1;
-  }
+  .banner-pagos-scrollbar.visible { opacity: 1; }
 
-  .bristol-scrollbar-track {
+  .banner-pagos-scrollbar-track {
     height: 4px;
     background: #e0e0e0;
     border-radius: 10px;
   }
 
-  .bristol-scrollbar-indicator {
+  .banner-pagos-scrollbar-indicator {
     height: 4px;
     width: 50%;
     background: #333;
@@ -4429,13 +4394,13 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* ── ESCRITORIO: Swiper de logos ── */
-.bristol-swiper-desk {
+.banner-pagos-swiper-desk {
   flex: 1;
   width: 100%;
   overflow: hidden;
 }
 
-.bristol-swiper-desk .swiper-slide {
+.banner-pagos-swiper-desk .swiper-slide {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4443,7 +4408,7 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 95px !important;
 }
 
-.bristol-swiper-desk .fix-logo-item {
+.banner-pagos-swiper-desk .banner-pagos-logo-item {
   height: 70px;
   width: 110px;
   display: flex;
@@ -4451,17 +4416,16 @@ input[type="number"]::-webkit-outer-spin-button {
   justify-content: center;
 }
 
-.bristol-swiper-desk .fix-logo-item img {
+.banner-pagos-swiper-desk .banner-pagos-logo-item img {
   height: 100%;
   max-width: 100%;
   object-fit: contain;
 }
 
-.bristol-swiper-desk .swiper-button-prev,
-.bristol-swiper-desk .swiper-button-next {
+.banner-pagos-swiper-desk .swiper-button-prev,
+.banner-pagos-swiper-desk .swiper-button-next {
   display: none !important;
 }
-
 /* ===================================================== */
 /* ===== MEDIOS DE PAGO EN FOOTER ===== */
 /* ===================================================== */

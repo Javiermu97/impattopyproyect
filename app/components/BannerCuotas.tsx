@@ -40,17 +40,17 @@ export default function BannerCuotas() {
   };
 
   return (
-    <section className="bristol-fix-container">
+    <section className="banner-pagos-container">
 
       {/* ══ ESCRITORIO ══ */}
-      <div className="bristol-fix-wrapper bristol-desktop-only">
-        <div className="bristol-fix-label">
+      <div className="banner-pagos-wrapper banner-pagos-desktop">
+        <div className="banner-pagos-label">
           <p>Pagá como</p>
-          <p className="gold-text">más desees</p>
+          <p className="banner-pagos-destacado">más desees</p>
         </div>
 
-        <div className="bristol-fix-slider">
-          <button className="fix-nav-btn left bristol-arrow-left-desk">‹</button>
+        <div className="banner-pagos-slider">
+          <button className="banner-pagos-btn banner-pagos-btn--left banner-pagos-prev-desk">‹</button>
 
           <Swiper
             modules={[Navigation]}
@@ -59,30 +59,30 @@ export default function BannerCuotas() {
             slidesPerView={'auto'}
             spaceBetween={0}
             navigation={{
-              prevEl: '.bristol-arrow-left-desk',
-              nextEl: '.bristol-arrow-right-desk',
+              prevEl: '.banner-pagos-prev-desk',
+              nextEl: '.banner-pagos-next-desk',
             }}
             onSlideChange={mostrarScrollbar}
-            className="bristol-swiper-desk"
+            className="banner-pagos-swiper-desk"
           >
             {[...listaLogos, ...listaLogos].map((logo, i) => (
               <SwiperSlide key={i}>
-                <div className="fix-logo-item">
+                <div className="banner-pagos-logo-item">
                   <img src={logo.src} alt={logo.alt} />
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
 
-          <button className="fix-nav-btn right bristol-arrow-right-desk">›</button>
+          <button className="banner-pagos-btn banner-pagos-btn--right banner-pagos-next-desk">›</button>
         </div>
       </div>
 
       {/* ══ MÓVIL/TABLET ══ */}
-      <div className="bristol-mobile-only">
-        <div className="bristol-swiper-container">
-          <div className="bristol-swiper-wrapper">
-            <button className="bristol-arrow bristol-arrow-left">‹</button>
+      <div className="banner-pagos-mobile">
+        <div className="banner-pagos-swiper-container">
+          <div className="banner-pagos-swiper-wrapper">
+            <button className="banner-pagos-arrow banner-pagos-arrow--left">‹</button>
 
             <Swiper
               modules={[Autoplay, Navigation]}
@@ -93,34 +93,34 @@ export default function BannerCuotas() {
                 disableOnInteraction: false,
               }}
               navigation={{
-                prevEl: '.bristol-arrow-left',
-                nextEl: '.bristol-arrow-right',
+                prevEl: '.banner-pagos-arrow--left',
+                nextEl: '.banner-pagos-arrow--right',
               }}
               onSlideChange={mostrarScrollbar}
-              className="bristol-swiper"
+              className="banner-pagos-swiper"
             >
               <SwiperSlide>
                 <img
                   src={rutaImagenPanorama}
                   alt="Medios de pago y cuotas"
-                  className="bristol-img-panorama"
+                  className="banner-pagos-img"
                 />
               </SwiperSlide>
               <SwiperSlide>
                 <img
                   src={rutaImagenPanorama}
                   alt="Medios de pago y cuotas"
-                  className="bristol-img-panorama"
+                  className="banner-pagos-img"
                 />
               </SwiperSlide>
             </Swiper>
 
-            <button className="bristol-arrow bristol-arrow-right">›</button>
+            <button className="banner-pagos-arrow banner-pagos-arrow--right">›</button>
           </div>
 
-          <div className={`bristol-scrollbar-wrapper ${scrollbarVisible ? 'visible' : ''}`}>
-            <div className="bristol-scrollbar-track">
-              <div className="bristol-scrollbar-indicator"></div>
+          <div className={`banner-pagos-scrollbar ${scrollbarVisible ? 'visible' : ''}`}>
+            <div className="banner-pagos-scrollbar-track">
+              <div className="banner-pagos-scrollbar-indicator"></div>
             </div>
           </div>
         </div>
@@ -129,5 +129,4 @@ export default function BannerCuotas() {
     </section>
   );
 }
-
 
