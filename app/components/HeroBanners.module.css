@@ -104,8 +104,7 @@
     width: 100%;
     padding: 4px;
     box-sizing: border-box;
-    background: #e8e8e8;
-    overflow: visible;
+    background: transparent;
   }
 
   .mobileLayout .fila {
@@ -116,28 +115,29 @@
 
   .mobileLayout .slot {
     width: 100%;
-    overflow: hidden;
     position: relative;
+    display: block;
   }
 
   .mobileLayout .bannerImg {
     width: 100%;
     height: auto;
     display: block;
+    position: relative;
   }
 
   .mobileLayout .swiper {
     width: 100%;
-    height: auto !important;
-    overflow: visible;
+    display: block;
   }
 
   .mobileLayout .swiper :global(.swiper-wrapper) {
-    height: auto !important;
+    display: flex;
+    align-items: flex-start;
   }
 
   .mobileLayout .swiper :global(.swiper-slide) {
     width: 100%;
-    height: auto !important;
+    flex-shrink: 0;
   }
 }
