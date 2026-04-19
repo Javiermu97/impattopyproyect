@@ -4,6 +4,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import CarruselInferior from './components/CarruselInferior';
 import InfoBanner from './components/InfoBanner';
 import BannerCuotas from './components/BannerCuotas';
+import HeroBanners from './components/HeroBanners';
 import { supabase } from '@/lib/supabaseClient';
 import { Product } from '@/lib/types';
 import { transformProducts } from '@/lib/imageUtils';
@@ -33,20 +34,7 @@ export default async function HomePage() {
     <>
       <CarruselInferior />
 
-      <section className="hero-section">
-        <video autoPlay loop muted playsInline className="hero-video">
-          <source src="/videos/quita-pelusas.mp4" type="video/mp4" />
-          Tu navegador no soporta el tag de video.
-        </video>
-        <div className="hero-content">
-          <h2>DESCUBRÍ LO QUE TE ENCANTA</h2>
-          <h1>Miles de productos seleccionados para vos</h1>
-          <p>Elegí entre productos modernos, prácticos y funcionales</p>
-          <Link href="/mas-vendidos">
-            <button className="btn-primary">EXPLORAR</button>
-          </Link>
-        </div>
-      </section>
+      <HeroBanners />
 
       {/* ===== ESPECIAL DE LA SEMANA ===== */}
       <section className="home-products-section">
@@ -61,12 +49,10 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      {/* ===== BANNER ESTILO BRISTOL (AHORA AQUÍ) ===== */}
       <BannerCuotas />
 
       {/* ===== SECCIÓN "HECHOS PARA TU HOGAR" ===== */}
-      {/* SE ELIMINÓ 'reducir-espacio-superior' PARA EVITAR QUE PISE EL BANNER */}
-      <section className="home-products-section"> 
+      <section className="home-products-section">
         <h2 className="section-title">Confort y Diseño</h2>
         <h3 className="section-subtitle">Hechos para tu hogar</h3>
         <div className="product-grid-shop columns-3">

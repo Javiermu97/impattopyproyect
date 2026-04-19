@@ -1,0 +1,113 @@
+.heroGrid {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  width: 100%;
+  height: 600px;
+  gap: 4px;
+  background: #e8e8e8;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+/* ── COLUMNA IZQUIERDA ── */
+.colLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+}
+
+.slotGrande { flex: 0 0 75%; }
+.slotChico  { flex: 0 0 calc(25% - 4px); }
+
+/* ── COLUMNA DERECHA ── */
+.colRight {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  flex: 0 0 calc(30% - 4px);
+}
+
+.slotWide {
+  flex: 0 0 calc(20% - 4px);
+}
+
+.slotCat,
+.slotSq {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── SLOT BASE ── */
+.slot {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: #ddd;
+}
+
+.slot a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper :global(.swiper-slide) {
+  width: 100%;
+  height: 100%;
+}
+
+.bannerImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Flechas */
+.swiper :global(.swiper-button-prev),
+.swiper :global(.swiper-button-next) {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.swiper :global(.swiper-button-prev::after),
+.swiper :global(.swiper-button-next::after) {
+  font-size: 14px;
+}
+
+/* ── MÓVIL ── */
+@media (max-width: 992px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .colLeft {
+    height: 300px;
+  }
+
+  .fila {
+    height: 140px;
+  }
+
+  .slotWide {
+    height: 110px;
+  }
+}
