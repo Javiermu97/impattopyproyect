@@ -90,6 +90,8 @@
     gap: 0;
     padding: 0;
     background: transparent;
+    overflow: hidden;  /* ← clave */
+    max-width: 100vw;  /* ← clave */
   }
 
   .colLeft,
@@ -102,6 +104,8 @@
     flex-direction: column;
     gap: 4px;
     width: 100%;
+    max-width: 100vw;  /* ← clave */
+    overflow: hidden;  /* ← clave */
     padding: 4px;
     box-sizing: border-box;
     background: transparent;
@@ -115,20 +119,24 @@
 
   .mobileLayout .slot {
     width: 100%;
+    overflow: hidden;
     position: relative;
     display: block;
+    max-width: 100%;  /* ← clave */
   }
 
   .mobileLayout .bannerImg {
     width: 100%;
     height: auto;
     display: block;
-    position: relative;
+    max-width: 100%;  /* ← clave */
   }
 
   .mobileLayout .swiper {
     width: 100%;
+    max-width: 100%;  /* ← clave */
     display: block;
+    overflow: hidden;
   }
 
   .mobileLayout .swiper :global(.swiper-wrapper) {
@@ -139,5 +147,6 @@
   .mobileLayout .swiper :global(.swiper-slide) {
     width: 100%;
     flex-shrink: 0;
+    max-width: 100%;  /* ← clave */
   }
 }
