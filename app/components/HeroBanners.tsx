@@ -57,26 +57,18 @@ export default function HeroBanners() {
   return (
     <section className={styles.heroGrid}>
 
-      {/* ── COLUMNA IZQUIERDA (solo escritorio) ── */}
-      <div className={styles.colLeft}>
-        <CarruselSlot images={banners.hero}      className={styles.slotGrande} />
-        <CarruselSlot images={banners.heroChico} className={styles.slotChico} />
+      {/* ── ESCRITORIO ── */}
+      <div className={styles.desktopLayout}>
+        <CarruselSlot images={banners.hero}      className={styles.slotHeroGrande} />
+        <ImagenFija   {...banners.cat1}           className={styles.slotCat1} />
+        <ImagenFija   {...banners.cat2}           className={styles.slotCat2} />
+        <CarruselSlot images={banners.wide}       className={styles.slotWide} />
+        <CarruselSlot images={banners.heroChico}  className={styles.slotHeroChico} />
+        <ImagenFija   {...banners.sq1}            className={styles.slotSq1} />
+        <ImagenFija   {...banners.sq2}            className={styles.slotSq2} />
       </div>
 
-      {/* ── COLUMNA DERECHA (solo escritorio) ── */}
-      <div className={styles.colRight}>
-        <div className={styles.fila}>
-          <ImagenFija {...banners.cat1} className={styles.slotCat} />
-          <ImagenFija {...banners.cat2} className={styles.slotCat} />
-        </div>
-        <CarruselSlot images={banners.wide} className={styles.slotWide} />
-        <div className={styles.fila}>
-          <ImagenFija {...banners.sq1} className={styles.slotSq} />
-          <ImagenFija {...banners.sq2} className={styles.slotSq} />
-        </div>
-      </div>
-
-      {/* ── LAYOUT MÓVIL (solo móvil) ── */}
+      {/* ── MÓVIL ── */}
       <div className={styles.mobileLayout}>
         <CarruselSlot images={banners.hero}      className={styles.slotGrande} />
         <CarruselSlot images={banners.heroChico} className={styles.slotChico} />
