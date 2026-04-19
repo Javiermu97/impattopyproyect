@@ -78,12 +78,13 @@ export default function HeroBanners() {
 
       {/* ── LAYOUT MÓVIL (solo móvil) ── */}
       <div className={styles.mobileLayout}>
-        <CarruselSlot images={banners.hero} className={styles.slotGrande} />
+        <CarruselSlot images={banners.hero}      className={styles.slotGrande} />
+        <CarruselSlot images={banners.heroChico} className={styles.slotChico} />
         <div className={styles.fila}>
           <ImagenFija {...banners.cat1} className={styles.slotCat} />
           <ImagenFija {...banners.cat2} className={styles.slotCat} />
         </div>
-        <CarruselSlot images={banners.wide} className={styles.slotWide} />
+        <CarruselSlot images={banners.wide}      className={styles.slotWide} />
         <div className={styles.fila}>
           <ImagenFija {...banners.sq1} className={styles.slotSq} />
           <ImagenFija {...banners.sq2} className={styles.slotSq} />
