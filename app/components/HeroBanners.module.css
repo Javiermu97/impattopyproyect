@@ -3,6 +3,7 @@
   display: grid;
   grid-template-columns: 55% 45%;
   width: 100%;
+  max-width: 100%;
   gap: 4px;
   background: #e8e8e8;
   padding: 4px;
@@ -10,26 +11,21 @@
 }
 
 .colLeft {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 55fr 45fr;
   gap: 4px;
   grid-column: 1;
-  height: 580px;
 }
 
-.slotGrande {
-  flex: 0 0 55%;
-  overflow: hidden;
-}
-
+.slotGrande,
 .slotChico {
-  flex: 0 0 calc(45% - 4px);
   overflow: hidden;
+  width: 100%;
 }
 
 .colRight {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto auto;
   gap: 4px;
   grid-column: 2;
 }
@@ -53,28 +49,24 @@
   display: block;
   width: 100%;
   line-height: 0;
-  height: 100%;
 }
 
 .swiper {
   width: 100%;
-  height: 100%;
 }
 
 .swiper :global(.swiper-wrapper) {
-  align-items: stretch;
-  height: 100%;
+  align-items: flex-start;
 }
 
 .swiper :global(.swiper-slide) {
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 
 .bannerImg {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
 }
 
@@ -152,7 +144,6 @@
     width: 100%;
     height: auto;
     display: block;
-    object-fit: cover;
   }
 
   .mobileLayout .slotCat,
