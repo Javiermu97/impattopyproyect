@@ -57,30 +57,37 @@ export default function HeroBanners() {
   return (
     <section className={styles.heroGrid}>
 
-      {/* ── COLUMNA IZQUIERDA ── */}
+      {/* ── ESCRITORIO: columna izquierda ── */}
       <div className={styles.colLeft}>
         <CarruselSlot images={banners.hero}      className={styles.slotGrande} />
         <CarruselSlot images={banners.heroChico} className={styles.slotChico} />
       </div>
 
-      {/* ── COLUMNA DERECHA ── */}
+      {/* ── ESCRITORIO: columna derecha ── */}
       <div className={styles.colRight}>
+        <div className={styles.filaTop}>
+          <ImagenFija {...banners.cat1} className={styles.slotCat} />
+          <ImagenFija {...banners.cat2} className={styles.slotCat} />
+        </div>
+        <CarruselSlot images={banners.wide} className={styles.slotWide} />
+        <div className={styles.filaBottom}>
+          <ImagenFija {...banners.sq1} className={styles.slotSq} />
+          <ImagenFija {...banners.sq2} className={styles.slotSq} />
+        </div>
+      </div>
 
-        {/* Fila arriba: 2 banners clickeables */}
+      {/* ── MÓVIL: estructura separada ── */}
+      <div className={styles.mobileLayout}>
+        <CarruselSlot images={banners.hero}      className={styles.slotGrande} />
         <div className={styles.fila}>
           <ImagenFija {...banners.cat1} className={styles.slotCat} />
           <ImagenFija {...banners.cat2} className={styles.slotCat} />
         </div>
-
-        {/* Fila medio: carrusel ancho */}
-        <CarruselSlot images={banners.wide} className={styles.slotWide} />
-
-        {/* Fila abajo: 2 banners clickeables */}
+        <CarruselSlot images={banners.wide}      className={styles.slotWide} />
         <div className={styles.fila}>
           <ImagenFija {...banners.sq1} className={styles.slotSq} />
           <ImagenFija {...banners.sq2} className={styles.slotSq} />
         </div>
-
       </div>
 
     </section>
