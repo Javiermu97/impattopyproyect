@@ -16,6 +16,9 @@
   grid-column: 1;
 }
 
+.slotGrande { flex: 0 0 55%; }
+.slotChico  { flex: 0 0 45%; }
+
 .colRight {
   display: flex;
   flex-direction: column;
@@ -44,10 +47,12 @@
 
 .swiper {
   width: 100%;
+  height: auto;
 }
 
 .swiper :global(.swiper-slide) {
   width: 100%;
+  height: auto;
 }
 
 .bannerImg {
@@ -87,13 +92,11 @@
     background: transparent;
   }
 
-  /* Ocultar columnas de escritorio */
   .colLeft,
   .colRight {
     display: none;
   }
 
-  /* Mostrar layout móvil */
   .mobileLayout {
     display: flex;
     flex-direction: column;
@@ -102,6 +105,7 @@
     padding: 4px;
     box-sizing: border-box;
     background: #e8e8e8;
+    overflow: visible;
   }
 
   .mobileLayout .fila {
@@ -113,11 +117,27 @@
   .mobileLayout .slot {
     width: 100%;
     overflow: hidden;
+    position: relative;
   }
 
   .mobileLayout .bannerImg {
     width: 100%;
     height: auto;
     display: block;
+  }
+
+  .mobileLayout .swiper {
+    width: 100%;
+    height: auto !important;
+    overflow: visible;
+  }
+
+  .mobileLayout .swiper :global(.swiper-wrapper) {
+    height: auto !important;
+  }
+
+  .mobileLayout .swiper :global(.swiper-slide) {
+    width: 100%;
+    height: auto !important;
   }
 }
