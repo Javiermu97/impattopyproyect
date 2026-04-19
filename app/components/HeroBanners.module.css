@@ -1,3 +1,4 @@
+/* ── ESCRITORIO ── */
 .heroGrid {
   display: grid;
   grid-template-columns: 55% 45%;
@@ -8,18 +9,18 @@
   box-sizing: border-box;
 }
 
-/* ── COLUMNA IZQUIERDA ── */
 .colLeft {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  grid-column: 1;
 }
 
-/* ── COLUMNA DERECHA ── */
 .colRight {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  grid-column: 2;
 }
 
 .fila {
@@ -70,35 +71,53 @@
   font-size: 14px;
 }
 
-/* ══════════════════════════════════════════ */
-/* ══  MÓVIL Y TABLET (max 992px)          ══ */
-/* ══════════════════════════════════════════ */
+/* ── MÓVIL oculto en escritorio ── */
+.mobileLayout {
+  display: none;
+}
+
+/* ══════════════════════════════════ */
+/* ══  MÓVIL (max 992px)           ══ */
+/* ══════════════════════════════════ */
 @media (max-width: 992px) {
   .heroGrid {
     grid-template-columns: 1fr;
-    gap: 4px;
-    padding: 4px;
+    gap: 0;
+    padding: 0;
+    background: transparent;
   }
 
-  /* En móvil ocultamos las columnas y reorganizamos todo */
+  /* Ocultar columnas de escritorio */
   .colLeft,
   .colRight {
-    display: contents;
+    display: none;
   }
 
-  /* Orden de aparición en móvil */
-  .slotGrande { order: 1; }   /* banner grande arriba — ancho completo */
-  .fila:first-of-type { order: 2; } /* 2 medianos */
-  .slotWide   { order: 3; }   /* banner ancho */
-  .fila:last-of-type  { order: 4; } /* 2 cuadrados */
-  .slotChico  { order: 5; }   /* banner chico al final */
-
-  .slotGrande,
-  .slotWide {
-    grid-column: 1 / -1;
+  /* Mostrar layout móvil */
+  .mobileLayout {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    padding: 4px;
+    box-sizing: border-box;
+    background: #e8e8e8;
   }
 
-  .fila {
+  .mobileLayout .fila {
+    display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+
+  .mobileLayout .slot {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .mobileLayout .bannerImg {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 }
