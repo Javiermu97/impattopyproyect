@@ -134,18 +134,16 @@
   aspect-ratio: 500 / 185;
 }
 
-  .mobileLayout .slotCat img,
-  .mobileLayout .slotSq img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+.mobileLayout .slotSq {
+  aspect-ratio: 1 / 1;
+}
 
-  .mobileLayout .swiper {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-  }
+.mobileLayout .slotCat img,
+.mobileLayout .slotSq img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
   .mobileLayout .swiper :global(.swiper-wrapper) { align-items: flex-start; }
 
