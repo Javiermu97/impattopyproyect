@@ -94,14 +94,14 @@
 .swiper :global(.swiper-button-next) {
   color: #888 !important;
   background: rgba(255, 255, 255, 0.55) !important;
-  width: 30px !important;
-  height: 30px !important;
+  width: 36px !important;
+  height: 36px !important;
   border-radius: 50% !important;
 }
 
 .swiper :global(.swiper-button-prev::after),
 .swiper :global(.swiper-button-next::after) {
-  font-size: 9px !important;
+  font-size: 8px !important;
   font-weight: 600 !important;
 }
 
