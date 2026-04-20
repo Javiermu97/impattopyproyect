@@ -1,6 +1,8 @@
-/* Navbar.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap');
 
-/* Estilo base */
+/* ========================= */
+/* NAVBAR BASE               */
+/* ========================= */
 .navbar {
   display: flex;
   align-items: center;
@@ -13,35 +15,76 @@
   z-index: 50;
 }
 
-.left, .right {
+/* ========================= */
+/* LOGO IZQUIERDA            */
+/* ========================= */
+.logoLeft {
+  flex-shrink: 0;
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: baseline;
+  text-decoration: none;
+  font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  animation: logoFadeIn 0.7s ease-out forwards;
+  opacity: 0;
+}
+
+.logoI  { color: #4A4A4A; }
+.logoM  { color: #A78D5A; }
+.logoP  { color: #A78D5A; }
+.logoA  { color: #A78D5A; }
+.logoT1 { color: #A78D5A; }
+.logoT2 { color: #8A8A8A; }
+.logoO  { color: #4A4A4A; }
+
+@keyframes logoFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================= */
+/* NAV LINKS CENTRO          */
+/* ========================= */
+.navLinks {
   display: flex;
   align-items: center;
-  gap: 0.8rem; /* Reducimos un poco el gap para ganar espacio */
+  gap: 1.5rem;
   flex: 1;
-  z-index: 10; /* Asegura que los botones sean clickeables sobre el logo si se solapan */
+  justify-content: center;
 }
 
+.navLink {
+  font-size: 0.9rem;
+  color: #000;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.navLink:hover { color: #A78D5A; }
+.active { color: #A78D5A; font-weight: 600; }
+
+/* ========================= */
+/* DERECHA: ICONOS           */
+/* ========================= */
 .right {
-  justify-content: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-shrink: 0;
 }
 
-/* 3. FIX CRÍTICO DEL LOGO: Evitar que pise los iconos */
-.logo {
-  text-align: center;
-  line-height: 1.1;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: auto;
-  max-width: 40%; /* Evita que el contenedor del logo se extienda infinitamente */
-  white-space: nowrap; /* Evita que el nombre se parta en dos líneas */
-}
-
-.iconBtn { 
-  background: transparent; 
-  border: none; 
-  padding: 0; 
-  cursor: pointer; 
+.iconBtn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
   color: #000000;
   display: flex;
   align-items: center;
@@ -69,27 +112,11 @@
   font-size: 1.5rem;
 }
 
-/* 2. Ajuste de la lupa (searchIconMobile) para que no esté retirada del menú */
-.searchIconMobile {
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  color: #000000;
-  display: flex;
-  align-items: center;
-  margin-left: 0; /* Cambiado de 0.5rem a 0 para pegarla más al ícono de hamburguesa */
-}
-
-/* LA ÚNICA ADICIÓN: Para que el título no parezca link */
-.noLink {
-  cursor: default !important;
-}
+.noLink { cursor: default !important; }
 
 /* ========================= */
-/* OVERLAY MÓVIL */
+/* OVERLAY MÓVIL             */
 /* ========================= */
-
 .overlay {
   position: fixed;
   top: 0; left: 0;
@@ -101,15 +128,11 @@
   transition: opacity 0.3s ease;
 }
 
-.overlay.open {
-  opacity: 1;
-  visibility: visible;
-}
+.overlay.open { opacity: 1; visibility: visible; }
 
 /* ========================= */
-/* DRAWER MÓVIL */
+/* DRAWER MÓVIL              */
 /* ========================= */
-
 .mobileDrawer {
   position: fixed;
   top: 0; left: -100%;
@@ -125,9 +148,7 @@
   box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
 
-.mobileDrawer.open {
-  left: 0;
-}
+.mobileDrawer.open { left: 0; }
 
 .drawerHeader {
   display: flex;
@@ -164,7 +185,7 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  font-size: 0.95rem; /* Restaurado */
+  font-size: 0.95rem;
   color: #000;
 }
 
@@ -172,7 +193,7 @@
   display: block;
   padding: 1rem 0;
   color: #000;
-  font-size: 1rem; /* Restaurado a tu original */
+  font-size: 1rem;
   font-weight: 700;
   text-decoration: none;
   text-transform: capitalize !important;
@@ -182,7 +203,7 @@
   display: block;
   padding: 0.9rem 0;
   color: #000;
-  font-size: 0.95rem; /* Restaurado a tu original */
+  font-size: 0.95rem;
   text-decoration: none;
   border-bottom: 1px solid #f5f5f5;
   line-height: 1.4;
@@ -211,9 +232,8 @@
 }
 
 /* ========================= */
-/* RESPONSIVE */
+/* RESPONSIVE                */
 /* ========================= */
-
 @media (max-width: 1024px) {
   .navLinks { display: none !important; }
   .searchIconDesktop { display: none; }
@@ -221,29 +241,20 @@
 }
 
 @media (min-width: 1025px) {
-  .logo { position: static; transform: none; }
   .menuBtn { display: none; }
-  .navLinks { display: flex; gap: 1.5rem; }
   .searchIconDesktop { display: flex; }
   .searchIconMobile { display: none; }
   .mobileDrawer { display: none !important; }
 }
-/* 4. Ajuste del tamaño del texto del logo para pantallas muy pequeñas */
+
 @media (max-width: 400px) {
-  .logo a {
-    font-size: 1.1rem !important; /* Reducimos un poco el tamaño solo en móviles muy angostos */
-    letter-spacing: 0.15em !important; /* Reducimos el espaciado para que quepa mejor */
-  }
-  
-  .left, .right {
-    gap: 0.5rem; /* Menos espacio entre iconos en móviles pequeños */
-  }
+  .logoLink { font-size: 1.3rem; letter-spacing: 0.1em; }
+  .right { gap: 0.5rem; }
 }
 
 /* ========================= */
-/* SUBMENÚ ESCRITORIO */
+/* SUBMENÚ ESCRITORIO        */
 /* ========================= */
-
 .navItemWrapper {
   position: relative;
   display: inline-flex;
@@ -265,25 +276,18 @@
   border-radius: 4px;
 }
 
-.dropdownMenu.open {
-  display: flex;
-}
-
-.navItemWrapper:hover .dropdownMenu {
-  display: flex !important;
-}
+.dropdownMenu.open { display: flex; }
+.navItemWrapper:hover .dropdownMenu { display: flex !important; }
 
 .dropdownLink {
   padding: 0.55rem 1rem;
   text-decoration: none;
   color: #000;
-  font-size: 0.9rem; /* Restaurado */
+  font-size: 0.9rem;
   font-weight: 400;
 }
 
-.dropdownLink:hover {
-  background: #f7f7f7;
-}
+.dropdownLink:hover { background: #f7f7f7; }
 
 .submenuContainer {
   display: flex;
@@ -308,24 +312,4 @@
 .drawerBtnTrigger,
 .drawerLinkMain {
   text-transform: capitalize !important;
-}
-
-/* ===== LOGO ===== */
-.logo a {
-  font-family: "Times New Roman", Times, serif;
-  font-size: 1.35rem;
-  font-weight: 400;
-  letter-spacing: 0.28em; 
-  text-transform: uppercase;
-  color: #000;
-  text-decoration: none;
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(4px);
-  animation: logoFadeIn 0.7s ease-out forwards;
-}
-
-@keyframes logoFadeIn {
-  from { opacity: 0; transform: translateY(6px); letter-spacing: 0.1em; }
-  to { opacity: 1; transform: translateY(0); letter-spacing: 0.28em; }
 }
