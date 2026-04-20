@@ -9,14 +9,13 @@
 .desktopLayout {
   display: grid;
   grid-template-columns: 62% 1fr 1fr;
-  grid-template-rows: 55% 18% 27%;
+  grid-template-rows: 42% 22% 36%;
   height: 580px;
   gap: 8px;
   padding: 8px;
   background: #e8e8e8;
   box-sizing: border-box;
 }
-
 .slotHeroGrande {
   grid-column: 1;
   grid-row: 1 / 3;
