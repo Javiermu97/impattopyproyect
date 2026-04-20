@@ -101,7 +101,7 @@
 
 .swiper :global(.swiper-button-prev::after),
 .swiper :global(.swiper-button-next::after) {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
 }
 
