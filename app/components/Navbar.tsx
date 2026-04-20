@@ -19,7 +19,6 @@ import {
   IoChevronForwardOutline,
   IoArrowBackOutline,
   IoCallOutline,
-  IoMailOutline
 } from 'react-icons/io5';
 
 const Navbar = () => {
@@ -70,17 +69,22 @@ const Navbar = () => {
     <>
       <header className={styles.navbar}>
 
-        {/* IZQUIERDA: LOGO */}
-        <div className={styles.logoLeft}>
-          <Link href="/" className={styles.logoLink}>
-            <span className={styles.logoI}>I</span>
-            <span className={styles.logoM}>M</span>
-            <span className={styles.logoP}>P</span>
-            <span className={styles.logoA}>A</span>
-            <span className={styles.logoT1}>T</span>
-            <span className={styles.logoT2}>T</span>
-            <span className={styles.logoO}>O</span>
-          </Link>
+        {/* IZQUIERDA: hamburguesa + logo */}
+        <div className={styles.leftMobile}>
+          <button className={styles.menuBtn} onClick={() => setIsMenuOpen(true)}>
+            <IoMenuOutline size={26} />
+          </button>
+          <div className={styles.logoLeft}>
+            <Link href="/" className={styles.logoLink}>
+              <span className={styles.logoI}>I</span>
+              <span className={styles.logoM}>M</span>
+              <span className={styles.logoP}>P</span>
+              <span className={styles.logoA}>A</span>
+              <span className={styles.logoT1}>T</span>
+              <span className={styles.logoT2}>T</span>
+              <span className={styles.logoO}>O</span>
+            </Link>
+          </div>
         </div>
 
         {/* CENTRO: NAV LINKS ESCRITORIO */}
@@ -121,9 +125,6 @@ const Navbar = () => {
 
         {/* DERECHA: ICONOS */}
         <div className={styles.right}>
-          <button className={styles.menuBtn} onClick={() => setIsMenuOpen(true)}>
-            <IoMenuOutline size={26} />
-          </button>
           <button className={`${styles.iconBtn} ${styles.searchIconMobile}`} onClick={() => setIsSearchOpen(true)}>
             <IoSearchOutline size={22} />
           </button>

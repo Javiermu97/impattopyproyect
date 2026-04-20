@@ -16,10 +16,18 @@
 }
 
 /* ========================= */
-/* LOGO IZQUIERDA            */
+/* IZQUIERDA: hamburguesa + logo */
 /* ========================= */
-.logoLeft {
+.leftMobile {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   flex-shrink: 0;
+}
+
+.logoLeft {
+  display: flex;
+  align-items: center;
 }
 
 .logoLink {
@@ -245,10 +253,11 @@
   .searchIconDesktop { display: flex; }
   .searchIconMobile { display: none; }
   .mobileDrawer { display: none !important; }
+  .logoLink { font-size: 1.7rem; }
 }
 
 @media (max-width: 400px) {
-  .logoLink { font-size: 1.3rem; letter-spacing: 0.1em; }
+  .logoLink { font-size: 1.2rem; letter-spacing: 0.1em; }
   .right { gap: 0.5rem; }
 }
 
