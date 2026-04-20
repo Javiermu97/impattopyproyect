@@ -103,7 +103,7 @@
 
 .swiper :global(.swiper-button-prev::after),
 .swiper :global(.swiper-button-next::after) {
-  font-size: 8px !important;
+  transform: scale(0.4) !important;
   font-weight: 600 !important;
 }
 
@@ -204,8 +204,8 @@
   }
 
   .mobileLayout .swiper :global(.swiper-button-prev::after),
-  .mobileLayout .swiper :global(.swiper-button-next::after) {
-    font-size: 8px !important;
-    font-weight: 600 !important;
-  }
+.mobileLayout .swiper :global(.swiper-button-next::after) {
+  transform: scale(0.4) !important;
+  font-weight: 600 !important;
+}
 }
