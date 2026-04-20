@@ -2256,11 +2256,11 @@ body {
   }
 
   .pdp-main-image-wrapper {
-    width: 100%;
-    position: relative;
-    /* Asegúrate de que no tenga padding lateral que empuje las flechas */
-    padding: 0 !important; 
-  }
+  width: 100%;
+  position: relative;
+  aspect-ratio: 3 / 2.7;
+  padding: 0 !important;
+}
 }
 
 /* Ajuste extremo para pantallas muy pequeñas (menos de 400px) */
