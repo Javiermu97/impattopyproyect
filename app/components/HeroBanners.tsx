@@ -21,10 +21,10 @@ const banners = {
     '/banners/wide/wide-1.jpg',
     '/banners/wide/wide-2.jpg',
   ],
-  cat1: { src: '/banners/cat-1/cat-1.jpg', href: '/products/26' },
-  cat2: { src: '/banners/cat-2/cat-2.jpg', href: '/products/proximamente' },
-  sq1:  { src: '/banners/sq-1/sq-1.jpg',   href: '/products/44' },
-  sq2:  { src: '/banners/sq-2/sq-2.jpg',   href: '/products/proximamente' },
+  cat1: { src: '/banners/cat-1/cat-1a.jpg', href: '/products/26' },
+  cat2: { src: '/banners/cat-2/cat-2.jpg',  href: '#' },
+  sq1:  { src: '/banners/sq-1/sq1.jpg',     href: '/products/44' },
+  sq2:  { src: '/banners/sq-2/sq-2.jpg',    href: '#' },
 };
 
 const CarruselSlot = ({ images, className }: { images: string[]; className: string }) => (
@@ -32,7 +32,7 @@ const CarruselSlot = ({ images, className }: { images: string[]; className: stri
     <Swiper
       modules={[Autoplay, Navigation]}
       loop={true}
-      autoplay={{ delay: 10000, disableOnInteraction: false }}
+      autoplay={{ delay: 5000, disableOnInteraction: false }}
       navigation={true}
       className={styles.swiper}
     >
