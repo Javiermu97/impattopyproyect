@@ -2599,13 +2599,13 @@ body {
 
 @media (max-width: 992px) {
   .related-products-section {
-    width: 100vw; /* 1. Ocupa el 100% del ancho de la ventana gráfica */
+    width: 100vw;
     position: relative;
     left: 50%;
     right: 50%;
-    margin-left: -50vw; /* 2. Tira del contenedor hacia la izquierda para centrarlo */
+    margin-left: -50vw;
     margin-right: -50vw;
-    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+    box-sizing: border-box;
   }
 
   /*
