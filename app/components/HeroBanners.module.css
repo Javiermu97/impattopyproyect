@@ -130,10 +130,9 @@
     display: block;
   }
 
-  .mobileLayout .slotCat,
-  .mobileLayout .slotSq {
-    aspect-ratio: 1 / 1;
-  }
+  .mobileLayout .slotCat {
+  aspect-ratio: 500 / 185;
+}
 
   .mobileLayout .slotCat img,
   .mobileLayout .slotSq img {
