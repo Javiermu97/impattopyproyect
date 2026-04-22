@@ -131,22 +131,44 @@
   }
 
   .mobileLayout .slotCat {
-  aspect-ratio: 500 / 185;
-}
+    aspect-ratio: 500 / 185;
+  }
 
-.mobileLayout .slotSq {
-  aspect-ratio: 1 / 1;
-}
+  .mobileLayout .slotSq {
+    aspect-ratio: 500 / 185;
+  }
 
-.mobileLayout .slotWide {
-  aspect-ratio: 1280 / 385;
-}
+  .mobileLayout .slotCat img,
+  .mobileLayout .slotSq img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-.mobileLayout .slotWide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+  .mobileLayout .slotWide {
+    aspect-ratio: 1280 / 385;
+    height: auto;
+  }
+
+  .mobileLayout .slotWide .swiper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .mobileLayout .slotWide .swiper :global(.swiper-wrapper),
+  .mobileLayout .slotWide .swiper :global(.swiper-slide) {
+    height: 100% !important;
+  }
+
+  .mobileLayout .slotWide .swiper :global(.swiper-slide) img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
   .mobileLayout .swiper :global(.swiper-wrapper) { align-items: flex-start; }
 
