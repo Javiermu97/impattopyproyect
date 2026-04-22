@@ -12,18 +12,18 @@
   grid-template-rows: 28% 44% 28%;
   height: 580px;
   gap: 8px;
-  padding: 8px;
+  padding: 8px 20px 8px 8px;
   background: #ffffff;
   box-sizing: border-box;
 }
 
 .slotCat1, .slotCat2, .slotWide, .slotSq1, .slotSq2 {
-  margin-left: 8px;
+  margin-left: 0;
 }
 
 .slotWide {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .slotWide .swiper {
