@@ -138,12 +138,18 @@
     aspect-ratio: 500 / 185;
   }
 
-  .mobileLayout .slotCat img,
-  .mobileLayout .slotSq img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  .mobileLayout .slotCat img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mobileLayout .slotSq img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #ddd;
+}
 
   .mobileLayout .slotWide {
     aspect-ratio: 1280 / 385;
