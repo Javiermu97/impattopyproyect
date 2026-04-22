@@ -13,9 +13,14 @@
   height: 580px;
   gap: 8px;
   padding: 8px;
-  background: #e8e8e8;
+  background: #ffffff;
   box-sizing: border-box;
-}.slotWide .swiper {
+}
+
+.slotCat1, .slotCat2 { margin-bottom: 8px; }
+.slotWide { margin-bottom: 8px; }
+
+.slotWide .swiper {
   position: absolute;
   top: 0;
   left: 0;
