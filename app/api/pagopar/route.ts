@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     const orderId = `IMP-${Date.now()}`;
 
     // Hash requerido por Pagopar: SHA1 del token_privado + monto + id_pedido
-    const hashStr = `${privateKey}${amount}${orderId}`;
+    const hashStr = `${privateKey}${publicKey}${amount}`;
     const hash = crypto.createHash('sha1').update(hashStr).digest('hex').toUpperCase();
 
     const body = {
