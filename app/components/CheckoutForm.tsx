@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { Product, ProductVariant } from '@/lib/types';
 import { supabase } from '@/lib/supabaseClient';
-// Importamos un ícono de tarjeta elegante
 import { FaCreditCard } from 'react-icons/fa';
 
 /* ─────────────── Tipos ─────────────── */
@@ -59,10 +58,10 @@ const paraguayLocations = {
 } as const;
 
 /* ─────────────── Configuración Pagopar ─────────────── */
-const PAGOPAR_ACTIVO = true; 
+const PAGOPAR_ACTIVO = true;
 const PAGOPAR_PUBLIC_KEY = process.env.NEXT_PUBLIC_PAGOPAR_PUBLIC_KEY!;
 
-/* --- Lista de logos para la pasarela de pago --- */
+/* ─────────────── Logos Pagopar ─────────────── */
 const logosPagopar = [
   { src: '/logos-bancos/americanexpress.png', alt: 'Amex' },
   { src: '/logos-bancos/Mastercard-logo.svg.png', alt: 'Mastercard' },
@@ -235,8 +234,11 @@ export default function CheckoutForm({
         }),
       });
 
-      const data = await res.json();
-console.log('Respuesta del servidor:', JSON.stringify(data));
+      console.log('Status HTTP:', res.status);
+      const text = await res.text();
+      console.log('Respuesta raw:', text);
+      const data = JSON.parse(text);
+      console.log('Respuesta del servidor:', JSON.stringify(data));
 
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
@@ -244,7 +246,8 @@ console.log('Respuesta del servidor:', JSON.stringify(data));
         setPagoparError('No se pudo iniciar el pago. Intentá de nuevo o pagá al recibir.');
         setPagoparLoading(false);
       }
-    } catch {
+    } catch (err) {
+      console.error('Error catch:', err);
       setPagoparError('Error al conectar con Pagopar. Intentá de nuevo.');
       setPagoparLoading(false);
     }
@@ -350,61 +353,56 @@ console.log('Respuesta del servidor:', JSON.stringify(data));
           CONFIRMO QUE MIS DATOS ESTÁN CORRECTOS Y QUIERO COMPRAR EL PRODUCTO
         </label>
 
-        {/* --- BOTONES CON ACTUALIZACIÓN DE TEXTO --- */}
-        
-        {/* --- SECCIÓN DE BOTONES ACTUALIZADA --- */}
-<div className="checkout-buttons-container">
-  
-  {/* Botón 1: Pagar al recibir */}
-  <button type="submit" disabled={isSubmitting} className="submit-btn primary btn-multi-line">
-    <span className="btn-main-text">
-      {isSubmitting ? 'PROCESANDO...' : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`}
-    </span>
-    <span className="btn-sub-text-white">
-      Efectivo y transferencia bancaria. (Solo para Asunción y alrededores)
-    </span>
-  </button>
+        <div className="checkout-buttons-container">
 
-  {PAGOPAR_ACTIVO && (
-    <div className="pagopar-section">
-      <div className="pagopar-divider">
-        <span>— o pagá online —</span>
-      </div>
-
-      {pagoparError && <p className="pagopar-error">{pagoparError}</p>}
-
-      {/* Botón 2: Pagar con Tarjeta (Dorado #A78D5A) */}
-      <button
-        type="button"
-        className="submit-btn pagopar-btn-gold btn-multi-line"
-        onClick={handlePagopar}
-        disabled={pagoparLoading}
-      >
-        <div className="btn-content-wrapper">
-          <div className="btn-main-row">
-            <FaCreditCard className="btn-icon-chuchi-black" />
+          {/* Botón 1: Pagar al recibir */}
+          <button type="submit" disabled={isSubmitting} className="submit-btn primary btn-multi-line">
             <span className="btn-main-text">
-              {pagoparLoading ? 'REDIRIGIENDO...' : `PAGAR CON TARJETA Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`}
+              {isSubmitting ? 'PROCESANDO...' : `PAGAR AL RECIBIR Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`}
             </span>
-          </div>
-          <span className="btn-sub-text-white">
-            ¡O diferentes vía PAGOPAR!
-          </span>
-        </div>
-      </button>
+            <span className="btn-sub-text-white">
+              Efectivo y transferencia bancaria. (Solo para Asunción y alrededores)
+            </span>
+          </button>
 
-      {/* Grilla de logos (se mantiene igual) */}
-      <div className="pagopar-metodos">
-        {logosPagopar.map((logo, index) => (
-          <div key={index} className="pagopar-pago-card-mini">
-            <img src={logo.src} alt={logo.alt} />
-          </div>
-        ))}
-      </div>
-      <p className="pagopar-nota">Procesado de forma segura por Pagopar</p>
-    </div>
-  )}
-</div>
+          {PAGOPAR_ACTIVO && (
+            <div className="pagopar-section">
+              <div className="pagopar-divider">
+                <span>— o pagá online —</span>
+              </div>
+
+              {pagoparError && <p className="pagopar-error">{pagoparError}</p>}
+
+              <button
+                type="button"
+                className="submit-btn pagopar-btn-gold btn-multi-line"
+                onClick={handlePagopar}
+                disabled={pagoparLoading}
+              >
+                <div className="btn-content-wrapper">
+                  <div className="btn-main-row">
+                    <FaCreditCard className="btn-icon-chuchi-black" />
+                    <span className="btn-main-text">
+                      {pagoparLoading ? 'REDIRIGIENDO...' : `PAGAR CON TARJETA Gs. ${calculatePrice(selectedQuantity).toLocaleString('es-PY')}`}
+                    </span>
+                  </div>
+                  <span className="btn-sub-text-white">
+                    ¡O diferentes vía PAGOPAR!
+                  </span>
+                </div>
+              </button>
+
+              <div className="pagopar-metodos">
+                {logosPagopar.map((logo, index) => (
+                  <div key={index} className="pagopar-pago-card-mini">
+                    <img src={logo.src} alt={logo.alt} />
+                  </div>
+                ))}
+              </div>
+              <p className="pagopar-nota">Procesado de forma segura por Pagopar</p>
+            </div>
+          )}
+        </div>
       </div>
     </form>
   );
