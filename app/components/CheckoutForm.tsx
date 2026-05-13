@@ -59,8 +59,8 @@ const paraguayLocations = {
 } as const;
 
 /* ─────────────── Configuración Pagopar ─────────────── */
-const PAGOPAR_ACTIVO = false; 
-const PAGOPAR_PUBLIC_KEY = 'TU_CLAVE_PUBLICA_PAGOPAR_AQUI';
+const PAGOPAR_ACTIVO = true; 
+const PAGOPAR_PUBLIC_KEY = process.env.NEXT_PUBLIC_PAGOPAR_PUBLIC_KEY!;
 
 /* --- Lista de logos para la pasarela de pago --- */
 const logosPagopar = [
