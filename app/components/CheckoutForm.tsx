@@ -236,6 +236,7 @@ export default function CheckoutForm({
       });
 
       const data = await res.json();
+console.log('Respuesta del servidor:', JSON.stringify(data));
 
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
