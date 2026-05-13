@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import * as crypto from 'crypto';
 
 /*
-  API Route: /api/pagopar
-  Documentación oficial: https://developers.pagopar.com
+  API Route: /api/pagopar/route.ts
+  Documentación: https://soporte.pagopar.com/portal/es/kb/api
+  Endpoint correcto: https://api.pagopar.com/api/comercios/2.0/iniciar-transaccion
 */
 
 export async function POST(req: NextRequest) {
@@ -22,47 +23,64 @@ export async function POST(req: NextRequest) {
     const privateKey = process.env.PAGOPAR_PRIVATE_KEY!;
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://impatto.com.py';
 
-    // Pagopar requiere un ID de pedido único
+    // ID único del pedido
     const orderId = `IMP-${Date.now()}`;
 
-    // Hash requerido por Pagopar: SHA1 del token_privado + monto + id_pedido
-    const hashStr = `${privateKey}${publicKey}${amount}`;
-    const hash = crypto.createHash('sha1').update(hashStr).digest('hex').toUpperCase();
+    // Hash correcto según documentación:
+    // sha1(token_privado + id_pedido_comercio + monto_total como float)
+    const montoFloat = String(parseFloat(String(amount)));
+    const hashStr = `${privateKey}${orderId}${montoFloat}`;
+    const token = crypto.createHash('sha1').update(hashStr).digest('hex');
+
+    // Fecha máxima de pago: 24 horas desde ahora
+    const fechaMaxima = new Date(Date.now() + 24 * 60 * 60 * 1000)
+      .toISOString()
+      .replace('T', ' ')
+      .substring(0, 19);
 
     const body = {
-      token_publico: publicKey,
-      hashkey: hash,
-      id_pedido: orderId,
-      descripcion: description,
-      monto: String(amount),
-      tipo_pedido: 'VENTA',
-      ciudad_envio: 'Asuncion',
+      token,
+      public_key: publicKey,
+      monto_total: amount,
+      tipo_pedido: 'VENTA-COMERCIO',
+      id_pedido_comercio: orderId,
+      descripcion_resumen: description,
+      fecha_maxima_pago: fechaMaxima,
       comprador: {
         nombre: buyerName,
-        apellido: '',
-        ruc: buyerRuc ?? '0000000-0',
         email: buyerEmail,
         telefono: buyerPhone,
-        direccion: buyerAddress ?? 'Asuncion, Paraguay',
-        ciudad: 'Asuncion',
-        pais: 'PRY',
+        ruc: buyerRuc ?? '',
+        documento: buyerRuc ?? '',
+        tipo_documento: 'CI',
+        direccion: buyerAddress ?? '',
+        direccion_referencia: null,
+        coordenadas: '',
+        razon_social: buyerName,
+        ciudad: '1',
       },
-      url_retorno: `${siteUrl}/pago-exitoso`,
-      url_cancelacion: `${siteUrl}/pago-cancelado`,
-      url_respuesta: `${siteUrl}/api/pagopar/webhook`,
-      items: [
+      compras_items: [
         {
           nombre: description,
-          cantidad: 1,
-          precio_unitario: String(amount),
           descripcion: description,
-          iva: '10',
-          categoria_pagopar: '101', // Categoría general
+          cantidad: 1,
+          precio_total: amount,
+          id_producto: 1,
+          categoria: '909',
+          ciudad: '1',
+          public_key: publicKey,
+          url_imagen: '',
+          vendedor_telefono: '',
+          vendedor_direccion: '',
+          vendedor_direccion_referencia: '',
+          vendedor_direccion_coordenadas: '',
         },
       ],
     };
 
-    const res = await fetch('https://api.pagopar.com/api/comercios/1.1/token-compra', {
+    console.log('Enviando a Pagopar:', JSON.stringify(body));
+
+    const res = await fetch('https://api.pagopar.com/api/comercios/2.0/iniciar-transaccion', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -71,15 +89,18 @@ export async function POST(req: NextRequest) {
     const data = await res.json();
     console.log('Respuesta Pagopar:', JSON.stringify(data));
 
-    // Pagopar devuelve la URL en data.respuesta.url_pago
-    const checkoutUrl = data?.respuesta?.url_pago ?? null;
-
-    if (!checkoutUrl) {
+    // En caso de éxito, data.resultado[0].data contiene el hash del pedido
+    if (!data.respuesta || !data.resultado?.[0]?.data) {
       return NextResponse.json(
-        { error: 'No se pudo obtener URL de pago', detail: data },
+        { error: 'Error de Pagopar', detail: data },
         { status: 500 }
       );
     }
+
+    const hashPedido = data.resultado[0].data;
+
+    // URL de checkout de Pagopar
+    const checkoutUrl = `https://www.pagopar.com/pagos/${hashPedido}`;
 
     return NextResponse.json({ checkoutUrl });
 
