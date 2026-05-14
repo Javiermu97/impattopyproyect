@@ -1,57 +1,56 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
-
-/*
-  Webhook: /api/pagopar/webhook
-  Pagopar envía un POST aquí cuando se realiza un pago.
-  Este endpoint debe:
-  1. Recibir el JSON enviado por Pagopar.
-  2. (Opcional) Validar el token.
-  3. Actualizar el pedido en Supabase.
-  4. Devolver EXACTAMENTE el mismo objeto recibido,
-     dentro de un array, agregando "respuesta": true.
-*/
+import * as crypto from 'crypto';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+/**
+ * Endpoint: /api/pagopar/webhook
+ *
+ * IMPORTANTE:
+ * Para que el simulador de Pagopar marque el Paso 2 en verde,
+ * la respuesta debe ser EXACTAMENTE:
+ *
+ * [
+ *   {
+ *     ...todos los datos recibidos...,
+ *     "respuesta": true
+ *   }
+ * ]
+ *
+ * No basta con devolver:
+ * { "respuesta": true }
+ */
+
 export async function POST(req: NextRequest) {
   try {
-    // Recibir el cuerpo enviado por Pagopar
-    let body = await req.json();
+    // 1. Recibir el JSON enviado por Pagopar
+    const body = await req.json();
 
-    console.log(
-      'Webhook Pagopar recibido:',
-      JSON.stringify(body, null, 2)
-    );
+    console.log('Webhook Pagopar recibido:');
+    console.log(JSON.stringify(body, null, 2));
 
-    // Asegurar que siempre sea un array
-    // Pagopar espera que la respuesta tenga esta estructura:
-    // [
-    //   {
-    //     ...datos recibidos,
-    //     "respuesta": true
-    //   }
-    // ]
-    let data: any[];
+    // 2. Detectar dónde viene el objeto real
+    // En el simulador normalmente llega así:
+    // {
+    //   "resultado": [
+    //     { ...datos del pago... }
+    //   ]
+    // }
+    let pago: any;
 
     if (Array.isArray(body)) {
-      data = body;
+      pago = body[0];
     } else if (body.resultado && Array.isArray(body.resultado)) {
-      // En algunos casos Pagopar envía { resultado: [ ... ] }
-      data = body.resultado;
+      pago = body.resultado[0];
     } else {
-      data = [body];
+      pago = body;
     }
 
-    const pago = data[0];
-
-    // ==========================
-    // VALIDACIÓN OPCIONAL TOKEN
-    // ==========================
+    // 3. Validación opcional del token (no bloquea la simulación)
     try {
       const privateKey = process.env.PAGOPAR_PRIVATE_KEY;
 
@@ -63,20 +62,12 @@ export async function POST(req: NextRequest) {
 
         console.log('Token recibido:', pago.token);
         console.log('Token esperado:', expectedToken);
-
-        // Si deseas validar estrictamente:
-        // if (pago.token !== expectedToken) {
-        //   throw new Error('Token inválido');
-        // }
       }
     } catch (tokenError) {
       console.error('Error validando token:', tokenError);
-      // No detenemos el flujo para no bloquear la simulación
     }
 
-    // ==========================
-    // ACTUALIZAR EN SUPABASE
-    // ==========================
+    // 4. Actualizar pedido en Supabase si corresponde
     try {
       const pagado =
         pago.pagado === true ||
@@ -93,21 +84,25 @@ export async function POST(req: NextRequest) {
       }
     } catch (dbError) {
       console.error('Error actualizando Supabase:', dbError);
-      // Continuamos igualmente para que Pagopar reciba respuesta correcta
     }
 
-    // ==========================
-    // RESPUESTA OBLIGATORIA
-    // ==========================
-    // Agregar "respuesta": true al primer objeto
-    data[0].respuesta = true;
+    // 5. RESPUESTA EXACTA QUE PAGOPAR EXIGE
+    // Debe devolver el mismo objeto recibido + respuesta:true
+    const response = [
+      {
+        ...pago,
+        respuesta: true,
+      },
+    ];
 
-    // Devolver EXACTAMENTE el array con todos los datos
-    return NextResponse.json(data, { status: 200 });
-  } catch (err) {
-    console.error('Error en webhook Pagopar:', err);
+    console.log('Respuesta enviada a Pagopar:');
+    console.log(JSON.stringify(response, null, 2));
 
-    // Incluso ante errores, Pagopar necesita una respuesta válida
+    return NextResponse.json(response, { status: 200 });
+  } catch (error) {
+    console.error('Error en webhook Pagopar:', error);
+
+    // Incluso ante error, devolvemos el formato correcto
     return NextResponse.json(
       [
         {
@@ -119,7 +114,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Pagopar también puede hacer GET para verificar el endpoint
+// Verificación simple del endpoint
 export async function GET() {
   return NextResponse.json(
     [
