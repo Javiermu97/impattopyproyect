@@ -53,22 +53,23 @@ export default function BannerCuotas() {
           <button className="banner-pagos-btn banner-pagos-btn--left banner-pagos-prev-desk">‹</button>
 
           <Swiper
-            modules={[Navigation, Autoplay]}
-            loop={true}
-            speed={800}
-            slidesPerView={'auto'}
-            spaceBetween={0}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            navigation={{
-              prevEl: '.banner-pagos-prev-desk',
-              nextEl: '.banner-pagos-next-desk',
-            }}
-            onSlideChange={mostrarScrollbar}
-            className="banner-pagos-swiper-desk"
-          >
+  modules={[Navigation, Autoplay]}
+  loop={true}
+  speed={1500}
+  slidesPerView={'auto'}
+  spaceBetween={0}
+  autoplay={{
+    delay: 2000,
+    disableOnInteraction: false,
+  }}
+  slidesPerGroup={3}
+  navigation={{
+    prevEl: '.banner-pagos-prev-desk',
+    nextEl: '.banner-pagos-next-desk',
+  }}
+  onSlideChange={mostrarScrollbar}
+  className="banner-pagos-swiper-desk"
+>
             {[...listaLogos, ...listaLogos].map((logo, i) => (
               <SwiperSlide key={i}>
                 <div className="banner-pagos-logo-item">
