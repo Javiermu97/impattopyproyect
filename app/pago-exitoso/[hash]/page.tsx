@@ -19,7 +19,7 @@ async function consultarEstadoPedido(hashPedido: string) {
     // Token: sha1(private_key + "CONSULTA")
     const token = crypto
       .createHash('sha1')
-      .update(`${privateKey}CONSULTA`)
+      .update(privateKey + "CONSULTA")
       .digest('hex');
 
     const res = await fetch('https://api.pagopar.com/api/pedidos/1.1/traer', {
