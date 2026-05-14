@@ -51,8 +51,6 @@ export async function POST(req: NextRequest) {
       id_pedido_comercio: orderId,
       descripcion_resumen: description,
       fecha_maxima_pago: fechaMaxima,
-      // ESTA LÍNEA ES LA IMPORTANTE
-  url_respuesta: `${siteUrl}/api/pagopar/webhook`,
       comprador: {
         nombre: buyerName,
         email: buyerEmail,
@@ -65,6 +63,8 @@ export async function POST(req: NextRequest) {
         coordenadas: '',
         razon_social: buyerName,
         ciudad: '1',
+         // ESTA LÍNEA ES LA IMPORTANTE
+  url_respuesta: `${siteUrl}/api/pagopar/webhook`,
       },
       compras_items: [
         {
