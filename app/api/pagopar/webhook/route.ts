@@ -1,87 +1,70 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import * as crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
-
-/*
-  Webhook: /api/pagopar/webhook
-  Pagopar envía un POST con esta estructura:
-  {
-    "resultado": [ { ...datos del pago... } ],
-    "respuesta": true
-  }
-
-  El comercio DEBE responder con EXACTAMENTE el contenido de resultado:
-  [ { ...datos del pago... } ]
-*/
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-export async function POST(req: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const body = await req.json();
-    console.log('Webhook Pagopar recibido:', JSON.stringify(body));
+    const json_pagopar = await request.json();
+    console.log('Webhook Pagopar recibido:', JSON.stringify(json_pagopar));
 
-    // Pagopar envía { resultado: [...], respuesta: true }
-    const resultado = body.resultado ?? (Array.isArray(body) ? body : [body]);
-    const pago = resultado[0];
+    const privateKey = process.env.PAGOPAR_PRIVATE_KEY!;
 
-    if (!pago) {
-      console.error('No se encontró datos del pago');
-      return NextResponse.json([{ respuesta: true }], { status: 200 });
+    // Verificación básica de datos
+    if (!json_pagopar.resultado || !json_pagopar.resultado[0]) {
+      return NextResponse.json({ error: 'Datos insuficientes' }, { status: 400 });
     }
 
-    // Validar token: sha1(private_key + hash_pedido)
-    const privateKey = process.env.PAGOPAR_PRIVATE_KEY!;
-    const hashPedido = pago.hash_pedido ?? '';
-    
-    // Concatenación limpia para evitar errores de validación
-    const expectedToken = crypto
+    const pedido = json_pagopar.resultado[0];
+
+    // Validación del Token: sha1(private_key + hash_pedido)
+    const tokenLocal = crypto
       .createHash('sha1')
-      .update(privateKey + hashPedido)
+      .update(privateKey + pedido.hash_pedido)
       .digest('hex');
 
-    console.log('Token recibido:', pago.token);
-    console.log('Token esperado:', expectedToken);
+    console.log('Token recibido:', pedido.token);
+    console.log('Token esperado:', tokenLocal);
 
-    if (pago.token !== expectedToken) {
-      console.error('Token no coincide — posible petición maliciosa');
-      // Respondemos el resultado como pide la doc, aunque sea inválido para que no reintenten
-      return NextResponse.json(resultado, { status: 200 });
+    if (tokenLocal !== pedido.token) {
+      console.log('Token inválido detectado');
+      return new Response('Token no coincide', { status: 401 });
     }
 
     // Actualizar estado en Supabase
     try {
-      if (pago.pagado === true) {
+      if (pedido.pagado === true) {
         await supabase
           .from('orders')
           .update({ status: 'Pagado' })
-          .eq('pagopar_hash', hashPedido); // Usamos el hash único del pedido
-        console.log('Pedido marcado como Pagado');
-      } else if (pago.pagado === false && pago.cancelado === true) {
+          .eq('order_details->>payment_method', 'pagopar');
+        console.log(`Pedido ${pedido.hash_pedido} marcado como Pagado`);
+      } else if (pedido.cancelado === true) {
         await supabase
           .from('orders')
           .update({ status: 'Cancelado' })
-          .eq('pagopar_hash', hashPedido);
-        console.log('Pedido marcado como Cancelado');
+          .eq('order_details->>payment_method', 'pagopar');
+        console.log(`Pedido ${pedido.hash_pedido} marcado como Cancelado`);
       }
     } catch (dbErr) {
       console.error('Error actualizando Supabase:', dbErr);
     }
 
-    // RESPUESTA EXACTA SEGÚN DOC: devolver el array "resultado" tal cual lo recibimos
-    console.log('Respuesta enviada:', JSON.stringify(resultado));
-    return NextResponse.json(resultado, { status: 200 });
+    // Respuesta obligatoria: devolver directamente el resultado
+    console.log('Respuesta enviada:', JSON.stringify(json_pagopar.resultado));
+    return NextResponse.json(json_pagopar.resultado, { status: 200 });
 
-  } catch (err) {
-    console.error('Error en webhook Pagopar:', err);
-    return NextResponse.json([{ respuesta: true }], { status: 200 });
+  } catch (error) {
+    console.error('Error en Webhook:', error);
+    return new Response('Error interno', { status: 500 });
   }
 }
 
 export async function GET() {
-  // Útil para verificar que el endpoint está vivo
-  return NextResponse.json({ status: "Webhook activo" }, { status: 200 });
+  return NextResponse.json([{ respuesta: true }], { status: 200 });
 }
+
