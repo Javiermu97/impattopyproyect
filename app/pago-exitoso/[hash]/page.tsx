@@ -5,22 +5,22 @@ export const metadata = {
   title: 'Resultado del Pago - Impatto Py',
 };
 
-/*
-  Esta página recibe el hash del pedido desde Pagopar
-  en la URL: /pago-exitoso/($hash)
-  y consulta el estado real del pedido.
-*/
-
 async function consultarEstadoPedido(hashPedido: string) {
   try {
     const privateKey = process.env.PAGOPAR_PRIVATE_KEY!;
     const publicKey = process.env.NEXT_PUBLIC_PAGOPAR_PUBLIC_KEY!;
 
-    // Token: sha1(private_key + "CONSULTA")
+    console.log('==== CONSULTANDO ESTADO PEDIDO ====');
+    console.log('Hash pedido:', hashPedido);
+    console.log('Private key existe:', !!privateKey);
+    console.log('Public key existe:', !!publicKey);
+
     const token = crypto
       .createHash('sha1')
-      .update(privateKey + "CONSULTA")
+      .update(privateKey + 'CONSULTA')
       .digest('hex');
+
+    console.log('Token generado:', token);
 
     const res = await fetch('https://api.pagopar.com/api/pedidos/1.1/traer', {
       method: 'POST',
@@ -33,9 +33,14 @@ async function consultarEstadoPedido(hashPedido: string) {
       cache: 'no-store',
     });
 
+    console.log('Status respuesta Pagopar:', res.status);
     const data = await res.json();
+    console.log('Respuesta Pagopar estado:', JSON.stringify(data));
+    console.log('==== FIN CONSULTA ====');
+
     return data?.resultado?.[0] ?? null;
-  } catch {
+  } catch (err) {
+    console.error('Error consultando estado pedido:', err);
     return null;
   }
 }
