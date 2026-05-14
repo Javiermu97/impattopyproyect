@@ -4563,3 +4563,19 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: 0 0.5rem 1rem 0.5rem;
   }
 }
+
+/* ── INFORME DE PAGO EN PAGOPAR 14/05/26── */
+.pago-result-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 2rem;
+}
+
+.pago-result-card {
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  padding: 2rem;
+}
