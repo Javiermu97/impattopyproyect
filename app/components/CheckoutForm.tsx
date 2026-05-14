@@ -231,14 +231,11 @@ export default function CheckoutForm({
           buyerPhone: formData.phone,
           buyerRuc: formData.ruc,
           buyerAddress: `${formData.address}, ${formData.city}, ${selectedDepartment}`,
+          productImageUrl: product.imageUrl ?? '',
         }),
       });
 
-      console.log('Status HTTP:', res.status);
-      const text = await res.text();
-      console.log('Respuesta raw:', text);
-      const data = JSON.parse(text);
-      console.log('Respuesta del servidor:', JSON.stringify(data));
+      const data = await res.json();
 
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;

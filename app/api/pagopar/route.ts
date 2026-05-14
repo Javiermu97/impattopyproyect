@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
       buyerPhone,
       buyerRuc,
       buyerAddress,
+      productImageUrl,
     } = await req.json();
 
     const privateKey = process.env.PAGOPAR_PRIVATE_KEY!;
@@ -73,7 +74,7 @@ export async function POST(req: NextRequest) {
           categoria: '909',
           ciudad: '1',
           public_key: publicKey,
-          url_imagen: '',
+          url_imagen: productImageUrl ?? '',
           vendedor_telefono: '',
           vendedor_direccion: '',
           vendedor_direccion_referencia: '',
