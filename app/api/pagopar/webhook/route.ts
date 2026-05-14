@@ -4,9 +4,14 @@ import { createClient } from '@supabase/supabase-js';
 
 /*
   Webhook: /api/pagopar/webhook
-  Pagopar envía un POST aquí cuando se realiza un pago.
-  IMPORTANTE: Debe devolver el mismo JSON recibido + respuesta:true
-  dentro de un array, como indica la documentación oficial.
+  Pagopar envía un POST con esta estructura:
+  {
+    "resultado": [ { ...datos del pago... } ],
+    "respuesta": true
+  }
+
+  El comercio DEBE responder con EXACTAMENTE el contenido de resultado:
+  [ { ...datos del pago... } ]
 */
 
 const supabase = createClient(
@@ -19,55 +24,54 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     console.log('Webhook Pagopar recibido:', JSON.stringify(body));
 
-    // Detectar dónde viene el objeto del pago
-    let pago: Record<string, unknown>;
-    if (Array.isArray(body)) {
-      pago = body[0];
-    } else if (body.resultado && Array.isArray(body.resultado)) {
-      pago = body.resultado[0];
-    } else {
-      pago = body;
+    // Pagopar envía { resultado: [...], respuesta: true }
+    const resultado = body.resultado ?? (Array.isArray(body) ? body : [body]);
+    const pago = resultado[0];
+
+    if (!pago) {
+      console.error('No se encontró datos del pago');
+      return NextResponse.json([{ respuesta: true }], { status: 200 });
     }
 
-    // Validar token opcional
-    try {
-      const privateKey = process.env.PAGOPAR_PRIVATE_KEY!;
-      const hashPedido = (pago.hash_pedido ?? pago.hash ?? '') as string;
-      if (hashPedido) {
-        const expectedToken = crypto
-          .createHash('sha1')
-          .update(`${privateKey}${hashPedido}`)
-          .digest('hex');
-        console.log('Token recibido:', pago.token);
-        console.log('Token esperado:', expectedToken);
-      }
-    } catch (tokenErr) {
-      console.error('Error validando token:', tokenErr);
+    // Validar token: sha1(private_key + hash_pedido)
+    const privateKey = process.env.PAGOPAR_PRIVATE_KEY!;
+    const hashPedido = pago.hash_pedido ?? '';
+    const expectedToken = crypto
+      .createHash('sha1')
+      .update(`${privateKey}${hashPedido}`)
+      .digest('hex');
+
+    console.log('Token recibido:', pago.token);
+    console.log('Token esperado:', expectedToken);
+
+    if (pago.token !== expectedToken) {
+      console.error('Token no coincide — posible petición maliciosa');
+      // Igual respondemos 200 para que Pagopar no reintente
+      return NextResponse.json(resultado, { status: 200 });
     }
 
-    // Actualizar estado en Supabase si el pago fue confirmado
+    // Actualizar estado en Supabase
     try {
-      const pagado = pago.pagado === true ||
-        pago.estado === 'PAGO-CONFIRMADO' ||
-        pago.estado === 'PAGADO';
-
-      if (pagado) {
+      if (pago.pagado === true) {
         await supabase
           .from('orders')
           .update({ status: 'Pagado' })
           .eq('order_details->>payment_method', 'pagopar');
-        console.log('Pedido marcado como pagado en Supabase');
+        console.log('Pedido marcado como Pagado');
+      } else if (pago.pagado === false && pago.cancelado === true) {
+        await supabase
+          .from('orders')
+          .update({ status: 'Cancelado' })
+          .eq('order_details->>payment_method', 'pagopar');
+        console.log('Pedido marcado como Cancelado');
       }
     } catch (dbErr) {
       console.error('Error actualizando Supabase:', dbErr);
     }
 
-    // RESPUESTA EXACTA QUE PAGOPAR EXIGE:
-    // Array con el mismo objeto recibido + respuesta:true
-    const respuesta = [{ ...pago, respuesta: true }];
-    console.log('Respuesta enviada a Pagopar:', JSON.stringify(respuesta));
-
-    return NextResponse.json(respuesta, { status: 200 });
+    // RESPUESTA EXACTA: devolver el array resultado tal cual lo recibimos
+    console.log('Respuesta enviada:', JSON.stringify(resultado));
+    return NextResponse.json(resultado, { status: 200 });
 
   } catch (err) {
     console.error('Error en webhook Pagopar:', err);

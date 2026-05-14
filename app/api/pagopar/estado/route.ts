@@ -4,8 +4,8 @@ import * as crypto from 'crypto';
 /*
   Endpoint: /api/pagopar/estado
   Consulta el estado actual de un pedido en Pagopar.
-  Documentación: https://api.pagopar.com/api/pedidos/1.1/traer
-  Token: sha1(private_key + "TRAER-PEDIDO")
+  URL Pagopar: https://api.pagopar.com/api/pedidos/1.1/traer
+  Token: sha1(private_key + "CONSULTA")
 */
 
 export async function POST(req: NextRequest) {
@@ -15,19 +15,19 @@ export async function POST(req: NextRequest) {
     const privateKey = process.env.PAGOPAR_PRIVATE_KEY!;
     const publicKey = process.env.NEXT_PUBLIC_PAGOPAR_PUBLIC_KEY!;
 
-    // Hash requerido: sha1(private_key + "TRAER-PEDIDO")
+    // Token correcto según documentación: sha1(private_key + "CONSULTA")
     const token = crypto
       .createHash('sha1')
-      .update(`${privateKey}TRAER-PEDIDO`)
+      .update(`${privateKey}CONSULTA`)
       .digest('hex');
 
     const res = await fetch('https://api.pagopar.com/api/pedidos/1.1/traer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        hash_pedido: hashPedido,
         token,
         token_publico: publicKey,
-        hash_pedido: hashPedido,
       }),
     });
 
