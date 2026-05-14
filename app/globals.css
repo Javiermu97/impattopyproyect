@@ -4316,6 +4316,17 @@ input[type="number"]::-webkit-outer-spin-button {
 .banner-pagos-desktop { display: flex; }
 .banner-pagos-mobile  { display: none; }
 
+
+
+
+.banner-pagos-scrollbar-desk {
+  opacity: 0;
+  transition: opacity 0.4s;
+  padding: 4px 10%;
+}
+.banner-pagos-scrollbar-desk.visible {
+  opacity: 1;
+}
 /* ===================================================== */
 /* ===== MÓVIL Y TABLET (max 992px) ===== */
 /* ===================================================== */

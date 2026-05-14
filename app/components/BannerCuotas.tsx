@@ -55,13 +55,13 @@ export default function BannerCuotas() {
           <Swiper
             modules={[Navigation, Autoplay]}
             loop={true}
-            speed={600}
+            speed={800}
             slidesPerView={'auto'}
             spaceBetween={0}
             autoplay={{
-    delay: 12000,
-    disableOnInteraction: false,
-  }}
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
             navigation={{
               prevEl: '.banner-pagos-prev-desk',
               nextEl: '.banner-pagos-next-desk',
