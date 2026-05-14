@@ -1,61 +1,62 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import * as crypto from 'crypto';
 
-export const metadata = {
-  title: 'Resultado del Pago - Impatto Py',
-};
-
-async function consultarEstadoPedido(hashPedido: string) {
-  try {
-    const privateKey = process.env.PAGOPAR_PRIVATE_KEY!;
-    const publicKey = process.env.NEXT_PUBLIC_PAGOPAR_PUBLIC_KEY!;
-
-    console.log('==== CONSULTANDO ESTADO PEDIDO ====');
-    console.log('Hash pedido:', hashPedido);
-    console.log('Private key existe:', !!privateKey);
-    console.log('Public key existe:', !!publicKey);
-
-    const token = crypto
-      .createHash('sha1')
-      .update(privateKey + 'CONSULTA')
-      .digest('hex');
-
-    console.log('Token generado:', token);
-
-    const res = await fetch('https://api.pagopar.com/api/pedidos/1.1/traer', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        hash_pedido: hashPedido,
-        token,
-        token_publico: publicKey,
-      }),
-      cache: 'no-store',
-    });
-
-    console.log('Status respuesta Pagopar:', res.status);
-    const data = await res.json();
-    console.log('Respuesta Pagopar estado:', JSON.stringify(data));
-    console.log('==== FIN CONSULTA ====');
-
-    return data?.resultado?.[0] ?? null;
-  } catch (err) {
-    console.error('Error consultando estado pedido:', err);
-    return null;
-  }
+interface PedidoData {
+  pagado: boolean;
+  cancelado: boolean;
+  monto?: string;
+  forma_pago?: string;
+  mensaje_resultado_pago?: { titulo: string };
 }
 
-export default async function PagoExitosoPage({
-  params,
-}: {
-  params: { hash: string };
-}) {
-  const hashPedido = params.hash ?? '';
-  const pedido = hashPedido ? await consultarEstadoPedido(hashPedido) : null;
+export default function PagoExitosoPage() {
+  const params = useParams();
+  const hashPedido = params?.hash as string ?? '';
+
+  const [pedido, setPedido] = useState<PedidoData | null>(null);
+  const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    if (!hashPedido) {
+      setCargando(false);
+      return;
+    }
+
+    fetch('/api/pagopar/estado', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hashPedido }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('Estado pedido:', data);
+        const resultado = data?.resultado?.[0] ?? null;
+        setPedido(resultado);
+        setCargando(false);
+      })
+      .catch(err => {
+        console.error('Error consultando estado:', err);
+        setCargando(false);
+      });
+  }, [hashPedido]);
 
   const pagado = pedido?.pagado === true;
   const cancelado = pedido?.cancelado === true;
   const pendiente = !pagado && !cancelado;
+
+  if (cargando) {
+    return (
+      <div className="pago-result-container">
+        <div className="pago-result-card">
+          <h1>Verificando pago...</h1>
+          <p>Por favor esperá un momento.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pago-result-container">
