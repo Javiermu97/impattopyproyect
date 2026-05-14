@@ -4589,3 +4589,6 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 1.4rem;
   margin: 0 auto 1rem;
 }
+.pago-result-icon {
+  background: #A78D5A !important;
+}
