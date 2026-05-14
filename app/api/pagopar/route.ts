@@ -4,7 +4,7 @@ import * as crypto from 'crypto';
 /*
   API Route: /api/pagopar/route.ts
   Documentación: https://soporte.pagopar.com/portal/es/kb/api
-  Endpoint correcto: https://api.pagopar.com/api/comercios/2.0/iniciar-transaccion
+  Endpoint: https://api.pagopar.com/api/comercios/2.0/iniciar-transaccion
 */
 
 export async function POST(req: NextRequest) {
@@ -26,8 +26,7 @@ export async function POST(req: NextRequest) {
     // ID único del pedido
     const orderId = `IMP-${Date.now()}`;
 
-    // Hash correcto según documentación:
-    // sha1(token_privado + id_pedido_comercio + monto_total como float)
+    // Hash: sha1(token_privado + id_pedido_comercio + monto_como_float)
     const montoFloat = String(parseFloat(String(amount)));
     const hashStr = `${privateKey}${orderId}${montoFloat}`;
     const token = crypto.createHash('sha1').update(hashStr).digest('hex');
@@ -37,6 +36,11 @@ export async function POST(req: NextRequest) {
       .toISOString()
       .replace('T', ' ')
       .substring(0, 19);
+
+    // Documento: eliminar guión y asegurar que tenga valor
+    const documento = buyerRuc && buyerRuc.trim() !== ''
+      ? buyerRuc.replace('-', '').replace(/\s/g, '')
+      : '0000000';
 
     const body = {
       token,
@@ -51,7 +55,7 @@ export async function POST(req: NextRequest) {
         email: buyerEmail,
         telefono: buyerPhone,
         ruc: buyerRuc ?? '',
-        documento: buyerRuc ?? '',
+        documento: documento,
         tipo_documento: 'CI',
         direccion: buyerAddress ?? '',
         direccion_referencia: null,
@@ -89,7 +93,6 @@ export async function POST(req: NextRequest) {
     const data = await res.json();
     console.log('Respuesta Pagopar:', JSON.stringify(data));
 
-    // En caso de éxito, data.resultado[0].data contiene el hash del pedido
     if (!data.respuesta || !data.resultado?.[0]?.data) {
       return NextResponse.json(
         { error: 'Error de Pagopar', detail: data },
@@ -98,8 +101,6 @@ export async function POST(req: NextRequest) {
     }
 
     const hashPedido = data.resultado[0].data;
-
-    // URL de checkout de Pagopar
     const checkoutUrl = `https://www.pagopar.com/pagos/${hashPedido}`;
 
     return NextResponse.json({ checkoutUrl });
