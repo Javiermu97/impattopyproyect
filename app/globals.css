@@ -4579,3 +4579,13 @@ input[type="number"]::-webkit-outer-spin-button {
   text-align: center;
   padding: 2rem;
 }
+.pago-result-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin: 0 auto 1rem;
+}
