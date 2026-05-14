@@ -51,6 +51,8 @@ export async function POST(req: NextRequest) {
       id_pedido_comercio: orderId,
       descripcion_resumen: description,
       fecha_maxima_pago: fechaMaxima,
+      // ESTA LÍNEA ES LA IMPORTANTE
+  url_respuesta: `${siteUrl}/api/pagopar/webhook`,
       comprador: {
         nombre: buyerName,
         email: buyerEmail,
