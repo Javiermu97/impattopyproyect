@@ -53,11 +53,15 @@ export default function BannerCuotas() {
           <button className="banner-pagos-btn banner-pagos-btn--left banner-pagos-prev-desk">‹</button>
 
           <Swiper
-            modules={[Navigation]}
+            modules={[Navigation, Autoplay]}
             loop={true}
             speed={600}
             slidesPerView={'auto'}
             spaceBetween={0}
+            autoplay={{
+    delay: 12000,
+    disableOnInteraction: false,
+  }}
             navigation={{
               prevEl: '.banner-pagos-prev-desk',
               nextEl: '.banner-pagos-next-desk',
