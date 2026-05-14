@@ -63,8 +63,6 @@ export async function POST(req: NextRequest) {
         coordenadas: '',
         razon_social: buyerName,
         ciudad: '1',
-         // ESTA LÍNEA ES LA IMPORTANTE
-  url_respuesta: `${siteUrl}/api/pagopar/webhook`,
       },
       compras_items: [
         {
