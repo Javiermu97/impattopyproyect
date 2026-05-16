@@ -384,7 +384,7 @@ export default function CheckoutForm({
                     </span>
                   </div>
                   <span className="btn-sub-text-white">
-                    ¡O diferentes vía PAGOPAR!
+                    ¡U otro medio vía PAGOPAR!
                   </span>
                 </div>
               </button>
