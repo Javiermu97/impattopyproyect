@@ -1504,12 +1504,15 @@ body {
 
 @media (max-width: 768px) {
     .pdp-container {
-        padding: 1.5rem 2rem 0 2rem;
+        padding: 1rem 1rem 0 1rem;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
     }
 }
 
 /* ==================================================================== */
-/* ===== VERSIÓN DEFINITIVA - ESTILOS CARRUSEL ESTILO ARCA SHOP ===== */
+/* ===== VERSIÓN DEFINITIVA ===== */
 /* ==================================================================== */
 
 /* --- Contenedor General --- */
@@ -2343,6 +2346,10 @@ body {
 @media (max-width: 768px) {
   .pdp-container {
     padding: 1rem; /* Reduce el padding general */
+    padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
   }
 
   .pdp-header-row {
@@ -4602,4 +4609,28 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 .pago-result-icon {
   background: #A78D5A !important;
+}
+
+
+@media (max-width: 480px) {
+  body {
+    overflow-x: hidden;
+  }
+  
+  .pdp-container {
+    width: 100%;
+    padding: 0.75rem;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .pdp-main-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .pdp-gallery {
+    width: 100%;
+    max-width: 100%;
+  }
 }
