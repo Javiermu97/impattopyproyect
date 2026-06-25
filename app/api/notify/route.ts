@@ -4,30 +4,42 @@ import nodemailer from 'nodemailer';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { orderId, customerName, customerEmail, total, products } = body;
+    const {
+      orderId,
+      customerName,
+      customerEmail,
+      customerPhone,
+      shippingAddress,
+      total,
+      products,
+      paymentMethod,
+    } = body;
 
     // 1. Configuración de Zoho
     const transporter = nodemailer.createTransport({
-      host: 'smtp.zoho.com', 
-      port: 465, 
+      host: 'smtp.zoho.com',
+      port: 465,
       secure: true,
       auth: {
-        user: 'administracion@impatto.com.py', 
-        pass: process.env.ZOHO_PASSWORD, 
+        user: 'administracion@impatto.com.py',
+        pass: process.env.ZOHO_PASSWORD,
       },
     });
 
     // 2. Correo para el ADMINISTRADOR (Tú)
     const mailToAdmin = {
       from: '"Impatto Ventas" <administracion@impatto.com.py>',
-      to: 'impattopy@gmail.com', // Tu Gmail
+      to: 'impattopy@gmail.com',
       subject: `💰 Nueva Venta #${orderId} - Gs. ${total}`,
       html: `
         <h2>¡Nueva Venta!</h2>
         <p><strong>Cliente:</strong> ${customerName}</p>
         <p><strong>Email:</strong> ${customerEmail}</p>
+        <p><strong>WhatsApp:</strong> ${customerPhone}</p>
+        <p><strong>Dirección:</strong> ${shippingAddress}</p>
         <p><strong>Total:</strong> Gs. ${total}</p>
         <p><strong>Producto:</strong> ${products}</p>
+        <p><strong>Método de pago:</strong> ${paymentMethod === 'pagopar' ? 'Tarjeta / Pagopar' : 'Pagar al recibir'}</p>
         <a href="https://impatto.com.py/admin/pedidos">Ver en Admin</a>
       `,
     };
@@ -35,7 +47,7 @@ export async function POST(request: Request) {
     // 3. Correo para el CLIENTE (Bonito)
     const mailToClient = {
       from: '"Impatto PY" <administracion@impatto.com.py>',
-      to: customerEmail, // El correo del cliente
+      to: customerEmail,
       subject: `✅ ¡Gracias por tu compra! Pedido #${orderId}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px;">
@@ -50,6 +62,7 @@ export async function POST(request: Request) {
             <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
               <h3 style="margin-top: 0; color: #555;">Resumen del Pedido #${orderId}</h3>
               <p><strong>Producto:</strong> ${products}</p>
+              <p><strong>Dirección de entrega:</strong> ${shippingAddress}</p>
               <p style="font-size: 18px; color: green;"><strong>Total a Pagar: Gs. ${total}</strong></p>
             </div>
 
@@ -70,7 +83,7 @@ export async function POST(request: Request) {
     // Enviar ambos correos al mismo tiempo
     await Promise.all([
       transporter.sendMail(mailToAdmin),
-      transporter.sendMail(mailToClient)
+      transporter.sendMail(mailToClient),
     ]);
 
     return NextResponse.json({ success: true });

@@ -169,10 +169,13 @@ export default function CheckoutForm({
 
     fetch('/api/notify', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         orderId: generatedOrderId,
         customerName: formData.name,
         customerEmail: formData.email,
+        customerPhone: formData.phone,
+        shippingAddress: `${formData.address}, ${formData.city}, ${selectedDepartment}`,
         total: finalPrice.toLocaleString('es-PY'),
         products: `${product.name} (x${selectedQuantity})`,
         paymentMethod,
