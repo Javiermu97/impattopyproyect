@@ -22,7 +22,6 @@ export default function SubscribeForm() {
   return (
     // Este formulario utiliza las clases .footer-col form que ya existen en tu globals.css
     <form onSubmit={handleSubmit}>
-      <h3>Suscríbete para recibir ofertas</h3>
       <p>Recibe nuestras últimas novedades y ofertas especiales directamente en tu bandeja de entrada.</p>
       <input
         type="email"
